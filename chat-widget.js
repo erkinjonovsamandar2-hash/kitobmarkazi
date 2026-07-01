@@ -248,50 +248,54 @@
   `;
   document.head.appendChild(style);
 
-  // HTML Structure
-  var widget = document.createElement('div');
-  widget.innerHTML = `
-    <div class="km-chat-btn" id="kmChatBtn">
-      <svg viewBox="0 0 24 24">
-        <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
-      </svg>
+  // HTML Structure - append directly to body to avoid wrapper blocking clicks
+  var btnEl = document.createElement('div');
+  btnEl.className = 'km-chat-btn';
+  btnEl.id = 'kmChatBtn';
+  btnEl.innerHTML = `
+    <svg viewBox="0 0 24 24">
+      <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
+    </svg>
+  `;
+  document.body.appendChild(btnEl);
+
+  var windowEl = document.createElement('div');
+  windowEl.className = 'km-chat-window';
+  windowEl.id = 'kmChatWindow';
+  windowEl.innerHTML = `
+    <div class="km-chat-header">
+      <div class="km-chat-title-wrap">
+        <span class="km-chat-avatar">🤖</span>
+        <div>
+          <h4 class="km-chat-title">Kitob Maslahatchisi</h4>
+          <p class="km-chat-subtitle">Sun'iy intellekt yordamchisi</p>
+        </div>
+      </div>
+      <button class="km-chat-close" id="kmChatClose">&times;</button>
     </div>
     
-    <div class="km-chat-window" id="kmChatWindow">
-      <div class="km-chat-header">
-        <div class="km-chat-title-wrap">
-          <span class="km-chat-avatar">🤖</span>
-          <div>
-            <h4 class="km-chat-title">Kitob Maslahatchisi</h4>
-            <p class="km-chat-subtitle">Sun'iy intellekt yordamchisi</p>
-          </div>
-        </div>
-        <button class="km-chat-close" id="kmChatClose">&times;</button>
-      </div>
-      
-      <div class="km-chat-body" id="kmChatBody">
-        <div class="km-msg assistant">
-          <p>Assalomu alaykum! Men sizga Kitobmarkazi kutubxonasidan eng yaxshi kitoblarni tanlashda yordam beraman. Qanday kitoblar sizni qiziqtiradi?</p>
-        </div>
-      </div>
-      
-      <div class="km-chat-loading" id="kmChatLoading">
-        <div class="km-dot"></div>
-        <div class="km-dot"></div>
-        <div class="km-dot"></div>
-      </div>
-      
-      <div class="km-chat-footer">
-        <input type="text" class="km-chat-input" id="kmChatInput" placeholder="Savolingizni yozing...">
-        <button class="km-chat-send" id="kmChatSend">
-          <svg viewBox="0 0 24 24">
-            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-          </svg>
-        </button>
+    <div class="km-chat-body" id="kmChatBody">
+      <div class="km-msg assistant">
+        <p>Assalomu alaykum! Men sizga Kitobmarkazi kutubxonasidan eng yaxshi kitoblarni tanlashda yordam beraman. Qanday kitoblar sizni qiziqtiradi?</p>
       </div>
     </div>
+    
+    <div class="km-chat-loading" id="kmChatLoading">
+      <div class="km-dot"></div>
+      <div class="km-dot"></div>
+      <div class="km-dot"></div>
+    </div>
+    
+    <div class="km-chat-footer">
+      <input type="text" class="km-chat-input" id="kmChatInput" placeholder="Savolingizni yozing...">
+      <button class="km-chat-send" id="kmChatSend">
+        <svg viewBox="0 0 24 24">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      </button>
+    </div>
   `;
-  document.body.appendChild(widget);
+  document.body.appendChild(windowEl);
 
   // Elements
   var chatBtn = document.getElementById('kmChatBtn');
