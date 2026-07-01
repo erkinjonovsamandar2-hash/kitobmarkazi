@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nashriyotlar — Kitobmarkazi</title>
+<meta name="description" content="O'zbekistonning eng yaxshi nashriyotlari va ularning yangi kitoblari.">
+<meta property="og:title" content="Kitobmarkazi - Nashriyotlar">
+
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-ic">K</div>
+      <span>Kitobmarkazi</span>
+    </a>
+    <div class="nav-links">
+      <a href="publishers.html" class="active">Nashriyotlar</a>
+      <a href="wishlist.html" class="nav-icon-link">♥ <span class="nav-badge" id="wishBadge">0</span></a>
+      <a href="cart.html" class="nav-icon-link">🛒 <span class="nav-badge" id="cartBadge">0</span></a>
+    </div>
+  </div>
+</nav>
+
+<main class="main-content">
+  <div class="publishers-hero">
+    <h1>Barcha nashriyotlar</h1>
+    <p>O'zbekistondagi eng sara nashriyotlar va ularning kitoblari bir joyda</p>
+    <div class="pub-stats">
+      <div class="ps-item">
+        <div class="ps-v" id="totalCount">0</div>
+        <div class="ps-l">Hamkor nashriyotlar</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alpha-bar" id="alpha">
+    <!-- Alphabet filter -->
+  </div>
+
+  <div class="publishers-grid" id="grid">
+    <!-- List -->
+  </div>
+
+  <div class="pager" id="pager"></div>
+</main>
+
+<footer class="site-foot">
+  <!-- Reused footer -->
+</footer>
+
+<script src="data.js"></script>
+<script src="cart.js"></script>
+<script>
+var ALL = [];
+var counts = {};
+var PER=20, curPage=1, curLetter='all';
+
+function initPageData(){
+  if (!isKMDataLoaded) return;
+  var allKeys=Object.keys(PUBLISHERS);
+  var firstKey=allKeys.filter(function(k){return PUBLISHERS[k].first})[0];
+  var rest=allKeys.filter(function(k){return !PUBLISHERS[k].first}).sort(function(a,b){return PUBLISHERS[a].name.localeCompare(PUBLISHERS[b].name)});
+  ALL=firstKey ? [firstKey].concat(rest) : rest;
+  
+  document.getElementById('totalCount').textContent=ALL.length;
+
+  counts={};
+  ALL.forEach(function(k){
+    counts[k] = getBooks(k).length;
+  });
+
+  /* Alphabet bar */
+  var letters=['all'].concat('ABCDEFGHIJKLMNOPQRSTUVXYZ'.split(''));
+  var available={};
+  ALL.forEach(function(k){
+    var name = PUBLISHERS[k].name || '';
+    if(name) available[name[0].toUpperCase()]=true;
+  });
+  document.getElementById('alpha').innerHTML=letters.map(function(L){
+    if(L==='all')return '<button class="alpha-btn '+(curLetter==='all'?'on':'')+'" data-l="all" onclick="setLetter(\'all\',this)">Barchasi</button>';
+    var dis=available[L]?'':'disabled';
+    return '<button class="alpha-btn '+(curLetter===L?'on':'')+'" data-l="'+L+'" '+dis+' onclick="setLetter(\''+L+'\',this)">'+L+'</button>';
+  }).join('');
+
+  render();
+}
+
+function filtered(){
+  if(curLetter==='all')return ALL;
+  return ALL.filter(function(k){
+    var name = PUBLISHERS[k].name || '';
+    return name.length > 0 && name[0].toUpperCase()===curLetter;
+  });
+}
+function render(){
+  var list=filtered();
+  var pages=Math.max(1,Math.ceil(list.length/PER));
+  if(curPage>pages)curPage=1;
+  var slice=list.slice((curPage-1)*PER,curPage*PER);
+  if(slice.length===0){document.getElementById('grid').innerHTML='<div class="empty">Bu harf bo\'yicha nashriyot topilmadi</div>';document.getElementById('pager').innerHTML='';return;}
+  document.getElementById('grid').innerHTML=slice.map(function(k){
+    var p=PUBLISHERS[k];
+    return '<a class="pcard" href="publisher.html?pub='+k+'">'+(p.first?'<div class="first-badge">★ TOP</div>':'')+
+      '<div class="pcard-logo">'+pubLogoHTML(p,112)+'</div>'+
+      '<div class="pcard-foot"><div class="pcard-name">'+p.name+'</div><div class="pcard-meta">'+(counts[k]||0)+' ta kitob · 📍 '+p.city+'</div></div></a>';
+  }).join('');
+  /* pager */
+  var ph='';
+  ph+='<button class="page-btn" '+(curPage===1?'disabled':'')+' onclick="goPage('+(curPage-1)+')">‹</button>';
+  for(var i=1;i<=pages;i++)ph+='<button class="page-btn '+(i===curPage?'on':'')+'" onclick="goPage('+i+')">'+i+'</button>';
+  ph+='<button class="page-btn" '+(curPage===pages?'disabled':'')+' onclick="goPage('+(curPage+1)+')">›</button>';
+  document.getElementById('pager').innerHTML=pages>1?ph:'';
+}
+function goPage(n){curPage=n;render();window.scrollTo({top:0,behavior:'smooth'});}
+function setLetter(L,el){curLetter=L;curPage=1;document.querySelectorAll('.alpha-btn').forEach(function(b){b.classList.remove('on')});el.classList.add('on');render();}
+
+if (isKMDataLoaded) initPageData();
+document.addEventListener('kmDataLoaded', initPageData);
+</script>
+<script src="chat-widget.js"></script>
+</body>
+</html>

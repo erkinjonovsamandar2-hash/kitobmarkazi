@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buyurtma — Kitobmarkazi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  body{background:#EAEDEC}
+  .o-hero{background:var(--navy);padding:26px 32px 0;position:relative;overflow:hidden}
+  .o-orb{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(29,158,117,0.16),transparent 70%);top:-160px;right:-50px}
+  .o-hin{max-width:1100px;margin:0 auto;position:relative;z-index:2}
+  .o-htitle{font-family:var(--serif);font-size:28px;font-weight:700;color:#fff;margin-bottom:16px}
+  .o-steps{display:flex;align-items:center;gap:0;padding-bottom:22px;max-width:560px}
+  .os{display:flex;align-items:center;gap:10px;flex-shrink:0}
+  .os-ic{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.5)}
+  .os.done .os-ic{background:var(--teal);color:#fff}
+  .os.active .os-ic{background:var(--gold);color:#3D2A00;box-shadow:0 0 0 5px rgba(232,178,62,0.2)}
+  .os-t{font-size:12.5px;color:rgba(255,255,255,0.5);font-weight:600}
+  .os.done .os-t,.os.active .os-t{color:#fff}
+  .os-conn{flex:1;height:2px;background:rgba(255,255,255,0.12);margin:0 12px;min-width:24px}
+  .os-conn.done{background:var(--teal-l)}
+
+  .o-wrap{max-width:1100px;margin:0 auto;padding:28px 32px 50px;display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start}
+  .o-form{min-width:0}
+  .fcard{background:#fff;border:1px solid #E4E8E7;border-radius:18px;overflow:hidden;margin-bottom:16px;box-shadow:0 1px 2px rgba(16,40,36,0.04),0 6px 20px rgba(16,40,36,0.05)}
+  .fcard-head{display:flex;align-items:center;gap:12px;padding:18px 22px 0}
+  .fcard-n{width:30px;height:30px;border-radius:9px;background:var(--teal);color:#fff;font-family:var(--serif);font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .fcard-t{font-size:15px;font-weight:700;color:var(--ink)}
+  .fcard-body{padding:16px 22px 22px}
+  .field{margin-bottom:14px}.field:last-child{margin-bottom:0}
+  label{display:block;font-size:12px;font-weight:600;color:var(--mid);margin-bottom:6px}
+  input[type=text],input[type=tel],textarea,select{width:100%;padding:12px 14px;border:1.5px solid #DDE3E1;border-radius:11px;font-size:15px;color:var(--ink);background:#F7F9F8;font-family:inherit;transition:all 0.15s;outline:none;appearance:none}
+  input:focus,textarea:focus,select:focus{border-color:var(--teal);background:#fff;box-shadow:0 0 0 3px rgba(29,158,117,0.14)}
+  input::placeholder,textarea::placeholder{color:#B6BCC4}
+  textarea{height:80px;resize:none}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239AA4B0' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+
+  .cour-list{display:flex;flex-direction:column;gap:10px}
+  .cour{display:flex;align-items:center;gap:13px;border:1.5px solid #DDE3E1;border-radius:14px;padding:13px 15px;cursor:pointer;transition:all 0.16s;background:#fff}
+  .cour:hover{border-color:#A9D9C8}.cour.on{border-color:var(--teal);background:#EEFAF5;box-shadow:0 0 0 3px rgba(29,158,117,0.1)}
+  .cour-logo{width:56px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px;flex-shrink:0}
+  .cour-info{flex:1}.cour-name{font-size:14px;font-weight:700;color:var(--ink)}.cour-desc{font-size:11.5px;color:var(--light);margin-top:1px}
+  .cour-price{font-size:13px;font-weight:700;color:var(--ink)}
+  .cour-radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .cour.on .cour-radio{border-color:var(--teal);background:var(--teal)}
+  .cour-dot{width:7px;height:7px;border-radius:50%;background:#fff;opacity:0}.cour.on .cour-dot{opacity:1}
+  .cour-hint{padding:22px;text-align:center;color:var(--mid);font-size:13px;background:#F2F5F4;border:1px dashed #D5DBD9;border-radius:13px}
+  .paytime-label{font-size:12.5px;font-weight:600;color:var(--mid);margin:18px 0 11px}
+  .paytime-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .paytime{display:flex;flex-direction:column;align-items:flex-start;gap:8px;border:1.5px solid #DDE3E1;border-radius:14px;padding:14px;cursor:pointer;transition:all 0.16s;position:relative;background:#fff}
+  .paytime:hover{border-color:#A9D9C8}.paytime.on{border-color:var(--teal);background:#EEFAF5;box-shadow:0 0 0 3px rgba(29,158,117,0.1)}
+  .paytime-ic{font-size:24px}
+  .paytime-t{font-size:13.5px;font-weight:700;color:var(--ink)}
+  .paytime-s{font-size:11px;color:var(--light);line-height:1.4;margin-top:2px}
+  .paytime-radio{position:absolute;top:13px;right:13px;width:19px;height:19px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center}
+  .paytime.on .paytime-radio{border-color:var(--teal);background:var(--teal)}
+  .paytime-dot{width:6px;height:6px;border-radius:50%;background:#fff;opacity:0}.paytime.on .paytime-dot{opacity:1}
+
+
+  .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:0}
+  .pay{border:1.5px solid #DDE3E1;border-radius:14px;padding:22px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.18s;background:#fff;position:relative;min-height:78px}
+  .pay:hover{border-color:#A9D9C8}.pay.on{border-color:var(--teal);background:#EEFAF5;box-shadow:0 0 0 3px rgba(29,158,117,0.1)}
+  .pchk{position:absolute;top:9px;right:9px;width:20px;height:20px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;opacity:0;transform:scale(0.5);transition:all 0.18s}
+  .pay.on .pchk{opacity:1;transform:scale(1)}
+  .play{width:100%;height:40px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .play img{max-height:30px;max-width:80%;object-fit:contain;display:block}
+  .pname{font-size:12px;font-weight:700;color:var(--mid)}.pdesc{font-size:9px;color:var(--light);text-align:center;line-height:1.3}
+  .secure{display:flex;align-items:center;gap:8px;padding:13px 16px;background:#F0F7F0;border:1px solid #D4E8D4;border-radius:12px;font-size:11.5px;color:#2E5A2E;margin-top:14px}
+
+  /* Sticky summary */
+  .o-side{position:sticky;top:90px}
+  .summary{background:#fff;border:1px solid #E4E8E7;border-radius:18px;padding:22px;box-shadow:0 1px 2px rgba(16,40,36,0.04),0 10px 34px rgba(16,40,36,0.08)}
+  .sum-title{font-family:var(--serif);font-size:18px;font-weight:700;margin-bottom:16px}
+  .oitem{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--cream2)}
+  .oitem:last-of-type{border-bottom:none}
+  .oitem-cov{width:40px;height:56px;border-radius:8px;flex-shrink:0;box-shadow:0 4px 10px rgba(13,27,42,0.14)}
+  .oitem-info{flex:1;min-width:0}
+  .oitem-t{font-size:13px;font-weight:700;color:var(--ink);line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .oitem-s{font-size:11px;color:var(--light)}
+  .oitem-q{font-size:11.5px;color:var(--mid);margin-top:2px}
+  .oitem-p{font-size:13px;font-weight:700;color:var(--teal-d);white-space:nowrap}
+  .sum-divider{height:1px;background:var(--cream2);margin:14px 0}
+  .sum-row{display:flex;justify-content:space-between;font-size:13.5px;color:var(--mid);padding:6px 0}
+  .sum-row .v{color:var(--ink);font-weight:600}
+  .sum-total{display:flex;justify-content:space-between;align-items:baseline;padding-top:8px;margin-top:4px;border-top:2px solid var(--cream2)}
+  .sum-total .l{font-size:15px;font-weight:700}
+  .sum-total .v{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--teal-d)}
+  .submit{width:100%;padding:15px;background:var(--teal);color:#fff;border:none;border-radius:13px;font-size:15.5px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:18px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.15s}
+  .submit:hover{background:var(--teal-d);transform:translateY(-1px)}
+  .snote{font-size:11px;color:var(--light);text-align:center;margin-top:12px;line-height:1.5}
+
+  /* Success */
+  #success{display:none;max-width:560px;margin:0 auto;padding:46px 24px 60px;text-align:center}
+  .sring{width:84px;height:84px;border-radius:50%;background:#EAF3DE;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:38px}
+  .obadge{display:inline-block;background:#EAF3DE;color:#1B5E20;font-family:var(--serif);font-size:15px;font-weight:700;padding:7px 20px;border-radius:20px;margin-bottom:18px}
+  .stit{font-family:var(--serif);font-size:26px;font-weight:700;margin-bottom:10px}
+  .ssub{font-size:14px;color:var(--mid);line-height:1.7;margin-bottom:8px}
+  .sdetail{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:18px 22px;margin:22px 0 26px;text-align:left}
+  .sdr{display:flex;justify-content:space-between;font-size:13.5px;padding:8px 0;border-bottom:1px solid var(--cream2);gap:12px}
+  .sdr:last-child{border:none;font-weight:700;font-size:15px;color:var(--teal-d);padding-top:11px}
+  .sdl{color:var(--mid);flex-shrink:0}.sdv{text-align:right;font-weight:600;color:var(--ink)}
+  .sact{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+  @media(max-width:860px){.o-wrap{grid-template-columns:1fr}.o-side{position:static}}
+  @media(max-width:600px){.o-hero{padding:20px 16px 0}.o-wrap{padding:20px 16px 40px}.frow{grid-template-columns:1fr}.pgrid{grid-template-columns:1fr}.paytime-grid{grid-template-columns:1fr}.os-t{display:none}.os-conn{margin:0 8px}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="cart.html" class="nav-back">‹ Savatcha</a>
+  <a href="index.html" class="brand" style="margin-left:14px"><img src="images/logo-main.png" alt="Kitobmarkazi"><span class="bname">KITOB<span>MARKAZI</span></span></a>
+  <a href="wishlist.html" class="wish-link" style="margin-left:auto">♥<span class="wish-count"></span></a>
+  <a href="cart.html" class="cart-link" style="margin-left:8px">🛒<span class="cart-count"></span></a>
+</nav>
+
+<div class="o-hero"><div class="o-orb"></div><div class="o-hin">
+  <div class="o-htitle">Buyurtmani rasmiylashtirish</div>
+  <div class="o-steps">
+    <div class="os done"><div class="os-ic">✓</div><div class="os-t">Savatcha</div></div>
+    <div class="os-conn done"></div>
+    <div class="os done"><div class="os-ic">✓</div><div class="os-t">Kitoblar</div></div>
+    <div class="os-conn done"></div>
+    <div class="os active"><div class="os-ic">3</div><div class="os-t">Buyurtma</div></div>
+  </div>
+</div></div>
+
+<div class="o-wrap" id="formWrap">
+  <div class="o-form">
+    <div class="fcard">
+      <div class="fcard-head"><div class="fcard-n">1</div><div class="fcard-t">Buyurtmachi ma'lumotlari</div></div>
+      <div class="fcard-body">
+        <div class="frow">
+          <div class="field"><label>Ism *</label><input type="text" id="fname" placeholder="Alisher"></div>
+          <div class="field"><label>Familiya</label><input type="text" id="lname" placeholder="Umarov"></div>
+        </div>
+        <div class="field"><label>Telefon *</label><input type="tel" id="phone" placeholder="+998 90 123 45 67"></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fcard-head"><div class="fcard-n">2</div><div class="fcard-t">Yetkazib berish manzili</div></div>
+      <div class="fcard-body">
+        <div class="frow">
+          <div class="field"><label>Shahar / Viloyat *</label>
+            <select id="city" onchange="onRegionChange()"><option value="">Tanlang...</option>
+              <option>Toshkent shahri</option><option>Toshkent viloyati</option><option>Samarqand</option>
+              <option>Buxoro</option><option>Namangan</option><option>Andijon</option><option>Farg'ona</option>
+              <option>Qashqadaryo</option><option>Surxondaryo</option><option>Xorazm</option><option>Navoiy</option>
+              <option>Jizzax</option><option>Sirdaryo</option><option>Qoraqalpog'iston</option>
+            </select>
+          </div>
+          <div class="field"><label>Tuman *</label>
+            <select id="tuman" onchange="renderCouriers()" disabled><option value="">Avval viloyat...</option></select>
+          </div>
+        </div>
+        <div class="field"><label>Aniq manzil *</label><textarea id="addr" placeholder="Ko'cha, uy/kvartira raqami, mo'ljal..."></textarea></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fcard-head"><div class="fcard-n">3</div><div class="fcard-t">Yetkazib berish xizmati</div></div>
+      <div class="fcard-body">
+        <div class="cour-list" id="courList"><div class="cour-hint">Avval viloyat va tumanni tanlang — hududingizdagi kuryerlar ko'rsatiladi</div></div>
+        <div id="payTimeBlock" style="display:none">
+          <div class="paytime-label">Yetkazib berish narxini qanday to'laysiz?</div>
+          <div class="paytime-grid">
+            <div class="paytime" id="pt-prepaid" onclick="selPayTime('prepaid')">
+              <div class="paytime-ic">💳</div>
+              <div class="paytime-tx"><div class="paytime-t">Oldindan to'lash</div><div class="paytime-s">Kitob narxi bilan birga hozir to'laysiz</div></div>
+              <div class="paytime-radio"><div class="paytime-dot"></div></div>
+            </div>
+            <div class="paytime" id="pt-ondelivery" onclick="selPayTime('ondelivery')">
+              <div class="paytime-ic">📦</div>
+              <div class="paytime-tx"><div class="paytime-t">Yetkazilganda to'lash</div><div class="paytime-s">Kuryer punktida mustaqil to'laysiz</div></div>
+              <div class="paytime-radio"><div class="paytime-dot"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fcard-head"><div class="fcard-n">4</div><div class="fcard-t">To'lov usuli</div></div>
+      <div class="fcard-body">
+        <div class="pgrid">
+          <div class="pay" id="p-payme" onclick="selPay('payme')"><div class="pchk">✓</div>
+            <div class="play"><img src="images/pay/payme.png" alt="Payme"></div>
+          </div>
+          <div class="pay" id="p-click" onclick="selPay('click')"><div class="pchk">✓</div>
+            <div class="play"><img src="images/pay/click.png" alt="Click"></div>
+          </div>
+          <div class="pay" id="p-uzum" onclick="selPay('uzum')"><div class="pchk">✓</div>
+            <div class="play"><img src="images/pay/uzum.png" alt="Uzum"></div>
+          </div>
+        </div>
+        <div class="secure">🔒 Barcha onlayn to'lovlar SSL orqali himoyalangan · PCI DSS sertifikatlangan</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="o-side">
+    <div class="summary">
+      <div class="sum-title">Buyurtmangiz</div>
+      <div id="oItems"></div>
+      <div class="sum-divider"></div>
+      <div class="sum-row"><span>Kitoblar</span><span class="v" id="sumCount"></span></div>
+      <div class="sum-row"><span>Yetkazib berish</span><span class="v" id="sumDelivery">—</span></div>
+      
+      <!-- Promo Code -->
+      <div id="promoWrap" style="margin-top:10px">
+        <div style="display:flex;gap:6px">
+          <input type="text" id="promoCode" placeholder="Promokod..." style="height:38px;font-size:13px;padding:0 12px;border:2px solid #eee;border-radius:10px">
+          <button onclick="applyPromo()" style="height:38px;padding:0 12px;background:#f3f4f6;border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer">Qo'llash</button>
+        </div>
+        <div id="promoMsg" style="font-size:11px;margin-top:4px"></div>
+      </div>
+
+      <div class="sum-total"><span class="l">Jami</span><span class="v" id="sumTotal"></span></div>
+
+      <button class="submit" onclick="submitOrder()">🔒 <span id="btnTxt">Buyurtma berish</span></button>
+      <p class="snote">Buyurtma qabul qilingach operator siz bilan bog'lanadi.<br>Bepul bekor qilish imkoni bor.</p>
+    </div>
+  </div>
+</div>
+
+<div id="success">
+  <div class="sring">✓</div>
+  <div class="obadge" id="orderNum">#UZ-0000</div>
+  <div class="stit">Buyurtma qabul qilindi!</div>
+  <p class="ssub">Tez orada operatorimiz siz bilan bog'lanadi<br>va ko'rsatilgan manzilga yetkazib beramiz.</p>
+  <div class="sdetail" id="sDetail"></div>
+  <div class="sact">
+    <a href="index.html" class="btn btn-teal" style="font-size:14px;padding:12px 22px">🏠 Bosh sahifa</a>
+    <a href="publishers.html" class="btn btn-ghost" style="font-size:14px">📚 Yana kitob</a>
+  </div>
+</div>
+
+<footer class="site-foot">
+  <div class="sf-pat"></div>
+  <div class="site-foot-top">
+    <div class="sf-brand-col">
+      <div class="sf-brand"><img src="images/logo-main.png" alt="Kitobmarkazi"><span class="sf-bn">KITOB<span>MARKAZI</span></span></div>
+      <p class="sf-about">O'zbekistonning yetakchi nashriyotlarini bitta platformaga birlashtiruvchi kitob savdo maydoni. Qidiring, buyurtma bering — eshigingizgacha yetkazamiz.</p>
+      <div class="sf-pays">
+        <span class="sf-pay"><img src="images/pay/payme.png" alt="Payme"></span>
+        <span class="sf-pay"><img src="images/pay/click.png" alt="Click"></span>
+        <span class="sf-pay"><img src="images/pay/uzum.png" alt="Uzum"></span>
+      </div>
+    </div>
+    <div class="sf-col">
+      <h4>Yordam</h4>
+      <a href="track.html">Buyurtmani kuzatish</a>
+      <a href="faq.html">Savol-javob</a>
+      <a href="contact.html">Biz bilan aloqa</a>
+      <a href="terms.html">Foydalanish shartlari</a>
+      <a href="offer.html">Ommaviy oferta</a>
+    </div>
+    <div class="sf-col">
+      <h4>Aloqa</h4>
+      <div class="sf-contact-item"><span class="ic">📞</span><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
+      <div class="sf-contact-item"><span class="ic">✉️</span><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
+      <div class="sf-contact-item"><span class="ic">📍</span><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
+    </div>
+  </div>
+  <div class="site-foot-bot"><div class="sf-bot-in">
+    <span class="sf-copy">© 2025 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
+    <span class="sf-tag">Uzbek Books. One Platform.</span>
+  </div></div>
+</footer>
+
+<script src="data.js"></script>
+<script src="cart.js"></script>
+<script>
+var items=cartItemsDetailed();
+var payMethod='', courier='', payTime='';
+var payNames={payme:'Payme',click:'Click',uzum:'Uzum (bo\'lib to\'lash)'};
+
+function initPageData(){
+  if (!isKMDataLoaded) return;
+  items=cartItemsDetailed();
+  if(items.length===0){
+    document.getElementById('formWrap').innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px 20px"><div style="font-size:56px;margin-bottom:14px">🛒</div><h2 style="font-family:var(--serif);font-size:23px;margin-bottom:10px">Savatcha bo\'sh</h2><p style="color:var(--mid);margin-bottom:22px">Buyurtma berish uchun avval kitob tanlang</p><a class="btn btn-teal" href="publishers.html">📚 Nashriyotlarni ko\'rish</a></div>';
+  } else { renderItems(); }
+}
+
+function renderItems(){
+  var html='';
+  items.forEach(function(it){
+    var b=it.book;
+    html+='<div class="oitem">'+
+      '<div class="oitem-cov cover-sm" style="background:'+b.color+';position:relative;overflow:hidden">'+coverHTML(b,it.pub)+'</div>'+
+      '<div class="oitem-info"><div class="oitem-t">'+b.title+'</div><div class="oitem-s">'+it.pub.name+'</div><div class="oitem-q">'+it.qty+' x '+money(b.price)+'</div></div>'+
+      '<div class="oitem-p">'+money(it.sum)+'</div></div>';
+  });
+  document.getElementById('oItems').innerHTML=html;
+  document.getElementById('sumCount').textContent=cartCount()+' ta';
+  document.getElementById('sumTotal').textContent=money(cartTotal());
+}
+
+function onRegionChange(){
+  var region=document.getElementById('city').value;
+  var tsel=document.getElementById('tuman');
+  if(!region){ tsel.disabled=true; tsel.innerHTML='<option value="">Avval viloyat...</option>'; renderCouriers(); return; }
+  var ts=tumansFor(region);
+  tsel.disabled=false;
+  tsel.innerHTML='<option value="">Tumanni tanlang...</option>'+ts.map(function(t){return '<option>'+t+'</option>';}).join('');
+  renderCouriers();
+}
+function renderCouriers(){
+  courier='';
+  var region=document.getElementById('city').value;
+  var tuman=document.getElementById('tuman').value;
+  var box=document.getElementById('courList');
+  document.getElementById('sumDelivery').textContent='—';
+  payTime='';
+  document.getElementById('pt-prepaid').classList.remove('on');
+  document.getElementById('pt-ondelivery').classList.remove('on');
+  if(!region||!tuman){box.innerHTML='<div class="cour-hint">Avval viloyat va tumanni tanlang — hududingizdagi kuryerlar ko\'rsatiladi</div>';document.getElementById('payTimeBlock').style.display='none';return;}
+  var avail=couriersFor(region,tuman);
+  document.getElementById('payTimeBlock').style.display = avail.length ? 'block' : 'none';
+  box.innerHTML=avail.map(function(ck){
+    var c=COURIERS[ck];
+    return '<div class="cour" id="c-'+ck+'" onclick="selCour(\''+ck+'\')">'+
+      '<div class="cour-logo" style="background:'+c.color+'">'+c.name+'</div>'+
+      '<div class="cour-info"><div class="cour-name">'+c.name+'</div><div class="cour-desc">'+c.desc+'</div></div>'+
+      '<div class="cour-price">'+c.price+'</div>'+
+      '<div class="cour-radio"><div class="cour-dot"></div></div></div>';
+  }).join('') + '<div style="font-size:11px;color:var(--light);padding:6px 2px 0">📍 '+tuman+', '+region+' — '+avail.length+' ta kuryer xizmati mavjud</div>';
+}
+function courierFee(ck){var d=(COURIERS[ck].price||'').replace(/[^0-9]/g,'');return parseInt(d||'0',10);}
+function selCour(ck){courier=ck;document.querySelectorAll('.cour').forEach(function(e){e.classList.remove('on')});document.getElementById('c-'+ck).classList.add('on');document.getElementById('payTimeBlock').style.display='block';updateSummary();}
+function selPayTime(t){
+  if(!courier){ alert('Avval yetkazib berish xizmatini tanlang'); return; }
+  payTime=t;
+  document.getElementById('pt-prepaid').classList.toggle('on',t==='prepaid');
+  document.getElementById('pt-ondelivery').classList.toggle('on',t==='ondelivery');
+  updateSummary();
+}
+function updateSummary(){
+  var goods=cartTotal();
+  var fee=courier?courierFee(courier):0;
+  var disc = activePromo ? activePromo.discount : 0;
+  
+  if(!courier){
+    document.getElementById('sumDelivery').textContent='—';
+    document.getElementById('sumTotal').textContent=money(goods - disc);
+    return;
+  }
+  var c=COURIERS[courier];
+  if(payTime==='ondelivery'){
+    document.getElementById('sumDelivery').innerHTML=c.name+' · <span style="color:var(--mid)">yetkazilganda</span>';
+    document.getElementById('sumTotal').textContent=money(goods - disc);
+  } else if(payTime==='prepaid'){
+    document.getElementById('sumDelivery').textContent=c.name+' · '+money(fee);
+    document.getElementById('sumTotal').textContent=money(goods + fee - disc);
+  } else {
+    document.getElementById('sumDelivery').textContent=c.name+' · '+c.price;
+    document.getElementById('sumTotal').textContent=money(goods - disc);
+  }
+}
+
+function selPay(m){payMethod=m;['payme','click','uzum'].forEach(function(id){document.getElementById('p-'+id).classList.toggle('on',id===m)});document.getElementById('btnTxt').textContent='Buyurtma berish — '+payNames[m];}
+
+var activePromo = null;
+function applyPromo() {
+  var code = document.getElementById('promoCode').value.trim();
+  if (!code) return;
+  
+  var msg = document.getElementById('promoMsg');
+  msg.textContent = 'Tekshirilmoqda...';
+  msg.style.color = '#999';
+
+  fetch('/api/promos/validate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: code, subtotal: cartTotal() })
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.valid) {
+      activePromo = { code: code, discount: data.discount };
+      msg.textContent = '✓ ' + data.message;
+      msg.style.color = '#1D9E75';
+      updateSummary();
+    } else {
+      activePromo = null;
+      msg.textContent = '✕ ' + data.message;
+      msg.style.color = '#E2556F';
+      updateSummary();
+    }
+  })
+  .catch(() => {
+    msg.textContent = '✕ Tarmoq xatoligi';
+    msg.style.color = '#E2556F';
+  });
+}
+
+
+function submitOrder(){
+  var f=document.getElementById('fname').value.trim();
+  var p=document.getElementById('phone').value.trim();
+  var c=document.getElementById('city').value;
+  var t=document.getElementById('tuman').value;
+  var a=document.getElementById('addr').value.trim();
+  var errs=[];if(!f)errs.push('Ism');if(!p)errs.push('Telefon');if(!c)errs.push('Shahar');if(!t)errs.push('Tuman');if(!a)errs.push('Manzil');if(!courier)errs.push('Kuryer xizmati');if(!payTime)errs.push('Yetkazib berish to\'lovi');if(!payMethod)errs.push('To\'lov usuli');
+  if(errs.length){alert('Iltimos to\'ldiring: '+errs.join(', '));return;}
+  
+  var btn = document.querySelector('.submit');
+  btn.disabled = true;
+  btn.style.opacity = '0.7';
+  btn.textContent = 'Buyurtma yuborilmoqda...';
+
+  var orderData = {
+    customerName: f,
+    customerPhone: p,
+    region: c,
+    tuman: t,
+    address: a,
+    courierSlug: courier,
+    payTime: payTime,
+    payMethod: payMethod,
+    promoCode: activePromo ? activePromo.code : null,
+    items: items.map(function(it){ return { pubKey: it.pubKey, bookId: it.bookId, qty: it.qty }; })
+  };
+
+
+  fetch('/api/orders', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(orderData)
+  })
+  .then(function(r) { return r.json().then(function(data) { return { ok: r.ok, status: r.status, data: data }; }); })
+  .then(function(res) {
+    if (!res.ok) {
+      alert('Xatolik: ' + (res.data.error || 'Buyurtma yuborishda xatolik yuz berdi'));
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.textContent = 'Buyurtma berish — ' + payNames[payMethod];
+      return;
+    }
+    
+    var data = res.data;
+    var num = data.orderNumber;
+    var prepaid = (payTime === 'prepaid');
+    var fee = data.deliveryFee || courierFee(courier);
+    var grand = data.total;
+
+    var det='<div class="sdr"><span class="sdl">Buyurtma</span><span class="sdv">'+cartCount()+' ta kitob</span></div>'+
+      '<div class="sdr"><span class="sdl">Manzil</span><span class="sdv">'+t+', '+c+'</span></div>'+
+      '<div class="sdr"><span class="sdl">Kuryer</span><span class="sdv">'+COURIERS[courier].name+'</span></div>'+
+      '<div class="sdr"><span class="sdl">Yetkazish to\'lovi</span><span class="sdv">'+(prepaid?('Oldindan · '+money(fee)):'Yetkazilganda')+'</span></div>'+
+      '<div class="sdr"><span class="sdl">To\'lov usuli</span><span class="sdv">'+payNames[payMethod]+'</span></div>'+
+      '<div class="sdr"><span class="sdl">Jami'+(prepaid?' (yetkazish bilan)':'')+'</span><span class="sdv">'+money(grand)+'</span></div>';
+    
+    document.getElementById('sDetail').innerHTML=det;
+    document.getElementById('orderNum').textContent=num;
+    
+    // Add dynamic link for tracking
+    var successDiv = document.getElementById('success');
+    var actDiv = successDiv.querySelector('.sact');
+    var oldLink = document.getElementById('trackBtn');
+    if (oldLink) oldLink.remove();
+    
+    var trackBtn = document.createElement('a');
+    trackBtn.id = 'trackBtn';
+    trackBtn.href = 'track.html?order=' + num;
+    trackBtn.className = 'btn btn-teal';
+    trackBtn.style.fontSize = '14px';
+    trackBtn.style.padding = '12px 22px';
+    trackBtn.textContent = '🔍 Buyurtmani kuzatish';
+    actDiv.insertBefore(trackBtn, actDiv.firstChild);
+
+    clearCart();
+    document.getElementById('formWrap').style.display='none';
+    document.getElementById('success').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  })
+  .catch(function(err) {
+    console.error(err);
+    alert('Tarmoq xatoligi buyurtma yuborishda');
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.textContent = 'Buyurtma berish — ' + payNames[payMethod];
+  });
+}
+
+if (isKMDataLoaded) initPageData();
+document.addEventListener('kmDataLoaded', initPageData);
+
+</script>
+<script src="chat-widget.js"></script>
+</body>
+</html>

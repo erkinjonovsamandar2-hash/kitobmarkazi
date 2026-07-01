@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Kitobmarkazi</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div id="app">
+  <!-- Login -->
+  <div id="loginPage" class="login-page">
+    <div class="login-card">
+      <div class="login-logo">📚</div>
+      <h1>Kitobmarkazi Admin</h1>
+      <p class="login-sub">Boshqaruv paneliga kirish</p>
+      <div class="field"><label>Login</label><input type="text" id="loginUser" placeholder="admin" value="admin"></div>
+      <div class="field"><label>Parol</label><input type="password" id="loginPass" placeholder="••••••" value="admin123"></div>
+      <button class="btn-primary" onclick="doLogin()">Kirish →</button>
+      <div id="loginErr" class="login-err"></div>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard" style="display:none">
+    <nav class="sidebar">
+      <div class="sb-brand">📚 <span>ADMIN</span></div>
+      <a class="sb-link on" data-page="overview" onclick="showPage('overview',this)">📊 Umumiy</a>
+      <a class="sb-link" data-page="orders" onclick="showPage('orders',this)">🛒 Buyurtmalar</a>
+      <a class="sb-link" data-page="books" onclick="showPage('books',this)">📖 Kitoblar</a>
+      <a class="sb-link" data-page="publishers" onclick="showPage('publishers',this)">🏢 Nashriyotlar</a>
+      <a class="sb-link" data-page="reviews" onclick="showPage('reviews',this)">💬 Fikrlar</a>
+
+      <a class="sb-link" data-page="promos" onclick="showPage('promos',this)">🎁 Promokodlar</a>
+      <a class="sb-link" data-page="coming" onclick="showPage('coming',this)">⏳ Tez kunda</a>
+      <a class="sb-link" data-page="settings" onclick="showPage('settings',this)">⚙️ Sozlamalar</a>
+
+      <div class="sb-foot">
+        <a href="/" target="_blank">🌐 Saytga o'tish</a>
+        <a onclick="logout()">🚪 Chiqish</a>
+      </div>
+    </nav>
+    <main class="main">
+      <div class="topbar">
+        <h2 id="pageTitle">Umumiy ko'rinish</h2>
+        <span class="topbar-user" id="topUser">Admin</span>
+      </div>
+      <div class="content" id="content"></div>
+    </main>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nashriyot — Kitobmarkazi</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-ic">K</div>
+      <span>Kitobmarkazi</span>
+    </a>
+    <div class="nav-search">
+      <input type="text" placeholder="Kitoblar, mualliflar, nashriyotlar..." id="pubSearch">
+      <button>🔍</button>
+    </div>
+    <div class="nav-links">
+      <a href="publishers.html">Nashriyotlar</a>
+      <a href="wishlist.html" class="nav-icon-link">♥ <span class="nav-badge" id="wishBadge">0</span></a>
+      <a href="cart.html" class="nav-icon-link">🛒 <span class="nav-badge" id="cartBadge">0</span></a>
+    </div>
+  </div>
+</nav>
+
+<main class="main-content">
+  <header class="pub-header">
+    <div class="ph-bg"></div>
+    <div class="ph-in">
+      <div class="ph-left">
+        <div class="ph-av" id="pubAv"></div>
+        <div class="ph-info">
+          <h1 id="pubName">...</h1>
+          <p id="pubDesc">...</p>
+          <div class="ph-badges" id="pubBadges"></div>
+        </div>
+      </div>
+      <div class="ph-right">
+        <div class="ph-stat">
+          <div class="ps-val">4.9</div>
+          <div class="ps-lbl">Reyting</div>
+        </div>
+        <button class="ph-follow">Kuzatish</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="pub-body">
+    <div class="pb-filter">
+      <div class="f-left">
+        <button class="fpill on" onclick="filt('all',this)">Barchasi</button>
+        <button class="fpill" onclick="filt('top',this)">🔥 Top</button>
+        <button class="fpill" onclick="filt('new',this)">✨ Yangi</button>
+        <button class="fpill" onclick="filt('cheap',this)">💰 Arzon</button>
+        <button class="fpill" onclick="filt('rating',this)">⭐ Reyting</button>
+      </div>
+      <div class="f-right" id="fcount">0 ta kitob</div>
+    </div>
+
+    <div class="books-grid" id="booksGrid">
+      <!-- Books will be loaded here -->
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <!-- Reused footer from index.html -->
+</footer>
+
+<script src="data.js"></script>
+<script src="cart.js"></script>
+<script>
+var params=new URLSearchParams(location.search);
+var pubKey=params.get('pub')||'booktopia';
+var allBooks=[];
+var curMode='all', curSearch='';
+
+function initPageData(){
+  if (!isKMDataLoaded) return;
+  var pub=PUBLISHERS[pubKey]||PUBLISHERS['booktopia'];
+  if(!pub) return;
+  allBooks=getBooks(pubKey);
+
+  document.title=pub.name+' — Kitobmarkazi';
+  document.getElementById('pubName').textContent=pub.name;
+  document.getElementById('pubDesc').textContent=pub.desc;
+  document.getElementById('pubAv').innerHTML=pubLogoHTML(pub,60);
+  document.getElementById('pubBadges').innerHTML=
+    '<span class="pbadge gold">⭐ Top nashriyot</span><span class="pbadge">'+(pub.founded||2020)+' yildan</span>'+
+    '<span class="pbadge">📍 '+(pub.city||'Toshkent')+'</span><span class="pbadge">'+allBooks.length+' ta kitob</span>';
+
+  render();
+}
+
+function currentList(){
+  var list=allBooks.slice();
+  if(curSearch){var q=curSearch.toLowerCase();list=list.filter(function(b){return b.title.toLowerCase().indexOf(q)!==-1||b.author.toLowerCase().indexOf(q)!==-1;});}
+  if(curMode==='top')list=list.filter(function(b){return b.top});
+  else if(curMode==='cheap')list.sort(function(a,b){return a.price-b.price});
+  else if(curMode==='rating')list.sort(function(a,b){return b.rating-a.rating});
+  else if(curMode==='new')list.sort(function(a,b){return b.year-a.year});
+  return list;
+}
+function render(){
+  var list=currentList();
+  document.getElementById('fcount').textContent=list.length+' ta kitob';
+  if(list.length===0){document.getElementById('booksGrid').innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--light)">Hech narsa topilmadi</div>';return;}
+  document.getElementById('booksGrid').innerHTML=list.map(function(b){
+    return bookCardHTML(pubKey,b);
+  }).join('');
+}
+function filt(mode,el){curMode=mode;document.querySelectorAll('.fpill').forEach(function(p){p.classList.remove('on')});el.classList.add('on');render();}
+document.getElementById('pubSearch').addEventListener('input',function(){curSearch=this.value.trim();render();});
+
+if (isKMDataLoaded) initPageData();
+document.addEventListener('kmDataLoaded', initPageData);
+</script>
+<script src="chat-widget.js"></script>
+</body>
+</html>

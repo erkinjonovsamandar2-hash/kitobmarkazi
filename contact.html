@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biz bilan aloqa — Kitobmarkazi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .info-hero{background:var(--grad-navy);padding:48px 32px;position:relative;overflow:hidden;text-align:center;box-shadow:0 1px 0 rgba(217,169,62,0.2)}
+  .info-hero::before{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(217,169,62,0.5),transparent)}
+  .info-orb{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(29,158,117,0.16),transparent 70%);top:-180px;left:50%;transform:translateX(-50%)}
+  .info-hin{position:relative;z-index:2;max-width:640px;margin:0 auto}
+  .info-tag{display:inline-block;background:rgba(29,158,117,0.16);color:var(--teal-l);font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:6px 14px;border-radius:20px;border:1px solid rgba(29,158,117,0.3);margin-bottom:14px}
+  .info-hero h1{font-family:var(--serif);font-size:36px;font-weight:900;color:#fff;letter-spacing:-0.02em;margin-bottom:10px}
+  .info-hero p{font-size:15px;color:rgba(255,255,255,0.6);line-height:1.6}
+  .info-wrap{max-width:780px;margin:0 auto;padding:36px 32px 20px}
+  .info-card{background:var(--white);border:1px solid #EAE4D7;border-radius:18px;padding:28px 30px;margin-bottom:18px;box-shadow:var(--sh-md)}
+  .info-card h2{font-family:var(--serif);font-size:21px;font-weight:700;color:var(--ink);margin-bottom:14px}
+  .info-card h3{font-size:15px;font-weight:700;color:var(--ink);margin:18px 0 7px}
+  .info-card p{font-size:14.5px;color:var(--mid);line-height:1.75;margin-bottom:12px}
+  .info-card ul{margin:0 0 12px 0;padding-left:20px}
+  .info-card li{font-size:14.5px;color:var(--mid);line-height:1.7;margin-bottom:7px}
+  .faq-item{border:1px solid var(--border);border-radius:14px;margin-bottom:11px;overflow:hidden;background:var(--white)}
+  .faq-q{padding:17px 20px;font-size:15px;font-weight:700;color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .faq-q:hover{background:var(--cream)}
+  .faq-q .chev{color:var(--teal);font-size:18px;transition:transform 0.2s;flex-shrink:0}
+  .faq-item.open .chev{transform:rotate(180deg)}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height 0.25s ease;padding:0 20px}
+  .faq-item.open .faq-a{max-height:300px;padding:0 20px 18px}
+  .faq-a p{font-size:14px;color:var(--mid);line-height:1.7;margin:0}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+  .contact-box{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:22px;text-align:center}
+  .contact-box .cic{font-size:30px;margin-bottom:10px}
+  .contact-box .ct{font-size:13px;color:var(--light);margin-bottom:5px}
+  .contact-box .cv{font-size:16px;font-weight:700;color:var(--ink)}
+  .contact-box .cv a{color:var(--teal-d)}
+  @media(max-width:600px){.info-hero{padding:30px 16px}.info-hero h1{font-size:28px}.info-wrap{padding:24px 16px 12px}.info-card{padding:22px 20px}.contact-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="brand"><img src="images/logo-main.png" alt="Kitobmarkazi"><span class="bname">KITOB<span>MARKAZI</span></span></a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Bosh sahifa</a>
+    <a href="publishers.html" class="nav-link">Nashriyotlar</a>
+    <a href="search.html" class="nav-link">Kitoblar</a>
+    <a href="track.html" class="nav-link">Kuzatish</a>
+    <a href="about.html" class="nav-link">Biz haqimizda</a>
+  </div>
+  <a href="wishlist.html" class="wish-link" style="margin-left:8px">♥<span class="wish-count"></span></a>
+  <a href="cart.html" class="cart-link">🛒<span class="cart-count"></span></a>
+</nav>
+<section class="info-hero"><div class="info-orb"></div><div class="info-hin">
+  <div class="info-tag">📞 Aloqa</div>
+  <h1>Biz bilan aloqa</h1>
+  <p>Savollaringiz bormi? Biz har doim yordam berishga tayyormiz</p>
+</div></section>
+<div class="info-wrap">
+<div class="contact-grid">
+  <div class="contact-box"><div class="cic">📞</div><div class="ct">Ishonch telefoni</div><div class="cv"><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
+  <div class="contact-box"><div class="cic">✉️</div><div class="ct">Email</div><div class="cv"><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
+  <div class="contact-box"><div class="cic">✈️</div><div class="ct">Telegram</div><div class="cv"><a href="#">@kitobmarkazi</a></div></div>
+  <div class="contact-box"><div class="cic">🕐</div><div class="ct">Ish vaqti</div><div class="cv">Har kuni 9:00–21:00</div></div>
+</div>
+<div class="info-card">
+  <h2>Xabar yuboring</h2>
+  <p style="margin-bottom:20px">Bizga yozing, tez orada siz bilan bog'lanamiz.</p>
+  <div class="field"><label>Ismingiz *</label><input type="text" id="cName" placeholder="Alisher"></div>
+  <div class="frow" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+    <div class="field"><label>Telefon *</label><input type="tel" id="cPhone" placeholder="+998 90 123 45 67"></div>
+    <div class="field"><label>Mavzu</label><select id="cSub"><option>Buyurtma holati</option><option>Hamkorlik</option><option>Taklif/Shikoyat</option><option>Boshqa</option></select></div>
+  </div>
+  <div class="field"><label>Xabaringiz *</label><textarea id="cMsg" rows="4" placeholder="Xabaringiz matnini yozing..."></textarea></div>
+  <button class="btn btn-teal" style="width:100%;padding:14px" onclick="sendContact()">Yuborish</button>
+</div>
+
+<div class="info-card">
+  <h2>Manzilimiz</h2>
+  <p>📍 Toshkent shahri, Amir Temur ko'chasi, 1-uy.</p>
+  <p>Savol, taklif yoki shikoyatlaringiz bo'lsa — yuqoridagi raqamlar yoki email orqali murojaat qiling. Ish kunlari 24 soat ichida javob beramiz.</p>
+  <h3>Hamkorlik</h3>
+  <p>Nashriyot bo'lsangiz va platformada kitoblaringizni sotmoqchi bo'lsangiz, <a href="mailto:info@kitobmarkazi.uz" style="color:var(--teal-d);font-weight:600">info@kitobmarkazi.uz</a> manziliga yozing.</p>
+</div>
+
+</div>
+<footer class="site-foot">
+  <div class="sf-pat"></div>
+  <div class="site-foot-top">
+    <div class="sf-brand-col">
+      <div class="sf-brand"><img src="images/logo-main.png" alt="Kitobmarkazi"><span class="sf-bn">KITOB<span>MARKAZI</span></span></div>
+      <p class="sf-about">O'zbekistonning yetakchi nashriyotlarini bitta platformaga birlashtiruvchi kitob savdo maydoni. Qidiring, buyurtma bering — eshigingizgacha yetkazamiz.</p>
+      <div class="sf-pays">
+        <span class="sf-pay"><img src="images/pay/payme.png" alt="Payme"></span>
+        <span class="sf-pay"><img src="images/pay/click.png" alt="Click"></span>
+        <span class="sf-pay"><img src="images/pay/uzum.png" alt="Uzum"></span>
+      </div>
+    </div>
+    <div class="sf-col">
+      <h4>Yordam</h4>
+      <a href="track.html">Buyurtmani kuzatish</a>
+      <a href="faq.html">Savol-javob</a>
+      <a href="contact.html">Biz bilan aloqa</a>
+      <a href="terms.html">Foydalanish shartlari</a>
+      <a href="offer.html">Ommaviy oferta</a>
+    </div>
+    <div class="sf-col">
+      <h4>Aloqa</h4>
+      <div class="sf-contact-item"><span class="ic">📞</span><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
+      <div class="sf-contact-item"><span class="ic">✉️</span><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
+      <div class="sf-contact-item"><span class="ic">📍</span><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
+    </div>
+  </div>
+  <div class="site-foot-bot"><div class="sf-bot-in">
+    <span class="sf-copy">© 2025 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
+    <span class="sf-tag">Uzbek Books. One Platform.</span>
+  </div></div>
+</footer>
+<script src="data.js"></script>
+<script src="cart.js"></script>
+<script src="chat-widget.js"></script>
+<script>
+document.querySelectorAll('.faq-q').forEach(function(q){q.addEventListener('click',function(){q.parentElement.classList.toggle('open');});});
+
+function sendContact(){
+  var name = document.getElementById('cName').value.trim();
+  var phone = document.getElementById('cPhone').value.trim();
+  var msg = document.getElementById('cMsg').value.trim();
+  if(!name || !phone || !msg){ alert('Iltimos barcha maydonlarni to\'ldiring'); return; }
+  
+  toast('Xabaringiz yuborildi! Tez orada bog\'lanamiz.');
+  document.getElementById('cName').value = '';
+  document.getElementById('cPhone').value = '';
+  document.getElementById('cMsg').value = '';
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sevimlilar — Kitobmarkazi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .w-wrap{max-width:1100px;margin:0 auto;padding:30px 32px 50px}
+  .w-h{font-family:var(--serif);font-size:30px;font-weight:700;margin-bottom:6px}
+  .w-sub{font-size:14px;color:var(--mid);margin-bottom:24px}
+  .books-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .book{background:var(--white);border-radius:18px;overflow:hidden;border:1px solid var(--border);transition:all 0.22s;display:flex;flex-direction:column}
+  .book:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(13,27,42,0.14);border-color:transparent}
+  .book-cover{height:280px;display:block}
+  .bc-badge{position:absolute;top:12px;right:54px;z-index:4;background:var(--gold);color:#3D2A00;font-size:9px;font-weight:800;padding:4px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:0.04em}
+  .book-body{padding:15px 16px 17px;display:flex;flex-direction:column;flex:1}
+  .book-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:3px;line-height:1.3}
+  .book-author{font-size:12.5px;color:var(--light);margin-bottom:8px}
+  .book-price{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--teal-d)}
+  .empty-w{text-align:center;padding:64px 20px}
+  .empty-w .ec-ic{font-size:58px;margin-bottom:16px}
+  .empty-w h2{font-family:var(--serif);font-size:24px;font-weight:700;margin-bottom:8px}
+  .empty-w p{font-size:14px;color:var(--mid);margin-bottom:22px}
+  @media(max-width:900px){.books-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){.w-wrap{padding:24px 16px}.books-grid{grid-template-columns:repeat(2,1fr);gap:12px}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="brand"><img src="images/logo-main.png" alt="Kitobmarkazi"><span class="bname">KITOB<span>MARKAZI</span></span></a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Bosh sahifa</a>
+    <a href="publishers.html" class="nav-link">Nashriyotlar</a>
+    <a href="search.html" class="nav-link">Kitoblar</a>
+    <a href="track.html" class="nav-link">Kuzatish</a>
+    <a href="about.html" class="nav-link">Biz haqimizda</a>
+  </div>
+  <a href="wishlist.html" class="wish-link on" style="margin-left:8px;background:rgba(255,255,255,0.16)">♥<span class="wish-count"></span></a>
+  <a href="cart.html" class="cart-link">🛒<span class="cart-count"></span></a>
+</nav>
+
+<div class="w-wrap" id="wrap"></div>
+
+<footer class="site-foot">
+  <div class="sf-pat"></div>
+  <div class="site-foot-top">
+    <div class="sf-brand-col">
+      <div class="sf-brand"><img src="images/logo-main.png" alt="Kitobmarkazi"><span class="sf-bn">KITOB<span>MARKAZI</span></span></div>
+      <p class="sf-about">O'zbekistonning yetakchi nashriyotlarini bitta platformaga birlashtiruvchi kitob savdo maydoni. Qidiring, buyurtma bering — eshigingizgacha yetkazamiz.</p>
+      <div class="sf-pays">
+        <span class="sf-pay"><img src="images/pay/payme.png" alt="Payme"></span>
+        <span class="sf-pay"><img src="images/pay/click.png" alt="Click"></span>
+        <span class="sf-pay"><img src="images/pay/uzum.png" alt="Uzum"></span>
+      </div>
+    </div>
+    <div class="sf-col">
+      <h4>Yordam</h4>
+      <a href="track.html">Buyurtmani kuzatish</a>
+      <a href="faq.html">Savol-javob</a>
+      <a href="contact.html">Biz bilan aloqa</a>
+      <a href="terms.html">Foydalanish shartlari</a>
+      <a href="offer.html">Ommaviy oferta</a>
+    </div>
+    <div class="sf-col">
+      <h4>Aloqa</h4>
+      <div class="sf-contact-item"><span class="ic">📞</span><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
+      <div class="sf-contact-item"><span class="ic">✉️</span><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
+      <div class="sf-contact-item"><span class="ic">📍</span><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
+    </div>
+  </div>
+  <div class="site-foot-bot"><div class="sf-bot-in">
+    <span class="sf-copy">© 2025 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
+    <span class="sf-tag">Uzbek Books. One Platform.</span>
+  </div></div>
+</footer>
+
+<script src="data.js"></script>
+<script src="cart.js"></script>
+<script src="chat-widget.js"></script>
+<script>
+function render(){
+  if (!isKMDataLoaded) return;
+  var items=wishlistDetailed();
+  var wrap=document.getElementById('wrap');
+  if(items.length===0){
+    wrap.innerHTML='<div class="empty-w"><div class="ec-ic">🤍</div><h2>Sevimlilar ro\'yxati bo\'sh</h2><p>Yoqqan kitoblarni yurakcha (♡) tugmasi bilan belgilang</p><a class="btn btn-teal" href="search.html">📚 Kitoblarni ko\'rish</a></div>';
+    return;
+  }
+  wrap.innerHTML='<div class="w-h">Sevimlilar</div><div class="w-sub">'+items.length+' ta belgilangan kitob</div>'+
+    '<div class="books-grid">'+items.map(function(it){return bookCardHTML(it.pubKey,it.book);}).join('')+'</div>';
+}
+if (isKMDataLoaded) render();
+document.addEventListener('kmDataLoaded', render);
+
+/* re-render when a heart is toggled off on this page */
+document.addEventListener('click',function(e){ if(e.target.classList&&e.target.classList.contains('wish-btn')){ setTimeout(render,50); } });
+</script>
+</body>
+</html>

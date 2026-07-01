@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kitob — Kitobmarkazi</title>
+<meta name="description" content="Kitob haqida batafsil ma'lumot, o'quvchilar fikri va buyurtma qilish.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .bk-wrap{max-width:1000px;margin:0 auto;padding:32px}
+  .bk-grid{display:grid;grid-template-columns:340px 1fr;gap:44px;align-items:start}
+  .bk-cover{width:100%;aspect-ratio:3/4.2;border-radius:18px;box-shadow:0 30px 60px rgba(13,27,42,0.28)}
+  .bk-thumbs{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .bk-thumb{width:62px;height:82px;border-radius:11px;overflow:hidden;cursor:pointer;border:2px solid var(--border);background:var(--cream2);transition:all 0.18s;position:relative;flex-shrink:0}
+  .bk-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .bk-thumb:hover{border-color:var(--teal-l);transform:translateY(-2px)}
+  .bk-thumb.on{border-color:var(--teal);box-shadow:0 0 0 3px rgba(29,158,117,0.15)}
+  .bk-cover{cursor:zoom-in}
+  /* Lightbox */
+  .bk-lightbox{position:fixed;inset:0;background:rgba(8,16,28,0.92);z-index:300;display:none;align-items:center;justify-content:center;padding:30px;backdrop-filter:blur(4px)}
+  .bk-lightbox.open{display:flex;animation:lbFade 0.25s ease}
+  @keyframes lbFade{from{opacity:0}to{opacity:1}}
+  .bk-lightbox img{max-width:90%;max-height:85vh;border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,0.5)}
+  .bk-lb-close{position:absolute;top:24px;right:28px;width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,0.12);border:none;color:#fff;font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .bk-lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,0.14);border:none;color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .bk-lb-prev{left:24px}.bk-lb-next{right:24px}
+  .bk-lb-nav:hover,.bk-lb-close:hover{background:rgba(255,255,255,0.25)}
+
+  .bk-cov-badge{position:absolute;top:16px;right:16px;z-index:4;background:var(--gold);color:#3D2A00;font-size:10px;font-weight:800;padding:5px 11px;border-radius:20px;text-transform:uppercase;letter-spacing:0.04em}
+  .bk-pubchip{display:inline-flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--border);border-radius:30px;padding:6px 14px 6px 6px;margin-bottom:16px}
+  .bk-pubchip .pl{width:28px;height:28px;border-radius:50%;background:var(--cream2);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:3px}
+  .bk-pubchip .pn{font-size:12.5px;font-weight:600;color:var(--ink)}
+  .bk-title{font-family:var(--serif);font-size:40px;font-weight:700;color:var(--ink);line-height:1.1;letter-spacing:-0.02em;margin-bottom:8px}
+  .bk-author{font-size:16px;color:var(--mid);margin-bottom:18px}
+  .bk-rate{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .bk-stars{color:var(--gold);font-size:16px;letter-spacing:1px}
+  .bk-rnum{font-size:14px;color:var(--mid);font-weight:600}
+  .bk-meta{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap}
+  .bk-mchip{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:10px 16px;text-align:center}
+  .bk-mval{font-size:16px;font-weight:700;color:var(--ink)}
+  .bk-mlbl{font-size:11px;color:var(--light);margin-top:2px}
+  .bk-desc{font-size:15px;color:var(--mid);line-height:1.75;margin-bottom:26px}
+  .bk-buy{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:22px 24px}
+  .bk-price-row{display:flex;align-items:baseline;gap:10px;margin-bottom:18px}
+  .bk-price{font-family:var(--serif);font-size:34px;font-weight:700;color:var(--teal-d)}
+  .bk-qty-row{display:flex;align-items:center;gap:18px;margin-bottom:18px}
+  .bk-qty{display:flex;align-items:center;gap:14px}
+  .qbtn{width:38px;height:38px;border-radius:11px;border:1.5px solid var(--border);background:var(--white);cursor:pointer;font-size:20px;color:var(--ink);display:flex;align-items:center;justify-content:center;line-height:1}
+  .qbtn:hover{border-color:var(--teal);color:var(--teal)}
+  .qval{font-family:var(--serif);font-size:20px;font-weight:700;min-width:24px;text-align:center}
+  .bk-actions{display:flex;gap:12px}
+  .bk-wish{flex:0 0 auto;width:54px;padding:0;font-size:22px;line-height:1}
+  .bk-addcart{flex:1}
+  .bk-wish.on{border-color:#C0392B;color:#C0392B}
+  .bk-trust{display:flex;gap:18px;margin-top:18px;padding-top:16px;border-top:1px solid var(--cream2);flex-wrap:wrap}
+  .bk-trust-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--mid)}
+  /* recommendations */
+  .rec-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .rec{background:var(--white);border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:all 0.2s;display:flex;flex-direction:column}
+  .rec:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(13,27,42,0.13);border-color:transparent}
+  .rec-cover{height:180px;display:block}
+  .rec-body{padding:12px 14px 14px;display:flex;flex-direction:column;flex:1}
+  .rec-title{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:2px}
+  .rec-auth{font-size:11.5px;color:var(--light);margin-bottom:10px}
+  .rec-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
+  .rec-price{font-family:var(--serif);font-size:15px;font-weight:700;color:var(--teal-d)}
+  .rec-cart{width:34px;height:34px;border-radius:9px;background:var(--teal);color:#fff;border:none;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}
+  .rec-cart:hover{background:var(--teal-d)}
+  @media(max-width:900px){.rec-grid{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:760px){.bk-grid{grid-template-columns:1fr;gap:28px}.bk-cover{max-width:280px;margin:0 auto}.bk-title{font-size:30px}}
+  @media(max-width:600px){.rec-grid{grid-template-columns:repeat(2,1fr)}}
+
+  .rev-grid{display:grid;grid-template-columns:1fr 340px;gap:32px;margin-top:24px}
+  .rev-list{display:flex;flex-direction:column;gap:20px}
+  .rev-item{padding-bottom:20px;border-bottom:1px solid var(--cream2)}
+  .rev-item:last-child{border-bottom:none}
+  .rev-head{display:flex;justify-content:space-between;margin-bottom:8px}
+  .rev-user{font-weight:700;font-size:15px}
+  .rev-date{font-size:12px;color:var(--light)}
+  .rev-body{font-size:14px;color:var(--mid);line-height:1.6}
+  .rev-form-card{background:var(--white);border-radius:18px;border:1px solid var(--border);padding:24px;position:sticky;top:100px}
+  .rev-form-card h3{font-family:var(--serif);font-size:18px;margin-bottom:8px}
+  .rev-stars-pick{display:flex;gap:4px;font-size:24px;color:#ddd;cursor:pointer}
+  .rev-stars-pick span.on{color:var(--gold)}
+  @media(max-width:800px){.rev-grid{grid-template-columns:1fr}}
+</style>
+
+</head>
+<body>
+
+<nav class="nav">
+  <a href="javascript:history.back()" class="nav-back">‹ Orqaga</a>
+  <a href="index.html" class="brand" style="margin-left:14px"><img src="images/logo-main.png" alt="Kitobmarkazi"><span class="bname">KITOB<span>MARKAZI</span></span></a>
+  <a href="wishlist.html" class="wish-link" style="margin-left:auto">♥<span class="wish-count"></span></a>
+  <a href="cart.html" class="cart-link" style="margin-left:8px">🛒<span class="cart-count"></span></a>
+</nav>
+
+<div class="bk-wrap">
+  <div class="bk-grid">
+    <div class="bk-gallery">
+      <div class="bk-cover cover-lg" id="bkCover"><div class="bk-cov-badge" id="bkCovBadge" style="display:none">🔥 Top</div></div>
+      <div class="bk-thumbs" id="bkThumbs" style="display:none"></div>
+    </div>
+    <div>
+      <a class="bk-pubchip" id="bkPubChip" href="#"><span class="pl" id="bkPubLogo"></span><span class="pn" id="bkPubName"></span></a>
+      <h1 class="bk-title" id="bkTitle"></h1>
+      <div class="bk-author" id="bkAuthor"></div>
+      <div style="font-size:12px;color:var(--teal-d);font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:6px">
+        <span style="display:inline-block;width:6px;height:6px;background:var(--teal);border-radius:50%;animation:pulse 1.5s infinite"></span>
+        <span id="activeViewers">12</span> kishi hozir ko'rib turibdi
+      </div>
+
+      <div class="bk-rate"><span class="bk-stars" id="bkStars"></span><span class="bk-rnum" id="bkRnum"></span></div>
+      <div class="bk-meta" id="bkMeta"></div>
+      <p class="bk-desc" id="bkDesc"></p>
+      <div class="bk-buy">
+        <div class="bk-price-row"><span class="bk-price" id="bkPrice"></span></div>
+        <div class="bk-qty-row">
+          <span style="font-size:13px;font-weight:600;color:var(--mid)">Miqdor:</span>
+          <div class="bk-qty"><button class="qbtn" onclick="ch(-1)">−</button><span class="qval" id="qv">1</span><button class="qbtn" onclick="ch(1)">+</button></div>
+        </div>
+        <div class="bk-actions">
+          <button class="btn btn-ghost bk-wish" id="bkWish" onclick="toggleWishBtn()">♡ Sevimlilarga</button>
+          <button class="btn btn-teal bk-addcart" onclick="addCart()" id="addCartBtn">Savatga qo'shish</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews Section -->
+  <div class="sec" style="padding:48px 0 0">
+    <div class="sh"><div><div class="st">Fikr-mulohazalar</div><div class="ss" id="revCountText">Ushbu kitob haqida o'quvchilar fikri</div></div></div>
+    
+    <div class="rev-grid">
+      <div class="rev-list" id="revList">
+        <!-- Reviews will be loaded here -->
+      </div>
+      <div class="rev-form-card">
+        <h3>Fikr qoldiring</h3>
+        <p style="font-size:13px;color:var(--light);margin-bottom:20px">Sizning fikringiz boshqa o'quvchilarga kitob tanlashda yordam beradi.</p>
+        <div class="field"><label>Ismingiz *</label><input type="text" id="revName" placeholder="Alisher"></div>
+        <div class="field"><label>Baholang *</label>
+          <div class="rev-stars-pick">
+            <span onclick="setRevStar(1)" data-val="1">★</span>
+            <span onclick="setRevStar(2)" data-val="2">★</span>
+            <span onclick="setRevStar(3)" data-val="3">★</span>
+            <span onclick="setRevStar(4)" data-val="4">★</span>
+            <span onclick="setRevStar(5)" data-val="5">★</span>
+          </div>
+          <input type="hidden" id="revRate" value="5">
+        </div>
+        <div class="field"><label>Fikringiz</label><textarea id="revComment" rows="3" placeholder="Kitob haqida taassurotlaringiz..."></textarea></div>
+        <button class="btn btn-teal" style="width:100%" onclick="submitReview()">Yuborish</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="sec" style="padding:48px 0 0" id="recSec">
+    <div class="sh"><div><div class="st" id="recTitle">Shu kitob bilan birga</div><div class="ss">Muallif va nashriyot bo'yicha tavsiyalar</div></div></div>
+    <div class="rec-grid" id="recGrid"></div>
+  </div>
+</div>
+
+<footer class="site-foot">
+  <div class="sf-pat"></div>
+  <div class="site-foot-top">
+    <div class="sf-brand-col">
+      <div class="sf-brand"><img src="images/logo-main.png" alt="Kitobmarkazi"><span class="sf-bn">KITOB<span>MARKAZI</span></span></div>
+      <p class="sf-about">O'zbekistonning yetakchi nashriyotlarini bitta platformaga birlashtiruvchi kitob savdo maydoni. Qidiring, buyurtma bering — eshigingizgacha yetkazamiz.</p>
+      <div class="sf-pays">
+        <span class="sf-pay"><img src="images/pay/payme.png" alt="Payme"></span>
+        <span class="sf-pay"><img src="images/pay/click.png" alt="Click"></span>
+        <span class="sf-pay"><img src="images/pay/uzum.png" alt="Uzum"></span>
+      </div>
+    </div>
+    <div class="sf-col">
+      <h4>Yordam</h4>
+      <a href="track.html">Buyurtmani kuzatish</a>
+      <a href="faq.html">Savol-javob</a>
+      <a href="contact.html">Biz bilan aloqa</a>
+      <a href="terms.html">Foydalanish shartlari</a>
+      <a href="offer.html">Ommaviy oferta</a>
+    </div>
+    <div class="sf-col">
+      <h4>Aloqa</h4>
+      <div class="sf-contact-item"><span class="ic">📞</span><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
+      <div class="sf-contact-item"><span class="ic">✉️</span><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
+      <div class="sf-contact-item"><span class="ic">📍</span><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
+    </div>
+  </div>
+  <div class="site-foot-bot"><div class="sf-bot-in">
+    <span class="sf-copy">© 2025 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
+    <span class="sf-tag">Uzbek Books. One Platform.</span>
+  </div></div>
+</footer>
+
+<script src="data.js"></script>
+<script src="cart.js"></script>
+<script>
+var params=new URLSearchParams(location.search);
+var pubKey=params.get('pub')||'booktopia';
+var bookId=params.get('book')||'';
+var qty=1;
+var book=null;
+var pub=null;
+var galImages = [], allImages = [];
+
+function initPageData(){
+  if (!isKMDataLoaded) return;
+  pub=PUBLISHERS[pubKey]||PUBLISHERS['booktopia'];
+
+  if(!pub) return;
+  book=findBook(pubKey,bookId);
+  if(!book) return;
+
+  document.title=book.title+' — Kitobmarkazi';
+  var cover=document.getElementById('bkCover');
+  cover.style.background=book.color;
+  cover.innerHTML='<div class="bk-cov-badge" id="bkCovBadge" style="display:'+(book.top?'block':'none')+'">🔥 Top</div>';
+  cover.insertAdjacentHTML('afterbegin', coverHTML(book,pub));
+
+  // ===== Gallery =====
+  galImages = bookImages(book.id);
+  allImages = galImages.slice();
+  var thumbsBox=document.getElementById('bkThumbs');
+  if(galImages.length){
+    thumbsBox.style.display='flex';
+    var thumbs=[];
+    thumbs.push('<div class="bk-thumb on" data-i="0" onclick="setMainImage(0)"><div style="width:100%;height:100%;background:'+book.color+';position:relative;overflow:hidden">'+coverHTML(book,pub)+'</div></div>');
+    galImages.forEach(function(src,i){
+      thumbs.push('<div class="bk-thumb" data-i="'+(i+1)+'" onclick="setMainImage('+(i+1)+')"><img src="'+src+'" alt="rasm '+(i+1)+'" onerror="this.parentElement.style.display=\'none\'"></div>');
+    });
+    thumbsBox.innerHTML=thumbs.join('');
+  } else {
+    thumbsBox.style.display='none';
+    thumbsBox.innerHTML='';
+  }
+
+  document.getElementById('bkPubLogo').innerHTML=pubLogoHTML(pub,22);
+  document.getElementById('bkPubName').textContent=pub.name;
+  document.getElementById('bkPubChip').href='publisher.html?pub='+pubKey;
+  document.getElementById('bkTitle').textContent=book.title;
+  document.getElementById('bkAuthor').textContent=book.author;
+  var full=Math.floor(book.rating);
+  document.getElementById('bkStars').textContent='★★★★★'.slice(0,full)+'☆☆☆☆☆'.slice(0,5-full);
+  document.getElementById('bkRnum').textContent=book.rating+' / 5.0';
+  document.getElementById('bkMeta').innerHTML=
+    '<div class="bk-mchip"><div class="bk-mval">'+book.pages+'</div><div class="bk-mlbl">sahifa</div></div>'+
+    '<div class="bk-mchip"><div class="bk-mval">'+book.year+'</div><div class="bk-mlbl">nashr yili</div></div>'+
+    '<div class="bk-mchip"><div class="bk-mval">O\'zbek</div><div class="bk-mlbl">til</div></div>'+
+    '<div class="bk-mchip"><div class="bk-mval">Qattiq</div><div class="bk-mlbl">muqova</div></div>';
+  document.getElementById('bkDesc').textContent=book.title+' — '+pub.name+' nashriyoti tomonidan chop etilgan '+book.author+' qalamiga mansub asar. O\'zbek kitobxonlari orasida katta qiziqish uyg\'otgan ushbu kitob sifatli muqova va zamonaviy dizaynda taqdim etilgan.';
+  document.getElementById('bkPrice').textContent=money(book.price);
+  document.getElementById('addCartBtn').innerHTML=cartIcon(18)+' Savatga qo\'shish';
+  refreshWish();
+
+  /* Recommendations */
+  var recs=recommendFor(pubKey,book,4);
+  if(recs.length===0){document.getElementById('recSec').style.display='none';}
+  else{
+    document.getElementById('recSec').style.display='block';
+    document.getElementById('recGrid').innerHTML=recs.map(function(r){
+      var b=r.b, rp=PUBLISHERS[r.pk];
+      return '<div class="rec"><a class="rec-cover cover-sm" href="book.html?pub='+r.pk+'&book='+b.id+'" style="background:'+b.color+';position:relative;overflow:hidden;display:block">'+coverHTML(b,rp)+'</a>'+
+        '<div class="rec-body"><div class="rec-title">'+b.title+'</div><div class="rec-auth">'+b.author+'</div>'+
+        '<div class="rec-foot"><span class="rec-price">'+money(b.price)+'</span>'+
+        '<button class="rec-cart" onclick="addAndToast(\''+r.pk+'\',\''+b.id+'\')">'+cartIcon(16)+'</button></div></div></div>';
+    }).join('');
+  }
+}
+
+// cover tab behavior
+window.setMainImage=function(i){
+  var cover=document.getElementById('bkCover');
+  document.querySelectorAll('.bk-thumb').forEach(function(t){t.classList.toggle('on', parseInt(t.dataset.i)===i);});
+  var badge=document.getElementById('bkCovBadge');
+  if(i===0){
+    cover.style.background=book.color;
+    cover.innerHTML='';
+    if(badge)cover.appendChild(badge);
+    cover.insertAdjacentHTML('afterbegin', coverHTML(book,pub));
+  } else {
+    cover.style.background='#0E1B2C';
+    cover.innerHTML='';
+    if(badge)cover.appendChild(badge);
+    cover.insertAdjacentHTML('afterbegin','<img src="'+galImages[i-1]+'" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:18px">');
+  }
+};
+
+// Lightbox
+var lbIndex=0;
+window.openLightbox=function(){
+  if(!allImages.length) return;
+  var lb=document.getElementById('bkLightbox');
+  lb.classList.add('open');
+  document.body.style.overflow='hidden';
+};
+window.closeLightbox=function(){document.getElementById('bkLightbox').classList.remove('open');document.body.style.overflow='';};
+window.lbNav=function(dir){
+  if(!allImages.length)return;
+  lbIndex=(lbIndex+dir+allImages.length)%allImages.length;
+  document.getElementById('bkLbImg').src=allImages[lbIndex];
+};
+
+window.ch=function(d){qty=Math.max(1,Math.min(10,qty+d));document.getElementById('qv').textContent=qty;};
+window.addCart=function(){addToCart(pubKey,book.id,qty);toast(book.title+' savatga qo\'shildi');};
+window.refreshWish=function(){var on=inWishlist(pubKey,book.id);var b=document.getElementById('bkWish');b.classList.toggle('on',on);b.innerHTML=on?'♥':'♡';};
+window.toggleWishBtn=function(){var added=toggleWishlist(pubKey,book.id);refreshWish();toast(added?"Sevimlilarga qo'shildi":"Sevimlilardan olib tashlandi");};
+
+// Event listeners register once
+document.getElementById('bkCover').addEventListener('click',function(){
+  if(allImages.length){ lbIndex=0; document.getElementById('bkLbImg').src=allImages[0]; openLightbox(); }
+});
+
+if (isKMDataLoaded) initPageData();
+document.addEventListener('kmDataLoaded', initPageData);
+
+// ===== Reviews Logic =====
+window.setRevStar = function(n) {
+  document.getElementById('revRate').value = n;
+  var stars = document.querySelectorAll('.rev-stars-pick span');
+  stars.forEach(function(s, i) { s.classList.toggle('on', i < n); });
+};
+setRevStar(5);
+
+window.loadReviews = function() {
+  if (!book) return;
+  fetch('/api/books/' + book.id + '/reviews')
+    .then(r => r.json())
+    .then(data => {
+      var list = document.getElementById('revList');
+      document.getElementById('revCountText').textContent = data.length + " ta fikr qoldirilgan";
+      if (data.length === 0) {
+        list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--light)">Hozircha fikrlar yo\'q. Birinchi bo\'lib fikr qoldiring!</div>';
+        return;
+      }
+      list.innerHTML = data.map(function(r) {
+        var stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+        return '<div class="rev-item">' +
+          '<div class="rev-head"><div class="rev-user">' + r.customerName + ' <span style="color:var(--gold);margin-left:8px">' + stars + '</span></div>' +
+          '<div class="rev-date">' + new Date(r.createdAt).toLocaleDateString() + '</div></div>' +
+          '<div class="rev-body">' + r.comment + '</div></div>';
+      }).join('');
+    });
+};
+
+window.submitReview = function() {
+  if (!book) return;
+  var name = document.getElementById('revName').value.trim();
+  var rate = document.getElementById('revRate').value;
+  var comm = document.getElementById('revComment').value.trim();
+  if (!name) { alert('Iltimos ismingizni kiriting'); return; }
+
+  fetch('/api/books/' + book.id + '/reviews', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ customerName: name, rating: parseInt(rate), comment: comm })
+  }).then(r => r.json()).then(res => {
+    if (res.ok) {
+      toast('Fikringiz uchun rahmat!');
+      document.getElementById('revName').value = '';
+      document.getElementById('revComment').value = '';
+      loadReviews();
+    }
+  });
+};
+
+// Hook into initPageData
+var oldInit = initPageData;
+initPageData = function() {
+  oldInit();
+  loadReviews();
+  var av = document.getElementById('activeViewers');
+  if(av) av.textContent = Math.floor(Math.random() * 16) + 8;
+};
+
+
+
+</script>
+<script src="chat-widget.js"></script>
+<div class="bk-lightbox" id="bkLightbox" onclick="if(event.target===this)closeLightbox()">
+  <button class="bk-lb-close" onclick="closeLightbox()">&times;</button>
+  <button class="bk-lb-nav bk-lb-prev" onclick="lbNav(-1)">‹</button>
+  <img id="bkLbImg" src="" alt="">
+  <button class="bk-lb-nav bk-lb-next" onclick="lbNav(1)">›</button>
+</div>
+</body>
+</html>

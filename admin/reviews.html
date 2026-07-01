@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fikrlar boshqaruvi — Admin</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  .adm-body{background:#f4f7f6;min-height:100vh;padding:30px}
+  .adm-card{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.05);padding:20px;max-width:1000px;margin:0 auto}
+  .rev-table{width:100%;border-collapse:collapse;margin-top:20px}
+  .rev-table th{text-align:left;padding:12px;border-bottom:2px solid #eee;font-size:13px;color:#888}
+  .rev-table td{padding:12px;border-bottom:1px solid #eee;font-size:14px}
+  .rev-star{color:var(--gold)}
+  .btn-del{background:#fee2e2;color:#ef4444;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px}
+  .btn-del:hover{background:#fecaca}
+</style>
+</head>
+<body class="adm-body">
+
+<div class="adm-card">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h2>Fikr-mulohazalar boshqaruvi</h2>
+    <a href="index.html" style="font-size:14px;color:var(--teal)">← Dashboard</a>
+  </div>
+  
+  <table class="rev-table">
+    <thead>
+      <tr>
+        <th>Kitob</th>
+        <th>Mijoz</th>
+        <th>Baho</th>
+        <th>Fikr</th>
+        <th>Sana</th>
+        <th>Amal</th>
+      </tr>
+    </thead>
+    <tbody id="revTableBody">
+      <!-- Loaded via JS -->
+    </tbody>
+  </table>
+</div>
+
+<script>
+function loadAllReviews() {
+  fetch('/api/books/admin/all-reviews')
+    .then(r => r.json())
+    .then(data => {
+
+      const tbody = document.getElementById('revTableBody');
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px">Hozircha fikrlar yo\'q.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = data.map(r => `
+        <tr>
+          <td><b>${r.bookTitle}</b></td>
+          <td>${r.customerName}</td>
+          <td><span class="rev-star">${'★'.repeat(r.rating)}</span></td>
+          <td style="max-width:300px;color:#666">${r.comment}</td>
+          <td>${new Date(r.createdAt).toLocaleDateString()}</td>
+          <td><button class="btn-del" onclick="deleteReview(${r.id})">O'chirish</button></td>
+        </tr>
+      `).join('');
+    });
+}
+
+function deleteReview(id) {
+  if(!confirm('Ushbu fikrni o\'chirishni xohlaysizmi?')) return;
+  fetch('/api/books/admin/reviews/' + id, { method: 'DELETE' })
+    .then(r => r.json())
+
+    .then(res => {
+      if(res.ok) loadAllReviews();
+    });
+}
+
+loadAllReviews();
+</script>
+</body>
+</html>

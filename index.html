@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kitobmarkazi — O'zbekistondagi barcha nashriyotlar bitta platformada</title>
+<meta name="description" content="Kitobmarkazi - O'zbekistonning yetakchi nashriyotlarini birlashtiruvchi eng yirik onlayn kitob do'koni.">
+<meta name="keywords" content="kitob, onlayn do'kon, nashriyot, o'zbekiston">
+<meta property="og:title" content="Kitobmarkazi — Barcha nashriyotlar bitta joyda">
+<meta property="og:description" content="Eng sara kitoblarni hamyonbop narxlarda buyurtma bering.">
+<meta property="og:image" content="images/logo-main.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0A1628">
+
+<style>
+  .hero{background:var(--grad-navy);padding:64px 32px 58px;position:relative;overflow:visible}
+  .hero::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cpath d='M22 3 L41 22 L22 41 L3 22 Z' fill='none' stroke='%23D9A93E' stroke-width='1'/%3E%3C/svg%3E");background-size:38px 38px;opacity:0.05;pointer-events:none}
+  .hero::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(217,169,62,0.5),transparent)}
+  .hero-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+  .horb{position:absolute;border-radius:50%;pointer-events:none}
+  .ho1{width:460px;height:460px;background:radial-gradient(circle,rgba(29,158,117,0.2),transparent 70%);top:-200px;right:-100px;animation:drift 12s ease-in-out infinite}
+  .ho2{width:300px;height:300px;background:radial-gradient(circle,rgba(232,178,62,0.1),transparent 70%);bottom:-130px;left:28%;animation:drift 15s ease-in-out infinite reverse}
+  @keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,26px)}}
+  .hgrid{position:relative;z-index:2;display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center;max-width:1040px;margin:0 auto}
+  .tag{display:inline-flex;align-items:center;gap:8px;background:rgba(217,169,62,0.12);color:var(--gold-l);font-size:11.5px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;padding:9px 18px;border-radius:30px;border:1px solid rgba(217,169,62,0.32);margin-bottom:26px;backdrop-filter:blur(4px)}
+  .hero h1{font-family:var(--serif);font-size:64px;font-weight:800;color:#fff;line-height:1.0;letter-spacing:-0.035em;margin-bottom:22px}
+  .hero h1 em{font-style:italic;font-weight:800;background:var(--grad-gold);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--gold-l)}
+  .hero h1 em{color:var(--teal-l);font-style:normal}
+  .hsub{font-size:17px;color:rgba(255,255,255,0.62);line-height:1.65;margin-bottom:30px;max-width:400px}
+  .search{display:flex;background:#fff;border-radius:16px;padding:8px;box-shadow:0 20px 50px rgba(0,0,0,0.32),0 0 0 1px rgba(255,255,255,0.05)}
+  .sinput{flex:1;padding:13px 17px;background:transparent;border:none;color:var(--ink);font-size:15px;font-family:inherit;outline:none}
+  .sbtn{padding:13px 28px;background:var(--grad-teal);color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;box-shadow:var(--sh-teal)}
+  .sbtn:hover{background:var(--navy2)}
+  .stats{display:flex;gap:36px;margin-top:34px}
+  .snum{font-family:var(--serif);font-size:38px;font-weight:900;color:#fff;line-height:1}
+  .snum span{font-size:20px;color:var(--teal-l)}
+  .slbl{font-size:11px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.08em;margin-top:6px}
+  .showcase{position:relative;height:340px;display:flex;align-items:center;justify-content:center}
+  .sc-back{position:absolute;width:200px;height:290px;border-radius:15px;background:linear-gradient(150deg,#2A5C8A,#1A3A6B);transform:rotate(7deg) translateX(24px);z-index:1;box-shadow:0 24px 48px rgba(0,0,0,0.32)}
+  .sc-card{position:relative;z-index:2;overflow:hidden;width:224px;height:312px;border-radius:15px;background:linear-gradient(150deg,#1D9E75,#0F6E56);box-shadow:0 36px 70px rgba(0,0,0,0.42);padding:26px;display:flex;flex-direction:column;justify-content:space-between;transform:rotate(-4deg);transition:transform 0.3s;cursor:pointer}
+  .sc-card:hover{transform:rotate(-2deg) translateY(-6px)}
+  .sc-card>.sc-top,.sc-card>div,.sc-card>.sc-foot{position:relative;z-index:1}
+  .sc-badge{position:absolute;z-index:3;top:-16px;right:-16px;background:var(--gold);color:#3D2A00;font-size:12px;font-weight:800;padding:9px 16px;border-radius:30px;transform:rotate(8deg);box-shadow:0 10px 24px rgba(0,0,0,0.28)}
+  .sc-top{font-size:11px;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.1em;font-weight:600}
+  .sc-title{font-family:var(--serif);font-size:30px;font-weight:700;color:#fff;line-height:1.12}
+  .sc-auth{font-size:14px;color:rgba(255,255,255,0.78);margin-top:7px}
+  .sc-foot{display:flex;align-items:center;justify-content:space-between}
+  .sc-price{font-size:21px;font-weight:800;color:#fff}.sc-price small{font-size:12px;font-weight:500;opacity:0.7}
+  .sc-star{font-size:13px;color:var(--gold);background:rgba(0,0,0,0.22);padding:5px 11px;border-radius:20px;font-weight:700}
+
+  .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px}
+  .pcard{background:var(--white);border-radius:18px;cursor:pointer;border:1px solid var(--border);transition:all 0.28s cubic-bezier(.2,.7,.3,1);position:relative;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--sh-sm)}
+  .pcard:hover{transform:translateY(-6px);box-shadow:var(--sh-lg);border-color:transparent}
+  .pcard-logo{height:128px;display:flex;align-items:center;justify-content:center;padding:22px}
+  .pcard-foot{padding:13px 16px 16px;border-top:1px solid var(--cream2);text-align:center}
+  .pcard-name{font-size:14px;color:var(--ink);font-weight:600;margin-bottom:2px}
+  .pcard-cnt{font-size:12px;color:var(--light)}
+  .first-badge{position:absolute;top:10px;right:10px;background:var(--gold);color:#3D2A00;font-size:9.5px;font-weight:800;padding:4px 10px;border-radius:20px;z-index:2;letter-spacing:0.04em}
+
+  /* BEST SELLERS — redesigned horizontal cards */
+  .bs-scroll{display:flex;gap:16px;overflow-x:auto;padding:6px 2px 16px;scroll-behavior:smooth;scrollbar-width:none}
+  .bs-scroll::-webkit-scrollbar{display:none}
+  .bs-card{flex:0 0 220px;background:var(--white);border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:all 0.28s cubic-bezier(.2,.7,.3,1);display:flex;flex-direction:column;box-shadow:var(--sh-sm)}
+  .bs-card:hover{transform:translateY(-6px);box-shadow:var(--sh-lg);border-color:transparent}
+  .bs-cover{height:260px;display:flex;align-items:flex-end;padding:14px;position:relative;overflow:hidden}
+  .bs-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.45),transparent 55%)}
+  .bs-rank{position:absolute;top:12px;left:12px;z-index:3;width:32px;height:32px;border-radius:50%;background:var(--grad-gold);color:#3D2A00;font-family:var(--serif);font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(217,169,62,0.45)}
+  .bs-ct{font-family:var(--serif);font-size:15px;font-weight:700;color:#fff;position:relative;z-index:2;line-height:1.2;text-shadow:0 2px 8px rgba(0,0,0,0.5)}
+  .bs-body{padding:13px 15px 15px;display:flex;flex-direction:column;flex:1}
+  .bs-title{font-size:14px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:2px}
+  .bs-auth{font-size:12px;color:var(--light);margin-bottom:11px}
+  .bs-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
+  .bs-price{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--teal-d)}
+  .bs-cart{width:36px;height:36px;border-radius:10px;background:var(--teal);color:#fff;border:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background 0.15s}
+  .bs-cart:hover{background:var(--teal-d)}
+
+  .adsec{padding:38px 0 18px;max-width:1100px;margin:0 auto}
+  .adhead{display:flex;align-items:center;justify-content:space-between;padding:0 32px;margin-bottom:20px}
+  .adtitle{display:flex;align-items:center;gap:12px}
+  .adt{font-family:var(--serif);font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-0.025em}
+  .pulse{width:11px;height:11px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 0 rgba(232,178,62,0.6);animation:pulse 1.8s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(232,178,62,0.6)}70%{box-shadow:0 0 0 12px rgba(232,178,62,0)}100%{box-shadow:0 0 0 0 rgba(232,178,62,0)}}
+  .adnav{display:flex;gap:8px}
+  .adb{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--border);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--mid);font-size:20px;transition:all 0.15s;line-height:1}
+  .adb:hover{border-color:var(--teal);color:var(--teal);background:#F0FAF6}
+  .adscroll{display:flex;gap:18px;overflow-x:auto;padding:6px 32px 18px;scroll-behavior:smooth;scrollbar-width:none}
+  .adscroll::-webkit-scrollbar{display:none}
+  .poster{flex:0 0 400px;border-radius:18px;overflow:hidden;position:relative;height:240px;cursor:pointer;transition:all 0.3s cubic-bezier(.2,.7,.3,1);box-shadow:var(--sh-md)}
+  .poster:hover{transform:translateY(-5px) scale(1.01);box-shadow:var(--sh-lg)}
+  .poster-thumb{position:absolute;right:-16px;bottom:-18px;width:150px;height:200px;border-radius:10px;transform:rotate(-8deg);box-shadow:-8px 10px 30px rgba(0,0,0,0.4);z-index:1;overflow:hidden;opacity:0.96}
+  .pov{position:absolute;inset:0;background:linear-gradient(115deg,rgba(10,22,40,0.93),rgba(10,22,40,0.7) 45%,rgba(10,22,40,0.2))}
+  .pc{position:relative;z-index:3;padding:19px;height:100%;display:flex;flex-direction:column;justify-content:space-between}
+  .soon{align-self:flex-start;background:var(--gold);color:#3D2A00;font-size:10px;font-weight:800;padding:5px 11px;border-radius:7px;letter-spacing:0.05em;text-transform:uppercase}
+  .ppub{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .ppl{width:28px;height:28px;border-radius:7px;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .ppl img{width:100%;height:100%;object-fit:contain;padding:3px}
+  .ppn{font-size:12px;color:rgba(255,255,255,0.82);font-weight:600}
+  .pt{font-family:var(--serif);font-size:21px;font-weight:700;color:#fff;line-height:1.18;margin-bottom:4px}
+  .pa{font-size:12.5px;color:rgba(255,255,255,0.62)}
+  .pdate{position:absolute;top:17px;right:17px;z-index:3;text-align:center;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.22);border-radius:11px;padding:7px 11px;backdrop-filter:blur(6px)}
+  .pday{font-size:19px;font-weight:800;color:#fff;line-height:1}
+  .pmon{font-size:9px;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.06em;margin-top:1px}
+
+  .how{background:var(--grad-navy);border-radius:24px;padding:48px 40px;position:relative;overflow:hidden;box-shadow:var(--sh-lg)}
+  .how::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,rgba(217,169,62,0.6),transparent)}
+  .how-orb{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(29,158,117,0.18),transparent 70%);bottom:-120px;left:-60px;animation:drift 13s ease-in-out infinite}
+  .how-head{position:relative;z-index:2;text-align:center;margin-bottom:38px}
+  .how-tag{font-size:11px;font-weight:700;color:var(--teal-l);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px}
+  .how-h{font-family:var(--serif);font-size:32px;font-weight:700;color:#fff;letter-spacing:-0.02em}
+  .how-track{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+  .how-line{position:absolute;top:38px;left:16%;right:16%;height:2px;background:repeating-linear-gradient(90deg,rgba(93,202,165,0.4) 0 8px,transparent 8px 16px);z-index:1}
+  .how-step{position:relative;z-index:2;text-align:center;padding:0 18px}
+  .how-circle{width:76px;height:76px;border-radius:22px;background:rgba(29,158,117,0.12);border:1.5px solid rgba(29,158,117,0.35);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;position:relative;transition:all 0.25s}
+  .how-step:hover .how-circle{background:var(--teal);border-color:var(--teal);transform:translateY(-4px)}
+  .how-icon{font-size:30px}
+  .how-badge{position:absolute;top:-8px;right:-8px;width:26px;height:26px;border-radius:50%;background:var(--gold);color:#3D2A00;font-family:var(--serif);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+  .how-stitle{font-size:16px;font-weight:700;color:#fff;margin-bottom:7px}
+  .how-ssub{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6;max-width:240px;margin:0 auto}
+
+  .pay-row{background:var(--white);border-radius:18px;border:1px solid var(--border);padding:22px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .pay-lbl{font-size:12px;color:var(--light);font-weight:600;text-transform:uppercase;letter-spacing:0.06em}
+  .pay-pill{background:var(--cream2);border-radius:10px;padding:9px 17px;font-size:13.5px;font-weight:700}
+
+  @media(max-width:900px){.grid{grid-template-columns:repeat(3,1fr)}.hgrid{grid-template-columns:1fr}.showcase{display:none}}
+  @media(max-width:600px){
+    .hero{padding:38px 16px 34px}.hero h1{font-size:38px}.stats{gap:24px}
+    .adhead{padding-left:16px;padding-right:16px}.adscroll{padding-left:16px;padding-right:16px}
+    .grid{grid-template-columns:repeat(2,1fr);gap:10px}
+    .adt{font-size:24px}.how{padding:32px 20px}.how-track{grid-template-columns:1fr;gap:28px}.how-line{display:none}
+  }
+
+  /* ===== AI Maslahatchi ===== */
+  .ai-sec{max-width:1100px;margin:46px auto 10px;padding:0 32px}
+  .ai-wrap{position:relative;background:var(--grad-navy);border-radius:28px;overflow:hidden;border:1px solid rgba(217,169,62,0.18);box-shadow:var(--sh-lg)}
+  .ai-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,rgba(217,169,62,0.6),transparent);z-index:3}
+  .ai-orb{position:absolute;border-radius:50%;pointer-events:none}
+  .ai-orb1{width:380px;height:380px;background:radial-gradient(circle,rgba(29,158,117,0.22),transparent 70%);top:-160px;right:-90px}
+  .ai-orb2{width:320px;height:320px;background:radial-gradient(circle,rgba(232,178,62,0.12),transparent 70%);bottom:-150px;left:-80px}
+  .ai-pat{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M20 4 L36 20 L20 36 L4 20 Z' fill='none' stroke='%231D9E75' stroke-width='1'/%3E%3C/svg%3E");background-size:34px 34px;opacity:0.05;pointer-events:none}
+  .ai-inner{position:relative;z-index:2;padding:52px 44px;text-align:center;min-height:300px}
+  .ai-stage{animation:aiFade 0.4s ease}
+  @keyframes aiFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .ai-badge{display:inline-block;background:rgba(29,158,117,0.18);color:var(--teal-l);font-size:12px;font-weight:700;letter-spacing:0.06em;padding:7px 16px;border-radius:20px;border:1px solid rgba(29,158,117,0.35);margin-bottom:18px}
+  .ai-h{font-family:var(--serif);font-size:32px;font-weight:900;color:#fff;letter-spacing:-0.02em;margin-bottom:12px;line-height:1.15}
+  .ai-sub{font-size:15.5px;color:rgba(255,255,255,0.62);line-height:1.7;max-width:540px;margin:0 auto 26px}
+  .ai-start{background:var(--teal);color:#fff;border:none;border-radius:14px;padding:15px 32px;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:9px;transition:all 0.18s;box-shadow:0 10px 28px rgba(29,158,117,0.32)}
+  .ai-start:hover{background:var(--teal-d);transform:translateY(-2px);box-shadow:0 14px 34px rgba(29,158,117,0.4)}
+  .ai-meta{font-size:12.5px;color:rgba(255,255,255,0.4);margin-top:18px}
+  /* progress */
+  .ai-progress{height:5px;background:rgba(255,255,255,0.1);border-radius:5px;overflow:hidden;max-width:420px;margin:0 auto 16px}
+  .ai-progress-bar{height:100%;background:linear-gradient(90deg,var(--teal),var(--teal-l));border-radius:5px;width:25%;transition:width 0.35s ease}
+  .ai-step-meta{font-size:12.5px;color:var(--teal-l);font-weight:700;letter-spacing:0.05em;margin-bottom:18px}
+  .ai-q-icon{font-size:42px;margin-bottom:12px}
+  .ai-q{font-family:var(--serif);font-size:26px;font-weight:700;color:#fff;margin-bottom:26px;line-height:1.25}
+  .ai-opts{display:grid;grid-template-columns:1fr 1fr;gap:13px;max-width:620px;margin:0 auto}
+  .ai-opt{display:flex;align-items:center;gap:13px;background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.12);border-radius:15px;padding:17px 19px;cursor:pointer;transition:all 0.16s;text-align:left}
+  .ai-opt:hover{background:rgba(29,158,117,0.14);border-color:var(--teal);transform:translateY(-2px)}
+  .ai-opt-emoji{font-size:26px;flex-shrink:0}
+  .ai-opt-label{font-size:15px;font-weight:600;color:#fff;line-height:1.35}
+  .ai-back{background:none;border:none;color:rgba(255,255,255,0.5);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;margin-top:24px;padding:8px}
+  .ai-back:hover{color:#fff}
+  /* result */
+  .ai-profile-icon{font-size:52px;margin-bottom:10px}
+  .ai-tags{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+  .ai-tag{background:rgba(232,178,62,0.15);color:var(--gold);font-size:12.5px;font-weight:700;padding:7px 15px;border-radius:18px;border:1px solid rgba(232,178,62,0.3)}
+  .ai-recs-label{font-size:13px;font-weight:700;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:18px}
+  .ai-recs{grid-template-columns:repeat(3,1fr);gap:18px;text-align:left;margin-bottom:8px}
+  .ai-recs .book{background:#fff}
+  .ai-restart{background:rgba(255,255,255,0.08);color:#fff;border:1.5px solid rgba(255,255,255,0.2);border-radius:13px;padding:13px 26px;font-size:14.5px;font-weight:600;font-family:inherit;cursor:pointer;margin-top:26px;transition:all 0.15s}
+  .ai-restart:hover{background:rgba(255,255,255,0.14)}
+  .ai-result-cta{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:8px}
+  .ai-rc-count{font-size:15px;color:#fff;font-weight:600;margin-bottom:4px}
+  .ai-rc-count span{color:var(--teal-l);font-weight:800}
+  @media(max-width:760px){
+    .ai-sec{padding:0 16px}.ai-inner{padding:38px 22px}
+    .ai-h{font-size:25px}.ai-q{font-size:21px}
+    .ai-opts{grid-template-columns:1fr}
+    .ai-recs{grid-template-columns:repeat(2,1fr);gap:12px}
+  }
+  @media(max-width:460px){.ai-recs{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="brand"><img src="images/logo-main.png" alt="Kitobmarkazi"><span class="bname">KITOB<span>MARKAZI</span></span></a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link on">Bosh sahifa</a>
+    <a href="publishers.html" class="nav-link">Nashriyotlar</a>
+    <a href="search.html" class="nav-link">Kitoblar</a>
+    <a href="track.html" class="nav-link">Kuzatish</a>
+    <a href="about.html" class="nav-link">Biz haqimizda</a>
+  </div>
+  <a href="wishlist.html" class="wish-link" style="margin-left:8px">♥<span class="wish-count"></span></a>
+  <a href="cart.html" class="cart-link" style="margin-left:8px">🛒<span class="cart-count"></span></a>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"><div class="horb ho1"></div><div class="horb ho2"></div></div>
+  <div class="hgrid">
+    <div>
+      <div class="tag">✦ Uzbek Books. One Platform.</div>
+      <h1>O'zbek <em>kitoblari</em> bitta platformada</h1>
+      <p class="hsub">20 ta yetakchi nashriyot, minglab kitob — qidiring, buyurtma bering, eshigingizgacha yetkazamiz.</p>
+      <div class="ac-wrap" style="max-width:480px">
+        <div class="search">
+          <input class="sinput" type="text" id="heroSearch" autocomplete="off" placeholder="Kitob, muallif yoki nashriyot qidiring...">
+          <button class="sbtn" onclick="goFirst()">Qidirish</button>
+        </div>
+        <div class="ac-list" id="acList"></div>
+      </div>
+    </div>
+    <div class="showcase">
+      <div class="sc-back"></div>
+      <a href="book.html?pub=booktopia&book=otkan" class="sc-card">
+        <div class="cv-pat"></div>
+        <div class="sc-badge">★ Haftaning kitobi</div>
+        <div class="sc-top">Booktopia</div>
+        <div><div class="sc-title">O'tkan kunlar</div><div class="sc-auth">Abdulla Qodiriy</div></div>
+        <div class="sc-foot"><span class="sc-price">55 000 <small>so'm</small></span><span class="sc-star">★ 4.9</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="sec reveal" id="publishers">
+  <div class="sh">
+    <div><div class="st">Nashriyotlar</div><div class="ss">Nashriyotni tanlang — uning barcha kitoblarini ko'ring</div></div>
+    <a href="publishers.html" class="sa">Barchasi →</a>
+  </div>
+  <div class="grid" id="pubGrid"></div>
+</div>
+
+<div class="sec reveal">
+  <div class="sh"><div><div class="st">Eng ko'p sotilgan</div><div class="ss">Kitobxonlar eng ko'p tanlagan asarlar</div></div></div>
+  <div class="bs-scroll" id="bsScroll"></div>
+</div>
+
+<div class="sec">
+  <div class="sh"><div><div class="st">Janrlar bo'yicha</div><div class="ss">Qiziqishingizga mos kitoblarni toping</div></div></div>
+  <div class="genre-row" id="genreRow"></div>
+</div>
+
+<section class="adsec reveal">
+  <div class="adhead">
+    <div class="adtitle"><span class="pulse"></span><span class="adt">Tez kunda sotuvda</span></div>
+    <div class="adnav">
+      <button class="adb" onclick="document.getElementById('ads').scrollBy({left:-418,behavior:'smooth'})">‹</button>
+      <button class="adb" onclick="document.getElementById('ads').scrollBy({left:418,behavior:'smooth'})">›</button>
+    </div>
+  </div>
+  <div class="adscroll" id="ads"></div>
+</section>
+
+<section class="ai-sec reveal" id="ai">
+  <div class="ai-wrap">
+    <div class="ai-orb ai-orb1"></div>
+    <div class="ai-orb ai-orb2"></div>
+    <div class="ai-pat"></div>
+    <div class="ai-inner">
+      <!-- INTRO -->
+      <div id="aiIntro" class="ai-stage">
+        <div class="ai-badge">🤖 AI Maslahatchi</div>
+        <h2 class="ai-h">Qaysi kitob aynan siz uchun?</h2>
+        <p class="ai-sub">4 ta qisqa savolga javob bering — kayfiyatingiz, xarakteringiz va didingizga qarab sizga eng mos kitoblarni tavsiya qilamiz.</p>
+        <button class="ai-start" onclick="aiStart()">Testni boshlash <span style="font-size:18px">→</span></button>
+        <div class="ai-meta">⏱️ 30 soniya · 📚 Shaxsiy tavsiya</div>
+      </div>
+
+      <!-- QUIZ -->
+      <div id="aiQuiz" class="ai-stage" style="display:none">
+        <div class="ai-progress"><div class="ai-progress-bar" id="aiBar"></div></div>
+        <div class="ai-step-meta"><span id="aiStepNum">1</span>-savol / 4</div>
+        <div class="ai-q-icon" id="aiQIcon">🌤️</div>
+        <h3 class="ai-q" id="aiQText"></h3>
+        <div class="ai-opts" id="aiOpts"></div>
+        <button class="ai-back" id="aiBackBtn" onclick="aiBack()" style="display:none">‹ Orqaga</button>
+      </div>
+
+      <!-- RESULT -->
+      <div id="aiResult" class="ai-stage" style="display:none">
+        <div class="ai-badge">✨ Tahlil tayyor</div>
+        <div class="ai-profile-icon" id="aiProfIcon">📖</div>
+        <h2 class="ai-h" id="aiProfTitle"></h2>
+        <p class="ai-sub" id="aiProfDesc"></p>
+        <div class="ai-tags" id="aiTags"></div>
+        <div class="ai-result-cta">
+          <div class="ai-rc-count"><span id="aiRecCount">6</span> ta kitob aynan sizga mos keldi</div>
+          <button class="ai-start" onclick="aiGoResults()">Tavsiyalarni ko'rish <span style="font-size:18px">→</span></button>
+          <button class="ai-restart" onclick="aiStart()">↻ Qaytadan test</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec">
+  <div class="how">
+    <div class="how-orb"></div>
+    <div class="how-head"><div class="how-tag">Oddiy va qulay</div><div class="how-h">Qanday ishlaydi?</div></div>
+    <div class="how-track">
+      <div class="how-line"></div>
+      <div class="how-step"><div class="how-circle"><span class="how-icon">🏛️</span><span class="how-badge">1</span></div><div class="how-stitle">Nashriyot tanlang</div><div class="how-ssub">20 ta yetakchi nashriyotdan birini logosi bo'yicha toping</div></div>
+      <div class="how-step"><div class="how-circle"><span class="how-icon">📖</span><span class="how-badge">2</span></div><div class="how-stitle">Savatga qo'shing</div><div class="how-ssub">Bir nechta nashriyotdan turli kitoblarni savatga jamlang</div></div>
+      <div class="how-step"><div class="how-circle"><span class="how-icon">🚚</span><span class="how-badge">3</span></div><div class="how-stitle">Yetkazib beramiz</div><div class="how-ssub">Kuryer va to'lov usulini tanlab, manzilga oling</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-foot">
+  <div class="sf-pat"></div>
+  <div class="site-foot-top">
+    <div class="sf-brand-col">
+      <div class="sf-brand"><img src="images/logo-main.png" alt="Kitobmarkazi"><span class="sf-bn">KITOB<span>MARKAZI</span></span></div>
+      <p class="sf-about">O'zbekistonning yetakchi nashriyotlarini bitta platformaga birlashtiruvchi kitob savdo maydoni. Qidiring, buyurtma bering — eshigingizgacha yetkazamiz.</p>
+      <div class="sf-pays">
+        <span class="sf-pay"><img src="images/pay/payme.png" alt="Payme"></span>
+        <span class="sf-pay"><img src="images/pay/click.png" alt="Click"></span>
+        <span class="sf-pay"><img src="images/pay/uzum.png" alt="Uzum"></span>
+      </div>
+    </div>
+    <div class="sf-col">
+      <h4>Yordam</h4>
+      <a href="track.html">Buyurtmani kuzatish</a>
+      <a href="faq.html">Savol-javob</a>
+      <a href="contact.html">Biz bilan aloqa</a>
+      <a href="terms.html">Foydalanish shartlari</a>
+      <a href="offer.html">Ommaviy oferta</a>
+    </div>
+    <div class="sf-col">
+      <h4>Aloqa</h4>
+      <div class="sf-contact-item"><span class="ic">📞</span><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
+      <div class="sf-contact-item"><span class="ic">✉️</span><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
+      <div class="sf-contact-item"><span class="ic">📍</span><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
+    </div>
+  </div>
+  <div class="site-foot-bot"><div class="sf-bot-in">
+    <span class="sf-copy">© 2025 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
+    <span class="sf-tag">Uzbek Books. One Platform.</span>
+  </div></div>
+</footer>
+
+<!-- Coming soon modal -->
+<div class="modal-overlay" id="csModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-cover" id="csCover"><div class="modal-cover-ov"></div><div class="modal-cover-title" id="csCovTitle"></div></div>
+    <div class="modal-body">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-pub"><span class="pl" id="csPubLogo"></span><span class="pn" id="csPubName"></span></div>
+      <span class="modal-soon" id="csLabel">Tez kunda</span>
+      <div class="modal-title" id="csTitle"></div>
+      <div class="modal-author" id="csAuthor"></div>
+      <p class="modal-desc" id="csDesc"></p>
+      <div class="modal-date" id="csDate"></div>
+      <div class="timer" id="csTimer"></div>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="kmChat.js"></script>
+<script src="cart.js"></script>
+<script>
+function initPageData(){
+  if (!isKMDataLoaded) return;
+  /* Dynamically build order and counts */
+  var keys=Object.keys(PUBLISHERS);
+  var firstKey=keys.filter(function(k){return PUBLISHERS[k].first})[0];
+  var rest=keys.filter(function(k){return !PUBLISHERS[k].first}).sort(function(a,b){return PUBLISHERS[a].name.localeCompare(PUBLISHERS[b].name)});
+  var order=firstKey ? [firstKey].concat(rest) : rest;
+  
+  var counts={};
+  order.forEach(function(k){ counts[k]=getBooks(k).length; });
+
+  /* Publishers grid (first 20 on home) */
+  document.getElementById('pubGrid').innerHTML=order.slice(0,20).map(function(k){
+    var p=PUBLISHERS[k];
+    return '<a class="pcard" href="publisher.html?pub='+k+'">'+(p.first?'<div class="first-badge">★ TOP</div>':'')+
+      '<div class="pcard-logo">'+pubLogoHTML(p,104)+'</div>'+
+      '<div class="pcard-foot"><div class="pcard-name">'+p.name+'</div><div class="pcard-cnt">'+counts[k]+' ta kitob</div></div></a>';
+  }).join('');
+
+  /* Best sellers — top books across publishers */
+  var best=[];
+  Object.keys(BOOKS).forEach(function(pk){BOOKS[pk].forEach(function(b){if(b.top)best.push({pk:pk,b:b});});});
+  best=best.sort(function(a,b){return b.b.rating-a.b.rating}).slice(0,10);
+  document.getElementById('bsScroll').innerHTML=best.map(function(x,i){
+    var b=x.b;
+    return '<div class="bs-card">'+
+      '<a href="book.html?pub='+x.pk+'&book='+b.id+'" class="bs-cover cover-sm" style="background:'+(b.color || '#13294A')+'">'+coverHTML(b,PUBLISHERS[x.pk])+'<div class="bs-rank">'+(i+1)+'</div></a>'+
+      '<div class="bs-body"><div class="bs-title">'+b.title+'</div><div class="bs-auth">'+b.author+'</div>'+
+      '<div class="bs-foot"><span class="bs-price">'+money(b.price)+'</span>'+
+      '<button class="bs-cart" onclick="addAndToast(\''+x.pk+'\',\''+b.id+'\')">'+cartIcon(17)+'</button></div></div></div>';
+  }).join('');
+
+  /* Coming soon posters */
+  var monthsUz=["Yan","Fev","Mar","Apr","May","Iyun","Iyul","Avg","Sen","Okt","Noy","Dek"];
+  function dateFromOffset(days){var d=new Date();d.setDate(d.getDate()+days);return d;}
+  document.getElementById('ads').innerHTML=COMING_SOON.map(function(a,i){
+    var p=PUBLISHERS[a.pubKey] || {name: a.pubKey, first: false};
+    var d=dateFromOffset(a.offsetDays);
+    return '<div class="poster" onclick="openModal('+i+')"><div style="position:absolute;inset:0;background:'+a.bg+'"></div><div class="pov"></div>'+
+      '<div class="poster-thumb" style="background:'+a.bg+'">'+coverHTML(a,p)+'</div>'+
+      '<div class="pdate"><div class="pday">'+(d.getDate()<10?'0':'')+d.getDate()+'</div><div class="pmon">'+monthsUz[d.getMonth()]+'</div></div>'+
+      '<div class="pc"><span class="soon">'+(a.label==='Premyera'?'🔥 ':'⏳ ')+a.label+'</span><div>'+
+      '<div class="ppub"><div class="ppl">'+pubLogoHTML(p,24)+'</div><span class="ppn">'+p.name+'</span></div>'+
+      '<div class="pt">'+a.title+'</div><div class="pa">'+a.author+'</div></div></div></div>';
+  }).join('');
+
+  /* Genres section */
+  var genreCounts={};
+  allBooksFlat().forEach(function(x){genreCounts[x.genre]=(genreCounts[x.genre]||0)+1;});
+  document.getElementById('genreRow').innerHTML=Object.keys(GENRES).map(function(g){
+    if(!genreCounts[g])return '';
+    return '<a class="genre-pill" href="search.html?genre='+g+'"><span class="gi">'+GENRES[g].icon+'</span>'+GENRES[g].name+' <span style="color:var(--light);font-weight:600">('+genreCounts[g]+')</span></a>';
+  }).join('');
+}
+
+if (isKMDataLoaded) initPageData();
+document.addEventListener('kmDataLoaded', initPageData);
+
+
+/* Modal + countdown */
+var timerInt=null;
+var monthsUz=["Yan","Fev","Mar","Apr","May","Iyun","Iyul","Avg","Sen","Okt","Noy","Dek"];
+function dateFromOffset(days){var d=new Date();d.setDate(d.getDate()+days);return d;}
+function openModal(i){
+  var a=COMING_SOON[i],p=PUBLISHERS[a.pubKey] || {name: a.pubKey, first: false},d=dateFromOffset(a.offsetDays);
+  document.getElementById('csCover').style.background=a.bg;
+  document.getElementById('csCovTitle').textContent=a.title;
+  document.getElementById('csPubLogo').innerHTML=pubLogoHTML(p,20);
+  document.getElementById('csPubName').textContent=p.name;
+  document.getElementById('csLabel').textContent=(a.label==='Premyera'?'🔥 ':'⏳ ')+a.label;
+  document.getElementById('csTitle').textContent=a.title;
+  document.getElementById('csAuthor').textContent=a.author;
+  document.getElementById('csDesc').textContent=a.desc;
+  document.getElementById('csDate').innerHTML='📅 Nashr sanasi: <b style="margin-left:4px">'+d.getDate()+' '+monthsUz[d.getMonth()]+' '+d.getFullYear()+'</b>';
+  var target=d.getTime();
+  function tick(){
+    var diff=target-Date.now();if(diff<0)diff=0;
+    var dd=Math.floor(diff/86400000),hh=Math.floor(diff%86400000/3600000),mm=Math.floor(diff%3600000/60000),ss=Math.floor(diff%60000/1000);
+    document.getElementById('csTimer').innerHTML=
+      tbox(dd,'kun')+tbox(hh,'soat')+tbox(mm,'daqiqa')+tbox(ss,'soniya');
+  }
+  function tbox(n,l){return '<div class="timer-box"><div class="timer-num">'+(n<10?'0':'')+n+'</div><div class="timer-lbl">'+l+'</div></div>';}
+  tick();clearInterval(timerInt);timerInt=setInterval(tick,1000);
+  document.getElementById('csModal').classList.add('show');
+}
+function closeModal(){document.getElementById('csModal').classList.remove('show');clearInterval(timerInt);}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+
+/* Stats */
+var targets=[20,150,340],ids=['s1','s2','s3'];
+/* fill stat ids that exist */
+['s1','s2','s3'].forEach(function(id,i){var el=document.getElementById(id);if(!el)return;var c=0,end=targets[i],s=Math.ceil(end/30);var iv=setInterval(function(){c=Math.min(c+s,end);el.innerHTML=c+'<span>+</span>';if(c>=end)clearInterval(iv)},50)});
+
+/* Autocomplete search */
+var heroInput=document.getElementById('heroSearch'),acList=document.getElementById('acList');
+heroInput.addEventListener('input',function(){
+  var q=this.value;var res=searchAll(q);
+  if(res.length===0){acList.classList.remove('show');acList.innerHTML='';if(q.trim().length>=2){acList.innerHTML='<div class="ac-empty">Hech narsa topilmadi</div>';acList.classList.add('show');}return;}
+  acList.innerHTML=res.map(function(r){
+    var ic=r.type==='pub'?'<div class="ac-ic pub">'+pubLogoHTML(PUBLISHERS[r.pubKey],26)+'</div>':'<div class="ac-ic" style="background:'+r.color+'">📖</div>';
+    var href=r.type==='pub'?'publisher.html?pub='+r.pubKey:'book.html?pub='+r.pubKey+'&book='+r.bookId;
+    return '<a class="ac-item" href="'+href+'">'+ic+'<div><div class="ac-tt">'+r.title+'</div><div class="ac-sub">'+r.sub+'</div></div></a>';
+  }).join('');
+  acList.classList.add('show');
+});
+function goFirst(){var q=heroInput.value.trim();if(q)location.href='search.html?q='+encodeURIComponent(q);}
+heroInput.addEventListener('keydown',function(e){if(e.key==='Enter')goFirst();});
+document.addEventListener('click',function(e){if(!e.target.closest('.ac-wrap'))acList.classList.remove('show');});
+
+/* Genres section */
+(function(){
+  var counts={};
+  allBooksFlat().forEach(function(x){counts[x.genre]=(counts[x.genre]||0)+1;});
+  document.getElementById('genreRow').innerHTML=Object.keys(GENRES).map(function(g){
+    if(!counts[g])return '';
+    return '<a class="genre-pill" href="search.html?genre='+g+'"><span class="gi">'+GENRES[g].icon+'</span>'+GENRES[g].name+' <span style="color:var(--light);font-weight:600">('+counts[g]+')</span></a>';
+  }).join('');
+})();
+
+/* ===== AI Maslahatchi logic ===== */
+var aiIdx=0, aiScores={};
+function aiStart(){
+  aiIdx=0; aiScores={};
+  document.getElementById('aiIntro').style.display='none';
+  document.getElementById('aiResult').style.display='none';
+  document.getElementById('aiQuiz').style.display='block';
+  aiRenderQ();
+}
+function aiRenderQ(){
+  var q=QUIZ[aiIdx];
+  document.getElementById('aiStepNum').textContent=(aiIdx+1);
+  document.getElementById('aiBar').style.width=((aiIdx+1)/QUIZ.length*100)+'%';
+  document.getElementById('aiQIcon').textContent=q.icon;
+  document.getElementById('aiQText').textContent=q.q;
+  document.getElementById('aiBackBtn').style.display=aiIdx>0?'inline-block':'none';
+  document.getElementById('aiOpts').innerHTML=q.options.map(function(o,i){
+    return '<div class="ai-opt" onclick="aiPick('+i+')"><span class="ai-opt-emoji">'+o.emoji+'</span><span class="ai-opt-label">'+o.label+'</span></div>';
+  }).join('');
+}
+function aiPick(i){
+  var o=QUIZ[aiIdx].options[i];
+  o.genres.forEach(function(g){ aiScores[g]=(aiScores[g]||0)+1; });
+  if(aiIdx<QUIZ.length-1){ aiIdx++; aiRenderQ(); }
+  else { aiShowResult(); }
+}
+function aiBack(){
+  if(aiIdx>0){
+    aiIdx--;
+    // selected genres of the step we're returning to are removed when re-answered;
+    // simplest: recompute from scratch is complex, so just allow re-pick to add again.
+    aiRenderQ();
+  }
+}
+function aiShowResult(){
+  var res=quizRecommend(aiScores, 8);
+  var topG=res.topGenres[0]||'roman';
+  var prof=QUIZ_PROFILES[topG] || {title:"Kitobxon", desc:"Sizga mos kitoblarni tanladik."};
+  document.getElementById('aiQuiz').style.display='none';
+  document.getElementById('aiResult').style.display='block';
+  document.getElementById('aiProfTitle').textContent=prof.title;
+  document.getElementById('aiProfDesc').textContent=prof.desc;
+  document.getElementById('aiProfIcon').textContent=(GENRES[topG]&&GENRES[topG].icon)||'📖';
+  document.getElementById('aiTags').innerHTML=res.topGenres.map(function(g){
+    return '<span class="ai-tag">'+((GENRES[g]&&GENRES[g].icon)||'')+' '+((GENRES[g]&&GENRES[g].name)||g)+'</span>';
+  }).join('');
+  document.getElementById('aiRecCount').textContent=res.books.length;
+  // natijani saqlash -> alohida sahifa o'qiydi
+  try{
+    localStorage.setItem('km_ai_result', JSON.stringify({
+      profileTitle: prof.title,
+      profileDesc: prof.desc,
+      profileIcon: (GENRES[topG]&&GENRES[topG].icon)||'📖',
+      genres: res.topGenres,
+      books: res.books.map(function(x){return {pk:x.pk, id:x.b.id};})
+    }));
+  }catch(e){}
+}
+function aiGoResults(){ location.href='tavsiya.html'; }
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then(reg => console.log('SW Registered')).catch(err => console.log('SW Fail', err));
+  });
+}
+</script>
+
+<script src="live-activity.js"></script>
+<script src="chat-widget.js"></script>
+
+</body>
+</html>
