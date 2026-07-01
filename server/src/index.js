@@ -24,6 +24,13 @@ app.use('/api/analytics', require('./routes/analytics'));
 app.use('/api', require('./routes/misc'));
 app.use('/api/chat', require('./routes/chat'));
 
+/* ── Telegram Webhook ── */
+app.post('/api/webhook/telegram', async (req, res) => {
+  // This endpoint will handle incoming Telegram messages if needed.
+  // For now, it just acknowledges the webhook is working.
+  res.sendStatus(200);
+});
+
 /* ── Serve frontend static files ── */
 // Note: In Vercel, static files are usually handled by vercel.json, 
 // but we keep this for local development.
