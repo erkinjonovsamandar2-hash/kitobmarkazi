@@ -1,4 +1,4 @@
-/* ===== KITOBMARKAZI — API Routes: Orders ===== */
+/* ===== KITOBMARKAZI — API Routes: Orders (Postgres/Supabase) ===== */
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
@@ -7,7 +7,7 @@ const { adminRequired } = require('../middleware/auth');
 const { notifyNewOrder } = require('../services/telegram');
 
 /* POST /api/orders — submit new order */
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const { customerName, customerPhone, region, tuman, address, courierSlug, payTime, payMethod, items, promoCode, note } = req.body;
 
   // Validate required fields
@@ -25,30 +25,31 @@ router.post('/', (req, res) => {
 
   // Calculate totals
   let subtotal = 0;
-  const enrichedItems = items.map(it => {
-    const book = db.prepare('SELECT * FROM books WHERE publisherSlug = ? AND id = ?').get(it.publisherSlug || it.pubKey, it.bookId || it.id);
-    if (!book) return null;
+  const enrichedItems = [];
+  for (const it of items) {
+    const book = await db.prepare('SELECT * FROM books WHERE "publisherSlug" = $1 AND id = $2').get(it.publisherSlug || it.pubKey, it.bookId || it.id);
+    if (!book) continue;
     const lineTotal = book.price * (it.qty || 1);
     subtotal += lineTotal;
-    return { ...it, publisherSlug: book.publisherSlug, bookId: book.id, title: book.title, author: book.author, price: book.price, qty: it.qty || 1 };
-  }).filter(Boolean);
+    enrichedItems.push({ ...it, publisherSlug: book.publisherSlug, bookId: book.id, title: book.title, author: book.author, price: book.price, qty: it.qty || 1 });
+  }
 
   // Delivery fee
-  const courier = db.prepare('SELECT * FROM couriers WHERE slug = ?').get(courierSlug);
+  const courier = await db.prepare('SELECT * FROM couriers WHERE slug = $1').get(courierSlug);
   const deliveryFee = courier ? parseInt((courier.price || '0').replace(/[^0-9]/g, ''), 10) : 0;
 
   // Promo code
   let discount = 0;
   let appliedPromo = null;
   if (promoCode) {
-    const promo = db.prepare('SELECT * FROM promo_codes WHERE code = ? AND isActive = 1').get(promoCode.toUpperCase());
+    const promo = await db.prepare('SELECT * FROM promo_codes WHERE code = $1 AND "isActive" = 1').get(promoCode.toUpperCase());
     if (promo) {
       if (promo.expiresAt && new Date(promo.expiresAt) < new Date()) {
-        // expired — ignore silently
+        // expired
       } else if (promo.maxUses > 0 && promo.usedCount >= promo.maxUses) {
-        // used up — ignore silently
+        // used up
       } else if (subtotal < promo.minOrder) {
-        // min order not met — ignore silently
+        // min order not met
       } else {
         appliedPromo = promo.code;
         if (promo.type === 'percentage') {
@@ -56,7 +57,7 @@ router.post('/', (req, res) => {
         } else {
           discount = Math.min(promo.value, subtotal);
         }
-        db.prepare('UPDATE promo_codes SET usedCount = usedCount + 1 WHERE code = ?').run(promo.code);
+        await db.prepare('UPDATE promo_codes SET "usedCount" = "usedCount" + 1 WHERE code = $1').run(promo.code);
       }
     }
   }
@@ -68,24 +69,22 @@ router.post('/', (req, res) => {
   const orderId = uuid();
 
   // Insert order
-  db.prepare(`INSERT INTO orders (id, orderNumber, customerName, customerPhone, region, tuman, address,
-    courierSlug, payTime, payMethod, promoCode, discount, subtotal, deliveryFee, total, status, note)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new', ?)`)
+  await db.prepare(`INSERT INTO orders (id, "orderNumber", "customerName", "customerPhone", region, tuman, address,
+    "courierSlug", "payTime", "payMethod", "promoCode", discount, subtotal, "deliveryFee", total, status, note)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, 'new', $16)`)
     .run(orderId, orderNumber, customerName, customerPhone, region, tuman, address,
       courierSlug, payTime, payMethod, appliedPromo, discount, subtotal, deliveryFee, total, note || null);
 
   // Insert order items
-  const insertItem = db.prepare('INSERT INTO order_items (orderId, publisherSlug, bookId, title, author, price, qty) VALUES (?, ?, ?, ?, ?, ?, ?)');
-  enrichedItems.forEach(it => {
-    insertItem.run(orderId, it.publisherSlug, it.bookId, it.title, it.author, it.price, it.qty);
-  });
+  const itemPrep = db.prepare('INSERT INTO order_items ("orderId", "publisherSlug", "bookId", title, author, price, qty) VALUES ($1, $2, $3, $4, $5, $6, $7)');
+  for (const it of enrichedItems) {
+    await itemPrep.run(orderId, it.publisherSlug, it.bookId, it.title, it.author, it.price, it.qty);
+  }
 
   // Send Telegram notification
   notifyNewOrder({ orderNumber, customerName, customerPhone, region, tuman, total, items: enrichedItems, payMethod, courierSlug });
 
-
   res.status(201).json({
-
     ok: true,
     orderNumber,
     orderId,
@@ -97,46 +96,53 @@ router.post('/', (req, res) => {
   });
 });
 
-/* GET /api/orders/:id — order status (public, by orderNumber or id) */
-router.get('/:id', (req, res) => {
-  const order = db.prepare(`SELECT * FROM orders WHERE orderNumber = ? OR id = ?`).get(req.params.id, req.params.id);
+/* GET /api/orders/:id — order status */
+router.get('/:id', async (req, res) => {
+  const order = await db.prepare('SELECT * FROM orders WHERE "orderNumber" = $1 OR id = $2').get(req.params.id, req.params.id);
   if (!order) return res.status(404).json({ error: 'Buyurtma topilmadi' });
-  const items = db.prepare('SELECT * FROM order_items WHERE orderId = ?').all(order.id);
-  const courier = order.courierSlug ? db.prepare('SELECT * FROM couriers WHERE slug = ?').get(order.courierSlug) : null;
+  const items = await db.prepare('SELECT * FROM order_items WHERE "orderId" = $1').all(order.id);
+  const courier = order.courierSlug ? await db.prepare('SELECT * FROM couriers WHERE slug = $1').get(order.courierSlug) : null;
   res.json({ ...order, items, courier });
 });
 
 /* GET /api/orders — admin: all orders */
-router.get('/', adminRequired, (req, res) => {
+router.get('/', adminRequired, async (req, res) => {
   const { status, page = 1, limit = 50 } = req.query;
   let where = '';
   const params = [];
-  if (status && status !== 'all') { where = 'WHERE status = ?'; params.push(status); }
-  const total = db.prepare(`SELECT COUNT(*) as c FROM orders ${where}`).get(...params).c;
+  if (status && status !== 'all') { where = 'WHERE status = $1'; params.push(status); }
+  
+  const totalRes = await db.prepare(`SELECT COUNT(*) as c FROM orders ${where}`).get(...params);
+  const total = parseInt(totalRes.c);
+  
   const offset = (parseInt(page) - 1) * parseInt(limit);
-  const orders = db.prepare(`SELECT * FROM orders ${where} ORDER BY createdAt DESC LIMIT ? OFFSET ?`).all(...params, parseInt(limit), offset);
+  const orders = await db.prepare(`SELECT * FROM orders ${where} ORDER BY "createdAt" DESC LIMIT $${params.length+1} OFFSET $${params.length+2}`).all(...params, parseInt(limit), offset);
+  
   // Attach item count
-  const itemCounts = db.prepare('SELECT orderId, SUM(qty) as itemCount FROM order_items GROUP BY orderId').all();
+  const itemCounts = await db.prepare('SELECT "orderId", SUM(qty) as "itemCount" FROM order_items GROUP BY "orderId"').all();
   const countMap = {};
   itemCounts.forEach(r => { countMap[r.orderId] = r.itemCount; });
   orders.forEach(o => { o.itemCount = countMap[o.id] || 0; });
+  
   res.json({ orders, total, page: parseInt(page), pages: Math.ceil(total / parseInt(limit)) });
 });
 
 /* PUT /api/orders/:id/status — admin: update order status */
-router.put('/:id/status', adminRequired, (req, res) => {
+router.put('/:id/status', adminRequired, async (req, res) => {
   const { status } = req.body;
   const validStatuses = ['new', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled'];
   if (!validStatuses.includes(status)) return res.status(400).json({ error: 'Invalid status' });
-  const result = db.prepare("UPDATE orders SET status = ?, updatedAt = datetime('now') WHERE id = ? OR orderNumber = ?")
+  
+  const result = await db.prepare('UPDATE orders SET status = $1, "updatedAt" = CURRENT_TIMESTAMP WHERE id = $2 OR "orderNumber" = $3')
     .run(status, req.params.id, req.params.id);
+  
   if (result.changes === 0) return res.status(404).json({ error: 'Order not found' });
   res.json({ ok: true, status });
 });
 
 /* GET /api/orders/track/:orderNumber — public order tracking */
-router.get('/track/:orderNumber', (req, res) => {
-  const order = db.prepare(`SELECT orderNumber, status, customerName, customerPhone, tuman, region, createdAt, updatedAt FROM orders WHERE orderNumber = ?`).get(req.params.orderNumber);
+router.get('/track/:orderNumber', async (req, res) => {
+  const order = await db.prepare('SELECT "orderNumber", status, "customerName", "customerPhone", tuman, region, "createdAt", "updatedAt" FROM orders WHERE "orderNumber" = $1').get(req.params.orderNumber);
   if (!order) return res.status(404).json({ error: 'Buyurtma topilmadi' });
   
   // Mask phone for privacy
@@ -147,4 +153,3 @@ router.get('/track/:orderNumber', (req, res) => {
 });
 
 module.exports = router;
-

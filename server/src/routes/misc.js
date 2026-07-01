@@ -1,95 +1,97 @@
-/* ===== KITOBMARKAZI — API Routes: Settings + Coming Soon + Couriers ===== */
+/* ===== KITOBMARKAZI — API Routes: Settings + Coming Soon + Couriers (Postgres/Supabase) ===== */
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
 const { adminRequired } = require('../middleware/auth');
 
 /* ── Settings ── */
-router.get('/settings', adminRequired, (req, res) => {
-  const rows = db.prepare('SELECT * FROM settings').all();
+router.get('/settings', adminRequired, async (req, res) => {
+  const rows = await db.prepare('SELECT * FROM settings').all();
   const obj = {};
   rows.forEach(r => { obj[r.key] = r.value; });
   res.json(obj);
 });
 
-router.put('/settings', adminRequired, (req, res) => {
-  const stmt = db.prepare('INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)');
-  const update = db.transaction(() => {
-    Object.keys(req.body).forEach(k => { stmt.run(k, req.body[k]); });
-  });
-  update();
-  res.json({ ok: true });
+router.put('/settings', adminRequired, async (req, res) => {
+  try {
+    for (const k of Object.keys(req.body)) {
+      await db.prepare("INSERT INTO settings (key, value) VALUES ($1, $2) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value")
+        .run(k, req.body[k]);
+    }
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
 });
 
 /* ── Coming Soon ── */
-router.get('/coming-soon', (req, res) => {
-  const rows = db.prepare(`
-    SELECT cs.*, p.name as publisherName, p.logo as publisherLogo, p.logoText, p.logoColor
-    FROM coming_soon cs LEFT JOIN publishers p ON cs.publisherSlug = p.slug
-    ORDER BY cs.releaseDate ASC
+router.get('/coming-soon', async (req, res) => {
+  const rows = await db.prepare(`
+    SELECT cs.*, p.name as "publisherName", p.logo as "publisherLogo", p.logoText as "logoText", p.logoColor as "logoColor"
+    FROM coming_soon cs LEFT JOIN publishers p ON cs."publisherSlug" = p.slug
+    ORDER BY cs."releaseDate" ASC
   `).all();
   res.json(rows);
 });
 
-router.post('/coming-soon', adminRequired, (req, res) => {
+router.post('/coming-soon', adminRequired, async (req, res) => {
   const { title, author, publisherSlug, bg, releaseDate, label, description } = req.body;
   if (!title || !author) return res.status(400).json({ error: 'title and author required' });
-  const result = db.prepare(`INSERT INTO coming_soon (title, author, publisherSlug, bg, releaseDate, label, description)
-    VALUES (?, ?, ?, ?, ?, ?, ?)`)
+  const result = await db.prepare(`INSERT INTO coming_soon (title, author, "publisherSlug", bg, "releaseDate", label, description)
+    VALUES ($1, $2, $3, $4, $5, $6, $7)`)
     .run(title, author, publisherSlug||null, bg||null, releaseDate||null, label||'Tez kunda', description||null);
-  res.status(201).json({ ok: true, id: result.lastInsertRowid });
+  res.status(201).json({ ok: true, id: result.id });
 });
 
-router.delete('/coming-soon/:id', adminRequired, (req, res) => {
-  db.prepare('DELETE FROM coming_soon WHERE id = ?').run(req.params.id);
+router.delete('/coming-soon/:id', adminRequired, async (req, res) => {
+  await db.prepare('DELETE FROM coming_soon WHERE id = $1').run(req.params.id);
   res.json({ ok: true });
 });
 
 /* ── Couriers ── */
-router.get('/couriers', (req, res) => {
+router.get('/couriers', async (req, res) => {
   const { region, tuman } = req.query;
   if (!region) {
-    const all = db.prepare('SELECT * FROM couriers').all();
+    const all = await db.prepare('SELECT * FROM couriers').all();
     return res.json(all);
   }
 
-  // Check tuman override first
   if (tuman) {
-    const overrides = db.prepare('SELECT courierSlug FROM courier_tuman_overrides WHERE region = ? AND tuman = ?').all(region, tuman);
+    const overrides = await db.prepare('SELECT "courierSlug" FROM courier_tuman_overrides WHERE region = $1 AND tuman = $2').all(region, tuman);
     if (overrides.length > 0) {
       const slugs = overrides.map(r => r.courierSlug);
-      const couriers = db.prepare(`SELECT * FROM couriers WHERE slug IN (${slugs.map(() => '?').join(',')})`).all(...slugs);
+      // Constructing IN clause
+      const placeholders = slugs.map((_, i) => '$' + (i + 1)).join(',');
+      const couriers = await db.prepare(`SELECT * FROM couriers WHERE slug IN (${placeholders})`).all(...slugs);
       return res.json(couriers);
     }
   }
 
-  // Region-based
-  const regionCouriers = db.prepare(`
+  const regionCouriers = await db.prepare(`
     SELECT c.* FROM couriers c
-    JOIN courier_regions cr ON c.slug = cr.courierSlug
-    WHERE cr.region = ?
+    JOIN courier_regions cr ON c.slug = cr."courierSlug"
+    WHERE cr.region = $1
   `).all(region);
 
   if (regionCouriers.length > 0) return res.json(regionCouriers);
 
-  // Default fallback
-  const defaults = db.prepare("SELECT c.* FROM couriers c JOIN courier_regions cr ON c.slug = cr.courierSlug WHERE cr.region = '_default'").all();
-  res.json(defaults.length > 0 ? defaults : db.prepare('SELECT * FROM couriers').all());
+  const defaults = await db.prepare("SELECT c.* FROM couriers c JOIN courier_regions cr ON c.slug = cr.\"courierSlug\" WHERE cr.region = '_default'").all();
+  res.json(defaults.length > 0 ? defaults : await db.prepare('SELECT * FROM couriers').all());
 });
 
 /* ── Search ── */
-router.get('/search', (req, res) => {
+router.get('/search', async (req, res) => {
   const q = (req.query.q || '').trim();
   if (q.length < 2) return res.json({ books: [], publishers: [] });
   const like = `%${q}%`;
 
-  const books = db.prepare(`
-    SELECT b.*, p.name as publisherName FROM books b
-    LEFT JOIN publishers p ON b.publisherSlug = p.slug
-    WHERE b.title LIKE ? OR b.author LIKE ? LIMIT 8
+  const books = await db.prepare(`
+    SELECT b.*, p.name as "publisherName" FROM books b
+    LEFT JOIN publishers p ON b."publisherSlug" = p.slug
+    WHERE b.title ILIKE $1 OR b.author ILIKE $2 LIMIT 8
   `).all(like, like);
 
-  const publishers = db.prepare(`SELECT * FROM publishers WHERE name LIKE ? LIMIT 4`).all(like);
+  const publishers = await db.prepare(`SELECT * FROM publishers WHERE name ILIKE $1 LIMIT 4`).all(like);
 
   res.json({ books, publishers });
 });

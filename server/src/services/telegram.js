@@ -1,14 +1,17 @@
-/* ===== KITOBMARKAZI — Telegram Notification Service ===== */
+/* ===== KITOBMARKAZI — Telegram Notification Service (Postgres) ===== */
 const db = require('../db');
 
-function getSettings() {
-  const botToken = (db.prepare("SELECT value FROM settings WHERE key = 'telegram_bot_token'").get() || {}).value || '';
-  const chatId = (db.prepare("SELECT value FROM settings WHERE key = 'telegram_admin_chat_id'").get() || {}).value || '';
-  return { botToken, chatId };
+async function getSettings() {
+  const botTokenRow = await db.prepare("SELECT value FROM settings WHERE key = 'telegram_bot_token'").get();
+  const chatIdRow = await db.prepare("SELECT value FROM settings WHERE key = 'telegram_admin_chat_id'").get();
+  return { 
+    botToken: botTokenRow ? botTokenRow.value : '', 
+    chatId: chatIdRow ? chatIdRow.value : '' 
+  };
 }
 
 async function sendTelegram(text) {
-  const { botToken, chatId } = getSettings();
+  const { botToken, chatId } = await getSettings();
   if (!botToken || !chatId) return; // Not configured
 
   try {
@@ -23,7 +26,7 @@ async function sendTelegram(text) {
   }
 }
 
-function notifyNewOrder(order) {
+async function notifyNewOrder(order) {
   const payNames = { payme: 'Payme', click: 'Click', uzum: 'Uzum' };
   const itemLines = (order.items || []).map(it => `  📖 ${it.title} × ${it.qty}`).join('\n');
 
@@ -37,10 +40,10 @@ function notifyNewOrder(order) {
     `💳 ${payNames[order.payMethod] || order.payMethod}\n` +
     `💰 <b>${(order.total || 0).toLocaleString('uz-UZ')} so'm</b>`;
 
-  sendTelegram(text);
+  await sendTelegram(text);
 }
 
-function notifyOrderStatus(orderNumber, status) {
+async function notifyOrderStatus(orderNumber, status) {
   const statusNames = {
     confirmed: '✅ Tasdiqlandi',
     processing: '📦 Tayyorlanmoqda',
@@ -48,7 +51,7 @@ function notifyOrderStatus(orderNumber, status) {
     delivered: '🎉 Yetkazildi',
     cancelled: '❌ Bekor qilindi'
   };
-  sendTelegram(`📋 <b>${orderNumber}</b> — ${statusNames[status] || status}`);
+  await sendTelegram(`📋 <b>${orderNumber}</b> — ${statusNames[status] || status}`);
 }
 
 module.exports = { sendTelegram, notifyNewOrder, notifyOrderStatus };

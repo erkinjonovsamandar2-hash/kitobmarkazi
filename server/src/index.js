@@ -1,4 +1,4 @@
-/* ===== KITOBMARKAZI — Express Server ===== */
+/* ===== KITOBMARKAZI — Express Server (Vercel/Supabase) ===== */
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -21,18 +21,16 @@ app.use('/api/books', require('./routes/books'));
 app.use('/api/orders', require('./routes/orders'));
 app.use('/api/promos', require('./routes/promos'));
 app.use('/api/analytics', require('./routes/analytics'));
-app.use('/api', require('./routes/misc'));  // settings, coming-soon, couriers, search
+app.use('/api', require('./routes/misc'));
 app.use('/api/chat', require('./routes/chat'));
 
 /* ── Serve frontend static files ── */
+// Note: In Vercel, static files are usually handled by vercel.json, 
+// but we keep this for local development.
 app.use(express.static(path.join(__dirname, '..', '..')));
 
 /* ── Admin panel (served from /admin) ── */
 app.use('/admin', express.static(path.join(__dirname, '..', 'admin')));
-// SPA fallback for admin
-app.get('/admin/{*path}', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'admin', 'index.html'));
-});
 
 /* ── Error handler ── */
 app.use((err, req, res, next) => {
@@ -40,10 +38,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-/* ── Start ── */
-app.listen(PORT, () => {
-  console.log(`\n  🚀 Kitobmarkazi server running at http://localhost:${PORT}`);
-  console.log(`  📚 Frontend:  http://localhost:${PORT}`);
-  console.log(`  🔧 Admin:     http://localhost:${PORT}/admin`);
-  console.log(`  📡 API:       http://localhost:${PORT}/api\n`);
-});
+/* ── Start (Only if not running on Vercel) ── */
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`\n  🚀 Kitobmarkazi server running at http://localhost:${PORT}`);
+  });
+}
+
+// Export for Vercel
+module.exports = app;

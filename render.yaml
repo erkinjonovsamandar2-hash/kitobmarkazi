@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: kitobmarkazi
+    env: node
+    plan: free
+    buildCommand: npm install && cd server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: JWT_SECRET
+        generateValue: true
+    disk:
+      name: data
+      mountPath: /opt/render/project/src/server/data
+      sizeGB: 1
