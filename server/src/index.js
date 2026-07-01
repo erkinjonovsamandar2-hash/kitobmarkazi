@@ -1,25 +1,30 @@
 /* ===== KITOBMARKAZI — Express Server (Vercel/Supabase) ===== */
-try { require('dotenv').config(); } catch(e) { /* dotenv not needed on Vercel */ }
+try { require('dotenv').config(); } catch(e) {}
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
 const app = express();
-
 const PORT = process.env.PORT || 3000;
 
 /* Middleware */
 app.use(cors());
 app.use(express.json({ limit: '5mb' }));
 
-/* ── Health check (debug) ── */
+/* ── Debug: log every request ── */
+app.use('/api', (req, res, next) => {
+  console.log(`[API] ${req.method} ${req.url}`);
+  next();
+});
+
+/* ── Health check ── */
 app.get('/api/health', async (req, res) => {
   try {
     const db = require('./db');
     const result = await db.query('SELECT NOW()');
     res.json({ ok: true, dbTime: result.rows[0].now, env: !!process.env.DATABASE_URL });
   } catch(e) {
-    res.status(500).json({ ok: false, error: e.message, stack: e.stack, env: !!process.env.DATABASE_URL });
+    res.status(500).json({ ok: false, error: e.message });
   }
 });
 
@@ -38,12 +43,16 @@ app.post('/api/webhook/telegram', async (req, res) => {
   res.sendStatus(200);
 });
 
+/* ── API 404 catch-all ── */
+app.all('/api/*', (req, res) => {
+  res.status(404).json({ error: 'Route not found', method: req.method, path: req.originalUrl });
+});
+
 /* ── Serve static files (local dev only) ── */
 if (!process.env.VERCEL) {
   const ROOT = path.join(__dirname, '..', '..');
   app.use(express.static(ROOT));
   app.use('/admin', express.static(path.join(ROOT, 'admin')));
-
   app.listen(PORT, () => {
     console.log(`\n  🚀 Kitobmarkazi server running at http://localhost:${PORT}`);
   });
@@ -52,7 +61,7 @@ if (!process.env.VERCEL) {
 /* ── Error handler ── */
 app.use((err, req, res, next) => {
   console.error('Server error:', err);
-  res.status(500).json({ error: 'Internal server error' });
+  res.status(500).json({ error: err.message || 'Internal server error' });
 });
 
 module.exports = app;
