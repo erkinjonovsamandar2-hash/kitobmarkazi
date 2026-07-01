@@ -10,3 +10,5 @@ dist
 migrate_p5.js
 migrate_reviews.js
 server/migrate_p5.js
+*.sqlite
+server/*.sqlite
