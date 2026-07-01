@@ -12,6 +12,17 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json({ limit: '5mb' }));
 
+/* ── Health check (debug) ── */
+app.get('/api/health', async (req, res) => {
+  try {
+    const db = require('./db');
+    const result = await db.query('SELECT NOW()');
+    res.json({ ok: true, dbTime: result.rows[0].now, env: !!process.env.DATABASE_URL });
+  } catch(e) {
+    res.status(500).json({ ok: false, error: e.message, stack: e.stack, env: !!process.env.DATABASE_URL });
+  }
+});
+
 /* ── API Routes ── */
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/publishers', require('./routes/publishers'));
