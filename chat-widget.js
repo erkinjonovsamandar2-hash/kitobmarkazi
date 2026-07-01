@@ -318,18 +318,21 @@
     console.error('Failed to load chat history', e);
   }
 
-  // Toggle Window
-  chatBtn.addEventListener('click', function() {
+  // Toggle Window - exposed globally
+  window.__kmToggleChat = function() {
     chatWindow.classList.toggle('open');
     if (chatWindow.classList.contains('open')) {
       chatInput.focus();
       scrollToBottom();
     }
-  });
+  };
 
-  chatClose.addEventListener('click', function() {
+  chatBtn.onclick = window.__kmToggleChat;
+  chatClose.onclick = function() {
     chatWindow.classList.remove('open');
-  });
+  };
+
+  console.log('[KM Chat] Widget initialized, button:', chatBtn);
 
   // Send Event
   function handleSend() {
