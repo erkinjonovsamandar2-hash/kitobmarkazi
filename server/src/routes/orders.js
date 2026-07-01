@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
-const { v4: uuid } = require('uuid');
+const crypto = require('crypto');
 const { adminRequired } = require('../middleware/auth');
 const { notifyNewOrder } = require('../services/telegram');
 
@@ -66,7 +66,7 @@ router.post('/', async (req, res) => {
 
   // Generate order number
   const orderNumber = 'UZ-' + (10000 + Math.floor(Math.random() * 90000));
-  const orderId = uuid();
+  const orderId = crypto.randomUUID();
 
   // Insert order
   await db.prepare(`INSERT INTO orders (id, "orderNumber", "customerName", "customerPhone", region, tuman, address,
