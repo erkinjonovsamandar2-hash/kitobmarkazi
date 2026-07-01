@@ -8,9 +8,9 @@
   var style = document.createElement('style');
   style.innerHTML = `
     .km-chat-btn {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
+      position: fixed !important;
+      bottom: 24px !important;
+      right: 24px !important;
       width: 60px;
       height: 60px;
       border-radius: 50%;
@@ -21,9 +21,12 @@
       justify-content: center;
       box-shadow: 0 4px 20px rgba(29, 158, 117, 0.4);
       cursor: pointer;
-      z-index: 99999;
+      z-index: 2147483647 !important;
       transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      border: 1px solid rgba(255,255,255,0.1);
+      border: none;
+      padding: 0;
+      pointer-events: auto !important;
+      isolation: isolate;
     }
     .km-chat-btn:hover {
       transform: scale(1.1) translateY(-3px);
@@ -248,15 +251,13 @@
   `;
   document.head.appendChild(style);
 
-  // HTML Structure - append directly to body to avoid wrapper blocking clicks
-  var btnEl = document.createElement('div');
+  // HTML Structure - use <button> for reliable click handling
+  var btnEl = document.createElement('button');
   btnEl.className = 'km-chat-btn';
   btnEl.id = 'kmChatBtn';
-  btnEl.innerHTML = `
-    <svg viewBox="0 0 24 24">
-      <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
-    </svg>
-  `;
+  btnEl.setAttribute('type', 'button');
+  btnEl.setAttribute('aria-label', 'Chat');
+  btnEl.innerHTML = `<svg viewBox="0 0 24 24" style="pointer-events:none"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>`;
   document.body.appendChild(btnEl);
 
   var windowEl = document.createElement('div');
