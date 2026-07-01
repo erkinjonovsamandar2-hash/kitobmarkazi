@@ -44,7 +44,7 @@ app.post('/api/webhook/telegram', async (req, res) => {
 });
 
 /* ── API 404 catch-all ── */
-app.all('/api/*', (req, res) => {
+app.all('/api/:path+', (req, res) => {
   res.status(404).json({ error: 'Route not found', method: req.method, path: req.originalUrl });
 });
 
