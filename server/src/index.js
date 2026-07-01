@@ -12,10 +12,17 @@ app.use(cors());
 app.use(express.json({ limit: '5mb' }));
 
 /* ── Debug: log every request ── */
-app.use('/api', (req, res, next) => {
-  console.log(`[API] ${req.method} ${req.url}`);
+/* ── Debug: show what Express receives ── */
+app.use((req, res, next) => {
+  console.log(`[EXPRESS] ${req.method} url=${req.url} originalUrl=${req.originalUrl} baseUrl=${req.baseUrl}`);
   next();
 });
+
+/* ── Debug endpoint ── */
+app.get('/debug', (req, res) => {
+  res.json({ url: req.url, originalUrl: req.originalUrl, baseUrl: req.baseUrl, path: req.path });
+});
+
 
 /* ── Health check ── */
 app.get('/api/health', async (req, res) => {
