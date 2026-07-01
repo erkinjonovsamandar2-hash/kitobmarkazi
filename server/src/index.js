@@ -1,12 +1,10 @@
 /* ===== KITOBMARKAZI — Express Server (Vercel/Supabase) ===== */
-require('dotenv').config();
+try { require('dotenv').config(); } catch(e) { /* dotenv not needed on Vercel */ }
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const morgan = require('morgan');
 
 const app = express();
-app.use(morgan('dev'));
 
 const PORT = process.env.PORT || 3000;
 
@@ -26,22 +24,19 @@ app.use('/api/chat', require('./routes/chat'));
 
 /* ── Telegram Webhook ── */
 app.post('/api/webhook/telegram', async (req, res) => {
-  // This endpoint will handle incoming Telegram messages if needed.
-  // For now, it just acknowledges the webhook is working.
   res.sendStatus(200);
 });
 
-/* ── Serve frontend static files ── */
-const ROOT = path.join(__dirname, '..', '..');
-app.use(express.static(ROOT));
+/* ── Serve static files (local dev only) ── */
+if (!process.env.VERCEL) {
+  const ROOT = path.join(__dirname, '..', '..');
+  app.use(express.static(ROOT));
+  app.use('/admin', express.static(path.join(ROOT, 'admin')));
 
-/* ── Admin panel — /admin folder is at project root ── */
-app.use('/admin', express.static(path.join(ROOT, 'admin')));
-
-/* ── SPA fallback: serve index.html for unknown routes ── */
-app.get('*', (req, res) => {
-  res.sendFile(path.join(ROOT, 'index.html'));
-});
+  app.listen(PORT, () => {
+    console.log(`\n  🚀 Kitobmarkazi server running at http://localhost:${PORT}`);
+  });
+}
 
 /* ── Error handler ── */
 app.use((err, req, res, next) => {
@@ -49,12 +44,4 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-/* ── Start (Only if not running on Vercel) ── */
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
-  app.listen(PORT, () => {
-    console.log(`\n  🚀 Kitobmarkazi server running at http://localhost:${PORT}`);
-  });
-}
-
-// Export for Vercel
 module.exports = app;
