@@ -1,36 +1,9 @@
 {
   "version": 2,
-  "name": "kitobmarkazi",
   "builds": [
-    {
-      "src": "server/src/index.js",
-      "use": "@vercel/node"
-    }
+    { "src": "server/src/index.js", "use": "@vercel/node" }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "server/src/index.js"
-    },
-    {
-      "src": "/admin/admin.css",
-      "dest": "/admin/admin.css"
-    },
-    {
-      "src": "/admin/admin.js",
-      "dest": "/admin/admin.js"
-    },
-    {
-      "src": "/admin(.*)",
-      "dest": "/admin/index.html"
-    },
-    {
-      "src": "/(.*\\.(js|css|html|png|jpg|jpeg|gif|svg|ico|webp|woff|woff2|ttf|eot))",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
+    { "src": "/(.*)", "dest": "server/src/index.js" }
   ]
 }

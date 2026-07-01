@@ -32,12 +32,16 @@ app.post('/api/webhook/telegram', async (req, res) => {
 });
 
 /* ── Serve frontend static files ── */
-// Note: In Vercel, static files are usually handled by vercel.json, 
-// but we keep this for local development.
-app.use(express.static(path.join(__dirname, '..', '..')));
+const ROOT = path.join(__dirname, '..', '..');
+app.use(express.static(ROOT));
 
-/* ── Admin panel (served from /admin) ── */
-app.use('/admin', express.static(path.join(__dirname, '..', 'admin')));
+/* ── Admin panel — /admin folder is at project root ── */
+app.use('/admin', express.static(path.join(ROOT, 'admin')));
+
+/* ── SPA fallback: serve index.html for unknown routes ── */
+app.get('*', (req, res) => {
+  res.sendFile(path.join(ROOT, 'index.html'));
+});
 
 /* ── Error handler ── */
 app.use((err, req, res, next) => {
