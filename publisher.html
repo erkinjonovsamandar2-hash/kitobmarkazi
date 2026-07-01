@@ -1,73 +1,131 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nashriyot — Kitobmarkazi</title>
-  <link rel="stylesheet" href="index.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nashriyot — Kitobmarkazi</title>
+<meta name="description" content="Nashriyot haqida batafsil ma'lumot va barcha kitoblar.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .pub-header{background:var(--grad-navy);padding:36px 32px 32px;position:relative;overflow:hidden}
+  .pub-header::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cpath d='M22 3 L41 22 L22 41 L3 22 Z' fill='none' stroke='%23D9A93E' stroke-width='1'/%3E%3C/svg%3E");background-size:38px 38px;opacity:0.05;pointer-events:none}
+  .ph-orb{position:absolute;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(29,158,117,0.18),transparent 70%);top:-170px;right:-60px;pointer-events:none}
+  .ph-in{max-width:1100px;margin:0 auto;position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .ph-left{display:flex;align-items:center;gap:20px}
+  .ph-av{width:72px;height:72px;border-radius:16px;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid rgba(255,255,255,0.15);flex-shrink:0}
+  .ph-av img{max-height:48px;max-width:60px;object-fit:contain}
+  .ph-av-text{font-size:14px;font-weight:800;color:#fff;letter-spacing:0.06em}
+  .ph-info h1{font-family:var(--serif);font-size:28px;font-weight:700;color:#fff;margin:0 0 6px 0}
+  .ph-info p{color:rgba(255,255,255,0.6);font-size:14px;margin:0 0 10px 0;max-width:500px;line-height:1.6}
+  .ph-badges{display:flex;gap:8px;flex-wrap:wrap}
+  .pbadge{font-size:11.5px;font-weight:600;padding:5px 12px;border-radius:20px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.1)}
+  .pbadge.gold{background:rgba(217,169,62,0.15);color:var(--gold-l);border-color:rgba(217,169,62,0.3)}
+  .ph-right{display:flex;align-items:center;gap:16px}
+  .ph-stat{text-align:center}
+  .ps-val{font-size:26px;font-weight:800;color:var(--teal-l);font-family:var(--serif)}
+  .ps-lbl{font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em}
+
+  .pub-body{max-width:1100px;margin:0 auto;padding:24px 32px 48px}
+  .pb-filter{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+  .f-left{display:flex;gap:8px;flex-wrap:wrap}
+  .fpill{font-size:12.5px;font-weight:600;padding:7px 15px;border-radius:22px;cursor:pointer;border:1.5px solid var(--border);color:var(--mid);background:var(--white);transition:all 0.15s;font-family:inherit}
+  .fpill.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+  .fpill:hover:not(.on){border-color:var(--teal);color:var(--teal-d)}
+  .f-right{font-size:13px;color:var(--light);font-weight:600}
+  .pub-search{display:flex;background:var(--cream);border-radius:12px;padding:4px;margin-bottom:20px;max-width:400px}
+  .pub-search input{flex:1;padding:10px 14px;border:none;background:transparent;font-size:14px;font-family:inherit;outline:none;color:var(--ink)}
+
+  @media(max-width:700px){
+    .pub-header{padding:24px 16px 22px}
+    .ph-in{flex-direction:column;align-items:flex-start}
+    .ph-left{flex-direction:column;align-items:flex-start;gap:14px}
+    .ph-info h1{font-size:22px}
+    .pub-body{padding:20px 16px 36px}
+    .books-grid{grid-template-columns:repeat(2,1fr)!important;gap:12px!important}
+  }
+</style>
 </head>
 <body>
 
-<nav class="top-nav">
-  <div class="nav-in">
-    <a href="index.html" class="nav-logo">
-      <div class="nav-logo-ic">K</div>
-      <span>Kitobmarkazi</span>
-    </a>
-    <div class="nav-search">
-      <input type="text" placeholder="Kitoblar, mualliflar, nashriyotlar..." id="pubSearch">
-      <button>🔍</button>
-    </div>
-    <div class="nav-links">
-      <a href="publishers.html">Nashriyotlar</a>
-      <a href="wishlist.html" class="nav-icon-link">♥ <span class="nav-badge" id="wishBadge">0</span></a>
-      <a href="cart.html" class="nav-icon-link">🛒 <span class="nav-badge" id="cartBadge">0</span></a>
-    </div>
+<nav class="nav">
+  <a href="index.html" class="brand"><img src="images/logo-main.png" alt="Kitobmarkazi"><span class="bname">KITOB<span>MARKAZI</span></span></a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Bosh sahifa</a>
+    <a href="publishers.html" class="nav-link on">Nashriyotlar</a>
+    <a href="search.html" class="nav-link">Kitoblar</a>
+    <a href="track.html" class="nav-link">Kuzatish</a>
+    <a href="about.html" class="nav-link">Biz haqimizda</a>
   </div>
+  <a href="wishlist.html" class="wish-link" style="margin-left:8px">♥<span class="wish-count"></span></a>
+  <a href="cart.html" class="cart-link">🛒<span class="cart-count"></span></a>
 </nav>
 
-<main class="main-content">
-  <header class="pub-header">
-    <div class="ph-bg"></div>
-    <div class="ph-in">
-      <div class="ph-left">
-        <div class="ph-av" id="pubAv"></div>
-        <div class="ph-info">
-          <h1 id="pubName">...</h1>
-          <p id="pubDesc">...</p>
-          <div class="ph-badges" id="pubBadges"></div>
-        </div>
-      </div>
-      <div class="ph-right">
-        <div class="ph-stat">
-          <div class="ps-val">4.9</div>
-          <div class="ps-lbl">Reyting</div>
-        </div>
-        <button class="ph-follow">Kuzatish</button>
+<header class="pub-header">
+  <div class="ph-orb"></div>
+  <div class="ph-in">
+    <div class="ph-left">
+      <div class="ph-av" id="pubAv"></div>
+      <div class="ph-info">
+        <h1 id="pubName">...</h1>
+        <p id="pubDesc">...</p>
+        <div class="ph-badges" id="pubBadges"></div>
       </div>
     </div>
-  </header>
+    <div class="ph-right">
+      <div class="ph-stat">
+        <div class="ps-val">4.9</div>
+        <div class="ps-lbl">Reyting</div>
+      </div>
+    </div>
+  </div>
+</header>
 
-  <section class="pub-body">
-    <div class="pb-filter">
-      <div class="f-left">
-        <button class="fpill on" onclick="filt('all',this)">Barchasi</button>
-        <button class="fpill" onclick="filt('top',this)">🔥 Top</button>
-        <button class="fpill" onclick="filt('new',this)">✨ Yangi</button>
-        <button class="fpill" onclick="filt('cheap',this)">💰 Arzon</button>
-        <button class="fpill" onclick="filt('rating',this)">⭐ Reyting</button>
-      </div>
-      <div class="f-right" id="fcount">0 ta kitob</div>
+<section class="pub-body">
+  <div class="pub-search">
+    <input type="text" placeholder="Kitoblar orasidan qidiring..." id="pubSearch">
+  </div>
+  <div class="pb-filter">
+    <div class="f-left">
+      <button class="fpill on" onclick="filt('all',this)">Barchasi</button>
+      <button class="fpill" onclick="filt('top',this)">🔥 Top</button>
+      <button class="fpill" onclick="filt('new',this)">✨ Yangi</button>
+      <button class="fpill" onclick="filt('cheap',this)">💰 Arzon</button>
+      <button class="fpill" onclick="filt('rating',this)">⭐ Reyting</button>
     </div>
+    <div class="f-right" id="fcount">0 ta kitob</div>
+  </div>
 
-    <div class="books-grid" id="booksGrid">
-      <!-- Books will be loaded here -->
-    </div>
-  </section>
-</main>
+  <div class="books-grid" id="booksGrid"></div>
+</section>
 
 <footer class="site-foot">
-  <!-- Reused footer from index.html -->
+  <div class="sf-pat"></div>
+  <div class="site-foot-top">
+    <div class="sf-brand-col">
+      <div class="sf-brand"><img src="images/logo-main.png" alt="Kitobmarkazi"><div class="sf-bn">Kitob<span>markazi</span></div></div>
+      <p class="sf-about">O'zbekistondagi barcha nashriyotlarni birlashtiruvchi yagona platforma.</p>
+    </div>
+    <div class="sf-col">
+      <h4>Sahifalar</h4>
+      <a href="index.html">Bosh sahifa</a>
+      <a href="search.html">Kitoblar</a>
+      <a href="publishers.html">Nashriyotlar</a>
+      <a href="about.html">Biz haqimizda</a>
+    </div>
+    <div class="sf-col">
+      <h4>Bog'lanish</h4>
+      <div class="sf-contact-item"><span class="ic">📧</span><span>info@kitobmarkazi.uz</span></div>
+      <div class="sf-contact-item"><span class="ic">📞</span><a href="tel:+998901234567">+998 90 123 45 67</a></div>
+    </div>
+  </div>
+  <div class="site-foot-bot"><div class="sf-bot-in">
+    <span class="sf-copy">© 2025 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
+    <span class="sf-tag">Uzbek Books. One Platform.</span>
+  </div></div>
 </footer>
 
 <script src="data.js"></script>
@@ -86,8 +144,14 @@ function initPageData(){
 
   document.title=pub.name+' — Kitobmarkazi';
   document.getElementById('pubName').textContent=pub.name;
-  document.getElementById('pubDesc').textContent=pub.desc;
-  document.getElementById('pubAv').innerHTML=pubLogoHTML(pub,60);
+  document.getElementById('pubDesc').textContent=pub.desc || 'O\'zbekiston nashriyoti';
+  
+  var avHTML='';
+  if(pub.logo){avHTML='<img src="'+pub.logo+'" alt="'+pub.name+'">';}
+  else if(pub.text){avHTML='<span class="ph-av-text" style="color:'+(pub.color||'#fff')+'">'+pub.text+'</span>';}
+  else{avHTML='<span class="ph-av-text">'+pub.name.substring(0,2).toUpperCase()+'</span>';}
+  document.getElementById('pubAv').innerHTML=avHTML;
+  
   document.getElementById('pubBadges').innerHTML=
     '<span class="pbadge gold">⭐ Top nashriyot</span><span class="pbadge">'+(pub.founded||2020)+' yildan</span>'+
     '<span class="pbadge">📍 '+(pub.city||'Toshkent')+'</span><span class="pbadge">'+allBooks.length+' ta kitob</span>';
