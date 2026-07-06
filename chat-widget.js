@@ -328,7 +328,13 @@
     }
   };
 
-  chatBtn.onclick = window.__kmToggleChat;
+  chatBtn.onclick = function(e) {
+    console.log('[KM Chat] Button clicked!', e);
+    window.__kmToggleChat();
+  };
+  // Visual debug
+  chatBtn.style.outline = '2px solid red';
+  console.log('[KM Chat] Diagnostic: outline added');
   chatClose.onclick = function() {
     chatWindow.classList.remove('open');
   };

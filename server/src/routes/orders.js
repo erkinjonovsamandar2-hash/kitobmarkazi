@@ -130,17 +130,38 @@ router.get('/', adminRequired, async (req, res) => {
   res.json({ orders, total, page: parseInt(page), pages: Math.ceil(total / parseInt(limit)) });
 });
 
-/* PUT /api/orders/:id/status — admin: update order status */
+/* PUT /api/orders/:id/status — admin: update order status, tracking, and notes */
 router.put('/:id/status', adminRequired, async (req, res) => {
-  const { status } = req.body;
+  const { status, trackingNumber, notes } = req.body;
   const validStatuses = ['new', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled'];
-  if (!validStatuses.includes(status)) return res.status(400).json({ error: 'Invalid status' });
   
-  const result = await db.prepare('UPDATE orders SET status = $1, "updatedAt" = CURRENT_TIMESTAMP WHERE id = $2 OR "orderNumber" = $3')
-    .run(status, req.params.id, req.params.id);
+  const updates = [];
+  const params = [];
+  
+  if (status && validStatuses.includes(status)) {
+    updates.push(`status = $${updates.length + 1}`);
+    params.push(status);
+  }
+  
+  if (trackingNumber !== undefined) {
+    updates.push(`"trackingNumber" = $${updates.length + 1}`);
+    params.push(trackingNumber);
+  }
+  
+  if (notes !== undefined) {
+    updates.push(`notes = $${updates.length + 1}`);
+    params.push(notes);
+  }
+
+  if (updates.length === 0) return res.status(400).json({ error: 'No fields to update' });
+
+  updates.push(`"updatedAt" = CURRENT_TIMESTAMP`);
+  
+  const query = `UPDATE orders SET ${updates.join(', ')} WHERE id = $${params.length + 1} OR "orderNumber" = $${params.length + 2}`;
+  const result = await db.prepare(query).run(...params, req.params.id, req.params.id);
   
   if (result.changes === 0) return res.status(404).json({ error: 'Order not found' });
-  res.json({ ok: true, status });
+  res.json({ ok: true });
 });
 
 /* GET /api/orders/track/:orderNumber — public order tracking */

@@ -360,24 +360,34 @@ function viewOrder(id) {
       return '<option value="' + s + '"' + (o.status===s?' selected':'') + '>' + statusLabel(s) + '</option>';
     }).join('');
 
-    var html = '<div class="modal-bg" onclick="if(event.target===this)this.remove()"><div class="modal" style="max-width:500px">' +
-      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">' +
+    var html = '<div class="modal-bg" onclick="if(event.target===this)this.remove()"><div class="modal modal-order-detail" style="max-width:550px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px" class="no-print">' +
       '<div><div class="badge badge-' + o.status + '">' + statusLabel(o.status) + '</div><h3 style="margin:8px 0 0">' + o.orderNumber + '</h3></div>' +
-      '<div style="text-align:right;font-size:13px;color:var(--light)">' + fmtDate(o.createdAt) + '</div></div>' +
+      '<div style="text-align:right">' +
+      '<button class="btn-sm btn-ghost" onclick="window.print()" style="margin-bottom:4px">🖨 Chop etish</button>' +
+      '<div style="font-size:13px;color:var(--light)">' + fmtDate(o.createdAt) + '</div></div></div>' +
+
+      '<div class="print-only" style="display:none;text-align:center;margin-bottom:30px">' +
+      '<h2>KITOBMARKAZI</h2><p>Buyurtma kvitansiyasi: <b>' + o.orderNumber + '</b><br>Sana: ' + fmtDate(o.createdAt) + '</p></div>' +
       
       '<div class="card" style="padding:16px;background:var(--bg);box-shadow:none;margin-bottom:18px">' +
       '<label>Mijoz va Manzil</label>' +
       '<div style="font-weight:700;font-size:16px;margin-bottom:4px">' + o.customerName + '</div>' +
       '<div style="font-weight:600;color:var(--teal);margin-bottom:10px">' + o.customerPhone + '</div>' +
-      '<div style="font-size:13px;line-height:1.4">' + o.region + ', ' + o.tuman + '<br>' + o.address + '</div></div>' +
+      '<div style="font-size:13px;line-height:1.4">' + o.region + ', ' + o.tuman + '<br>' + o.address + '</div>' +
+      (o.note ? '<div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);font-size:13px;font-style:italic">Mijoz izohi: ' + o.note + '</div>' : '') +
+      '</div>' +
       
       '<label style="margin-bottom:10px">Buyurtma tarkibi</label>' +
       '<div style="margin-bottom:20px">' + items + '</div>' +
       
       '<div style="display:flex;justify-content:space-between;font-size:18px;margin-bottom:24px"><span>Jami:</span><b>' + money(o.total) + '</b></div>' +
       
-      '<div class="frow" style="align-items:end"><div class="field" style="margin:0"><label>Holatni o\'zgartirish</label><select id="modalStatus" style="height:44px">' + statusOpts + '</select></div>' +
-      '<button class="btn-primary" style="height:44px" onclick="updateStatus(\'' + (o.id || o.orderNumber) + '\')">Saqlash</button></div>' +
+      '<div class="no-print">' +
+      '<div class="frow"><div class="field"><label>Holatni o\'zgartirish</label><select id="modalStatus">' + statusOpts + '</select></div>' +
+      '<div class="field"><label>Tracking raqami</label><input type="text" id="modalTracking" value="' + (o.trackingNumber||'') + '" placeholder="Masalan: KM-TRK-123"></div></div>' +
+      '<div class="field"><label>Admin eslatmasi (ichki)</label><textarea id="modalNotes" rows="2">' + (o.notes||'') + '</textarea></div>' +
+      '<button class="btn-primary" onclick="updateStatus(\'' + (o.id || o.orderNumber) + '\')">Saqlash</button></div>' +
       '</div></div>';
     document.body.insertAdjacentHTML('beforeend', html);
   });
@@ -386,9 +396,14 @@ function viewOrder(id) {
 
 function updateStatus(id) {
   var status = document.getElementById('modalStatus').value;
-  api('/orders/' + id + '/status', { method: 'PUT', body: JSON.stringify({ status: status }) }).then(function() {
+  var trackingNumber = document.getElementById('modalTracking').value.trim();
+  var notes = document.getElementById('modalNotes').value.trim();
+  api('/orders/' + id + '/status', { 
+    method: 'PUT', 
+    body: JSON.stringify({ status: status, trackingNumber: trackingNumber, notes: notes }) 
+  }).then(function() {
     document.querySelector('.modal-bg').remove();
-    adminToast('Holat o\'zgartirildi: ' + statusLabel(status));
+    adminToast('Buyurtma yangilandi');
     loadOrders();
   });
 }
@@ -538,11 +553,12 @@ function showPublisherForm(slug) {
     var html = '<div class="modal-bg" onclick="if(event.target===this)this.remove()"><div class="modal"><h3>' + (isEdit ? 'Nashriyotni tahrirlash' : 'Yangi nashriyot') + '</h3>' +
       '<div class="frow"><div class="field"><label>Slug (lotin, bo\'shsiz)</label><input type="text" id="pSlug" value="' + (p.slug||'') + '" ' + (isEdit?'disabled':'') + ' placeholder="booktopia"></div>' +
       '<div class="field"><label>Nomi</label><input type="text" id="pName" value="' + (p.name||'') + '" placeholder="Nashriyot nomi"></div></div>' +
-      '<div class="field"><label>Tavsif</label><textarea id="pDesc" rows="3">' + (p.desc||'') + '</textarea></div>' +
+      '<div class="field"><label>Tavsif</label><textarea id="pDesc" rows="3">' + (p.description||p.desc||'') + '</textarea></div>' +
       '<div class="frow"><div class="field"><label>Shahar</label><input type="text" id="pCity" value="' + (p.city||'') + '"></div>' +
       '<div class="field"><label>Asos solingan (yil)</label><input type="number" id="pFounded" value="' + (p.founded||2020) + '"></div></div>' +
       '<div class="frow"><div class="field"><label>Logo (URL)</label><input type="text" id="pLogo" value="' + (p.logo||'') + '"></div>' +
-      '<div class="field"><label>Nashriyot rangi</label>' + colorPickerHTML('pColor', p.color || '#13294A') + '</div></div>' +
+      '<div class="field"><label>Logo matni (qisqa)</label><input type="text" id="pLogoText" value="' + (p.logoText||'') + '" placeholder="ABC"></div></div>' +
+      '<div class="field"><label>Brend rangi (Logo foni)</label>' + colorPickerHTML('pLogoColor', p.logoColor || p.color || '#13294A') + '</div>' +
       '<button class="btn-primary" onclick="savePublisher(\'' + (p.slug||'') + '\')">Saqlash</button></div></div>';
 
     document.body.insertAdjacentHTML('beforeend', html);
@@ -553,11 +569,12 @@ function savePublisher(oldSlug) {
   var data = {
     slug: document.getElementById('pSlug').value.trim(),
     name: document.getElementById('pName').value.trim(),
-    desc: document.getElementById('pDesc').value.trim(),
+    description: document.getElementById('pDesc').value.trim(),
     city: document.getElementById('pCity').value.trim(),
     founded: parseInt(document.getElementById('pFounded').value),
     logo: document.getElementById('pLogo').value.trim(),
-    color: document.getElementById('pColor').value
+    logoText: document.getElementById('pLogoText').value.trim(),
+    logoColor: document.getElementById('pLogoColor').value
   };
   if (!data.slug || !data.name) { alert('Slug va nomni kiriting'); return; }
   
