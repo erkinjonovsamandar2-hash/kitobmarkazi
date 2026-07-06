@@ -28,6 +28,7 @@ app.use('/api/publishers', require('./routes/publishers'));
 app.use('/api/books', require('./routes/books'));
 app.use('/api/orders', require('./routes/orders'));
 app.use('/api/promos', require('./routes/promos'));
+app.use('/api/couriers', require('./routes/couriers'));
 app.use('/api/analytics', require('./routes/analytics'));
 app.use('/api', require('./routes/misc'));
 app.use('/api/chat', require('./routes/chat'));

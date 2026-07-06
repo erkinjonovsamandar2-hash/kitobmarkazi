@@ -1,10 +1,11 @@
-/* ===== KITOBMARKAZI — Seed Database from data.js ===== */
+/* ===== KITOBMARKAZI — Seed Database from data.js (PostgreSQL) ===== */
+require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
+
 const db = require('./db');
 const bcrypt = require('bcryptjs');
 const { v4: uuid } = require('uuid');
 
 /* ── Import the frontend data directly ── */
-// We evaluate data.js in a sandboxed way to extract the constants
 const fs = require('fs');
 const path = require('path');
 const dataJsContent = fs.readFileSync(path.join(__dirname, '..', '..', 'data.js'), 'utf8');
@@ -21,131 +22,142 @@ const mod = { exports: {} };
 fn(mod, mod.exports, require);
 const DATA = mod.exports;
 
-console.log('🌱 Seeding Kitobmarkazi database...\n');
+async function seed() {
+  console.log('🌱 Seeding Kitobmarkazi database (PostgreSQL)...\n');
 
-/* ── 1. Publishers ── */
-const insertPub = db.prepare(`
-  INSERT OR REPLACE INTO publishers (slug, name, logo, logoText, logoColor, founded, city, description, isTop, sortOrder)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-`);
+  /* ── 1. Publishers ── */
+  const pubOrder = ["booktopia","yangiasr","zabarjad","akadem","hilol","munir","asaxiy","nido","misbah","huzur","falaq","nasim","yoshkuch","global","sarmoya","bukhara","bestbook","ilmziyo","zukko","gutenberg"];
 
-const pubOrder = ["booktopia","yangiasr","zabarjad","akadem","hilol","munir","asaxiy","nido","misbah","huzur","falaq","nasim","yoshkuch","global","sarmoya","bukhara","bestbook","ilmziyo","zukko","gutenberg"];
-
-const insertPubs = db.transaction(() => {
-  Object.keys(DATA.PUBLISHERS).forEach((slug) => {
+  for (const slug of Object.keys(DATA.PUBLISHERS)) {
     const p = DATA.PUBLISHERS[slug];
     const order = pubOrder.indexOf(slug);
-    insertPub.run(
-      slug, p.name, p.logo || null, p.text || null, p.color || null,
-      p.founded || null, p.city || null, p.desc || null,
-      p.first ? 1 : 0, order >= 0 ? order : 99
+    await db.query(
+      `INSERT INTO publishers (slug, name, logo, "logoText", "logoColor", founded, city, description, "isTop", "sortOrder")
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+       ON CONFLICT (slug) DO UPDATE SET
+         name = EXCLUDED.name, logo = EXCLUDED.logo, "logoText" = EXCLUDED."logoText",
+         "logoColor" = EXCLUDED."logoColor", founded = EXCLUDED.founded, city = EXCLUDED.city,
+         description = EXCLUDED.description, "isTop" = EXCLUDED."isTop", "sortOrder" = EXCLUDED."sortOrder"`,
+      [slug, p.name, p.logo || null, p.text || null, p.color || null,
+       p.founded || null, p.city || null, p.desc || null,
+       p.first ? true : false, order >= 0 ? order : 99]
     );
-  });
-});
-insertPubs();
-console.log(`  ✓ ${Object.keys(DATA.PUBLISHERS).length} publishers`);
+  }
+  console.log(`  ✓ ${Object.keys(DATA.PUBLISHERS).length} publishers`);
 
-/* ── 2. Books ── */
-const insertBook = db.prepare(`
-  INSERT OR REPLACE INTO books (id, publisherSlug, title, author, price, color, rating, isTop, pages, year, genre)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-`);
-
-let bookCount = 0;
-const insertBooks = db.transaction(() => {
-  Object.keys(DATA.BOOKS).forEach((pubSlug) => {
-    DATA.BOOKS[pubSlug].forEach((b) => {
+  /* ── 2. Books ── */
+  let bookCount = 0;
+  for (const pubSlug of Object.keys(DATA.BOOKS)) {
+    for (const b of DATA.BOOKS[pubSlug]) {
       const genre = DATA.BOOK_GENRE[b.id] || DATA.PUB_DEFAULT_GENRE[pubSlug] || 'roman';
-      insertBook.run(
-        b.id, pubSlug, b.title, b.author, b.price, b.color || null,
-        b.rating || 0, b.top ? 1 : 0, b.pages || null, b.year || null, genre
+      await db.query(
+        `INSERT INTO books (id, "publisherSlug", title, author, price, color, rating, "isTop", pages, year, genre)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+         ON CONFLICT (id) DO UPDATE SET
+           "publisherSlug" = EXCLUDED."publisherSlug", title = EXCLUDED.title, author = EXCLUDED.author,
+           price = EXCLUDED.price, color = EXCLUDED.color, rating = EXCLUDED.rating,
+           "isTop" = EXCLUDED."isTop", pages = EXCLUDED.pages, year = EXCLUDED.year, genre = EXCLUDED.genre`,
+        [b.id, pubSlug, b.title, b.author, b.price, b.color || null,
+         b.rating || 0, b.top ? true : false, b.pages || null, b.year || null, genre]
       );
       bookCount++;
-    });
-  });
-});
-insertBooks();
-console.log(`  ✓ ${bookCount} books`);
+    }
+  }
+  console.log(`  ✓ ${bookCount} books`);
 
-/* ── 3. Coming Soon ── */
-const insertCS = db.prepare(`
-  INSERT OR REPLACE INTO coming_soon (id, title, author, publisherSlug, bg, releaseDate, label, description)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-`);
-
-const insertComingSoon = db.transaction(() => {
-  DATA.COMING_SOON.forEach((a, i) => {
+  /* ── 3. Coming Soon ── */
+  // Clear existing coming_soon to avoid stale entries
+  await db.query('DELETE FROM coming_soon');
+  for (let i = 0; i < DATA.COMING_SOON.length; i++) {
+    const a = DATA.COMING_SOON[i];
     const d = new Date();
     d.setDate(d.getDate() + (a.offsetDays || 7));
-    insertCS.run(
-      i + 1, a.title, a.author, a.pubKey, a.bg || null,
-      d.toISOString().split('T')[0], a.label || 'Tez kunda', a.desc || null
+    await db.query(
+      `INSERT INTO coming_soon (id, title, author, "publisherSlug", bg, "releaseDate", label, description)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [uuid(), a.title, a.author, a.pubKey, a.bg || null,
+       d.toISOString().split('T')[0], a.label || 'Tez kunda', a.desc || null]
     );
-  });
-});
-insertComingSoon();
-console.log(`  ✓ ${DATA.COMING_SOON.length} coming soon items`);
+  }
+  console.log(`  ✓ ${DATA.COMING_SOON.length} coming soon items`);
 
-/* ── 4. Couriers ── */
-const insertCourier = db.prepare(`
-  INSERT OR REPLACE INTO couriers (slug, name, color, description, price)
-  VALUES (?, ?, ?, ?, ?)
-`);
-const insertCourierRegion = db.prepare(`
-  INSERT OR REPLACE INTO courier_regions (courierSlug, region) VALUES (?, ?)
-`);
-const insertOverride = db.prepare(`
-  INSERT OR REPLACE INTO courier_tuman_overrides (region, tuman, courierSlug) VALUES (?, ?, ?)
-`);
-
-const insertCouriers = db.transaction(() => {
-  Object.keys(DATA.COURIERS).forEach((slug) => {
+  /* ── 4. Couriers ── */
+  for (const slug of Object.keys(DATA.COURIERS)) {
     const c = DATA.COURIERS[slug];
-    insertCourier.run(slug, c.name, c.color || null, c.desc || null, c.price || null);
-  });
+    await db.query(
+      `INSERT INTO couriers (slug, name, color, description, price)
+       VALUES ($1, $2, $3, $4, $5)
+       ON CONFLICT (slug) DO UPDATE SET
+         name = EXCLUDED.name, color = EXCLUDED.color,
+         description = EXCLUDED.description, price = EXCLUDED.price`,
+      [slug, c.name, c.color || null, c.desc || null, c.price || null]
+    );
+  }
 
-  Object.keys(DATA.COURIERS_BY_REGION).forEach((region) => {
-    if (region === '_default') return;
-    DATA.COURIERS_BY_REGION[region].forEach((cSlug) => {
-      insertCourierRegion.run(cSlug, region);
-    });
-  });
+  // Courier regions
+  await db.query('DELETE FROM courier_regions');
+  for (const region of Object.keys(DATA.COURIERS_BY_REGION)) {
+    if (region === '_default') continue;
+    for (const cSlug of DATA.COURIERS_BY_REGION[region]) {
+      await db.query(
+        `INSERT INTO courier_regions ("courierSlug", region) VALUES ($1, $2)
+         ON CONFLICT DO NOTHING`,
+        [cSlug, region]
+      );
+    }
+  }
 
-  Object.keys(DATA.COURIER_TUMAN_OVERRIDE).forEach((key) => {
+  // Tuman overrides
+  await db.query('DELETE FROM courier_tuman_overrides');
+  for (const key of Object.keys(DATA.COURIER_TUMAN_OVERRIDE)) {
     const [region, tuman] = key.split('|');
-    DATA.COURIER_TUMAN_OVERRIDE[key].forEach((cSlug) => {
-      insertOverride.run(region, tuman, cSlug);
-    });
-  });
-});
-insertCouriers();
-console.log(`  ✓ ${Object.keys(DATA.COURIERS).length} couriers + region mappings`);
+    for (const cSlug of DATA.COURIER_TUMAN_OVERRIDE[key]) {
+      await db.query(
+        `INSERT INTO courier_tuman_overrides (region, tuman, "courierSlug") VALUES ($1, $2, $3)
+         ON CONFLICT DO NOTHING`,
+        [region, tuman, cSlug]
+      );
+    }
+  }
+  console.log(`  ✓ ${Object.keys(DATA.COURIERS).length} couriers + region mappings`);
 
-/* ── 5. Default Admin User ── */
-const existingAdmin = db.prepare('SELECT id FROM users WHERE username = ?').get('admin');
-if (!existingAdmin) {
-  const hash = bcrypt.hashSync('admin123', 10);
-  db.prepare(`
-    INSERT INTO users (id, username, passwordHash, displayName, role)
-    VALUES (?, ?, ?, ?, ?)
-  `).run(uuid(), 'admin', hash, 'Administrator', 'admin');
-  console.log('  ✓ Admin user created (username: admin, password: admin123)');
-} else {
-  console.log('  ✓ Admin user already exists');
+  /* ── 5. Default Admin User ── */
+  const existingAdmin = await db.prepare('SELECT id FROM users WHERE username = $1').get('admin');
+  if (!existingAdmin) {
+    const hash = bcrypt.hashSync('admin123', 10);
+    await db.query(
+      `INSERT INTO users (id, username, "passwordHash", "displayName", role)
+       VALUES ($1, $2, $3, $4, $5)`,
+      [uuid(), 'admin', hash, 'Administrator', 'admin']
+    );
+    console.log('  ✓ Admin user created (username: admin, password: admin123)');
+  } else {
+    console.log('  ✓ Admin user already exists');
+  }
+
+  /* ── 6. Default Settings ── */
+  const defaults = {
+    'telegram_bot_token': '',
+    'telegram_admin_chat_id': '',
+    'site_name': 'Kitobmarkazi',
+    'site_tagline': 'Uzbek Books. One Platform.',
+  };
+  for (const k of Object.keys(defaults)) {
+    const existing = await db.prepare('SELECT value FROM settings WHERE key = $1').get(k);
+    if (!existing) {
+      await db.query(
+        `INSERT INTO settings (key, value) VALUES ($1, $2) ON CONFLICT (key) DO NOTHING`,
+        [k, defaults[k]]
+      );
+    }
+  }
+  console.log('  ✓ Default settings');
+
+  console.log('\n🎉 Seed complete! Database seeded to Supabase PostgreSQL.\n');
+  process.exit(0);
 }
 
-/* ── 6. Default Settings ── */
-const upsertSetting = db.prepare(`INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)`);
-const defaults = {
-  'telegram_bot_token': '',
-  'telegram_admin_chat_id': '',
-  'site_name': 'Kitobmarkazi',
-  'site_tagline': 'Uzbek Books. One Platform.',
-};
-Object.keys(defaults).forEach(k => {
-  const existing = db.prepare('SELECT value FROM settings WHERE key = ?').get(k);
-  if (!existing) upsertSetting.run(k, defaults[k]);
+seed().catch(err => {
+  console.error('❌ Seed failed:', err);
+  process.exit(1);
 });
-console.log('  ✓ Default settings');
-
-console.log('\n🎉 Seed complete! Database ready at: data/kitobmarkazi.db\n');

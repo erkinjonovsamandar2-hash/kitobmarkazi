@@ -132,13 +132,13 @@ router.post('/:id/reviews', async (req, res) => {
 });
 
 /* GET /api/books/admin/all-reviews */
-router.get('/admin/all-reviews', async (req, res) => {
+router.get('/admin/all-reviews', adminRequired, async (req, res) => {
   const rows = await db.prepare(`SELECT r.*, b.title as "bookTitle" FROM reviews r LEFT JOIN books b ON r."bookId" = b.id ORDER BY r."createdAt" DESC`).all();
   res.json(rows);
 });
 
 /* DELETE /api/books/admin/reviews/:id */
-router.delete('/admin/reviews/:id', async (req, res) => {
+router.delete('/admin/reviews/:id', adminRequired, async (req, res) => {
   await db.prepare('DELETE FROM reviews WHERE id = $1').run(req.params.id);
   res.json({ ok: true });
 });

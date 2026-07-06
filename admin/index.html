@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — Kitobmarkazi</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/admin/admin.css">
 </head>
@@ -15,8 +16,8 @@
       <div class="login-logo">📚</div>
       <h1>Kitobmarkazi Admin</h1>
       <p class="login-sub">Boshqaruv paneliga kirish</p>
-      <div class="field"><label>Login</label><input type="text" id="loginUser" placeholder="admin" value="admin"></div>
-      <div class="field"><label>Parol</label><input type="password" id="loginPass" placeholder="••••••" value="admin123"></div>
+      <div class="field"><label>Login</label><input type="text" id="loginUser" placeholder="admin"></div>
+      <div class="field"><label>Parol</label><input type="password" id="loginPass" placeholder="••••••"></div>
       <button class="btn-primary" onclick="doLogin()">Kirish →</button>
       <div id="loginErr" class="login-err"></div>
     </div>
@@ -24,17 +25,18 @@
 
   <!-- Dashboard -->
   <div id="dashboard" style="display:none">
-    <nav class="sidebar">
+    <div class="sb-overlay" id="sbOverlay" onclick="toggleMobileNav()"></div>
+    <nav class="sidebar" id="sidebar">
       <div class="sb-brand">📚 <span>ADMIN</span></div>
-      <a class="sb-link on" data-page="overview" onclick="showPage('overview',this)">📊 Umumiy</a>
-      <a class="sb-link" data-page="orders" onclick="showPage('orders',this)">🛒 Buyurtmalar</a>
-      <a class="sb-link" data-page="books" onclick="showPage('books',this)">📖 Kitoblar</a>
-      <a class="sb-link" data-page="publishers" onclick="showPage('publishers',this)">🏢 Nashriyotlar</a>
-      <a class="sb-link" data-page="reviews" onclick="showPage('reviews',this)">💬 Fikrlar</a>
+      <a class="sb-link on" data-page="overview" onclick="showPage('overview',this);closeMobileNav()">📊 Umumiy</a>
+      <a class="sb-link" data-page="orders" onclick="showPage('orders',this);closeMobileNav()">🛒 Buyurtmalar</a>
+      <a class="sb-link" data-page="books" onclick="showPage('books',this);closeMobileNav()">📖 Kitoblar</a>
+      <a class="sb-link" data-page="publishers" onclick="showPage('publishers',this);closeMobileNav()">🏢 Nashriyotlar</a>
+      <a class="sb-link" data-page="reviews" onclick="showPage('reviews',this);closeMobileNav()">💬 Fikrlar</a>
 
-      <a class="sb-link" data-page="promos" onclick="showPage('promos',this)">🎁 Promokodlar</a>
-      <a class="sb-link" data-page="coming" onclick="showPage('coming',this)">⏳ Tez kunda</a>
-      <a class="sb-link" data-page="settings" onclick="showPage('settings',this)">⚙️ Sozlamalar</a>
+      <a class="sb-link" data-page="promos" onclick="showPage('promos',this);closeMobileNav()">🎁 Promokodlar</a>
+      <a class="sb-link" data-page="coming" onclick="showPage('coming',this);closeMobileNav()">⏳ Tez kunda</a>
+      <a class="sb-link" data-page="settings" onclick="showPage('settings',this);closeMobileNav()">⚙️ Sozlamalar</a>
 
       <div class="sb-foot">
         <a href="/" target="_blank">🌐 Saytga o'tish</a>
@@ -43,12 +45,15 @@
     </nav>
     <main class="main">
       <div class="topbar">
+        <button class="mob-burger" id="mobBurger" onclick="toggleMobileNav()"><span></span><span></span><span></span></button>
         <h2 id="pageTitle">Umumiy ko'rinish</h2>
         <span class="topbar-user" id="topUser">Admin</span>
       </div>
       <div class="content" id="content"></div>
     </main>
   </div>
+  <!-- Toast container -->
+  <div class="admin-toast" id="adminToast"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/admin/admin.js"></script>

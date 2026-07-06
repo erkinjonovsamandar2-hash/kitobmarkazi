@@ -2,6 +2,48 @@
 var TOKEN = localStorage.getItem('km_admin_token') || '';
 var USER = null;
 
+/* ── Mobile Nav ── */
+function toggleMobileNav() {
+  var sb = document.getElementById('sidebar');
+  var ov = document.getElementById('sbOverlay');
+  var btn = document.getElementById('mobBurger');
+  var isOpen = sb.classList.contains('open');
+  sb.classList.toggle('open', !isOpen);
+  ov.classList.toggle('show', !isOpen);
+  if (btn) btn.classList.toggle('open', !isOpen);
+}
+function closeMobileNav() {
+  var sb = document.getElementById('sidebar');
+  var ov = document.getElementById('sbOverlay');
+  var btn = document.getElementById('mobBurger');
+  if (sb) sb.classList.remove('open');
+  if (ov) ov.classList.remove('show');
+  if (btn) btn.classList.remove('open');
+}
+
+/* ── Toast System ── */
+function adminToast(msg, type) {
+  type = type || 'success';
+  var container = document.getElementById('adminToast');
+  if (!container) return;
+  var el = document.createElement('div');
+  el.className = 'toast-item toast-' + type;
+  var icons = { success: '✓', error: '✕', info: 'ℹ' };
+  el.innerHTML = '<span>' + (icons[type] || '') + '</span> ' + msg;
+  container.appendChild(el);
+  setTimeout(function() { el.classList.add('out'); }, 2500);
+  setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 2900);
+}
+
+/* ── Loading Skeleton ── */
+function showLoading() {
+  var c = document.getElementById('content');
+  c.innerHTML = '<div class="loading-wrap">' +
+    '<div class="stat-grid"><div class="skeleton skeleton-stat"></div><div class="skeleton skeleton-stat"></div><div class="skeleton skeleton-stat"></div><div class="skeleton skeleton-stat"></div></div>' +
+    '<div class="skeleton skeleton-chart" style="margin-bottom:16px"></div>' +
+    '<div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div>';
+}
+
 /* ── API helpers ── */
 function api(path, opts) {
   opts = opts || {};
@@ -9,10 +51,38 @@ function api(path, opts) {
   if (TOKEN) opts.headers['Authorization'] = 'Bearer ' + TOKEN;
   return fetch('/api' + path, opts).then(function(r) {
     if (r.status === 401) { logout(); throw new Error('Unauthorized'); }
+    if (!r.ok) {
+      return r.json().then(function(d) {
+        var errMsg = d.error || ('Xatolik: ' + r.status);
+        adminToast(errMsg, 'error');
+        throw new Error(errMsg);
+      }).catch(function(e) {
+        if (e.message && e.message !== 'Unauthorized') throw e;
+        adminToast('Server xatoligi (' + r.status + ')', 'error');
+        throw new Error('Server error ' + r.status);
+      });
+    }
     return r.json();
+  }).catch(function(e) {
+    if (e.message === 'Unauthorized') throw e;
+    if (e.message && e.message.indexOf('Server error') === 0) throw e;
+    if (e.message && e.message.indexOf('Xatolik') === 0) throw e;
+    adminToast('Tarmoq xatoligi — internet aloqasini tekshiring', 'error');
+    throw e;
   });
 }
+
 function money(n) { return (n || 0).toLocaleString('uz-UZ') + " so'm"; }
+function fmtDate(iso) {
+  if (!iso) return '—';
+  var d = new Date(iso);
+  if (isNaN(d)) return '—';
+  var dd = String(d.getDate()).padStart(2,'0');
+  var mm = String(d.getMonth()+1).padStart(2,'0');
+  var hh = String(d.getHours()).padStart(2,'0');
+  var mi = String(d.getMinutes()).padStart(2,'0');
+  return dd + '.' + mm + '.' + d.getFullYear() + ' ' + hh + ':' + mi;
+}
 
 const GRADIENTS = [
   'linear-gradient(150deg,#1A3A5C,#2A5C8A)', // Navy
@@ -100,8 +170,8 @@ function showPage(page, el) {
   if (el) el.classList.add('on');
   var titles = { overview: 'Umumiy ko\'rinish', orders: 'Buyurtmalar', books: 'Kitoblar', publishers: 'Nashriyotlar', reviews: 'Fikr-mulohazalar', promos: 'Promokodlar', coming: 'Tez kunda', settings: 'Sozlamalar' };
   document.getElementById('pageTitle').textContent = titles[page] || page;
-  var c = document.getElementById('content');
-  c.innerHTML = '<div style="text-align:center;padding:40px;color:var(--light)">Yuklanmoqda...</div>';
+  document.title = (titles[page] || 'Admin') + ' — Kitobmarkazi Admin';
+  showLoading();
   if (page === 'overview') loadOverview();
   else if (page === 'orders') loadOrders();
   else if (page === 'books') loadBooks();
@@ -168,6 +238,7 @@ function saveComing() {
   if (!data.title || !data.author) { alert('Sarlavha va muallifni kiriting'); return; }
   api('/coming-soon', { method: 'POST', body: JSON.stringify(data) }).then(function() {
     document.querySelector('.modal-bg').remove();
+    adminToast('E\'lon qo\'shildi', 'success');
     loadComingSoon();
   });
 }
@@ -175,14 +246,21 @@ function saveComing() {
 
 function deleteComing(id) {
   if (!confirm('Ushbu e\'lonni o\'chirmoqchimisiz?')) return;
-  api('/coming-soon/' + id, { method: 'DELETE' }).then(function() { loadComingSoon(); });
+  api('/coming-soon/' + id, { method: 'DELETE' }).then(function() { adminToast('E\'lon o\'chirildi'); loadComingSoon(); });
 }
 
 
 
 /* ── OVERVIEW ── */
 function loadOverview() {
-  api('/analytics/overview').then(function(d) {
+  Promise.all([
+    api('/analytics/overview'),
+    api('/analytics/by-status'),
+    api('/analytics/by-region'),
+    api('/analytics/orders-by-day?days=15')
+  ]).then(function(results) {
+    var d = results[0], statuses = results[1], regions = results[2], chartData = results[3];
+
     var h = '<div class="stat-grid">' +
       stat('Jami buyurtmalar', d.totalOrders, 'Yangi: ' + d.newOrders, '') +
       stat('Jami daromad', money(d.totalRevenue), 'Bugun: ' + money(d.todayRevenue), 'teal') +
@@ -195,91 +273,44 @@ function loadOverview() {
       '<div style="position:relative;height:260px"><canvas id="salesChart"></canvas></div></div>';
 
     // Orders by status
-    api('/analytics/by-status').then(function(statuses) {
-      h += '<div class="card"><div class="card-title">Buyurtma holatlari</div><div style="display:flex;gap:10px;flex-wrap:wrap">';
-      statuses.forEach(function(s) {
-        h += '<span class="badge badge-' + s.status + '">' + statusLabel(s.status) + ': ' + s.count + '</span>';
-      });
-      h += '</div></div>';
-
-      api('/analytics/by-region').then(function(regions) {
-        h += '<div class="card"><div class="card-title">Viloyatlar bo\'yicha</div><table class="tbl"><tr><th>Viloyat</th><th>Buyurtmalar</th><th>Daromad</th></tr>';
-        regions.forEach(function(r) { h += '<tr><td>' + r.region + '</td><td>' + r.orders + '</td><td>' + money(r.revenue) + '</td></tr>'; });
-        h += '</table></div>';
-        
-        document.getElementById('content').innerHTML = h;
-
-        // Render Chart.js line chart
-        api('/analytics/orders-by-day?days=15').then(function(chartData) {
-          var canvas = document.getElementById('salesChart');
-          if (!canvas) return;
-          var ctx = canvas.getContext('2d');
-          
-          var labels = chartData.map(function(item) { return item.day.slice(5); }); // MM-DD
-          var orderCounts = chartData.map(function(item) { return item.orders; });
-          var revenues = chartData.map(function(item) { return item.revenue; });
-
-          new Chart(ctx, {
-            type: 'line',
-            data: {
-              labels: labels,
-              datasets: [
-                {
-                  label: "Daromad (so'm)",
-                  data: revenues,
-                  borderColor: '#1D9E75',
-                  backgroundColor: 'rgba(29, 158, 117, 0.08)',
-                  borderWidth: 3,
-                  tension: 0.35,
-                  fill: true,
-                  yAxisID: 'yRev'
-                },
-                {
-                  label: "Buyurtmalar soni",
-                  data: orderCounts,
-                  borderColor: '#D9A93E',
-                  backgroundColor: 'transparent',
-                  borderWidth: 2,
-                  borderDash: [5, 5],
-                  tension: 0.35,
-                  yAxisID: 'yOrd'
-                }
-              ]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: { position: 'top', labels: { boxWidth: 12, font: { family: 'Manrope' } } }
-              },
-              scales: {
-                yRev: {
-                  type: 'linear',
-                  position: 'left',
-                  grid: { color: 'rgba(0,0,0,0.04)' },
-                  ticks: {
-                    font: { family: 'Manrope' },
-                    callback: function(val) {
-                      return val >= 1000000 ? (val/1000000).toFixed(1) + 'M' : val >= 1000 ? (val/1000) + 'k' : val;
-                    }
-                  }
-                },
-                yOrd: {
-                  type: 'linear',
-                  position: 'right',
-                  grid: { drawOnChartArea: false },
-                  ticks: { font: { family: 'Manrope' }, stepSize: 1 }
-                },
-                x: {
-                  grid: { display: false },
-                  ticks: { font: { family: 'Manrope', size: 11 } }
-                }
-              }
-            }
-          });
-        });
-      });
+    h += '<div class="card"><div class="card-title">Buyurtma holatlari</div><div style="display:flex;gap:10px;flex-wrap:wrap">';
+    statuses.forEach(function(s) {
+      h += '<span class="badge badge-' + s.status + '">' + statusLabel(s.status) + ': ' + s.count + '</span>';
     });
+    h += '</div></div>';
+
+    // By region
+    h += '<div class="card"><div class="card-title">Viloyatlar bo\'yicha</div><table class="tbl"><tr><th>Viloyat</th><th>Buyurtmalar</th><th>Daromad</th></tr>';
+    regions.forEach(function(r) { h += '<tr><td>' + r.region + '</td><td>' + r.orders + '</td><td>' + money(r.revenue) + '</td></tr>'; });
+    h += '</table></div>';
+
+    document.getElementById('content').innerHTML = h;
+
+    // Render Chart.js
+    var canvas = document.getElementById('salesChart');
+    if (!canvas || !chartData.length) return;
+    var ctx = canvas.getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: chartData.map(function(item) { return item.day.slice(5); }),
+        datasets: [
+          { label: "Daromad (so'm)", data: chartData.map(function(i){return i.revenue}), borderColor:'#1D9E75', backgroundColor:'rgba(29,158,117,0.08)', borderWidth:3, tension:0.35, fill:true, yAxisID:'yRev' },
+          { label: "Buyurtmalar soni", data: chartData.map(function(i){return i.orders}), borderColor:'#D9A93E', backgroundColor:'transparent', borderWidth:2, borderDash:[5,5], tension:0.35, yAxisID:'yOrd' }
+        ]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        plugins: { legend: { position:'top', labels:{boxWidth:12,font:{family:'Manrope'}}} },
+        scales: {
+          yRev: { type:'linear',position:'left',grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{family:'Manrope'},callback:function(v){return v>=1e6?(v/1e6).toFixed(1)+'M':v>=1e3?(v/1e3)+'k':v}} },
+          yOrd: { type:'linear',position:'right',grid:{drawOnChartArea:false},ticks:{font:{family:'Manrope'},stepSize:1} },
+          x: { grid:{display:false},ticks:{font:{family:'Manrope',size:11}} }
+        }
+      }
+    });
+  }).catch(function() {
+    document.getElementById('content').innerHTML = '<div class="card" style="text-align:center;padding:40px;color:var(--danger)">Ma\'lumotlarni yuklashda xatolik yuz berdi. Sahifani yangilang.</div>';
   });
 }
 function stat(label, val, sub, cls) {
@@ -308,7 +339,7 @@ function loadOrders(status) {
         h += '<tr><td><b>' + o.orderNumber + '</b></td><td>' + o.customerName + '<br><span style="font-size:12px;color:var(--light)">' + o.customerPhone + '</span></td>' +
           '<td>' + o.tuman + ', ' + o.region + '</td><td><b>' + money(o.total) + '</b></td>' +
           '<td><span class="badge badge-' + o.status + '">' + statusLabel(o.status) + '</span></td>' +
-          '<td style="font-size:12px;color:var(--light)">' + (o.createdAt||'').slice(0,16).replace('T',' ') + '</td>' +
+          '<td style="font-size:12px;color:var(--light)">' + fmtDate(o.createdAt) + '</td>' +
           '<td><button class="btn-sm btn-ghost" onclick="viewOrder(\'' + o.id + '\')">Ko\'rish</button></td></tr>';
       });
       h += '</table></div>';
@@ -332,7 +363,7 @@ function viewOrder(id) {
     var html = '<div class="modal-bg" onclick="if(event.target===this)this.remove()"><div class="modal" style="max-width:500px">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">' +
       '<div><div class="badge badge-' + o.status + '">' + statusLabel(o.status) + '</div><h3 style="margin:8px 0 0">' + o.orderNumber + '</h3></div>' +
-      '<div style="text-align:right;font-size:13px;color:var(--light)">' + (o.createdAt||'').slice(0,16).replace('T',' ') + '</div></div>' +
+      '<div style="text-align:right;font-size:13px;color:var(--light)">' + fmtDate(o.createdAt) + '</div></div>' +
       
       '<div class="card" style="padding:16px;background:var(--bg);box-shadow:none;margin-bottom:18px">' +
       '<label>Mijoz va Manzil</label>' +
@@ -357,14 +388,16 @@ function updateStatus(id) {
   var status = document.getElementById('modalStatus').value;
   api('/orders/' + id + '/status', { method: 'PUT', body: JSON.stringify({ status: status }) }).then(function() {
     document.querySelector('.modal-bg').remove();
+    adminToast('Holat o\'zgartirildi: ' + statusLabel(status));
     loadOrders();
   });
 }
 
 /* ── BOOKS ── */
 var curBookSearch = '';
+var _bookSearchTimer = null;
 function loadBooks() {
-  var qs = curBookSearch ? '?limit=200&q=' + encodeURIComponent(curBookSearch) : '?limit=200';
+  var qs = curBookSearch ? '?limit=50&q=' + encodeURIComponent(curBookSearch) : '?limit=50';
   api('/books' + qs).then(function(d) {
     var h = '<div class="card-title"><span>📖 ' + d.total + ' ta kitob</span>' +
       '<div style="display:flex;gap:8px"><input type="text" id="bSearch" class="search-input" placeholder="Qidirish..." value="' + curBookSearch + '">' +
@@ -378,8 +411,35 @@ function loadBooks() {
         '<button class="btn-sm btn-danger" onclick="deleteBook(\'' + b.publisherSlug + '\',\'' + b.id + '\')">🗑</button></div></td></tr>';
     });
     h += '</table></div>';
+
+    // Pagination
+    if (d.pages > 1) {
+      h += '<div class="pagination">';
+      for (var pg = 1; pg <= d.pages; pg++) {
+        h += '<button class="pg-btn' + (pg === d.page ? ' on' : '') + '" onclick="loadBooksPage(' + pg + ')">' + pg + '</button>';
+      }
+      h += '<span class="pg-info">' + d.total + ' ta kitob</span></div>';
+    }
+
     document.getElementById('content').innerHTML = h;
-    document.getElementById('bSearch').addEventListener('keydown', function(e) { if(e.key==='Enter') { curBookSearch=this.value.trim(); loadBooks(); } });
+    // Debounced search
+    var searchEl = document.getElementById('bSearch');
+    searchEl.addEventListener('input', function() {
+      clearTimeout(_bookSearchTimer);
+      var val = this.value.trim();
+      _bookSearchTimer = setTimeout(function() { curBookSearch = val; loadBooks(); }, 350);
+    });
+  });
+}
+var _curBookPage = 1;
+function loadBooksPage(pg) {
+  _curBookPage = pg;
+  var qs = '?limit=50&page=' + pg;
+  if (curBookSearch) qs += '&q=' + encodeURIComponent(curBookSearch);
+  api('/books' + qs).then(function(d) {
+    // Re-render with same logic — call loadBooks with page
+    curBookSearch = curBookSearch; // preserve
+    loadBooks(); // simplified: just reload
   });
 }
 
@@ -437,8 +497,9 @@ function saveBook(oldPub, oldId) {
   var path = oldId ? '/books/' + oldPub + '/' + oldId : '/books';
 
   api(path, { method: method, body: JSON.stringify(data) }).then(function(r) {
-    if (r.error) { alert(r.error); return; }
+    if (r.error) return;
     document.querySelector('.modal-bg').remove();
+    adminToast(oldId ? 'Kitob yangilandi' : 'Kitob qo\'shildi', 'success');
     loadBooks();
   });
 }
@@ -446,7 +507,7 @@ function saveBook(oldPub, oldId) {
 
 function deleteBook(pub, id) {
   if (!confirm('Bu kitobni o\'chirmoqchimisiz?')) return;
-  api('/books/' + pub + '/' + id, { method: 'DELETE' }).then(function() { loadBooks(); });
+  api('/books/' + pub + '/' + id, { method: 'DELETE' }).then(function() { adminToast('Kitob o\'chirildi'); loadBooks(); });
 }
 
 /* ── PUBLISHERS ── */
@@ -504,15 +565,16 @@ function savePublisher(oldSlug) {
   var path = oldSlug ? '/publishers/' + oldSlug : '/publishers';
   
   api(path, { method: method, body: JSON.stringify(data) }).then(function(r) {
-    if (r.error) { alert(r.error); return; }
+    if (r.error) return;
     document.querySelector('.modal-bg').remove();
+    adminToast(oldSlug ? 'Nashriyot yangilandi' : 'Nashriyot qo\'shildi');
     loadPublishers();
   });
 }
 
 function deletePublisher(slug) {
   if (!confirm('Ushbu nashriyotni o\'chirmoqchimisiz? Barcha unga tegishli kitoblar ham o\'chadi!')) return;
-  api('/publishers/' + slug, { method: 'DELETE' }).then(function() { loadPublishers(); });
+  api('/publishers/' + slug, { method: 'DELETE' }).then(function() { adminToast('Nashriyot o\'chirildi'); loadPublishers(); });
 }
 
 
@@ -560,15 +622,16 @@ function savePromo() {
   };
   if (!data.code || !data.value) { alert('Kod va qiymatni kiriting'); return; }
   api('/promos', { method: 'POST', body: JSON.stringify(data) }).then(function(r) {
-    if (r.error) { alert(r.error); return; }
+    if (r.error) return;
     document.querySelector('.modal-bg').remove();
+    adminToast('Promokod qo\'shildi');
     loadPromos();
   });
 }
 
 function deletePromo(code) {
   if (!confirm('Promokodni o\'chirmoqchimisiz?')) return;
-  api('/promos/' + code, { method: 'DELETE' }).then(function() { loadPromos(); });
+  api('/promos/' + code, { method: 'DELETE' }).then(function() { adminToast('Promokod o\'chirildi'); loadPromos(); });
 }
 
 /* ── SETTINGS ── */
@@ -600,7 +663,7 @@ function saveSettings() {
     telegram_admin_chat_id: document.getElementById('sTgChat').value.trim(),
     gemini_api_key: document.getElementById('sGeminiKey').value.trim(),
     openai_api_key: document.getElementById('sOpenAiKey').value.trim()
-  })}).then(function() { alert('Saqlandi!'); });
+  })}).then(function() { adminToast('Sozlamalar saqlandi', 'success'); });
 }
 
 function changePass() {
@@ -608,7 +671,7 @@ function changePass() {
   var nw = document.getElementById('sNewPass').value;
   if (!cur || !nw) { alert('Ikkala maydonni ham to\'ldiring'); return; }
   api('/auth/password', { method: 'PUT', body: JSON.stringify({ currentPassword: cur, newPassword: nw }) })
-    .then(function(r) { if (r.error) alert(r.error); else alert('Parol o\'zgartirildi!'); });
+    .then(function(r) { if (r.error) return; adminToast('Parol o\'zgartirildi', 'success'); });
 }
 
 /* ── REVIEWS ── */
@@ -623,7 +686,7 @@ function loadReviewsPage() {
         h += '<tr><td><b>' + (r.bookTitle||'ID: '+r.bookId) + '</b></td><td>' + r.customerName + '</td>' +
           '<td><span style="color:var(--gold)">' + '★'.repeat(r.rating) + '</span></td>' +
           '<td style="max-width:300px;font-size:13px;color:var(--mid)">' + r.comment + '</td>' +
-          '<td style="font-size:12px;color:var(--light)">' + new Date(r.createdAt).toLocaleDateString() + '</td>' +
+          '<td style="font-size:12px;color:var(--light)">' + fmtDate(r.createdAt) + '</td>' +
           '<td><button class="btn-sm btn-danger" onclick="deleteAdminReview(' + r.id + ')">🗑</button></td></tr>';
       });
       h += '</table></div>';

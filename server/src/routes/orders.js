@@ -64,8 +64,11 @@ router.post('/', async (req, res) => {
 
   const total = subtotal - discount + (payTime === 'prepaid' ? deliveryFee : 0);
 
-  // Generate order number
-  const orderNumber = 'UZ-' + (10000 + Math.floor(Math.random() * 90000));
+  // Generate order number (alphanumeric, 8 chars for security)
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no I/O/0/1 to avoid confusion
+  let orderNum = '';
+  for (let i = 0; i < 8; i++) orderNum += chars.charAt(Math.floor(Math.random() * chars.length));
+  const orderNumber = 'KM-' + orderNum;
   const orderId = crypto.randomUUID();
 
   // Insert order

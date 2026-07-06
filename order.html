@@ -217,6 +217,7 @@
         <div style="display:flex;gap:6px">
           <input type="text" id="promoCode" placeholder="Promokod..." style="height:38px;font-size:13px;padding:0 12px;border:2px solid #eee;border-radius:10px">
           <button onclick="applyPromo()" style="height:38px;padding:0 12px;background:#f3f4f6;border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer">Qo'llash</button>
+          <button id="promoClear" onclick="clearPromo()" style="height:38px;padding:0 10px;background:#fee2e2;color:#ef4444;border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;display:none">✕</button>
         </div>
         <div id="promoMsg" style="font-size:11px;margin-top:4px"></div>
       </div>
@@ -269,7 +270,7 @@
     </div>
   </div>
   <div class="site-foot-bot"><div class="sf-bot-in">
-    <span class="sf-copy">© 2025 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
+    <span class="sf-copy">© 2025�2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
     <span class="sf-tag">Uzbek Books. One Platform.</span>
   </div></div>
 </footer>
@@ -312,6 +313,9 @@ function onRegionChange(){
   tsel.innerHTML='<option value="">Tumanni tanlang...</option>'+ts.map(function(t){return '<option>'+t+'</option>';}).join('');
   renderCouriers();
 }
+
+var _courierCache = {}; 
+
 function renderCouriers(){
   courier='';
   var region=document.getElementById('city').value;
@@ -321,20 +325,56 @@ function renderCouriers(){
   payTime='';
   document.getElementById('pt-prepaid').classList.remove('on');
   document.getElementById('pt-ondelivery').classList.remove('on');
-  if(!region||!tuman){box.innerHTML='<div class="cour-hint">Avval viloyat va tumanni tanlang — hududingizdagi kuryerlar ko\'rsatiladi</div>';document.getElementById('payTimeBlock').style.display='none';return;}
-  var avail=couriersFor(region,tuman);
-  document.getElementById('payTimeBlock').style.display = avail.length ? 'block' : 'none';
-  box.innerHTML=avail.map(function(ck){
-    var c=COURIERS[ck];
-    return '<div class="cour" id="c-'+ck+'" onclick="selCour(\''+ck+'\')">'+
-      '<div class="cour-logo" style="background:'+c.color+'">'+c.name+'</div>'+
-      '<div class="cour-info"><div class="cour-name">'+c.name+'</div><div class="cour-desc">'+c.desc+'</div></div>'+
-      '<div class="cour-price">'+c.price+'</div>'+
-      '<div class="cour-radio"><div class="cour-dot"></div></div></div>';
-  }).join('') + '<div style="font-size:11px;color:var(--light);padding:6px 2px 0">📍 '+tuman+', '+region+' — '+avail.length+' ta kuryer xizmati mavjud</div>';
+  if(!region||!tuman){
+    box.innerHTML='<div class="cour-hint">Avval viloyat va tumanni tanlang — hududingizdagi kuryerlar ko\'rsatiladi</div>';
+    document.getElementById('payTimeBlock').style.display='none';
+    return;
+  }
+
+  box.innerHTML='<div class="cour-hint" style="color:var(--teal)">⏳ Kuryerlar yuklanmoqda...</div>';
+
+  fetch('/api/couriers?region=' + encodeURIComponent(region) + '&tuman=' + encodeURIComponent(tuman))
+    .then(function(r){ return r.json(); })
+    .then(function(couriers){
+      if (!couriers || !couriers.length) {
+        box.innerHTML='<div class="cour-hint">Bu hududda hozircha kuryer xizmati mavjud emas</div>';
+        document.getElementById('payTimeBlock').style.display='none';
+        return;
+      }
+      couriers.forEach(function(c){ _courierCache[c.slug] = c; });
+
+      document.getElementById('payTimeBlock').style.display = 'block';
+      box.innerHTML = couriers.map(function(c){
+        return '<div class="cour" id="c-'+c.slug+'" onclick="selCour(\''+c.slug+'\')">' +
+          '<div class="cour-logo" style="background:'+(c.color||'var(--teal)')+'">'+c.name+'</div>' +
+          '<div class="cour-info"><div class="cour-name">'+c.name+'</div><div class="cour-desc">'+(c.description||c.desc||'')+'</div></div>' +
+          '<div class="cour-price">'+(c.price||'')+'</div>' +
+          '<div class="cour-radio"><div class="cour-dot"></div></div></div>';
+      }).join('') + '<div style="font-size:11px;color:var(--light);padding:6px 2px 0">📍 '+tuman+', '+region+' — '+couriers.length+' ta kuryer xizmati mavjud</div>';
+    })
+    .catch(function(){
+      var avail=couriersFor(region,tuman);
+      document.getElementById('payTimeBlock').style.display = avail.length ? 'block' : 'none';
+      box.innerHTML=avail.map(function(ck){
+        var c=COURIERS[ck];
+        _courierCache[ck] = { slug:ck, name:c.name, color:c.color, description:c.desc, price:c.price };
+        return '<div class="cour" id="c-'+ck+'" onclick="selCour(\''+ck+'\')">' +
+          '<div class="cour-logo" style="background:'+c.color+'">'+c.name+'</div>' +
+          '<div class="cour-info"><div class="cour-name">'+c.name+'</div><div class="cour-desc">'+c.desc+'</div></div>' +
+          '<div class="cour-price">'+c.price+'</div>' +
+          '<div class="cour-radio"><div class="cour-dot"></div></div></div>';
+      }).join('') + '<div style="font-size:11px;color:var(--light);padding:6px 2px 0">📍 '+tuman+', '+region+' — '+avail.length+' ta kuryer xizmati mavjud</div>';
+    });
 }
-function courierFee(ck){var d=(COURIERS[ck].price||'').replace(/[^0-9]/g,'');return parseInt(d||'0',10);}
+
+function courierFee(ck){
+  var c = _courierCache[ck] || COURIERS[ck] || {};
+  var p = (c.price||'').replace(/[^0-9]/g,'');
+  return parseInt(p||'0',10);
+}
+
 function selCour(ck){courier=ck;document.querySelectorAll('.cour').forEach(function(e){e.classList.remove('on')});document.getElementById('c-'+ck).classList.add('on');document.getElementById('payTimeBlock').style.display='block';updateSummary();}
+
 function selPayTime(t){
   if(!courier){ alert('Avval yetkazib berish xizmatini tanlang'); return; }
   payTime=t;
@@ -342,6 +382,7 @@ function selPayTime(t){
   document.getElementById('pt-ondelivery').classList.toggle('on',t==='ondelivery');
   updateSummary();
 }
+
 function updateSummary(){
   var goods=cartTotal();
   var fee=courier?courierFee(courier):0;
@@ -352,7 +393,7 @@ function updateSummary(){
     document.getElementById('sumTotal').textContent=money(goods - disc);
     return;
   }
-  var c=COURIERS[courier];
+  var c = _courierCache[courier] || COURIERS[courier] || {};
   if(payTime==='ondelivery'){
     document.getElementById('sumDelivery').innerHTML=c.name+' · <span style="color:var(--mid)">yetkazilganda</span>';
     document.getElementById('sumTotal').textContent=money(goods - disc);
@@ -360,7 +401,7 @@ function updateSummary(){
     document.getElementById('sumDelivery').textContent=c.name+' · '+money(fee);
     document.getElementById('sumTotal').textContent=money(goods + fee - disc);
   } else {
-    document.getElementById('sumDelivery').textContent=c.name+' · '+c.price;
+    document.getElementById('sumDelivery').textContent=c.name+' · '+(c.price||'');
     document.getElementById('sumTotal').textContent=money(goods - disc);
   }
 }
@@ -387,11 +428,14 @@ function applyPromo() {
       activePromo = { code: code, discount: data.discount };
       msg.textContent = '✓ ' + data.message;
       msg.style.color = '#1D9E75';
+      document.getElementById('promoClear').style.display = 'block';
+      document.getElementById('promoCode').disabled = true;
       updateSummary();
     } else {
       activePromo = null;
       msg.textContent = '✕ ' + data.message;
       msg.style.color = '#E2556F';
+      document.getElementById('promoClear').style.display = 'none';
       updateSummary();
     }
   })
@@ -401,6 +445,42 @@ function applyPromo() {
   });
 }
 
+function clearPromo() {
+  activePromo = null;
+  document.getElementById('promoCode').value = '';
+  document.getElementById('promoCode').disabled = false;
+  document.getElementById('promoMsg').textContent = '';
+  document.getElementById('promoClear').style.display = 'none';
+  updateSummary();
+}
+
+/* ── Inline Form Validation ── */
+function validateField(id, test, errMsg) {
+  var el = document.getElementById(id);
+  if (!el) return test;
+  if (!test) {
+    el.style.borderColor = '#E2556F';
+    var hint = el.parentNode.querySelector('.field-err');
+    if (!hint) {
+      hint = document.createElement('div');
+      hint.className = 'field-err';
+      hint.style.cssText = 'font-size:11px;color:#E2556F;margin-top:2px';
+      el.parentNode.appendChild(hint);
+    }
+    hint.textContent = errMsg;
+  } else {
+    el.style.borderColor = '';
+    var hint = el.parentNode.querySelector('.field-err');
+    if (hint) hint.remove();
+  }
+  return test;
+}
+
+function isValidUzPhone(phone) {
+  // Accept formats: +998901234567, 998901234567, 901234567, +998 90 123 45 67
+  var cleaned = phone.replace(/[\s\-\(\)]/g, '');
+  return /^(\+?998)?[0-9]{9}$/.test(cleaned);
+}
 
 function submitOrder(){
   var f=document.getElementById('fname').value.trim();
@@ -408,8 +488,21 @@ function submitOrder(){
   var c=document.getElementById('city').value;
   var t=document.getElementById('tuman').value;
   var a=document.getElementById('addr').value.trim();
-  var errs=[];if(!f)errs.push('Ism');if(!p)errs.push('Telefon');if(!c)errs.push('Shahar');if(!t)errs.push('Tuman');if(!a)errs.push('Manzil');if(!courier)errs.push('Kuryer xizmati');if(!payTime)errs.push('Yetkazib berish to\'lovi');if(!payMethod)errs.push('To\'lov usuli');
-  if(errs.length){alert('Iltimos to\'ldiring: '+errs.join(', '));return;}
+
+  // Clear previous errors
+  document.querySelectorAll('.field-err').forEach(function(e){ e.remove(); });
+  ['fname','phone','city','tuman','addr'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.borderColor=''; });
+
+  var valid = true;
+  valid = validateField('fname', f.length >= 2, 'Ismingiz kamida 2 ta harf bo\'lishi kerak') && valid;
+  valid = validateField('phone', isValidUzPhone(p), 'To\'g\'ri telefon raqam kiriting: +998 XX XXX XX XX') && valid;
+  valid = validateField('city', !!c, 'Viloyatni tanlang') && valid;
+  valid = validateField('tuman', !!t, 'Tumanni tanlang') && valid;
+  valid = validateField('addr', a.length >= 5, 'Manzilni to\'liqroq kiriting (kamida 5 ta belgi)') && valid;
+  if(!courier){ valid=false; toast('Yetkazib berish xizmatini tanlang','err'); }
+  if(!payTime){ valid=false; toast('To\'lov vaqtini tanlang','err'); }
+  if(!payMethod){ valid=false; toast('To\'lov usulini tanlang','err'); }
+  if(!valid) return;
   
   var btn = document.querySelector('.submit');
   btn.disabled = true;

@@ -64,8 +64,7 @@
         </div>
     </div>
 
-    <script src="data.js"></script>
-    <script src="kmChat.js"></script>
+    <script src="chat-widget.js"></script>
     <script>
         function trackOrder() {
             const num = document.getElementById('orderNum').value.trim();
@@ -112,9 +111,9 @@
             }
         }
 
-        // Auto-track if URL has ?num=...
+        // Auto-track if URL has ?order=... or ?num=...
         const urlParams = new URLSearchParams(window.location.search);
-        const qNum = urlParams.get('num');
+        const qNum = urlParams.get('order') || urlParams.get('num');
         if (qNum) {
             document.getElementById('orderNum').value = qNum;
             trackOrder();
