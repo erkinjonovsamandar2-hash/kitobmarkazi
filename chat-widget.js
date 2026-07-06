@@ -8,6 +8,7 @@
   var style = document.createElement('style');
   style.innerHTML = `
     .km-chat-btn {
+      all: initial;
       position: fixed !important;
       bottom: 24px !important;
       right: 24px !important;
@@ -27,6 +28,7 @@
       padding: 0;
       pointer-events: auto !important;
       isolation: isolate;
+      font-family: sans-serif;
     }
     .km-chat-btn:hover {
       transform: scale(1.1) translateY(-3px);
@@ -328,13 +330,10 @@
     }
   };
 
-  chatBtn.onclick = function(e) {
-    console.log('[KM Chat] Button clicked!', e);
+  chatBtn.addEventListener('mousedown', function(e) {
+    e.preventDefault();
     window.__kmToggleChat();
-  };
-  // Visual debug
-  chatBtn.style.outline = '2px solid red';
-  console.log('[KM Chat] Diagnostic: outline added');
+  });
   chatClose.onclick = function() {
     chatWindow.classList.remove('open');
   };

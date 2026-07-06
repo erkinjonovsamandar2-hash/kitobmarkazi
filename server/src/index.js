@@ -8,6 +8,40 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 /* Middleware */
+function validateEnv() {
+  const required = ['DATABASE_URL', 'JWT_SECRET'];
+  const optional = ['TELEGRAM_BOT_TOKEN', 'TELEGRAM_ADMIN_CHAT_ID', 'GEMINI_API_KEY'];
+  
+  console.log('\n🔍 Environment Check:');
+  console.log('────────────────────────────────────────');
+  
+  let hasMissingRequired = false;
+  required.forEach(key => {
+    if (!process.env[key]) {
+      console.log(`  ❌ ${key.padEnd(25)} [MISSING]`);
+      hasMissingRequired = true;
+    } else {
+      console.log(`  ✅ ${key.padEnd(25)} [OK]`);
+    }
+  });
+
+  optional.forEach(key => {
+    if (!process.env[key]) {
+      console.log(`  ⚠️  ${key.padEnd(25)} [NOT SET]`);
+    } else {
+      console.log(`  ✅ ${key.padEnd(25)} [OK]`);
+    }
+  });
+  console.log('────────────────────────────────────────\n');
+
+  if (hasMissingRequired) {
+    console.error('FATAL: Missing required environment variables. Application cannot start.\n');
+    process.exit(1);
+  }
+}
+
+validateEnv();
+
 app.use(cors());
 app.use(express.json({ limit: '5mb' }));
 

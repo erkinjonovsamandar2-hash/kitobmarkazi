@@ -257,9 +257,11 @@ function loadOverview() {
     api('/analytics/overview'),
     api('/analytics/by-status'),
     api('/analytics/by-region'),
-    api('/analytics/orders-by-day?days=15')
+    api('/analytics/orders-by-day?days=15'),
+    api('/analytics/top-books'),
+    api('/analytics/top-publishers')
   ]).then(function(results) {
-    var d = results[0], statuses = results[1], regions = results[2], chartData = results[3];
+    var d = results[0], statuses = results[1], regions = results[2], chartData = results[3], topBooks = results[4], topPubs = results[5];
 
     var h = '<div class="stat-grid">' +
       stat('Jami buyurtmalar', d.totalOrders, 'Yangi: ' + d.newOrders, '') +
@@ -280,8 +282,18 @@ function loadOverview() {
     h += '</div></div>';
 
     // By region
-    h += '<div class="card"><div class="card-title">Viloyatlar bo\'yicha</div><table class="tbl"><tr><th>Viloyat</th><th>Buyurtmalar</th><th>Daromad</th></tr>';
+    h += '<div class="frow"><div class="card"><div class="card-title">Viloyatlar bo\'yicha</div><table class="tbl"><tr><th>Viloyat</th><th>Buyurtmalar</th><th>Daromad</th></tr>';
     regions.forEach(function(r) { h += '<tr><td>' + r.region + '</td><td>' + r.orders + '</td><td>' + money(r.revenue) + '</td></tr>'; });
+    h += '</table></div>';
+
+    // Top Books
+    h += '<div class="card"><div class="card-title">Eng ko\'p sotilgan kitoblar</div><table class="tbl"><tr><th>Kitob</th><th>Sotilgan</th><th>Daromad</th></tr>';
+    topBooks.forEach(function(b) { h += '<tr><td><b>' + b.title + '</b><br><span style="font-size:11px;color:var(--light)">' + b.author + '</span></td><td>' + b.totalSold + ' ta</td><td>' + money(b.totalRevenue) + '</td></tr>'; });
+    h += '</table></div></div>';
+
+    // Top Publishers
+    h += '<div class="card"><div class="card-title">Top Nashriyotlar (Daromad)</div><table class="tbl"><tr><th>Nashriyot</th><th>Kitoblar</th><th>Jami daromad</th></tr>';
+    topPubs.forEach(function(p) { h += '<tr><td><b>' + (p.name || p.publisherSlug) + '</b></td><td>' + p.totalSold + ' ta</td><td>' + money(p.totalRevenue) + '</td></tr>'; });
     h += '</table></div>';
 
     document.getElementById('content').innerHTML = h;

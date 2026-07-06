@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node server/src/index.js",
-    "dev": "node --watch server/src/index.js"
+    "dev": "node --watch server/src/index.js",
+    "migrate": "node server/src/migrate.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
