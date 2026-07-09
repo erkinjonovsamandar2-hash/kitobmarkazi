@@ -419,9 +419,17 @@ function renderOrdersTable(status) {
   } else {
     h += '<div class="card" style="padding:0;overflow-x:auto"><table class="tbl"><tr><th>#</th><th>Mijoz</th><th>Viloyat</th><th>Jami</th><th>Holat</th><th>Sana</th><th></th></tr>';
     filtered.forEach(function(o) {
-      h += '<tr><td><b>' + o.orderNumber + '</b></td><td>' + o.customerName + '<br><span style="font-size:12px;color:var(--light)">' + o.customerPhone + '</span></td>' +
-        '<td>' + o.tuman + ', ' + o.region + '</td><td><b>' + money(o.total) + '</b></td>' +
-        '<td><span class="badge badge-' + o.status + '">' + statusLabel(o.status) + '</span></td>' +
+      var orderNum = o.orderNumber || '#';
+      var customerName = o.customerName || 'Noma\'lum mijoz';
+      var customerPhone = o.customerPhone || 'Noma\'lum raqam';
+      var region = o.region || '';
+      var tuman = o.tuman || '';
+      var status = o.status || 'new';
+      var total = typeof o.total === 'number' ? o.total : 0;
+      var locationStr = tuman + (tuman && region ? ', ' : '') + region;
+      h += '<tr><td><b>' + orderNum + '</b></td><td>' + customerName + '<br><span style="font-size:12px;color:var(--light)">' + customerPhone + '</span></td>' +
+        '<td>' + locationStr + '</td><td><b>' + money(total) + '</b></td>' +
+        '<td><span class="badge badge-' + status + '">' + statusLabel(status) + '</span></td>' +
         '<td style="font-size:12px;color:var(--light)">' + fmtDate(o.createdAt) + '</td>' +
         '<td><button class="btn-sm btn-ghost" onclick="viewOrder(\'' + o.id + '\')">Ko\'rish</button></td></tr>';
     });
@@ -443,37 +451,48 @@ function filterOrdersLocal(status) {
 function viewOrder(id) {
   api('/orders/' + id).then(function(o) {
     var items = (o.items||[]).map(function(it) {
+      var title = it.title || 'Kitob';
+      var author = it.author || 'Noma\'lum';
+      var price = typeof it.price === 'number' ? it.price : 0;
+      var qty = typeof it.qty === 'number' ? it.qty : 1;
       return '<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--bg)">' +
-        '<div><div style="font-weight:600;font-size:14px">' + it.title + '</div><div style="font-size:12px;color:var(--light)">' + it.author + '</div></div>' +
-        '<div style="text-align:right"><div>' + it.qty + ' x ' + (it.price/1000).toFixed(1) + 'k</div><div style="font-weight:700">' + money(it.price * it.qty) + '</div></div></div>';
+        '<div><div style="font-weight:600;font-size:14px">' + title + '</div><div style="font-size:12px;color:var(--light)">' + author + '</div></div>' +
+        '<div style="text-align:right"><div>' + qty + ' x ' + (price/1000).toFixed(1) + 'k</div><div style="font-weight:700">' + money(price * qty) + '</div></div></div>';
     }).join('');
 
     var statusOpts = ['new','confirmed','processing','shipped','delivered','cancelled'].map(function(s) {
       return '<option value="' + s + '"' + (o.status===s?' selected':'') + '>' + statusLabel(s) + '</option>';
     }).join('');
 
+    var customerName = o.customerName || 'Noma\'lum mijoz';
+    var customerPhone = o.customerPhone || 'Noma\'lum raqam';
+    var region = o.region || '';
+    var tuman = o.tuman || '';
+    var address = o.address || '';
+    var total = typeof o.total === 'number' ? o.total : 0;
+
     var html = '<div class="modal-bg" onclick="if(event.target===this)this.remove()"><div class="modal modal-order-detail" style="max-width:550px">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px" class="no-print">' +
-      '<div><div class="badge badge-' + o.status + '">' + statusLabel(o.status) + '</div><h3 style="margin:8px 0 0">' + o.orderNumber + '</h3></div>' +
+      '<div><div class="badge badge-' + (o.status||'new') + '">' + statusLabel(o.status||'new') + '</div><h3 style="margin:8px 0 0">' + (o.orderNumber||'#') + '</h3></div>' +
       '<div style="text-align:right">' +
       '<button class="btn-sm btn-ghost" onclick="window.print()" style="margin-bottom:4px;display:inline-flex;align-items:center;gap:6px"><i data-lucide="printer" style="width:14px;height:14px"></i> Chop etish</button>' +
       '<div style="font-size:13px;color:var(--light)">' + fmtDate(o.createdAt) + '</div></div></div>' +
 
       '<div class="print-only" style="display:none;text-align:center;margin-bottom:30px">' +
-      '<h2>KITOBMARKAZI</h2><p>Buyurtma kvitansiyasi: <b>' + o.orderNumber + '</b><br>Sana: ' + fmtDate(o.createdAt) + '</p></div>' +
+      '<h2>KITOBMARKAZI</h2><p>Buyurtma kvitansiyasi: <b>' + (o.orderNumber||'#') + '</b><br>Sana: ' + fmtDate(o.createdAt) + '</p></div>' +
       
       '<div class="card" style="padding:16px;background:var(--bg);box-shadow:none;margin-bottom:18px">' +
       '<label>Mijoz va Manzil</label>' +
-      '<div style="font-weight:700;font-size:16px;margin-bottom:4px">' + o.customerName + '</div>' +
-      '<div style="font-weight:600;color:var(--teal);margin-bottom:10px">' + o.customerPhone + '</div>' +
-      '<div style="font-size:13px;line-height:1.4">' + o.region + ', ' + o.tuman + '<br>' + o.address + '</div>' +
+      '<div style="font-weight:700;font-size:16px;margin-bottom:4px">' + customerName + '</div>' +
+      '<div style="font-weight:600;color:var(--teal);margin-bottom:10px">' + customerPhone + '</div>' +
+      '<div style="font-size:13px;line-height:1.4">' + region + (region && tuman ? ', ' : '') + tuman + '<br>' + address + '</div>' +
       (o.note ? '<div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);font-size:13px;font-style:italic">Mijoz izohi: ' + o.note + '</div>' : '') +
       '</div>' +
       
       '<label style="margin-bottom:10px">Buyurtma tarkibi</label>' +
       '<div style="margin-bottom:20px">' + items + '</div>' +
       
-      '<div style="display:flex;justify-content:space-between;font-size:18px;margin-bottom:24px"><span>Jami:</span><b>' + money(o.total) + '</b></div>' +
+      '<div style="display:flex;justify-content:space-between;font-size:18px;margin-bottom:24px"><span>Jami:</span><b>' + money(total) + '</b></div>' +
       
       '<div class="no-print">' +
       '<div class="frow"><div class="field"><label>Holatni o\'zgartirish</label><select id="modalStatus">' + statusOpts + '</select></div>' +

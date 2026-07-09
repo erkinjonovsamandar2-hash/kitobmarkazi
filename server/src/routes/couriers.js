@@ -11,11 +11,13 @@ const db = require('../db');
 router.get('/', async (req, res) => {
   const { region, tuman } = req.query;
 
-  if (!region || !tuman) {
-    return res.status(400).json({ error: 'region and tuman query params are required' });
-  }
-
   try {
+    if (!region || !tuman) {
+      const all = await db.query(
+        `SELECT slug, name, color, description, price FROM couriers ORDER BY name`
+      );
+      return res.json(all.rows);
+    }
     // 1. Check tuman-specific overrides first
     const overrides = await db.query(
       `SELECT c.slug, c.name, c.color, c.description, c.price

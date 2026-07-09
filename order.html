@@ -287,18 +287,23 @@ function initPageData(){
   if (!isKMDataLoaded) return;
   items=cartItemsDetailed();
   if(items.length===0){
-    document.getElementById('formWrap').innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px 20px"><div style="display:flex;justify-content:center;margin-bottom:14px"><i data-lucide="shopping-cart" style="width:56px;height:56px;color:var(--mid)"></i></div><h2 style="font-family:var(--serif);font-size:23px;margin-bottom:10px">Savatcha bo\'sh</h2><p style="color:var(--mid);margin-bottom:22px">Buyurtma berish uchun avval kitob tanlang</p><a class="btn btn-teal" href="publishers.html"><i data-lucide="book-open" style="width:16px;height:16px;margin-right:6px;display:inline-block;vertical-align:middle"></i> Nashriyotlarni ko'rish</a></div>'; if(window.refreshIcons) window.refreshIcons();
-  } else { renderItems(); }
+    document.getElementById('formWrap').innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px 20px"><div style="display:flex;justify-content:center;margin-bottom:14px"><i data-lucide="shopping-cart" style="width:56px;height:56px;color:var(--mid)"></i></div><h2 style="font-family:var(--serif);font-size:23px;margin-bottom:10px">Savatcha bo\'sh</h2><p style="color:var(--mid);margin-bottom:22px">Buyurtma berish uchun avval kitob tanlang</p><a class="btn btn-teal" href="publishers.html"><i data-lucide="book-open" style="width:16px;height:16px;margin-right:6px;display:inline-block;vertical-align:middle"></i> Nashriyotlarni ko\'rish</a></div>'; if(window.refreshIcons) window.refreshIcons();
+  } else {
+    renderItems();
+    onRegionChange();
+  }
 }
 
 function renderItems(){
   var html='';
   items.forEach(function(it){
-    var b=it.book;
+    var b = it.book || { title: 'Kitob', price: 0, color: '#13294A', author: 'Noma\'lum' };
+    var p = it.pub || { name: 'Nashriyot' };
+    var coverHtml = (typeof coverHTML === 'function') ? coverHTML(b, p) : '';
     html+='<div class="oitem">'+
-      '<div class="oitem-cov cover-sm" style="background:'+b.color+';position:relative;overflow:hidden">'+coverHTML(b,it.pub)+'</div>'+
-      '<div class="oitem-info"><div class="oitem-t">'+b.title+'</div><div class="oitem-s">'+it.pub.name+'</div><div class="oitem-q">'+it.qty+' x '+money(b.price)+'</div></div>'+
-      '<div class="oitem-p">'+money(it.sum)+'</div></div>';
+      '<div class="oitem-cov cover-sm" style="background:'+(b.color||'#13294A')+';position:relative;overflow:hidden">'+coverHtml+'</div>'+
+      '<div class="oitem-info"><div class="oitem-t">'+(b.title||'Kitob')+'</div><div class="oitem-s">'+(p.name||'Nashriyot')+'</div><div class="oitem-q">'+(it.qty||1)+' x '+money(b.price || 0)+'</div></div>'+
+      '<div class="oitem-p">'+money(it.sum || 0)+'</div></div>';
   });
   document.getElementById('oItems').innerHTML=html;
   document.getElementById('sumCount').textContent=cartCount()+' ta';
@@ -308,10 +313,14 @@ function renderItems(){
 function onRegionChange(){
   var region=document.getElementById('city').value;
   var tsel=document.getElementById('tuman');
+  var prevVal = tsel.value;
   if(!region){ tsel.disabled=true; tsel.innerHTML='<option value="">Avval viloyat...</option>'; renderCouriers(); return; }
   var ts=tumansFor(region);
   tsel.disabled=false;
   tsel.innerHTML='<option value="">Tumanni tanlang...</option>'+ts.map(function(t){return '<option>'+t+'</option>';}).join('');
+  if (prevVal && ts.indexOf(prevVal) !== -1) {
+    tsel.value = prevVal;
+  }
   renderCouriers();
 }
 
@@ -494,17 +503,29 @@ function submitOrder(){
   document.querySelectorAll('.field-err').forEach(function(e){ e.remove(); });
   ['fname','phone','city','tuman','addr'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.borderColor=''; });
 
-  var valid = true;
-  valid = validateField('fname', f.length >= 2, 'Ismingiz kamida 2 ta harf bo\'lishi kerak') && valid;
-  valid = validateField('phone', isValidUzPhone(p), 'To\'g\'ri telefon raqam kiriting: +998 XX XXX XX XX') && valid;
-  valid = validateField('city', !!c, 'Viloyatni tanlang') && valid;
-  valid = validateField('tuman', !!t, 'Tumanni tanlang') && valid;
-  valid = validateField('addr', a.length >= 5, 'Manzilni to\'liqroq kiriting (kamida 5 ta belgi)') && valid;
+  var isFnameValid = validateField('fname', f.length >= 2, 'Ismingiz kamida 2 ta harf bo\'lishi kerak');
+  var isPhoneValid = validateField('phone', isValidUzPhone(p), 'To\'g\'ri telefon raqam kiriting: +998 XX XXX XX XX');
+  var isCityValid = validateField('city', !!c, 'Viloyatni tanlang');
+  var isTumanValid = validateField('tuman', !!t, 'Tumanni tanlang');
+  var isAddrValid = validateField('addr', a.length >= 5, 'Manzilni to\'liqroq kiriting (kamida 5 ta belgi)');
+  
+  var valid = isFnameValid && isPhoneValid && isCityValid && isTumanValid && isAddrValid;
+  
   if(!courier){ valid=false; toast('Yetkazib berish xizmatini tanlang','err'); }
   if(!payTime){ valid=false; toast('To\'lov vaqtini tanlang','err'); }
   if(!payMethod){ valid=false; toast('To\'lov usulini tanlang','err'); }
   if(!valid) return;
   
+  // Normalize phone number
+  var cleanedPhone = p.replace(/[\s\-\(\)]/g, '');
+  if (!cleanedPhone.startsWith('+')) {
+    if (cleanedPhone.startsWith('998')) {
+      cleanedPhone = '+' + cleanedPhone;
+    } else {
+      cleanedPhone = '+998' + cleanedPhone;
+    }
+  }
+
   var btn = document.querySelector('.submit');
   btn.disabled = true;
   btn.style.opacity = '0.7';
@@ -512,7 +533,7 @@ function submitOrder(){
 
   var orderData = {
     customerName: f,
-    customerPhone: p,
+    customerPhone: cleanedPhone,
     region: c,
     tuman: t,
     address: a,
@@ -545,11 +566,28 @@ function submitOrder(){
     var fee = data.deliveryFee || courierFee(courier);
     var grand = data.total;
 
-    var det='<div class="sdr"><span class="sdl">Buyurtma</span><span class="sdv">'+cartCount()+' ta kitob</span></div>'+
+    var itemsHtml = items.map(function(it) {
+      var b = it.book || { title: 'Kitob', price: 0 };
+      var p = it.pub || { name: 'Nashriyot' };
+      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed var(--cream2);gap:12px">' +
+        '<div style="min-width:0;flex:1">' +
+          '<div style="font-weight:700;color:var(--ink);font-size:13px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (b.title || 'Kitob') + '</div>' +
+          '<div style="font-size:11px;color:var(--light);margin-top:2px">' + (p.name || 'Nashriyot') + '</div>' +
+        '</div>' +
+        '<div style="font-size:12.5px;color:var(--mid);white-space:nowrap;font-weight:500">' + it.qty + ' x ' + money(b.price || 0) + '</div>' +
+        '<div style="font-weight:700;color:var(--teal-d);font-size:13px;white-space:nowrap;margin-left:8px">' + money(it.sum || 0) + '</div>' +
+      '</div>';
+    }).join('');
+
+    var courierName = (typeof COURIERS !== 'undefined' && COURIERS[courier] && COURIERS[courier].name) ? COURIERS[courier].name : courier;
+    var det='<div style="margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--cream2)">' +
+        '<div style="font-size:12px;font-weight:700;color:var(--mid);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">Buyurtma tarkibi:</div>' +
+        itemsHtml +
+      '</div>' +
       '<div class="sdr"><span class="sdl">Manzil</span><span class="sdv">'+t+', '+c+'</span></div>'+
-      '<div class="sdr"><span class="sdl">Kuryer</span><span class="sdv">'+COURIERS[courier].name+'</span></div>'+
+      '<div class="sdr"><span class="sdl">Kuryer</span><span class="sdv">'+courierName+'</span></div>'+
       '<div class="sdr"><span class="sdl">Yetkazish to\'lovi</span><span class="sdv">'+(prepaid?('Oldindan · '+money(fee)):'Yetkazilganda')+'</span></div>'+
-      '<div class="sdr"><span class="sdl">To\'lov usuli</span><span class="sdv">'+payNames[payMethod]+'</span></div>'+
+      '<div class="sdr"><span class="sdl">To\'lov usuli</span><span class="sdv">'+(payNames[payMethod] || payMethod)+'</span></div>'+
       '<div class="sdr"><span class="sdl">Jami'+(prepaid?' (yetkazish bilan)':'')+'</span><span class="sdv">'+money(grand)+'</span></div>';
     
     document.getElementById('sDetail').innerHTML=det;
@@ -583,6 +621,9 @@ function submitOrder(){
     btn.textContent = 'Buyurtma berish — ' + payNames[payMethod];
   });
 }
+
+// Synchronously initialize dropdown state on script load for autofilled/restored city values
+onRegionChange();
 
 if (isKMDataLoaded) initPageData();
 document.addEventListener('kmDataLoaded', initPageData);

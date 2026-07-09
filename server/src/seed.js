@@ -16,7 +16,7 @@ const fn = new Function(
   'module', 'exports', 'require',
   dataJsContent + '\n' +
   'module.exports = { PUBLISHERS, BOOKS, COMING_SOON, COURIERS, COURIERS_BY_REGION, ' +
-  'COURIER_TUMAN_OVERRIDE, GENRES, BOOK_GENRE, PUB_DEFAULT_GENRE, QUIZ, QUIZ_PROFILES };'
+  'COURIER_TUMAN_OVERRIDE, GENRES, QUIZ, QUIZ_PROFILES };'
 );
 const mod = { exports: {} };
 fn(mod, mod.exports, require);
@@ -49,7 +49,7 @@ async function seed() {
   let bookCount = 0;
   for (const pubSlug of Object.keys(DATA.BOOKS)) {
     for (const b of DATA.BOOKS[pubSlug]) {
-      const genre = DATA.BOOK_GENRE[b.id] || DATA.PUB_DEFAULT_GENRE[pubSlug] || 'roman';
+      const genre = (DATA.BOOK_GENRE && DATA.BOOK_GENRE[b.id]) || (DATA.PUB_DEFAULT_GENRE && DATA.PUB_DEFAULT_GENRE[pubSlug]) || 'roman';
       await db.query(
         `INSERT INTO books (id, "publisherSlug", title, author, price, color, rating, "isTop", pages, year, genre)
          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)

@@ -34,6 +34,10 @@ router.post('/', async (req, res) => {
     enrichedItems.push({ ...it, publisherSlug: book.publisherSlug, bookId: book.id, title: book.title, author: book.author, price: book.price, qty: it.qty || 1 });
   }
 
+  if (enrichedItems.length === 0) {
+    return res.status(400).json({ error: 'Buyurtmadagi kitoblar bazadan topilmadi. Savatchani tozalab, kitoblarni qayta qo\'shib ko\'ring.' });
+  }
+
   // Delivery fee
   const courier = await db.prepare('SELECT * FROM couriers WHERE slug = $1').get(courierSlug);
   const deliveryFee = courier ? parseInt((courier.price || '0').replace(/[^0-9]/g, ''), 10) : 0;

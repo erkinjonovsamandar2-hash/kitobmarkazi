@@ -143,19 +143,22 @@ function render(){
 
   var left='';
   Object.keys(groups).forEach(function(pk){
-    var p=PUBLISHERS[pk], list=groups[pk];
-    var gcount=list.reduce(function(s,i){return s+i.qty;},0);
-    left+='<div class="cgroup"><div class="cgroup-head"><div class="cgroup-logo">'+pubLogoHTML(p,28)+'</div><span class="cgroup-name">'+p.name+'</span><span class="cgroup-cnt">'+gcount+' ta kitob</span></div>';
+    var p = (typeof PUBLISHERS !== 'undefined' && PUBLISHERS[pk]) ? PUBLISHERS[pk] : { name: 'Nashriyot', slug: pk };
+    var list = groups[pk];
+    var gcount = list.reduce(function(s,i){return s+i.qty;},0);
+    var logoHtml = (typeof pubLogoHTML === 'function') ? pubLogoHTML(p,28) : '';
+    left+='<div class="cgroup"><div class="cgroup-head"><div class="cgroup-logo">'+logoHtml+'</div><span class="cgroup-name">'+(p.name||'Nashriyot')+'</span><span class="cgroup-cnt">'+gcount+' ta kitob</span></div>';
     list.forEach(function(it){
-      var b=it.book;
+      var b = it.book || { title: 'Kitob', price: 0, color: '#13294A', author: 'Noma\'lum', id: it.bookId };
+      var coverHtml = (typeof coverHTML === 'function') ? coverHTML(b,p) : '';
       left+='<div class="citem">'+
-        '<a href="book.html?pub='+pk+'&book='+b.id+'" class="citem-cover cover-sm" style="background:'+b.color+';position:relative;overflow:hidden;display:block">'+coverHTML(b,p)+'</a>'+
-        '<div class="citem-info"><div class="citem-title">'+b.title+'</div><div class="citem-author">'+b.author+'</div>'+
-        '<div class="citem-unit">'+money(b.price)+' / dona</div></div>'+
+        '<a href="book.html?pub='+pk+'&book='+(b.id||'')+'" class="citem-cover cover-sm" style="background:'+(b.color||'#13294A')+';position:relative;overflow:hidden;display:block">'+coverHtml+'</a>'+
+        '<div class="citem-info"><div class="citem-title">'+(b.title||'Kitob')+'</div><div class="citem-author">'+(b.author||'Noma\'lum')+'</div>'+
+        '<div class="citem-unit">'+money(b.price || 0)+' / dona</div></div>'+
         '<div class="citem-ctrl">'+
-          '<div class="citem-sum">'+money(it.sum)+'</div>'+
-          '<div class="cqty"><button class="cqbtn" onclick="dec(\''+pk+'\',\''+b.id+'\')"' + (it.qty <= 1 ? ' disabled style="opacity:0.3;cursor:not-allowed"' : '') + '>-</button><span class="cqval">'+it.qty+'</span><button class="cqbtn" onclick="inc(\''+pk+'\',\''+b.id+'\')">+</button></div>'+
-          '<button class="cremove" onclick="rem(\''+pk+'\',\''+b.id+'\')">'+trashIcon()+' O\'chirish</button>'+
+          '<div class="citem-sum">'+money(it.sum || 0)+'</div>'+
+          '<div class="cqty"><button class="cqbtn" onclick="dec(\''+pk+'\',\''+(b.id||'')+'\')"' + (it.qty <= 1 ? ' disabled style="opacity:0.3;cursor:not-allowed"' : '') + '>-</button><span class="cqval">'+it.qty+'</span><button class="cqbtn" onclick="inc(\''+pk+'\',\''+(b.id||'')+'\')">+</button></div>'+
+          '<button class="cremove" onclick="rem(\''+pk+'\',\''+(b.id||'')+'\')">'+trashIcon()+' O\'chirish</button>'+
         '</div></div>';
     });
     left+='</div>';

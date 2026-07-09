@@ -20,9 +20,18 @@ function clearCart(){ saveCart([]); }
 function cartCount(){ return getCart().reduce(function(s,i){return s+i.qty;},0); }
 function cartItemsDetailed(){
   return getCart().map(function(i){
-    var p = PUBLISHERS[i.pubKey];
-    var b = findBook(i.pubKey, i.bookId);
-    return { pubKey:i.pubKey, bookId:i.bookId, qty:i.qty, pub:p, book:b, sum:b.price*i.qty };
+    var p = (typeof PUBLISHERS !== 'undefined' && PUBLISHERS) ? (PUBLISHERS[i.pubKey] || { name: 'Nashriyot', slug: i.pubKey }) : { name: 'Nashriyot', slug: i.pubKey };
+    var b = null;
+    if (typeof findBook === 'function') {
+      try {
+        b = findBook(i.pubKey, i.bookId);
+      } catch(e) {}
+    }
+    if (!b) {
+      b = { title: 'Kitob', price: 0, color: '#13294A', author: 'Noma\'lum' };
+    }
+    var price = typeof b.price === 'number' ? b.price : parseFloat(b.price || 0);
+    return { pubKey:i.pubKey, bookId:i.bookId, qty:i.qty, pub:p, book:b, sum:price*i.qty };
   });
 }
 function cartTotal(){ return cartItemsDetailed().reduce(function(s,i){return s+i.sum;},0); }

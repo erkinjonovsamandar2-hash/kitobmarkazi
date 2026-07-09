@@ -394,5 +394,7 @@ function bookImages(bookId){
     console.log('✅ Kitobmarkazi dynamic data synchronized');
   }).catch(err => {
     console.warn('⚠️ API Sync failed, using fallback data:', err);
+    isKMDataLoaded = true;
+    document.dispatchEvent(new CustomEvent('kmDataLoaded'));
   });
 })();
