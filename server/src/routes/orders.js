@@ -89,7 +89,11 @@ router.post('/', async (req, res) => {
   }
 
   // Send Telegram notification
-  notifyNewOrder({ orderNumber, customerName, customerPhone, region, tuman, total, items: enrichedItems, payMethod, courierSlug });
+  try {
+    await notifyNewOrder({ orderNumber, customerName, customerPhone, region, tuman, total, items: enrichedItems, payMethod, courierSlug });
+  } catch (tgErr) {
+    console.error('Telegram notification failed during order creation:', tgErr);
+  }
 
   res.status(201).json({
     ok: true,

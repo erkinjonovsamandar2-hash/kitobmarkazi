@@ -16,11 +16,15 @@ async function sendTelegram(text) {
 
   try {
     const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-    await fetch(url, {
+    const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' })
     });
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error(`Telegram API error (Status ${res.status}):`, errText);
+    }
   } catch (e) {
     console.error('Telegram notification failed:', e.message);
   }
