@@ -133,8 +133,10 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .foot-name span{color:var(--teal-l)}
 .foot-r{font-size:12.5px;color:rgba(255,255,255,0.38);letter-spacing:0.07em;font-weight:500}
 
-@media(max-width:600px){
+@media(max-width:950px){
   .nav{padding:0 16px;height:58px}.nav-links{display:none}
+}
+@media(max-width:600px){
   .sec{padding:24px 16px}.steps-wrap{padding:0 16px 18px}
   .st{font-size:24px}.frow{grid-template-columns:1fr}
   .foot{padding:18px 16px;flex-direction:column;text-align:center}
@@ -347,10 +349,10 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .nav-mobile-close{position:absolute;top:22px;right:22px;width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,0.1);border:none;color:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
 .nav-backdrop{position:fixed;inset:0;background:rgba(8,16,28,0.5);backdrop-filter:blur(2px);z-index:199;opacity:0;pointer-events:none;transition:opacity 0.3s}
 .nav-backdrop.open{opacity:1;pointer-events:auto}
-@media(max-width:600px){
+@media(max-width:950px){
   .nav-burger{display:flex}
 }
-@media(min-width:601px){
+@media(min-width:951px){
   .nav-mobile,.nav-backdrop,.nav-burger{display:none!important}
 }
 /* ===== Live Activity Popup ===== */
