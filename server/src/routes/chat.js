@@ -53,16 +53,39 @@ router.post('/', async (req, res) => {
       ...history
     ];
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents })
-    });
+    let response;
+    let retries = 3;
+    let delay = 1000;
 
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error('Gemini API failed:', errText);
-      return res.status(502).json({ error: 'Gemini API xatoligi' });
+    for (let i = 0; i < retries; i++) {
+      try {
+        response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contents })
+        });
+
+        if (response.ok) {
+          break;
+        }
+
+        const errText = await response.text();
+        console.warn(`Gemini API attempt ${i + 1} failed:`, errText);
+
+        if (response.status >= 400 && response.status < 500 && response.status !== 429) {
+          return res.status(response.status).json({ error: 'Gemini API query error', message: errText });
+        }
+      } catch (e) {
+        console.warn(`Gemini API attempt ${i + 1} threw error:`, e);
+      }
+
+      if (i < retries - 1) {
+        await new Promise(resolve => setTimeout(resolve, delay * (i + 1)));
+      }
+    }
+
+    if (!response || !response.ok) {
+      return res.status(502).json({ error: 'Gemini API is currently overloaded. Please try again in a few seconds.' });
     }
 
     const data = await response.json();

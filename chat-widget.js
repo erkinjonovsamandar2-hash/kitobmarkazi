@@ -250,6 +250,93 @@
         height: 54px;
       }
     }
+
+    /* Recommended books list and cards in chat */
+    .km-chat-books-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+      margin-bottom: 8px;
+      width: 100%;
+      align-self: flex-start;
+    }
+    .km-chat-book-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #ffffff;
+      border: 1px solid rgba(228, 232, 231, 0.9);
+      border-radius: 12px;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .km-chat-book-card:hover {
+      border-color: #1d9e75;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(29, 158, 117, 0.08);
+    }
+    .km-chat-book-cover {
+      width: 44px;
+      height: 60px;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .km-chat-book-cover .cv-pub,
+    .km-chat-book-cover .cv-mid {
+      display: none !important;
+    }
+    .km-chat-book-info {
+      flex: 1;
+      min-width: 0;
+      text-align: left;
+    }
+    .km-chat-book-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #13294A;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+    .km-chat-book-author {
+      font-size: 11px;
+      color: #5C6B84;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+    .km-chat-book-price {
+      font-size: 12px;
+      font-weight: 800;
+      color: #1d9e75;
+    }
+    .km-chat-book-buy {
+      font-family: 'Manrope', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff;
+      background: #1d9e75;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+      border: none;
+      text-align: center;
+      outline: none;
+    }
+    .km-chat-book-buy:hover {
+      background: #136a4e;
+    }
   `;
   document.head.appendChild(style);
 
@@ -394,6 +481,83 @@
     msgDiv.className = 'km-msg ' + sender;
     msgDiv.innerHTML = formatMarkdown(text);
     chatBody.appendChild(msgDiv);
+
+    if (sender === 'assistant') {
+      renderChatBooks(text, chatBody);
+    }
+  }
+
+  function renderChatBooks(text, container) {
+    if (typeof buildSearchIndex !== 'function') return;
+
+    var foundBooks = [];
+    var tempText = text.toLowerCase();
+    var index = buildSearchIndex().filter(function(it) { return it.type === 'book'; });
+    
+    // Sort by title length descending to prevent substring false-positives
+    index.sort(function(a, b) { return b.title.length - a.title.length; });
+
+    index.forEach(function(item) {
+      var titleLower = item.title.toLowerCase();
+      var matchIdx = tempText.indexOf(titleLower);
+      if (matchIdx !== -1) {
+        var bObj = findBook(item.pubKey, item.bookId);
+        if (bObj) {
+          foundBooks.push({ pubKey: item.pubKey, bookId: item.bookId, book: bObj });
+        }
+        // Remove from tempText to avoid matching subset titles
+        tempText = tempText.slice(0, matchIdx) + " " + tempText.slice(matchIdx + titleLower.length);
+      }
+    });
+
+    if (foundBooks.length === 0) return;
+
+    var listDiv = document.createElement('div');
+    listDiv.className = 'km-chat-books-list';
+
+    foundBooks.forEach(function(item) {
+      var pk = item.pubKey;
+      var b = item.book;
+      var pub = typeof PUBLISHERS !== 'undefined' ? PUBLISHERS[pk] : null;
+      var coverHtml = typeof coverHTML === 'function' ? coverHTML(b, pub) : '';
+      var priceStr = typeof money === 'function' ? money(b.price) : b.price + ' so\'m';
+
+      var card = document.createElement('div');
+      card.className = 'km-chat-book-card';
+      
+      // Set click event to open in new tab
+      card.addEventListener('click', function() {
+        window.open('book.html?pub=' + pk + '&book=' + b.id, '_blank');
+      });
+
+      card.innerHTML = 
+        '<div class="km-chat-book-cover" style="background:' + (b.color || '#13294A') + '">' +
+          coverHtml +
+        '</div>' +
+        '<div class="km-chat-book-info">' +
+          '<div class="km-chat-book-title">' + b.title + '</div>' +
+          '<div class="km-chat-book-author">' + b.author + '</div>' +
+          '<div class="km-chat-book-price">' + priceStr + '</div>' +
+        '</div>' +
+        '<button class="km-chat-book-buy" type="button">' +
+          'Savatga' +
+        '</button>';
+
+      // Event listener for add to cart button to prevent trigger of parent click
+      var buyBtn = card.querySelector('.km-chat-book-buy');
+      if (buyBtn) {
+        buyBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          if (typeof addAndToast === 'function') {
+            addAndToast(pk, b.id);
+          }
+        });
+      }
+
+      listDiv.appendChild(card);
+    });
+
+    container.appendChild(listDiv);
   }
 
   function renderHistory() {
