@@ -6,68 +6,73 @@
 <title>Savatcha — Kitobmarkazi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
   body{background:#ECEFEE}
-  .c-hero{background:var(--grad-navy);padding:34px 32px 30px;position:relative;overflow:hidden;box-shadow:0 1px 0 rgba(217,169,62,0.18)}
-  .c-orb{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(29,158,117,0.16),transparent 70%);top:-160px;right:-50px}
+  .c-hero{background:var(--grad-navy);padding:56px 32px 48px;position:relative;overflow:hidden;box-shadow:0 1px 0 rgba(217,169,62,0.12),0 10px 30px rgba(10,22,40,0.1)}
+  .c-orb{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(29,158,117,0.2),transparent 70%);top:-160px;right:-50px;filter:blur(60px);pointer-events:none}
   .c-hin{max-width:1100px;margin:0 auto;position:relative;z-index:2}
-  .c-htitle{font-family:var(--serif);font-size:30px;font-weight:700;color:#fff;margin-bottom:5px}
-  .c-hsub{font-size:14px;color:rgba(255,255,255,0.55)}
+  .c-htitle{font-family:var(--serif);font-size:36px;font-weight:900;color:#fff;margin-bottom:6px;letter-spacing:-0.015em}
+  .c-hsub{font-size:14.5px;color:rgba(255,255,255,0.65)}
 
   .c-wrap{max-width:1100px;margin:0 auto;padding:28px 32px 50px;display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start}
   .c-main{min-width:0}
-  .cgroup{background:var(--white);border:1px solid #E4E8E7;border-radius:18px;overflow:hidden;margin-bottom:16px;box-shadow:var(--sh-md)}
-  .cgroup-head{display:flex;align-items:center;gap:11px;padding:15px 20px;border-bottom:1px solid var(--cream2)}
-  .cgroup-logo{width:40px;height:40px;border-radius:11px;background:var(--cream);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:5px;border:1px solid var(--border)}
-  .cgroup-name{font-size:15px;font-weight:700;color:var(--ink)}
-  .cgroup-cnt{font-size:12px;color:var(--light);margin-left:auto}
-  .citem{display:flex;align-items:center;gap:16px;padding:16px 20px;border-bottom:1px solid var(--cream2);transition:background 0.15s}
+  .cgroup{background:var(--white);border:1px solid #E4E8E7;border-radius:20px;overflow:hidden;margin-bottom:16px;box-shadow:var(--sh-md);transition:transform 0.25s var(--ease-premium),box-shadow 0.25s var(--ease-premium)}
+  .cgroup:hover{transform:translateY(-1px);box-shadow:var(--sh-lg)}
+  .cgroup-head{display:flex;align-items:center;gap:11px;padding:15px 20px;border-bottom:1px solid var(--cream2);background:rgba(0,0,0,0.01)}
+  .cgroup-logo{width:40px;height:40px;border-radius:11px;background:var(--cream);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:5px;border:1px solid var(--border);box-shadow:inset 0 1px 4px rgba(0,0,0,0.03)}
+  .cgroup-name{font-size:15.5px;font-weight:700;color:var(--ink)}
+  .cgroup-cnt{font-size:12.5px;color:var(--mid);margin-left:auto;font-weight:600}
+  .citem{display:flex;align-items:center;gap:16px;padding:16px 20px;border-bottom:1px solid var(--cream2);transition:all 0.25s var(--ease-premium)}
   .citem:last-child{border-bottom:none}
-  .citem:hover{background:#FCFBF8}
-  .citem-cover{width:60px;height:84px;border-radius:11px;flex-shrink:0;box-shadow:0 6px 16px rgba(13,27,42,0.16)}
+  .citem:hover{background:#FAF9F6;padding-left:24px}
+  .citem-cover{width:60px;height:84px;border-radius:11px;flex-shrink:0;box-shadow:0 6px 16px rgba(13,27,42,0.16);border:1px solid rgba(0,0,0,0.06)}
   .citem-info{flex:1;min-width:0}
   .citem-title{font-size:15.5px;font-weight:700;color:var(--ink);margin-bottom:3px;line-height:1.3}
-  .citem-author{font-size:12.5px;color:var(--light);margin-bottom:9px}
-  .citem-unit{font-size:12px;color:var(--mid)}
+  .citem-author{font-size:13px;color:var(--mid);margin-bottom:9px}
+  .citem-unit{font-size:12px;color:var(--mid);font-weight:500}
   .citem-ctrl{display:flex;flex-direction:column;align-items:flex-end;gap:12px;flex-shrink:0}
   .citem-sum{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--teal-d);white-space:nowrap}
-  .cqty{display:flex;align-items:center;gap:0;border:1.5px solid var(--border);border-radius:11px;overflow:hidden}
-  .cqbtn{width:34px;height:34px;background:#fff;border:none;cursor:pointer;font-size:18px;color:var(--ink);display:flex;align-items:center;justify-content:center;line-height:1;transition:background 0.15s}
-  .cqbtn:hover{background:var(--cream2);color:var(--teal-d)}
-  .cqval{min-width:34px;text-align:center;font-weight:700;font-size:14px}
-  .cremove{background:none;border:none;cursor:pointer;color:var(--light);font-size:12px;font-weight:600;font-family:inherit;display:flex;align-items:center;gap:5px;padding:4px 2px;transition:color 0.15s}
-  .cremove:hover{color:#C0392B}
+  .cqty{display:flex;align-items:center;gap:0;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:var(--sh-sm);background:#fff;transition:border-color 0.25s}
+  .cqty:focus-within{border-color:var(--teal)}
+  .cqbtn{width:34px;height:34px;background:none;border:none;cursor:pointer;font-size:18px;color:var(--ink);display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.2s}
+  .cqbtn:hover{background:#F0FAF6;color:var(--teal)}
+  .cqval{min-width:34px;text-align:center;font-weight:700;font-size:14.5px;user-select:none;color:var(--ink)}
+  .cremove{background:none;border:none;cursor:pointer;color:var(--light);font-size:12px;font-weight:600;font-family:inherit;display:flex;align-items:center;gap:5px;padding:4px 2px;transition:all 0.2s}
+  .cremove:hover{color:#C0392B;transform:scale(1.05)}
 
   /* Summary (sticky) */
   .c-side{position:sticky;top:90px}
-  .summary{background:var(--white);border:1px solid #E4E8E7;border-radius:18px;padding:24px;box-shadow:var(--sh-lg)}
-  .sum-title{font-family:var(--serif);font-size:19px;font-weight:700;margin-bottom:18px}
-  .sum-row{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--mid);padding:9px 0}
-  .sum-row .v{color:var(--ink);font-weight:600}
+  .summary{background:var(--white);border:1px solid #E4E8E7;border-radius:20px;padding:24px;box-shadow:var(--sh-lg);position:relative;overflow:hidden}
+  .summary::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--grad-teal)}
+  .sum-title{font-family:var(--serif);font-size:19px;font-weight:800;margin-bottom:18px;color:var(--ink)}
+  .sum-row{display:flex;justify-content:space-between;align-items:center;font-size:14.5px;color:var(--mid);padding:9px 0}
+  .sum-row .v{color:var(--ink);font-weight:700}
   .sum-divider{height:1px;background:var(--cream2);margin:8px 0}
   .sum-total{display:flex;justify-content:space-between;align-items:baseline;padding-top:6px}
-  .sum-total .l{font-size:15px;font-weight:700;color:var(--ink)}
-  .sum-total .v{font-family:var(--serif);font-size:28px;font-weight:700;color:var(--teal-d)}
-  .checkout{width:100%;margin-top:20px}
+  .sum-total .l{font-size:15.5px;font-weight:700;color:var(--ink)}
+  .sum-total .v{font-family:var(--serif);font-size:28px;font-weight:800;color:var(--teal-d)}
+  .checkout{width:100%;margin-top:20px;display:block;text-align:center;padding:14px;background:var(--teal);color:#fff;border-radius:11px;font-size:15px;font-weight:700;box-shadow:var(--sh-teal);transition:all 0.25s var(--ease-premium)}
+  .checkout:hover{background:var(--teal-d);transform:translateY(-1px);box-shadow:0 8px 24px rgba(29,158,117,0.38)}
   .sum-note{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--light);margin-top:14px;justify-content:center}
   .sum-trust{display:flex;gap:14px;justify-content:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--cream2);flex-wrap:wrap}
-  .sum-trust span{font-size:11px;color:var(--mid);display:flex;align-items:center;gap:5px}
-  .keepshop{display:block;text-align:center;margin-top:16px;font-size:13px;color:var(--teal-d);font-weight:600}
+  .sum-trust span{font-size:11px;color:var(--mid);display:flex;align-items:center;gap:5px;font-weight:600}
+  .keepshop{display:block;text-align:center;margin-top:16px;font-size:13px;color:var(--teal-d);font-weight:700;transition:all 0.2s}
+  .keepshop:hover{color:var(--teal);transform:translateX(-2px)}
 
   .empty-cart{text-align:center;padding:64px 20px;grid-column:1/-1}
-  .empty-cart .ec-ic{font-size:60px;margin-bottom:16px}
-  .empty-cart h2{font-family:var(--serif);font-size:25px;font-weight:700;margin-bottom:8px}
-  .empty-cart p{font-size:14px;color:var(--mid);margin-bottom:24px}
+  .empty-cart .ec-ic{font-size:60px;margin-bottom:16px;animation:cartBounce 2s infinite alternate}
+  @keyframes cartBounce{0%{transform:translateY(0)}100%{transform:translateY(-8px)}}
+  .empty-cart h2{font-family:var(--serif);font-size:26px;font-weight:800;margin-bottom:8px;color:var(--ink)}
+  .empty-cart p{font-size:14.5px;color:var(--mid);margin-bottom:24px}
 
   @media(max-width:860px){.c-wrap{grid-template-columns:1fr}.c-side{position:static}}
   @media(max-width:600px){
     .c-hero{padding:22px 16px 20px}.c-wrap{padding:20px 16px 40px}
     .citem{flex-wrap:wrap;gap:12px}.citem-cover{width:54px;height:74px}
     .citem-ctrl{flex-direction:row;width:100%;justify-content:space-between;align-items:center}
-  }
-</style>
+  }</style>
 </head>
 <body>
 
@@ -80,8 +85,8 @@
     <a href="track.html" class="nav-link">Kuzatish</a>
     <a href="about.html" class="nav-link">Biz haqimizda</a>
   </div>
-  <a href="wishlist.html" class="wish-link" style="margin-left:8px">♥<span class="wish-count"></span></a>
-  <a href="cart.html" class="cart-link on" style="background:rgba(255,255,255,0.16)">🛒<span class="cart-count"></span></a>
+  <a href="wishlist.html" class="wish-link" style="margin-left:8px"><i data-lucide="heart" style="width:18px;height:18px"></i><span class="wish-count"></span></a>
+  <a href="cart.html" class="cart-link on" style="background:rgba(255,255,255,0.16)"><i data-lucide="shopping-cart" style="width:18px;height:18px"></i><span class="cart-count"></span></a>
 </nav>
 
 <div id="page"></div>
@@ -108,18 +113,19 @@
     </div>
     <div class="sf-col">
       <h4>Aloqa</h4>
-      <div class="sf-contact-item"><span class="ic">📞</span><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
-      <div class="sf-contact-item"><span class="ic">✉️</span><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
-      <div class="sf-contact-item"><span class="ic">📍</span><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
+      <div class="sf-contact-item"><i data-lucide="phone" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
+      <div class="sf-contact-item"><i data-lucide="mail" style="width:16px;height:16px;color:var(--teal-l)"></i><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
+      <div class="sf-contact-item"><i data-lucide="map-pin" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
     </div>
   </div>
   <div class="site-foot-bot"><div class="sf-bot-in">
-    <span class="sf-copy">© 2025�2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
+    <span class="sf-copy">© 2025�2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
     <span class="sf-tag">Uzbek Books. One Platform.</span>
   </div></div>
 </footer>
 
 <script src="data.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 <script src="cart.js"></script>
 <script src="chat-widget.js"></script>
 <script>
@@ -148,7 +154,7 @@ function render(){
         '<div class="citem-unit">'+money(b.price)+' / dona</div></div>'+
         '<div class="citem-ctrl">'+
           '<div class="citem-sum">'+money(it.sum)+'</div>'+
-          '<div class="cqty"><button class="cqbtn" onclick="dec(\''+pk+'\',\''+b.id+'\')">−</button><span class="cqval">'+it.qty+'</span><button class="cqbtn" onclick="inc(\''+pk+'\',\''+b.id+'\')">+</button></div>'+
+          '<div class="cqty"><button class="cqbtn" onclick="dec(\''+pk+'\',\''+b.id+'\')"' + (it.qty <= 1 ? ' disabled style="opacity:0.3;cursor:not-allowed"' : '') + '>-</button><span class="cqval">'+it.qty+'</span><button class="cqbtn" onclick="inc(\''+pk+'\',\''+b.id+'\')">+</button></div>'+
           '<button class="cremove" onclick="rem(\''+pk+'\',\''+b.id+'\')">'+trashIcon()+' O\'chirish</button>'+
         '</div></div>';
     });
@@ -169,11 +175,18 @@ function render(){
 
   page.innerHTML='<div class="c-hero"><div class="c-orb"></div><div class="c-hin"><div class="c-htitle">Savatcha</div><div class="c-hsub">'+cartCount()+' ta kitob · '+Object.keys(groups).length+' ta nashriyotdan</div></div></div>'+
     '<div class="c-wrap"><div class="c-main">'+left+'</div>'+side+'</div>';
+  if(window.refreshIcons) window.refreshIcons();
 }
 function trashIcon(){return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6"/></svg>';}
 function inc(pk,id){var c=getCart();c.forEach(function(i){if(i.pubKey===pk&&i.bookId===id)i.qty=Math.min(10,i.qty+1)});saveCart(c);render();}
 function dec(pk,id){var c=getCart();c.forEach(function(i){if(i.pubKey===pk&&i.bookId===id)i.qty=Math.max(1,i.qty-1)});saveCart(c);render();}
-function rem(pk,id){removeFromCart(pk,id);render();}
+function rem(pk,id){
+  var b = findBook(pk,id);
+  if(confirm('"' + b.title + '" savatdan o\'chirilsinmi?')){
+    removeFromCart(pk,id);
+    render();
+  }
+}
 if (isKMDataLoaded) render();
 document.addEventListener('kmDataLoaded', render);
 

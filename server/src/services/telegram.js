@@ -5,8 +5,8 @@ async function getSettings() {
   const botTokenRow = await db.prepare("SELECT value FROM settings WHERE key = 'telegram_bot_token'").get();
   const chatIdRow = await db.prepare("SELECT value FROM settings WHERE key = 'telegram_admin_chat_id'").get();
   return { 
-    botToken: botTokenRow ? botTokenRow.value : '', 
-    chatId: chatIdRow ? chatIdRow.value : '' 
+    botToken: (botTokenRow ? botTokenRow.value : '') || process.env.TELEGRAM_BOT_TOKEN || '', 
+    chatId: (chatIdRow ? chatIdRow.value : '') || process.env.TELEGRAM_ADMIN_CHAT_ID || '' 
   };
 }
 

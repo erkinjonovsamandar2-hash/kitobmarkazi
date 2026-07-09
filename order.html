@@ -6,7 +6,7 @@
 <title>Buyurtma — Kitobmarkazi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
   body{background:#EAEDEC}
@@ -26,7 +26,7 @@
 
   .o-wrap{max-width:1100px;margin:0 auto;padding:28px 32px 50px;display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start}
   .o-form{min-width:0}
-  .fcard{background:#fff;border:1px solid #E4E8E7;border-radius:18px;overflow:hidden;margin-bottom:16px;box-shadow:0 1px 2px rgba(16,40,36,0.04),0 6px 20px rgba(16,40,36,0.05)}
+  .fcard{background:#fff;border:1px solid #E4E8E7;border-radius:20px;overflow:hidden;margin-bottom:16px;box-shadow:0 1px 2px rgba(16,40,36,0.04),0 6px 20px rgba(16,40,36,0.05)}
   .fcard-head{display:flex;align-items:center;gap:12px;padding:18px 22px 0}
   .fcard-n{width:30px;height:30px;border-radius:9px;background:var(--teal);color:#fff;font-family:var(--serif);font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
   .fcard-t{font-size:15px;font-weight:700;color:var(--ink)}
@@ -74,7 +74,7 @@
 
   /* Sticky summary */
   .o-side{position:sticky;top:90px}
-  .summary{background:#fff;border:1px solid #E4E8E7;border-radius:18px;padding:22px;box-shadow:0 1px 2px rgba(16,40,36,0.04),0 10px 34px rgba(16,40,36,0.08)}
+  .summary{background:#fff;border:1px solid #E4E8E7;border-radius:20px;padding:22px;box-shadow:0 1px 2px rgba(16,40,36,0.04),0 10px 34px rgba(16,40,36,0.08)}
   .sum-title{font-family:var(--serif);font-size:18px;font-weight:700;margin-bottom:16px}
   .oitem{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--cream2)}
   .oitem:last-of-type{border-bottom:none}
@@ -115,8 +115,8 @@
 <nav class="nav">
   <a href="cart.html" class="nav-back">‹ Savatcha</a>
   <a href="index.html" class="brand" style="margin-left:14px"><img src="images/logo-main.png" alt="Kitobmarkazi"><span class="bname">KITOB<span>MARKAZI</span></span></a>
-  <a href="wishlist.html" class="wish-link" style="margin-left:auto">♥<span class="wish-count"></span></a>
-  <a href="cart.html" class="cart-link" style="margin-left:8px">🛒<span class="cart-count"></span></a>
+  <a href="wishlist.html" class="wish-link" style="margin-left:auto"><i data-lucide="heart" style="width:18px;height:18px"></i><span class="wish-count"></span></a>
+  <a href="cart.html" class="cart-link" style="margin-left:8px"><i data-lucide="shopping-cart" style="width:18px;height:18px"></i><span class="cart-count"></span></a>
 </nav>
 
 <div class="o-hero"><div class="o-orb"></div><div class="o-hin">
@@ -171,12 +171,12 @@
           <div class="paytime-label">Yetkazib berish narxini qanday to'laysiz?</div>
           <div class="paytime-grid">
             <div class="paytime" id="pt-prepaid" onclick="selPayTime('prepaid')">
-              <div class="paytime-ic">💳</div>
+              <div class="paytime-ic"><i data-lucide="credit-card" style="width:24px;height:24px;color:var(--teal);vertical-align:middle;margin-right:6px"></i></div>
               <div class="paytime-tx"><div class="paytime-t">Oldindan to'lash</div><div class="paytime-s">Kitob narxi bilan birga hozir to'laysiz</div></div>
               <div class="paytime-radio"><div class="paytime-dot"></div></div>
             </div>
             <div class="paytime" id="pt-ondelivery" onclick="selPayTime('ondelivery')">
-              <div class="paytime-ic">📦</div>
+              <div class="paytime-ic"><i data-lucide="package" style="width:24px;height:24px;color:var(--teal);vertical-align:middle;margin-right:6px"></i></div>
               <div class="paytime-tx"><div class="paytime-t">Yetkazilganda to'lash</div><div class="paytime-s">Kuryer punktida mustaqil to'laysiz</div></div>
               <div class="paytime-radio"><div class="paytime-dot"></div></div>
             </div>
@@ -237,8 +237,8 @@
   <p class="ssub">Tez orada operatorimiz siz bilan bog'lanadi<br>va ko'rsatilgan manzilga yetkazib beramiz.</p>
   <div class="sdetail" id="sDetail"></div>
   <div class="sact">
-    <a href="index.html" class="btn btn-teal" style="font-size:14px;padding:12px 22px">🏠 Bosh sahifa</a>
-    <a href="publishers.html" class="btn btn-ghost" style="font-size:14px">📚 Yana kitob</a>
+    <a href="index.html" class="btn btn-teal" style="font-size:14px;padding:12px 22px"><i data-lucide="home" style="width:16px;height:16px;margin-right:6px;display:inline-block;vertical-align:middle"></i> Bosh sahifa</a>
+    <a href="publishers.html" class="btn btn-ghost" style="font-size:14px"><i data-lucide="book-open" style="width:16px;height:16px;margin-right:6px;display:inline-block;vertical-align:middle"></i> Yana kitob</a>
   </div>
 </div>
 
@@ -264,18 +264,19 @@
     </div>
     <div class="sf-col">
       <h4>Aloqa</h4>
-      <div class="sf-contact-item"><span class="ic">📞</span><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
-      <div class="sf-contact-item"><span class="ic">✉️</span><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
-      <div class="sf-contact-item"><span class="ic">📍</span><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
+      <div class="sf-contact-item"><i data-lucide="phone" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
+      <div class="sf-contact-item"><i data-lucide="mail" style="width:16px;height:16px;color:var(--teal-l)"></i><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
+      <div class="sf-contact-item"><i data-lucide="map-pin" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
     </div>
   </div>
   <div class="site-foot-bot"><div class="sf-bot-in">
-    <span class="sf-copy">© 2025�2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
+    <span class="sf-copy">© 2025�2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
     <span class="sf-tag">Uzbek Books. One Platform.</span>
   </div></div>
 </footer>
 
 <script src="data.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 <script src="cart.js"></script>
 <script>
 var items=cartItemsDetailed();
@@ -286,7 +287,7 @@ function initPageData(){
   if (!isKMDataLoaded) return;
   items=cartItemsDetailed();
   if(items.length===0){
-    document.getElementById('formWrap').innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px 20px"><div style="font-size:56px;margin-bottom:14px">🛒</div><h2 style="font-family:var(--serif);font-size:23px;margin-bottom:10px">Savatcha bo\'sh</h2><p style="color:var(--mid);margin-bottom:22px">Buyurtma berish uchun avval kitob tanlang</p><a class="btn btn-teal" href="publishers.html">📚 Nashriyotlarni ko\'rish</a></div>';
+    document.getElementById('formWrap').innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px 20px"><div style="display:flex;justify-content:center;margin-bottom:14px"><i data-lucide="shopping-cart" style="width:56px;height:56px;color:var(--mid)"></i></div><h2 style="font-family:var(--serif);font-size:23px;margin-bottom:10px">Savatcha bo\'sh</h2><p style="color:var(--mid);margin-bottom:22px">Buyurtma berish uchun avval kitob tanlang</p><a class="btn btn-teal" href="publishers.html"><i data-lucide="book-open" style="width:16px;height:16px;margin-right:6px;display:inline-block;vertical-align:middle"></i> Nashriyotlarni ko'rish</a></div>'; if(window.refreshIcons) window.refreshIcons();
   } else { renderItems(); }
 }
 

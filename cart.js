@@ -78,7 +78,14 @@ function updateWishlistBadge(){
 }
 function toggleWish(pk,id,btn){
   var added=toggleWishlist(pk,id);
-  if(btn){ btn.classList.toggle('on',added); btn.innerHTML=added?'♥':'♡'; }
+  if(btn){
+    btn.classList.toggle('on',added);
+    var heart = btn.querySelector('svg');
+    if(heart){
+      if(added) heart.setAttribute('fill', 'currentColor');
+      else heart.setAttribute('fill', 'none');
+    }
+  }
   toast(added?"Sevimlilarga qo'shildi":"Sevimlilardan olib tashlandi");
 }
 document.addEventListener('DOMContentLoaded', updateWishlistBadge);
@@ -150,3 +157,37 @@ document.addEventListener('DOMContentLoaded', updateWishlistBadge);
   if(document.readyState!=='loading') buildMobileNav();
   else document.addEventListener('DOMContentLoaded', buildMobileNav);
 })();
+
+
+/* ===== Back to top button ===== */
+(function(){
+  function initBackToTop(){
+    var btn = document.createElement('button');
+    btn.id = 'km-back-to-top';
+    btn.innerHTML = '↑'; // UPWARDS ARROW emoji
+    btn.style.cssText = 'position:fixed;bottom:85px;right:24px;width:44px;height:44px;border-radius:50%;background:#1D9E75;color:#fff;border:none;box-shadow:0 4px 12px rgba(0,0,0,0.15);cursor:pointer;font-size:18px;font-weight:bold;z-index:999;display:none;align-items:center;justify-content:center;transition:all 0.2s;opacity:0.9;outline:none';
+    btn.addEventListener('mouseenter', function(){ btn.style.transform='translateY(-3px)'; btn.style.background='#15805d'; });
+    btn.addEventListener('mouseleave', function(){ btn.style.transform='translateY(0)'; btn.style.background='#1D9E75'; });
+    btn.addEventListener('click', function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+    document.body.appendChild(btn);
+
+    window.addEventListener('scroll', function(){
+      if(window.scrollY > 400){
+        btn.style.display = 'flex';
+      } else {
+        btn.style.display = 'none';
+      }
+    });
+  }
+  if(document.readyState!=='loading') initBackToTop();
+  else document.addEventListener('DOMContentLoaded', initBackToTop);
+})();
+
+/* ===== Dynamic Lucide Icons Loader ===== */
+function refreshIcons() {
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
+}
+document.addEventListener('DOMContentLoaded', refreshIcons);
+window.refreshIcons = refreshIcons;

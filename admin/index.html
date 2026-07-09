@@ -13,7 +13,7 @@
   <!-- Login -->
   <div id="loginPage" class="login-page">
     <div class="login-card">
-      <div class="login-logo">📚</div>
+      <div class="login-logo" style="display:flex;justify-content:center;align-items:center;margin-bottom:16px"><i data-lucide="book-open" style="width:48px;height:48px;color:var(--teal)"></i></div>
       <h1>Kitobmarkazi Admin</h1>
       <p class="login-sub">Boshqaruv paneliga kirish</p>
       <div class="field"><label>Login</label><input type="text" id="loginUser" placeholder="admin"></div>
@@ -27,20 +27,20 @@
   <div id="dashboard" style="display:none">
     <div class="sb-overlay" id="sbOverlay" onclick="toggleMobileNav()"></div>
     <nav class="sidebar" id="sidebar">
-      <div class="sb-brand">📚 <span>ADMIN</span></div>
-      <a class="sb-link on" data-page="overview" onclick="showPage('overview',this);closeMobileNav()">📊 Umumiy</a>
-      <a class="sb-link" data-page="orders" onclick="showPage('orders',this);closeMobileNav()">🛒 Buyurtmalar</a>
-      <a class="sb-link" data-page="books" onclick="showPage('books',this);closeMobileNav()">📖 Kitoblar</a>
-      <a class="sb-link" data-page="publishers" onclick="showPage('publishers',this);closeMobileNav()">🏢 Nashriyotlar</a>
-      <a class="sb-link" data-page="reviews" onclick="showPage('reviews',this);closeMobileNav()">💬 Fikrlar</a>
+      <div class="sb-brand"><i data-lucide="shield" style="width:20px;height:20px;color:var(--teal);margin-right:8px;vertical-align:middle"></i> <span>ADMIN</span></div>
+      <a class="sb-link on" data-page="overview" onclick="showPage('overview',this);closeMobileNav()"><i data-lucide="bar-chart-3" style="width:16px;height:16px;margin-right:8px;vertical-align:middle"></i> Umumiy</a>
+      <a class="sb-link" data-page="orders" onclick="showPage('orders',this);closeMobileNav()"><i data-lucide="shopping-cart" style="width:16px;height:16px;margin-right:8px;vertical-align:middle"></i> Buyurtmalar</a>
+      <a class="sb-link" data-page="books" onclick="showPage('books',this);closeMobileNav()"><i data-lucide="book-open" style="width:16px;height:16px;margin-right:8px;vertical-align:middle"></i> Kitoblar</a>
+      <a class="sb-link" data-page="publishers" onclick="showPage('publishers',this);closeMobileNav()"><i data-lucide="building-2" style="width:16px;height:16px;margin-right:8px;vertical-align:middle"></i> Nashriyotlar</a>
+      <a class="sb-link" data-page="reviews" onclick="showPage('reviews',this);closeMobileNav()"><i data-lucide="message-square" style="width:16px;height:16px;margin-right:8px;vertical-align:middle"></i> Fikrlar</a>
 
-      <a class="sb-link" data-page="promos" onclick="showPage('promos',this);closeMobileNav()">🎁 Promokodlar</a>
-      <a class="sb-link" data-page="coming" onclick="showPage('coming',this);closeMobileNav()">⏳ Tez kunda</a>
-      <a class="sb-link" data-page="settings" onclick="showPage('settings',this);closeMobileNav()">⚙️ Sozlamalar</a>
+      <a class="sb-link" data-page="promos" onclick="showPage('promos',this);closeMobileNav()"><i data-lucide="gift" style="width:16px;height:16px;margin-right:8px;vertical-align:middle"></i> Promokodlar</a>
+      <a class="sb-link" data-page="coming" onclick="showPage('coming',this);closeMobileNav()"><i data-lucide="clock" style="width:16px;height:16px;margin-right:8px;vertical-align:middle"></i> Tez kunda</a>
+      <a class="sb-link" data-page="settings" onclick="showPage('settings',this);closeMobileNav()"><i data-lucide="settings" style="width:16px;height:16px;margin-right:8px;vertical-align:middle"></i> Sozlamalar</a>
 
       <div class="sb-foot">
-        <a href="/" target="_blank">🌐 Saytga o'tish</a>
-        <a onclick="logout()">🚪 Chiqish</a>
+        <a href="/" target="_blank"><i data-lucide="globe" style="width:14px;height:14px;margin-right:6px;vertical-align:middle"></i> Saytga o'tish</a>
+        <a onclick="logout()"><i data-lucide="log-out" style="width:14px;height:14px;margin-right:6px;vertical-align:middle"></i> Chiqish</a>
       </div>
     </nav>
     <main class="main">
@@ -56,6 +56,7 @@
   <div class="admin-toast" id="adminToast"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 <script src="/admin/admin.js"></script>
 </body>
 </html>

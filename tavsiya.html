@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
@@ -6,22 +6,22 @@
 <title>AI Tavsiyalari — Kitobmarkazi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
-  .tv-hero{background:var(--grad-navy);padding:52px 32px 44px;position:relative;overflow:hidden;box-shadow:0 1px 0 rgba(217,169,62,0.2)}
+  .tv-hero{background:var(--grad-navy);padding:56px 32px 48px;position:relative;overflow:hidden;box-shadow:0 1px 0 rgba(217,169,62,0.12)}
   .tv-hero::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(217,169,62,0.5),transparent);z-index:3}
-  .tv-orb{position:absolute;border-radius:50%;pointer-events:none}
+  .tv-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(60px)}
   .tv-orb1{width:400px;height:400px;background:radial-gradient(circle,rgba(29,158,117,0.22),transparent 70%);top:-180px;right:-80px}
   .tv-orb2{width:320px;height:320px;background:radial-gradient(circle,rgba(232,178,62,0.12),transparent 70%);bottom:-160px;left:-70px}
-  .tv-pat{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M20 4 L36 20 L20 36 L4 20 Z' fill='none' stroke='%231D9E75' stroke-width='1'/%3E%3C/svg%3E");background-size:34px 34px;opacity:0.05;pointer-events:none}
+  .tv-pat{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M20 4 L36 20 L20 36 L4 20 Z' fill='none' stroke='%231D9E75' stroke-width='1'/%3E%3C/svg%3E");background-size:34px 34px;opacity:0.04;pointer-events:none}
   .tv-hin{position:relative;z-index:2;max-width:1100px;margin:0 auto;text-align:center}
   .tv-badge{display:inline-block;background:rgba(29,158,117,0.18);color:var(--teal-l);font-size:12px;font-weight:700;letter-spacing:0.06em;padding:7px 16px;border-radius:20px;border:1px solid rgba(29,158,117,0.35);margin-bottom:16px}
   .tv-prof-icon{font-size:54px;margin-bottom:8px}
-  .tv-h{font-family:var(--serif);font-size:34px;font-weight:900;color:#fff;letter-spacing:-0.02em;margin-bottom:10px}
-  .tv-desc{font-size:15.5px;color:rgba(255,255,255,0.62);line-height:1.7;max-width:560px;margin:0 auto 20px}
+  .tv-h{font-family:var(--serif);font-size:36px;font-weight:900;color:#fff;letter-spacing:-0.02em;margin-bottom:10px}
+  .tv-desc{font-size:15.5px;color:rgba(255,255,255,0.68);line-height:1.75;max-width:560px;margin:0 auto 20px}
   .tv-tags{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
-  .tv-tag{background:rgba(232,178,62,0.15);color:var(--gold);font-size:12.5px;font-weight:700;padding:7px 15px;border-radius:18px;border:1px solid rgba(232,178,62,0.3)}
+  .tv-tag{background:rgba(232,178,62,0.15);color:var(--gold);font-size:12.5px;font-weight:700;padding:7px 15px;border-radius:18px;border:1px solid rgba(232,178,62,0.3);box-shadow:0 2px 10px rgba(232,178,62,0.1)}
   .tv-wrap{max-width:1100px;margin:0 auto;padding:34px 32px 50px}
   .tv-label{display:flex;align-items:center;gap:12px;margin-bottom:22px}
   .tv-label .tl-line{flex:1;height:1px;background:var(--border)}
@@ -32,10 +32,9 @@
   .tv-empty .te-ic{font-size:60px;margin-bottom:16px}
   .tv-empty h2{font-family:var(--serif);font-size:25px;font-weight:700;margin-bottom:8px}
   .tv-empty p{font-size:14.5px;color:var(--mid);margin-bottom:24px}
-  @media(max-width:900px){.tv-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:900px){.tv-grid{grid-template-columns:repeat(3,1fr)}}
   @media(max-width:600px){.tv-hero{padding:32px 16px 30px}.tv-h{font-size:27px}.tv-wrap{padding:24px 16px 40px}.tv-grid{grid-template-columns:repeat(2,1fr);gap:12px}}
-  @media(max-width:420px){.tv-grid{grid-template-columns:1fr}}
-</style>
+  @media(max-width:420px){.tv-grid{grid-template-columns:1fr}}</style>
 </head>
 <body>
 
@@ -48,8 +47,8 @@
     <a href="track.html" class="nav-link">Kuzatish</a>
     <a href="about.html" class="nav-link">Biz haqimizda</a>
   </div>
-  <a href="wishlist.html" class="wish-link" style="margin-left:8px">♥<span class="wish-count"></span></a>
-  <a href="cart.html" class="cart-link">🛒<span class="cart-count"></span></a>
+  <a href="wishlist.html" class="wish-link" style="margin-left:8px"><i data-lucide="heart" style="width:18px;height:18px"></i><span class="wish-count"></span></a>
+  <a href="cart.html" class="cart-link"><i data-lucide="shopping-cart" style="width:18px;height:18px"></i><span class="cart-count"></span></a>
 </nav>
 
 <div id="page"></div>
@@ -76,18 +75,19 @@
     </div>
     <div class="sf-col">
       <h4>Aloqa</h4>
-      <div class="sf-contact-item"><span class="ic">📞</span><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
-      <div class="sf-contact-item"><span class="ic">✉️</span><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
-      <div class="sf-contact-item"><span class="ic">📍</span><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
+      <div class="sf-contact-item"><i data-lucide="phone" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
+      <div class="sf-contact-item"><i data-lucide="mail" style="width:16px;height:16px;color:var(--teal-l)"></i><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
+      <div class="sf-contact-item"><i data-lucide="map-pin" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
     </div>
   </div>
   <div class="site-foot-bot"><div class="sf-bot-in">
-    <span class="sf-copy">© 2025�2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
+    <span class="sf-copy">© 2025�2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
     <span class="sf-tag">Uzbek Books. One Platform.</span>
   </div></div>
 </footer>
 
 <script src="data.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 <script src="cart.js"></script>
 <script src="chat-widget.js"></script>
 <script>
@@ -125,6 +125,7 @@
         '<a class="btn btn-teal" href="search.html">Boshqa kitoblarni ko\'rish →</a>'+
       '</div>'+
     '</div>';
+if(window.refreshIcons) window.refreshIcons();
 })();
 </script>
 </body>

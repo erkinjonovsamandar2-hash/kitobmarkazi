@@ -1,4 +1,11 @@
 /* ===== KITOBMARKAZI ADMIN — App Logic ===== */
+
+function refreshAdminIcons() {
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
+}
+
 var TOKEN = localStorage.getItem('km_admin_token') || '';
 var USER = null;
 
@@ -28,9 +35,14 @@ function adminToast(msg, type) {
   if (!container) return;
   var el = document.createElement('div');
   el.className = 'toast-item toast-' + type;
-  var icons = { success: '✓', error: '✕', info: 'ℹ' };
-  el.innerHTML = '<span>' + (icons[type] || '') + '</span> ' + msg;
+  var icons = {
+    success: '<i data-lucide="check-circle" style="width:16px;height:16px;color:#fff;vertical-align:middle"></i>',
+    error: '<i data-lucide="x-circle" style="width:16px;height:16px;color:#fff;vertical-align:middle"></i>',
+    info: '<i data-lucide="info" style="width:16px;height:16px;color:#fff;vertical-align:middle"></i>'
+  };
+  el.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;margin-right:8px">' + (icons[type] || '') + '</span> ' + msg;
   container.appendChild(el);
+  refreshAdminIcons();
   setTimeout(function() { el.classList.add('out'); }, 2500);
   setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 2900);
 }
@@ -104,7 +116,7 @@ function colorPickerHTML(id, current) {
   });
   // Custom hex/gradient
   var isCustom = current && !GRADIENTS.includes(current);
-  h += '<div class="cp-custom ' + (isCustom?'on':'') + '" title="Boshqa rang" id="' + id + '_custom_btn" onclick="toggleCustomColor(\'' + id + '\')">🎨</div>';
+  h += '<div class="cp-custom ' + (isCustom?'on':'') + '" title="Boshqa rang" id="' + id + '_custom_btn" onclick="toggleCustomColor(\'' + id + '\')"><i data-lucide="palette" style="width:16px;height:16px;vertical-align:middle"></i></div>';
   h += '</div>';
   h += '<div id="' + id + '_custom_wrap" style="margin-top:8px;' + (isCustom?'':'display:none') + '">';
   h += '<input type="text" id="' + id + '_custom_val" value="' + (isCustom?current:'') + '" placeholder="#HEX yoki gradient..." oninput="selectCustomColor(\'' + id + '\', this.value)" style="height:34px;font-size:12px">';
@@ -139,15 +151,38 @@ function selectCustomColor(id, val) {
 function doLogin() {
   var u = document.getElementById('loginUser').value.trim();
   var p = document.getElementById('loginPass').value;
+  var btn = document.querySelector('#loginPage button');
+  if (btn) {
+    btn.disabled = true;
+    btn.style.opacity = '0.7';
+    btn.textContent = 'Kirish...';
+  }
+  document.getElementById('loginErr').textContent = '';
+
   fetch('/api/auth/login', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username: u, password: p })
   }).then(function(r) { return r.json(); }).then(function(data) {
-    if (data.error) { document.getElementById('loginErr').textContent = data.error; return; }
+    if (data.error) {
+      document.getElementById('loginErr').textContent = data.error;
+      if (btn) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.textContent = 'Kirish';
+      }
+      return;
+    }
     TOKEN = data.token;
     USER = data.user;
     localStorage.setItem('km_admin_token', TOKEN);
     showDashboard();
+  }).catch(function() {
+    document.getElementById('loginErr').textContent = 'Tarmoq xatoligi yuz berdi';
+    if (btn) {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.textContent = 'Kirish';
+    }
   });
 }
 function logout() { TOKEN = ''; USER = null; localStorage.removeItem('km_admin_token'); location.reload(); }
@@ -157,6 +192,7 @@ function showDashboard() {
   document.getElementById('dashboard').style.display = 'flex';
   document.getElementById('topUser').textContent = (USER && USER.displayName) || 'Admin';
   showPage('overview', document.querySelector('.sb-link[data-page=overview]'));
+  refreshAdminIcons();
 }
 
 /* ── Auto-login if token exists ── */
@@ -199,11 +235,14 @@ function loadComingSoon() {
           days = Math.ceil((rel.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
         }
         h += '<tr><td><b>' + it.title + '</b></td><td>' + it.author + '</td><td>' + (it.publisherName||it.publisherSlug) + '</td><td>' + Math.max(0, days) + ' kun</td>' +
-          '<td><button class="btn-sm btn-danger" onclick="deleteComing(\'' + it.id + '\')">🗑</button></td></tr>';
+          '<td><button class="btn-sm btn-danger" onclick="deleteComing(\'' + it.id + '\')"><i data-lucide="trash-2" style="width:14px;height:14px"></i></button></td></tr>';
       });
       h += '</table></div>';
     }
     document.getElementById('content').innerHTML = h;
+    refreshAdminIcons();
+    refreshAdminIcons();
+    refreshAdminIcons();
   });
 }
 
@@ -222,6 +261,8 @@ function showComingForm() {
       '<button class="btn-primary" onclick="saveComing()">Saqlash</button></div></div>';
 
     document.body.insertAdjacentHTML('beforeend', html);
+  refreshAdminIcons();
+    refreshAdminIcons();
   });
 }
 
@@ -287,14 +328,24 @@ function loadOverview() {
     h += '</table></div>';
 
     // Top Books
-    h += '<div class="card"><div class="card-title">Eng ko\'p sotilgan kitoblar</div><table class="tbl"><tr><th>Kitob</th><th>Sotilgan</th><th>Daromad</th></tr>';
-    topBooks.forEach(function(b) { h += '<tr><td><b>' + b.title + '</b><br><span style="font-size:11px;color:var(--light)">' + b.author + '</span></td><td>' + b.totalSold + ' ta</td><td>' + money(b.totalRevenue) + '</td></tr>'; });
-    h += '</table></div></div>';
+    h += '<div class="card"><div class="card-title">Eng ko\'p sotilgan kitoblar</div>';
+    if (!topBooks || topBooks.length === 0) {
+      h += '<div style="text-align:center;padding:30px;color:var(--light)">Hozircha ma\'lumot yo\'q</div></div></div>';
+    } else {
+      h += '<table class="tbl"><tr><th>Kitob</th><th>Sotilgan</th><th>Daromad</th></tr>';
+      topBooks.forEach(function(b) { h += '<tr><td><b>' + b.title + '</b><br><span style="font-size:11px;color:var(--light)">' + b.author + '</span></td><td>' + b.totalSold + ' ta</td><td>' + money(b.totalRevenue) + '</td></tr>'; });
+      h += '</table></div></div>';
+    }
 
     // Top Publishers
-    h += '<div class="card"><div class="card-title">Top Nashriyotlar (Daromad)</div><table class="tbl"><tr><th>Nashriyot</th><th>Kitoblar</th><th>Jami daromad</th></tr>';
-    topPubs.forEach(function(p) { h += '<tr><td><b>' + (p.name || p.publisherSlug) + '</b></td><td>' + p.totalSold + ' ta</td><td>' + money(p.totalRevenue) + '</td></tr>'; });
-    h += '</table></div>';
+    h += '<div class="card"><div class="card-title">Top Nashriyotlar (Daromad)</div>';
+    if (!topPubs || topPubs.length === 0) {
+      h += '<div style="text-align:center;padding:30px;color:var(--light)">Hozircha ma\'lumot yo\'q</div></div>';
+    } else {
+      h += '<table class="tbl"><tr><th>Nashriyot</th><th>Kitoblar</th><th>Jami daromad</th></tr>';
+      topPubs.forEach(function(p) { h += '<tr><td><b>' + (p.name || p.publisherSlug) + '</b></td><td>' + p.totalSold + ' ta</td><td>' + money(p.totalRevenue) + '</td></tr>'; });
+      h += '</table></div>';
+    }
 
     document.getElementById('content').innerHTML = h;
 
@@ -334,30 +385,59 @@ function statusLabel(s) {
 }
 
 /* ── ORDERS ── */
+var _loadedOrders = [];
 function loadOrders(status) {
-  var qs = status && status !== 'all' ? '?status=' + status : '';
+  status = status || 'all';
+  var qs = status !== 'all' ? '?status=' + status : '';
   api('/orders' + qs).then(function(d) {
-    var h = '<div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">';
-    ['all','new','confirmed','processing','shipped','delivered','cancelled'].forEach(function(s) {
-      h += '<button class="btn-sm ' + ((!status && s==='all' || status===s) ? 'btn-teal' : 'btn-ghost') + '" onclick="loadOrders(\'' + s + '\')">' + (s==='all'?'Barchasi':statusLabel(s)) + '</button>';
-    });
-    h += '</div>';
-
-    if (!d.orders || d.orders.length === 0) {
-      h += '<div class="card" style="text-align:center;padding:40px;color:var(--light)">Hozircha buyurtma yo\'q</div>';
-    } else {
-      h += '<div class="card" style="padding:0;overflow-x:auto"><table class="tbl"><tr><th>#</th><th>Mijoz</th><th>Viloyat</th><th>Jami</th><th>Holat</th><th>Sana</th><th></th></tr>';
-      d.orders.forEach(function(o) {
-        h += '<tr><td><b>' + o.orderNumber + '</b></td><td>' + o.customerName + '<br><span style="font-size:12px;color:var(--light)">' + o.customerPhone + '</span></td>' +
-          '<td>' + o.tuman + ', ' + o.region + '</td><td><b>' + money(o.total) + '</b></td>' +
-          '<td><span class="badge badge-' + o.status + '">' + statusLabel(o.status) + '</span></td>' +
-          '<td style="font-size:12px;color:var(--light)">' + fmtDate(o.createdAt) + '</td>' +
-          '<td><button class="btn-sm btn-ghost" onclick="viewOrder(\'' + o.id + '\')">Ko\'rish</button></td></tr>';
-      });
-      h += '</table></div>';
-    }
-    document.getElementById('content').innerHTML = h;
+    _loadedOrders = d.orders || [];
+    renderOrdersTable(status);
   });
+}
+
+function renderOrdersTable(status) {
+  var q = document.getElementById('orderSearch') ? document.getElementById('orderSearch').value.toLowerCase().trim() : '';
+  var filtered = _loadedOrders.filter(function(o) {
+    if (!q) return true;
+    return (o.customerName || '').toLowerCase().indexOf(q) !== -1 ||
+           (o.customerPhone || '').toLowerCase().indexOf(q) !== -1 ||
+           (o.orderNumber || '').toLowerCase().indexOf(q) !== -1;
+  });
+
+  var h = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:12px;">' +
+    '<div style="display:flex;gap:8px;flex-wrap:wrap">';
+  ['all','new','confirmed','processing','shipped','delivered','cancelled'].forEach(function(s) {
+    h += '<button class="btn-sm ' + (status===s ? 'btn-teal' : 'btn-ghost') + '" onclick="loadOrders(\'' + s + '\')">' + (s==='all'?'Barchasi':statusLabel(s)) + '</button>';
+  });
+  h += '</div>';
+
+  h += '<input type="text" id="orderSearch" placeholder="Qidiruv: ism, telefon yoki raqam..." oninput="filterOrdersLocal(\'' + status + '\')" value="' + q.replace(/'/g, "\'") + '" style="height:38px; padding:8px 16px; border:1px solid var(--border); border-radius:8px; width:280px; font-size:13.5px; outline:none">';
+  h += '</div>';
+
+  if (filtered.length === 0) {
+    h += '<div class="card" style="text-align:center;padding:40px;color:var(--light)">Buyurtmalar topilmadi</div>';
+  } else {
+    h += '<div class="card" style="padding:0;overflow-x:auto"><table class="tbl"><tr><th>#</th><th>Mijoz</th><th>Viloyat</th><th>Jami</th><th>Holat</th><th>Sana</th><th></th></tr>';
+    filtered.forEach(function(o) {
+      h += '<tr><td><b>' + o.orderNumber + '</b></td><td>' + o.customerName + '<br><span style="font-size:12px;color:var(--light)">' + o.customerPhone + '</span></td>' +
+        '<td>' + o.tuman + ', ' + o.region + '</td><td><b>' + money(o.total) + '</b></td>' +
+        '<td><span class="badge badge-' + o.status + '">' + statusLabel(o.status) + '</span></td>' +
+        '<td style="font-size:12px;color:var(--light)">' + fmtDate(o.createdAt) + '</td>' +
+        '<td><button class="btn-sm btn-ghost" onclick="viewOrder(\'' + o.id + '\')">Ko\'rish</button></td></tr>';
+    });
+    h += '</table></div>';
+  }
+  document.getElementById('content').innerHTML = h;
+  refreshAdminIcons();
+  var input = document.getElementById('orderSearch');
+  if (input && q) {
+    input.focus();
+    input.selectionStart = input.selectionEnd = input.value.length;
+  }
+}
+
+function filterOrdersLocal(status) {
+  renderOrdersTable(status);
 }
 
 function viewOrder(id) {
@@ -376,7 +456,7 @@ function viewOrder(id) {
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px" class="no-print">' +
       '<div><div class="badge badge-' + o.status + '">' + statusLabel(o.status) + '</div><h3 style="margin:8px 0 0">' + o.orderNumber + '</h3></div>' +
       '<div style="text-align:right">' +
-      '<button class="btn-sm btn-ghost" onclick="window.print()" style="margin-bottom:4px">🖨 Chop etish</button>' +
+      '<button class="btn-sm btn-ghost" onclick="window.print()" style="margin-bottom:4px;display:inline-flex;align-items:center;gap:6px"><i data-lucide="printer" style="width:14px;height:14px"></i> Chop etish</button>' +
       '<div style="font-size:13px;color:var(--light)">' + fmtDate(o.createdAt) + '</div></div></div>' +
 
       '<div class="print-only" style="display:none;text-align:center;margin-bottom:30px">' +
@@ -402,6 +482,7 @@ function viewOrder(id) {
       '<button class="btn-primary" onclick="updateStatus(\'' + (o.id || o.orderNumber) + '\')">Saqlash</button></div>' +
       '</div></div>';
     document.body.insertAdjacentHTML('beforeend', html);
+    refreshAdminIcons();
   });
 }
 
@@ -426,7 +507,7 @@ var _bookSearchTimer = null;
 function loadBooks() {
   var qs = curBookSearch ? '?limit=50&q=' + encodeURIComponent(curBookSearch) : '?limit=50';
   api('/books' + qs).then(function(d) {
-    var h = '<div class="card-title"><span>📖 ' + d.total + ' ta kitob</span>' +
+    var h = '<div class="card-title"><span><i data-lucide="book-open" style="width:18px;height:18px;vertical-align:middle;margin-right:6px"></i> ' + d.total + ' ta kitob</span>' +
       '<div style="display:flex;gap:8px"><input type="text" id="bSearch" class="search-input" placeholder="Qidirish..." value="' + curBookSearch + '">' +
       '<button class="btn-sm btn-teal" onclick="showBookForm()">+ Yangi kitob</button></div></div>';
 
@@ -435,7 +516,7 @@ function loadBooks() {
       h += '<tr><td><b>' + b.title + '</b>' + (b.isTop?' <span style="color:var(--gold)">★</span>':'') + '</td><td>' + b.author + '</td><td>' + (b.publisherName||b.publisherSlug) + '</td>' +
         '<td>' + money(b.price) + '</td><td>' + (b.genre||'') + '</td>' +
         '<td><div style="display:flex;gap:4px"><button class="btn-sm btn-ghost" onclick="showBookForm(\'' + b.publisherSlug + '\',\'' + b.id + '\')">✏️</button>' +
-        '<button class="btn-sm btn-danger" onclick="deleteBook(\'' + b.publisherSlug + '\',\'' + b.id + '\')">🗑</button></div></td></tr>';
+        '<button class="btn-sm btn-danger" onclick="deleteBook(\'' + b.publisherSlug + '\',\'' + b.id + '\')"><i data-lucide="trash-2" style="width:14px;height:14px"></i></button></div></td></tr>';
     });
     h += '</table></div>';
 
@@ -499,6 +580,7 @@ function showBookForm(pub, id) {
       '<button class="btn-primary" onclick="saveBook(\'' + (isEdit?b.publisherSlug:'') + '\',\'' + (isEdit?b.id:'') + '\')">Saqlash</button></div></div>';
 
     document.body.insertAdjacentHTML('beforeend', html);
+    refreshAdminIcons();
   });
 }
 
@@ -540,16 +622,17 @@ function deleteBook(pub, id) {
 /* ── PUBLISHERS ── */
 function loadPublishers() {
   api('/publishers').then(function(pubs) {
-    var h = '<div class="card-title"><span>🏢 ' + pubs.length + ' ta nashriyot</span><button class="btn-sm btn-teal" onclick="showPublisherForm()">+ Yangi nashriyot</button></div>';
+    var h = '<div class="card-title"><span><i data-lucide="building-2" style="width:18px;height:18px;vertical-align:middle;margin-right:6px"></i> ' + pubs.length + ' ta nashriyot</span><button class="btn-sm btn-teal" onclick="showPublisherForm()">+ Yangi nashriyot</button></div>';
     h += '<div class="card" style="padding:0;overflow-x:auto"><table class="tbl"><tr><th>Nomi</th><th>Shahar</th><th>Asos solingan</th><th>Kitoblar</th><th></th></tr>';
     pubs.forEach(function(p) {
       h += '<tr><td><b>' + p.name + '</b><br><span style="font-size:11px;color:var(--light)">' + p.slug + '</span></td>' +
         '<td>' + (p.city||'') + '</td><td>' + (p.founded||'') + '</td><td>' + (p.bookCount||0) + '</td>' +
         '<td><div style="display:flex;gap:4px"><button class="btn-sm btn-ghost" onclick="showPublisherForm(\'' + p.slug + '\')">✏️</button>' +
-        '<button class="btn-sm btn-danger" onclick="deletePublisher(\'' + p.slug + '\')">🗑</button></div></td></tr>';
+        '<button class="btn-sm btn-danger" onclick="deletePublisher(\'' + p.slug + '\')"><i data-lucide="trash-2" style="width:14px;height:14px"></i></button></div></td></tr>';
     });
     h += '</table></div>';
     document.getElementById('content').innerHTML = h;
+    refreshAdminIcons();
   });
 }
 
@@ -574,6 +657,7 @@ function showPublisherForm(slug) {
       '<button class="btn-primary" onclick="savePublisher(\'' + (p.slug||'') + '\')">Saqlash</button></div></div>';
 
     document.body.insertAdjacentHTML('beforeend', html);
+    refreshAdminIcons();
   }
 }
 
@@ -610,7 +694,7 @@ function deletePublisher(slug) {
 /* ── PROMOS ── */
 function loadPromos() {
   api('/promos').then(function(promos) {
-    var h = '<div class="card-title"><span>🎁 Promokodlar</span><button class="btn-sm btn-teal" onclick="showPromoForm()">+ Yangi promokod</button></div>';
+    var h = '<div class="card-title"><span><i data-lucide="gift" style="width:18px;height:18px;vertical-align:middle;margin-right:6px"></i> Promokodlar</span><button class="btn-sm btn-teal" onclick="showPromoForm()">+ Yangi promokod</button></div>';
     if (!promos.length) {
       h += '<div class="card" style="text-align:center;padding:30px;color:var(--light)">Hozircha promokod yo\'q</div>';
     } else {
@@ -625,6 +709,7 @@ function loadPromos() {
       h += '</table></div>';
     }
     document.getElementById('content').innerHTML = h;
+    refreshAdminIcons();
   });
 }
 
@@ -683,6 +768,7 @@ function loadSettings() {
       '<div class="field"><label>Yangi parol</label><input type="password" id="sNewPass"></div></div>' +
       '<button class="btn-sm btn-teal" onclick="changePass()">Parolni o\'zgartirish</button></div>';
     document.getElementById('content').innerHTML = h;
+    refreshAdminIcons();
   });
 }
 
@@ -706,7 +792,7 @@ function changePass() {
 /* ── REVIEWS ── */
 function loadReviewsPage() {
   api('/books/admin/all-reviews').then(function(data) {
-    var h = '<div class="card-title"><span>💬 Fikr-mulohazalar boshqaruvi</span></div>';
+    var h = '<div class="card-title"><span><i data-lucide="message-square" style="width:18px;height:18px;vertical-align:middle;margin-right:6px"></i> Fikr-mulohazalar boshqaruvi</span></div>';
     if (!data.length) {
       h += '<div class="card" style="text-align:center;padding:40px;color:var(--light)">Hozircha fikrlar yo\'q.</div>';
     } else {
@@ -716,11 +802,12 @@ function loadReviewsPage() {
           '<td><span style="color:var(--gold)">' + '★'.repeat(r.rating) + '</span></td>' +
           '<td style="max-width:300px;font-size:13px;color:var(--mid)">' + r.comment + '</td>' +
           '<td style="font-size:12px;color:var(--light)">' + fmtDate(r.createdAt) + '</td>' +
-          '<td><button class="btn-sm btn-danger" onclick="deleteAdminReview(' + r.id + ')">🗑</button></td></tr>';
+          '<td><button class="btn-sm btn-danger" onclick="deleteAdminReview(' + r.id + ')"><i data-lucide="trash-2" style="width:14px;height:14px"></i></button></td></tr>';
       });
       h += '</table></div>';
     }
     document.getElementById('content').innerHTML = h;
+    refreshAdminIcons();
   });
 }
 

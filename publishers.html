@@ -9,33 +9,35 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
-  .ph{background:var(--grad-navy);padding:42px 32px 36px;position:relative;overflow:hidden;box-shadow:0 1px 0 rgba(217,169,62,0.18)}
-  .ph::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cpath d='M22 3 L41 22 L22 41 L3 22 Z' fill='none' stroke='%23D9A93E' stroke-width='1'/%3E%3C/svg%3E");background-size:38px 38px;opacity:0.05;pointer-events:none}
-  .ph-orb{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(29,158,117,0.18),transparent 70%);top:-180px;right:-80px}
+  .ph{background:var(--grad-navy);padding:46px 32px 38px;position:relative;overflow:hidden;box-shadow:0 1px 0 rgba(217,169,62,0.12)}
+  .ph::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cpath d='M22 3 L41 22 L22 41 L3 22 Z' fill='none' stroke='%23D9A93E' stroke-width='1'/%3E%3C/svg%3E");background-size:38px 38px;opacity:0.04;pointer-events:none}
+  .ph-orb{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(29,158,117,0.2),transparent 70%);top:-180px;right:-80px;filter:blur(60px);pointer-events:none}
   .ph-in{max-width:1100px;margin:0 auto;position:relative;z-index:2}
-  .ph h1{font-family:var(--serif);font-size:32px;font-weight:700;color:#fff;margin:0 0 8px 0}
-  .ph p{color:rgba(255,255,255,0.6);font-size:15px;margin:0 0 18px 0}
-  .ph-stats{display:flex;gap:28px}
+  .ph h1{font-family:var(--serif);font-size:34px;font-weight:800;color:#fff;margin:0 0 8px 0;letter-spacing:-0.015em}
+  .ph p{color:rgba(255,255,255,0.65);font-size:15px;margin:0 0 18px 0}
+  .ph-stats{display:flex;gap:32px}
   .ps-item{display:flex;align-items:baseline;gap:8px}
-  .ps-v{font-size:32px;font-weight:800;color:var(--teal-l);font-family:var(--serif)}
-  .ps-l{font-size:13px;color:rgba(255,255,255,0.55);font-weight:500}
+  .ps-v{font-size:34px;font-weight:800;color:var(--teal-l);font-family:var(--serif)}
+  .ps-l{font-size:13px;color:rgba(255,255,255,0.58);font-weight:600;letter-spacing:0.03em}
 
-  .alpha-bar{background:var(--white);border-bottom:1px solid var(--border);padding:14px 0;position:sticky;top:70px;z-index:50}
+  .alpha-bar{background:var(--white);border-bottom:1px solid var(--border);padding:14px 0;position:sticky;top:70px;z-index:50;box-shadow:var(--sh-sm)}
   .alpha-in{max-width:1100px;margin:0 auto;padding:0 32px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-  .alpha-btn{font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer;border:1.5px solid var(--border);color:var(--mid);background:var(--white);transition:all 0.15s;font-family:inherit}
-  .alpha-btn.on{background:var(--teal);color:#fff;border-color:var(--teal)}
-  .alpha-btn:hover:not(.on):not(:disabled){border-color:var(--teal);color:var(--teal-d)}
+  .alpha-btn{font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer;border:1.5px solid var(--border);color:var(--mid);background:var(--white);transition:all 0.25s var(--ease-premium);font-family:inherit}
+  .alpha-btn.on{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--sh-teal)}
+  .alpha-btn:hover:not(.on):not(:disabled){border-color:var(--teal);color:var(--teal-d);transform:translateY(-1px);box-shadow:var(--sh-sm)}
   .alpha-btn:disabled{opacity:0.3;cursor:default}
 
   .pg-wrap{max-width:1100px;margin:0 auto;padding:28px 32px 40px}
   .publishers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
-  .pcard{background:var(--white);border-radius:18px;border:1px solid var(--border);overflow:hidden;text-decoration:none;color:var(--ink);transition:all 0.25s;display:flex;flex-direction:column;position:relative}
-  .pcard:hover{transform:translateY(-4px);box-shadow:0 14px 36px rgba(0,0,0,0.08);border-color:var(--teal)}
-  .pcard-logo{display:flex;align-items:center;justify-content:center;padding:28px 20px;background:var(--cream);min-height:130px}
-  .pcard-logo img{max-height:80px;max-width:160px;object-fit:contain}
+  .pcard{background:var(--white);border-radius:20px;border:1px solid var(--border);overflow:hidden;text-decoration:none;color:var(--ink);transition:all 0.28s var(--ease-premium);display:flex;flex-direction:column;position:relative;box-shadow:var(--sh-sm)}
+  .pcard:hover{transform:translateY(-4px);box-shadow:var(--sh-lg),var(--glow-teal);border-color:var(--teal)}
+  .pcard-logo{display:flex;align-items:center;justify-content:center;padding:28px 20px;background:var(--cream);min-height:130px;transition:background 0.25s}
+  .pcard:hover .pcard-logo{background:rgba(29,158,117,0.03)}
+  .pcard-logo img{max-height:80px;max-width:160px;object-fit:contain;transition:transform 0.25s var(--ease-premium)}
+  .pcard:hover .pcard-logo img{transform:scale(1.04)}
   .pcard-logo-text{font-size:22px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase}
   .pcard-foot{padding:16px 18px;border-top:1px solid var(--border)}
   .pcard-name{font-weight:700;font-size:15px;margin-bottom:4px}
@@ -43,9 +45,9 @@
   .first-badge{position:absolute;top:12px;right:12px;background:var(--grad-gold);color:#3D2A00;font-size:9px;font-weight:800;padding:4px 10px;border-radius:16px;z-index:3;letter-spacing:0.04em;box-shadow:0 3px 10px rgba(217,169,62,0.35)}
 
   .pager{display:flex;justify-content:center;gap:6px;padding:20px 0 40px}
-  .page-btn{width:36px;height:36px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);color:var(--ink);font-weight:600;cursor:pointer;font-family:inherit;font-size:14px;transition:all 0.15s;display:flex;align-items:center;justify-content:center}
-  .page-btn.on{background:var(--teal);color:#fff;border-color:var(--teal)}
-  .page-btn:hover:not(.on):not(:disabled){border-color:var(--teal);color:var(--teal)}
+  .page-btn{width:36px;height:36px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);color:var(--ink);font-weight:600;cursor:pointer;font-family:inherit;font-size:14px;transition:all 0.2s;display:flex;align-items:center;justify-content:center}
+  .page-btn.on{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--sh-teal)}
+  .page-btn:hover:not(.on):not(:disabled){border-color:var(--teal);color:var(--teal);transform:scale(1.05)}
   .page-btn:disabled{opacity:0.3;cursor:default}
   .empty{text-align:center;padding:60px 20px;color:var(--light);font-size:15px}
 
@@ -54,8 +56,7 @@
     .alpha-in{padding:0 16px}.pg-wrap{padding:20px 16px 32px}
     .publishers-grid{grid-template-columns:repeat(2,1fr);gap:12px}
     .pcard-logo{min-height:90px;padding:18px 12px}.pcard-foot{padding:12px 14px}
-  }
-</style>
+  }</style>
 </head>
 <body>
 
@@ -68,8 +69,8 @@
     <a href="track.html" class="nav-link">Kuzatish</a>
     <a href="about.html" class="nav-link">Biz haqimizda</a>
   </div>
-  <a href="wishlist.html" class="wish-link" style="margin-left:8px">♥<span class="wish-count"></span></a>
-  <a href="cart.html" class="cart-link">🛒<span class="cart-count"></span></a>
+  <a href="wishlist.html" class="wish-link" style="margin-left:8px"><i data-lucide="heart" style="width:18px;height:18px"></i><span class="wish-count"></span></a>
+  <a href="cart.html" class="cart-link"><i data-lucide="shopping-cart" style="width:18px;height:18px"></i><span class="cart-count"></span></a>
 </nav>
 
 <section class="ph">
@@ -111,17 +112,18 @@
     </div>
     <div class="sf-col">
       <h4>Bog'lanish</h4>
-      <div class="sf-contact-item"><span class="ic">📧</span><span>info@kitobmarkazi.uz</span></div>
-      <div class="sf-contact-item"><span class="ic">📞</span><a href="tel:+998901234567">+998 90 123 45 67</a></div>
+      <div class="sf-contact-item"><i data-lucide="mail" style="width:16px;height:16px;color:var(--teal-l)"></i><span>info@kitobmarkazi.uz</span></div>
+      <div class="sf-contact-item"><i data-lucide="phone" style="width:16px;height:16px;color:var(--teal-l)"></i><a href="tel:+998901234567">+998 90 123 45 67</a></div>
     </div>
   </div>
   <div class="site-foot-bot"><div class="sf-bot-in">
-    <span class="sf-copy">© 2025�2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
+    <span class="sf-copy">© 2025�2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
     <span class="sf-tag">Uzbek Books. One Platform.</span>
   </div></div>
 </footer>
 
 <script src="data.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 <script src="cart.js"></script>
 <script>
 var ALL = [];

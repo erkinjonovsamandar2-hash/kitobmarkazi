@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
@@ -8,35 +8,36 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
-  .pub-header{background:var(--grad-navy);padding:36px 32px 32px;position:relative;overflow:hidden}
-  .pub-header::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cpath d='M22 3 L41 22 L22 41 L3 22 Z' fill='none' stroke='%23D9A93E' stroke-width='1'/%3E%3C/svg%3E");background-size:38px 38px;opacity:0.05;pointer-events:none}
-  .ph-orb{position:absolute;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(29,158,117,0.18),transparent 70%);top:-170px;right:-60px;pointer-events:none}
+  .pub-header{background:var(--grad-navy);padding:44px 32px 36px;position:relative;overflow:hidden;box-shadow:0 1px 0 rgba(217,169,62,0.12)}
+  .pub-header::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cpath d='M22 3 L41 22 L22 41 L3 22 Z' fill='none' stroke='%23D9A93E' stroke-width='1'/%3E%3C/svg%3E");background-size:38px 38px;opacity:0.04;pointer-events:none}
+  .ph-orb{position:absolute;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(29,158,117,0.2),transparent 70%);top:-170px;right:-60px;filter:blur(50px);pointer-events:none}
   .ph-in{max-width:1100px;margin:0 auto;position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
   .ph-left{display:flex;align-items:center;gap:20px}
-  .ph-av{width:72px;height:72px;border-radius:16px;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid rgba(255,255,255,0.15);flex-shrink:0}
+  .ph-av{width:72px;height:72px;border-radius:16px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid rgba(255,255,255,0.15);flex-shrink:0;box-shadow:var(--sh-md)}
   .ph-av img{max-height:48px;max-width:60px;object-fit:contain}
   .ph-av-text{font-size:14px;font-weight:800;color:#fff;letter-spacing:0.06em}
-  .ph-info h1{font-family:var(--serif);font-size:28px;font-weight:700;color:#fff;margin:0 0 6px 0}
-  .ph-info p{color:rgba(255,255,255,0.6);font-size:14px;margin:0 0 10px 0;max-width:500px;line-height:1.6}
+  .ph-info h1{font-family:var(--serif);font-size:30px;font-weight:800;color:#fff;margin:0 0 6px 0;letter-spacing:-0.015em}
+  .ph-info p{color:rgba(255,255,255,0.65);font-size:14px;margin:0 0 10px 0;max-width:500px;line-height:1.65}
   .ph-badges{display:flex;gap:8px;flex-wrap:wrap}
-  .pbadge{font-size:11.5px;font-weight:600;padding:5px 12px;border-radius:20px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.1)}
-  .pbadge.gold{background:rgba(217,169,62,0.15);color:var(--gold-l);border-color:rgba(217,169,62,0.3)}
+  .pbadge{font-size:11.5px;font-weight:600;padding:5px 12px;border-radius:20px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.12)}
+  .pbadge.gold{background:rgba(217,169,62,0.15);color:var(--gold-l);border-color:rgba(217,169,62,0.35);box-shadow:0 2px 10px rgba(217,169,62,0.15)}
   .ph-right{display:flex;align-items:center;gap:16px}
   .ph-stat{text-align:center}
-  .ps-val{font-size:26px;font-weight:800;color:var(--teal-l);font-family:var(--serif)}
-  .ps-lbl{font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em}
+  .ps-val{font-size:28px;font-weight:800;color:var(--teal-l);font-family:var(--serif)}
+  .ps-lbl{font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em;font-weight:600}
 
   .pub-body{max-width:1100px;margin:0 auto;padding:24px 32px 48px}
   .pb-filter{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;flex-wrap:wrap}
   .f-left{display:flex;gap:8px;flex-wrap:wrap}
-  .fpill{font-size:12.5px;font-weight:600;padding:7px 15px;border-radius:22px;cursor:pointer;border:1.5px solid var(--border);color:var(--mid);background:var(--white);transition:all 0.15s;font-family:inherit}
-  .fpill.on{background:var(--teal);color:#fff;border-color:var(--teal)}
-  .fpill:hover:not(.on){border-color:var(--teal);color:var(--teal-d)}
+  .fpill{font-size:12.5px;font-weight:600;padding:7px 15px;border-radius:22px;cursor:pointer;border:1.5px solid var(--border);color:var(--mid);background:var(--white);transition:all 0.25s var(--ease-premium);font-family:inherit}
+  .fpill.on{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--sh-teal)}
+  .fpill:hover:not(.on){border-color:var(--teal);color:var(--teal-d);transform:translateY(-1px);box-shadow:var(--sh-sm)}
   .f-right{font-size:13px;color:var(--light);font-weight:600}
-  .pub-search{display:flex;background:var(--cream);border-radius:12px;padding:4px;margin-bottom:20px;max-width:400px}
+  .pub-search{display:flex;background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:4px;margin-bottom:20px;max-width:400px;transition:all 0.25s var(--ease-premium);box-shadow:var(--sh-sm)}
+  .pub-search:focus-within{border-color:var(--teal);box-shadow:var(--glow-teal)}
   .pub-search input{flex:1;padding:10px 14px;border:none;background:transparent;font-size:14px;font-family:inherit;outline:none;color:var(--ink)}
 
   @media(max-width:700px){
@@ -46,8 +47,7 @@
     .ph-info h1{font-size:22px}
     .pub-body{padding:20px 16px 36px}
     .books-grid{grid-template-columns:repeat(2,1fr)!important;gap:12px!important}
-  }
-</style>
+  }</style>
 </head>
 <body>
 
@@ -60,8 +60,8 @@
     <a href="track.html" class="nav-link">Kuzatish</a>
     <a href="about.html" class="nav-link">Biz haqimizda</a>
   </div>
-  <a href="wishlist.html" class="wish-link" style="margin-left:8px">♥<span class="wish-count"></span></a>
-  <a href="cart.html" class="cart-link">🛒<span class="cart-count"></span></a>
+  <a href="wishlist.html" class="wish-link" style="margin-left:8px"><i data-lucide="heart" style="width:18px;height:18px"></i><span class="wish-count"></span></a>
+  <a href="cart.html" class="cart-link"><i data-lucide="shopping-cart" style="width:18px;height:18px"></i><span class="cart-count"></span></a>
 </nav>
 
 <header class="pub-header">
@@ -118,17 +118,18 @@
     </div>
     <div class="sf-col">
       <h4>Bog'lanish</h4>
-      <div class="sf-contact-item"><span class="ic">📧</span><span>info@kitobmarkazi.uz</span></div>
-      <div class="sf-contact-item"><span class="ic">📞</span><a href="tel:+998901234567">+998 90 123 45 67</a></div>
+      <div class="sf-contact-item"><i data-lucide="mail" style="width:16px;height:16px;color:var(--teal-l)"></i><span>info@kitobmarkazi.uz</span></div>
+      <div class="sf-contact-item"><i data-lucide="phone" style="width:16px;height:16px;color:var(--teal-l)"></i><a href="tel:+998901234567">+998 90 123 45 67</a></div>
     </div>
   </div>
   <div class="site-foot-bot"><div class="sf-bot-in">
-    <span class="sf-copy">© 2025�2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
+    <span class="sf-copy">© 2025�2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
     <span class="sf-tag">Uzbek Books. One Platform.</span>
   </div></div>
 </footer>
 
 <script src="data.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 <script src="cart.js"></script>
 <script>
 var params=new URLSearchParams(location.search);
@@ -175,6 +176,7 @@ function render(){
   document.getElementById('booksGrid').innerHTML=list.map(function(b){
     return bookCardHTML(pubKey,b);
   }).join('');
+  if(window.refreshIcons) window.refreshIcons();
 }
 function filt(mode,el){curMode=mode;document.querySelectorAll('.fpill').forEach(function(p){p.classList.remove('on')});el.classList.add('on');render();}
 document.getElementById('pubSearch').addEventListener('input',function(){curSearch=this.value.trim();render();});

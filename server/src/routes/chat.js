@@ -9,9 +9,9 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ error: 'Messages array is required' });
   }
 
-  // Retrieve Gemini API key from settings
+  // Retrieve Gemini API key from settings or env variables
   const apiKeySetting = await db.prepare("SELECT value FROM settings WHERE key = 'gemini_api_key'").get();
-  const apiKey = apiKeySetting ? apiKeySetting.value.trim() : '';
+  const apiKey = (apiKeySetting ? apiKeySetting.value.trim() : '') || process.env.GEMINI_API_KEY || '';
 
   if (!apiKey) {
     return res.json({

@@ -27,7 +27,7 @@ router.put('/settings', adminRequired, async (req, res) => {
 /* ── Coming Soon ── */
 router.get('/coming-soon', async (req, res) => {
   const rows = await db.prepare(`
-    SELECT cs.*, p.name as "publisherName", p.logo as "publisherLogo", p.logoText as "logoText", p.logoColor as "logoColor"
+    SELECT cs.*, p.name as "publisherName", p.logo as "publisherLogo", p."logoText" as "logoText", p."logoColor" as "logoColor"
     FROM coming_soon cs LEFT JOIN publishers p ON cs."publisherSlug" = p.slug
     ORDER BY cs."releaseDate" ASC
   `).all();

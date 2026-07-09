@@ -8,57 +8,68 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
-  .s-hero{background:var(--grad-navy);padding:38px 32px 30px;position:relative;overflow:hidden;box-shadow:0 1px 0 rgba(217,169,62,0.18)}
-  .s-orb{position:absolute;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(29,158,117,0.16),transparent 70%);top:-170px;right:-60px}
+  .s-hero{background:var(--grad-navy);padding:56px 32px 48px;position:relative;overflow:hidden;box-shadow:0 1px 0 rgba(217,169,62,0.12),0 10px 30px rgba(10,22,40,0.1)}
+  .s-orb{position:absolute;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(29,158,117,0.2),transparent 70%);top:-170px;right:-60px;filter:blur(60px);pointer-events:none}
   .s-in{max-width:1100px;margin:0 auto;position:relative;z-index:2}
-  .s-title{font-family:var(--serif);font-size:30px;font-weight:700;color:#fff;margin-bottom:14px}
+  .s-title{font-family:var(--serif);font-size:36px;font-weight:900;color:#fff;margin-bottom:18px;letter-spacing:-0.015em}
   .s-title span{color:var(--teal-l)}
-  .s-search{display:flex;background:#fff;border-radius:14px;padding:6px;max-width:560px;box-shadow:0 14px 36px rgba(0,0,0,0.22)}
-  .s-search input{flex:1;padding:12px 16px;border:none;background:transparent;font-size:15px;font-family:inherit;outline:none;color:var(--ink)}
-  .s-search button{padding:12px 24px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+  .s-search{display:flex;background:#fff;border-radius:16px;padding:6px;max-width:560px;box-shadow:var(--sh-xl);border:1.5px solid transparent;transition:all 0.3s var(--ease-premium)}
+  .s-search:focus-within{border-color:var(--teal);box-shadow:var(--glow-teal);transform:translateY(-1px)}
+  .s-search input{flex:1;padding:12px 18px;border:none;background:transparent;font-size:15.5px;font-family:inherit;outline:none;color:var(--ink)}
+  .s-search button{padding:12px 24px;background:var(--navy);color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.25s var(--ease-premium)}
+  .s-search button:hover{background:var(--navy2);transform:scale(1.02)}
 
-  .gbar{background:var(--white);border-bottom:1px solid var(--border);padding:16px 0}
+  .gbar{background:var(--white);border-bottom:1px solid var(--border);padding:16px 0;box-shadow:var(--sh-sm)}
   .gbar-in{max-width:1100px;margin:0 auto;padding:0 32px;display:flex;gap:9px;flex-wrap:wrap;align-items:center}
-  .gfilter{font-size:13px;font-weight:600;padding:8px 15px;border-radius:22px;cursor:pointer;border:1.5px solid var(--border);color:var(--mid);background:var(--white);transition:all 0.15s;display:inline-flex;align-items:center;gap:6px}
-  .gfilter.on{background:var(--teal);color:#fff;border-color:var(--teal)}
-  .gfilter:hover:not(.on){border-color:var(--teal);color:var(--teal-d)}
+  .gfilter{font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:22px;cursor:pointer;border:1.5px solid var(--border);color:var(--mid);background:var(--white);transition:all 0.28s var(--ease-premium);display:inline-flex;align-items:center;gap:6px;box-shadow:var(--sh-sm)}
+  .gfilter.on{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--sh-teal)}
+  .gfilter:hover:not(.on){border-color:var(--teal);color:var(--teal-d);transform:translateY(-2px);box-shadow:var(--sh-md),var(--glow-teal)}
 
-  .pub-matches{max-width:1100px;margin:0 auto;padding:22px 32px 0}
+  .pub-matches{max-width:1100px;margin:0 auto;padding:24px 32px 0}
   .pm-title{font-size:12px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px}
   .pm-row{display:flex;gap:12px;flex-wrap:wrap}
-  .pm-card{display:flex;align-items:center;gap:11px;background:var(--white);border:1px solid var(--border);border-radius:14px;padding:10px 16px 10px 10px;transition:all 0.15s}
-  .pm-card:hover{border-color:var(--teal-l);transform:translateY(-2px)}
-  .pm-logo{width:40px;height:40px;border-radius:9px;background:var(--cream);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:5px}
+  .pm-card{display:flex;align-items:center;gap:11px;background:var(--white);border:1px solid var(--border);border-radius:14px;padding:10px 16px 10px 10px;transition:all 0.28s var(--ease-premium);box-shadow:var(--sh-sm)}
+  .pm-card:hover{border-color:var(--teal-l);transform:translateY(-3px);box-shadow:var(--sh-md),var(--glow-teal)}
+  .pm-logo{width:40px;height:40px;border-radius:9px;background:var(--cream);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:5px;box-shadow:inset 0 2px 6px rgba(0,0,0,0.04);border:1px solid var(--border)}
   .pm-name{font-size:14px;font-weight:700;color:var(--ink)}
-  .pm-cnt{font-size:11.5px;color:var(--light)}
+  .pm-cnt{font-size:11.5px;color:var(--mid)}
 
-  .sortbar{max-width:1100px;margin:0 auto;padding:22px 32px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  .sresult{font-size:14px;color:var(--mid)}
-  .sresult b{color:var(--ink)}
-  .sortpill.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .sortbar{max-width:1100px;margin:0 auto;padding:24px 32px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .sresult{font-size:14.5px;color:var(--mid)}
+  .sresult b{color:var(--ink);font-weight:700}
+  .sortpills{display:flex;gap:6px;flex-wrap:wrap}
+  .sortpill{font-size:13px;font-weight:700;padding:8px 16px;border-radius:20px;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--mid);transition:all 0.25s var(--ease-premium)}
+  .sortpill:hover:not(.on){border-color:var(--navy);color:var(--navy);transform:translateY(-1px)}
+  .sortpill.on{background:var(--navy);color:#fff;border-color:var(--navy);box-shadow:var(--sh-sm)}
 
-  .price-filter{display:flex;align-items:center;gap:10px;background:var(--white);border:1.5px solid var(--border);border-radius:20px;padding:4px 14px;margin-left:12px}
-  .price-filter input{width:70px;border:none;background:transparent;font-size:12.5px;font-weight:600;outline:none;font-family:inherit;color:var(--ink)}
-  .price-filter span{font-size:12px;color:var(--light)}
+  .price-filter{display:flex;align-items:center;gap:10px;background:var(--white);border:1.5px solid var(--border);border-radius:20px;padding:4px 14px;transition:all 0.25s var(--ease-premium);box-shadow:var(--sh-sm)}
+  .price-filter:focus-within{border-color:var(--teal);box-shadow:var(--glow-teal)}
+  .price-filter input{width:80px;border:none;background:transparent;font-size:13px;font-weight:700;outline:none;font-family:inherit;color:var(--ink)}
+  .price-filter span{font-size:12px;color:var(--mid);font-weight:600}
 
-
-  .books-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-  .book{background:var(--white);border-radius:18px;overflow:hidden;border:1px solid var(--border);transition:all 0.22s;display:flex;flex-direction:column}
-  .book:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(13,27,42,0.14);border-color:transparent}
-  .book-cover{height:280px;display:block}
-  .bc-badge{position:absolute;top:12px;right:54px;z-index:4;background:var(--gold);color:#3D2A00;font-size:9px;font-weight:800;padding:4px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:0.04em}
-  .book-body{padding:15px 16px 17px;display:flex;flex-direction:column;flex:1}
-  .book-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:3px;line-height:1.3}
-  .book-author{font-size:12.5px;color:var(--light);margin-bottom:8px}
-  .book-price{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--teal-d)}
-  .empty{grid-column:1/-1;text-align:center;padding:50px 20px;color:var(--light)}
-  .empty .ei{font-size:46px;margin-bottom:12px}
+  .books-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--light)}
+  .empty .ei{font-size:46px;margin-bottom:12px;animation:float 3s infinite ease-in-out}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
   @media(max-width:900px){.books-grid{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:600px){.s-hero{padding:24px 16px 20px}.gbar-in,.pub-matches,.sortbar{padding-left:16px;padding-right:16px}.books-grid{grid-template-columns:repeat(2,1fr);gap:12px}.s-title{font-size:24px}}
-</style>
+  @media(max-width:600px){.s-hero{padding:30px 16px 24px}.gbar-in,.pub-matches,.sortbar{padding-left:16px;padding-right:16px}.books-grid{grid-template-columns:repeat(2,1fr);gap:12px}.s-title{font-size:26px}}
+
+  @keyframes pulse {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .skeleton-book {
+    background: linear-gradient(-90deg, #f3f4f6 0%, #eaeaea 50%, #f3f4f6 100%);
+    background-size: 400% 400%;
+    border-radius: 20px;
+    height: 380px;
+    animation: pulse 1.8s infinite ease-in-out;
+    border: 1px solid var(--border);
+  }</style>
 </head>
 <body>
 
@@ -71,8 +82,8 @@
     <a href="track.html" class="nav-link">Kuzatish</a>
     <a href="about.html" class="nav-link">Biz haqimizda</a>
   </div>
-  <a href="wishlist.html" class="wish-link" style="margin-left:8px">♥<span class="wish-count"></span></a>
-  <a href="cart.html" class="cart-link">🛒<span class="cart-count"></span></a>
+  <a href="wishlist.html" class="wish-link" style="margin-left:8px"><i data-lucide="heart" style="width:18px;height:18px"></i><span class="wish-count"></span></a>
+  <a href="cart.html" class="cart-link"><i data-lucide="shopping-cart" style="width:18px;height:18px"></i><span class="cart-count"></span></a>
 </nav>
 
 <section class="s-hero">
@@ -112,7 +123,11 @@
 
 
 <div class="sec" style="padding-top:20px">
-  <div class="books-grid" id="grid"></div>
+  <div class="books-grid" id="grid">
+    <div class="skeleton-book"></div>
+    <div class="skeleton-book" style="animation-delay: 0.15s;"></div>
+    <div class="skeleton-book" style="animation-delay: 0.3s;"></div>
+  </div>
 </div>
 
 <footer class="site-foot">
@@ -137,18 +152,19 @@
     </div>
     <div class="sf-col">
       <h4>Aloqa</h4>
-      <div class="sf-contact-item"><span class="ic">📞</span><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
-      <div class="sf-contact-item"><span class="ic">✉️</span><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
-      <div class="sf-contact-item"><span class="ic">📍</span><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
+      <div class="sf-contact-item"><i data-lucide="phone" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
+      <div class="sf-contact-item"><i data-lucide="mail" style="width:16px;height:16px;color:var(--teal-l)"></i><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
+      <div class="sf-contact-item"><i data-lucide="map-pin" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
     </div>
   </div>
   <div class="site-foot-bot"><div class="sf-bot-in">
-    <span class="sf-copy">© 2025�2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
+    <span class="sf-copy">© 2025�2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
     <span class="sf-tag">Uzbek Books. One Platform.</span>
   </div></div>
 </footer>
 
 <script src="data.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 <script src="cart.js"></script>
 <script>
 var params=new URLSearchParams(location.search);
@@ -212,6 +228,7 @@ function render(){
     return;
   }
   document.getElementById('grid').innerHTML=list.map(function(x){return bookCardHTML(x.pk,x.b);}).join('');
+  if(window.refreshIcons) window.refreshIcons();
 }
 function setGenre(g){curGenre=g;buildGbar();render();var u=new URL(location);if(g==='all')u.searchParams.delete('genre');else u.searchParams.set('genre',g);history.replaceState({},'',u);}
 function setSort(s,el){curSort=s;document.querySelectorAll('.sortpill').forEach(function(p){p.classList.remove('on')});el.classList.add('on');render();}
