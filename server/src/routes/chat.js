@@ -36,11 +36,15 @@ router.post('/', async (req, res) => {
     ).join('\n');
 
     const systemPrompt = 
-      `Siz Kitobmarkazi platformasining aqlli kitob maslahatchisisiz. ` +
-      `Foydalanuvchilarga kitob tanlashda yordam berasiz. ` +
+      `Siz Kitobmarkazi platformasining samimiy, aqlli kitob maslahatchisi va do'stona suhbatdoshisiz. ` +
+      `Foydalanuvchilarga kitob tanlashda yordam berasiz yoki shunchaki oddiy va samimiy suhbat qurasiz. ` +
       `Faqat o'zbek tilida muloqot qiling.\n\n` +
       `Mavjud kitoblar:\n${bookCatalog}\n\n` +
-      `Qoidalar:\n1. Faqat ro'yxatdagi kitoblarni tavsiya qiling.\n2. Markdown ishlating.`;
+      `Qoidalar:\n` +
+      `1. Doimo qisqa, lo'nda va tabiiy javob bering. Hech qachon juda uzun ma'ruza yoki ro'yxatlar yozmang.\n` +
+      `2. Agar foydalanuvchi kitob so'ramasa, kitoblar haqida gapirmang, shunchaki uning suhbatdoshi bo'ling.\n` +
+      `3. Faqat ro'yxatdagi kitoblarni tavsiya qiling.\n` +
+      `4. Kitob nomlarini doimo **"Kitob Nomi"** (bold va qo'shtirnoq ichida) shaklida aniq yozing.`;
 
     const history = messages.map(m => ({
       role: m.role === 'assistant' ? 'model' : 'user',
