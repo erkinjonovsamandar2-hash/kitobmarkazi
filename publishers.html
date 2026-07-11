@@ -32,16 +32,18 @@
 
   .pg-wrap{max-width:1100px;margin:0 auto;padding:28px 32px 40px}
   .publishers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
-  .pcard{background:var(--white);border-radius:20px;border:1px solid var(--border);overflow:hidden;text-decoration:none;color:var(--ink);transition:all 0.28s var(--ease-premium);display:flex;flex-direction:column;position:relative;box-shadow:var(--sh-sm)}
-  .pcard:hover{transform:translateY(-4px);box-shadow:var(--sh-lg),var(--glow-teal);border-color:var(--teal)}
-  .pcard-logo{display:flex;align-items:center;justify-content:center;padding:28px 20px;background:var(--cream);min-height:130px;transition:background 0.25s}
-  .pcard:hover .pcard-logo{background:rgba(29,158,117,0.03)}
-  .pcard-logo img{max-height:80px;max-width:160px;object-fit:contain;transition:transform 0.25s var(--ease-premium)}
-  .pcard:hover .pcard-logo img{transform:scale(1.04)}
+  .pcard{background:var(--white);border-radius:20px;border:1px solid var(--border);overflow:hidden;text-decoration:none;color:var(--ink);transition:all 0.32s var(--ease-premium);display:flex;flex-direction:column;position:relative;box-shadow:var(--sh-sm)}
+  .pcard::after{content:'';position:absolute;inset:-1px;border-radius:21px;border:2px solid transparent;background:linear-gradient(135deg,rgba(29,158,117,0),rgba(217,169,62,0)) border-box;mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);mask-composite:exclude;-webkit-mask-composite:xor;opacity:0;transition:opacity 0.35s;pointer-events:none}
+  .pcard:hover{transform:translateY(-6px);box-shadow:var(--sh-xl);border-color:transparent}
+  .pcard:hover::after{opacity:1;background:linear-gradient(135deg,rgba(29,158,117,0.35),rgba(217,169,62,0.25)) border-box}
+  .pcard-logo{display:flex;align-items:center;justify-content:center;padding:24px 20px;background:var(--cream);min-height:140px;transition:background 0.25s;position:relative;overflow:hidden}
+  .pcard:hover .pcard-logo{background:rgba(29,158,117,0.02)}
+  .pcard-logo img{max-height:80px;max-width:160px;object-fit:contain;transition:transform 0.3s var(--ease-premium);filter:drop-shadow(0 2px 8px rgba(11,19,32,0.05))}
+  .pcard:hover .pcard-logo img{transform:scale(1.06)}
   .pcard-logo-text{font-size:22px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase}
-  .pcard-foot{padding:16px 18px;border-top:1px solid var(--border)}
-  .pcard-name{font-weight:700;font-size:15px;margin-bottom:4px}
-  .pcard-meta{font-size:12.5px;color:var(--light)}
+  .pcard-foot{padding:16px 18px;border-top:1px solid var(--border);background:#fff;z-index:2}
+  .pcard-name{font-weight:700;font-size:15px;margin-bottom:4px;color:var(--ink)}
+  .pcard-meta{font-size:12px;color:var(--light);font-weight:500}
   .first-badge{position:absolute;top:12px;right:12px;background:var(--grad-gold);color:#3D2A00;font-size:9px;font-weight:800;padding:4px 10px;border-radius:16px;z-index:3;letter-spacing:0.04em;box-shadow:0 3px 10px rgba(217,169,62,0.35)}
 
   .pager{display:flex;justify-content:center;gap:6px;padding:20px 0 40px}

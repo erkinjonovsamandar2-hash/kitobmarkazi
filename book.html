@@ -58,7 +58,7 @@
   .qbtn:hover{border-color:var(--teal);color:var(--teal);background:#F0FAF6;transform:scale(1.05)}
   .qval{font-family:var(--serif);font-size:20px;font-weight:800;min-width:24px;text-align:center}
   .bk-actions{display:flex;gap:12px;align-items:stretch;height:52px}
-  .bk-wish{flex:0 0 52px;height:52px;padding:0;font-size:22px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;transition:all 0.25s var(--ease-premium)}
+  .bk-wish{flex:none;height:52px;padding:0 20px;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;transition:all 0.25s var(--ease-premium)}
   .bk-wish:hover{border-color:#C0392B;color:#C0392B;background:#FFF0F2;transform:translateY(-1px)}
   .bk-addcart{flex:1;height:52px;background:var(--teal);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:var(--sh-teal);transition:all 0.25s var(--ease-premium);display:flex;align-items:center;justify-content:center}
   .bk-addcart:hover{background:var(--teal-d);transform:translateY(-1px);box-shadow:0 8px 24px rgba(29,158,117,0.38)}
@@ -66,11 +66,7 @@
   .bk-trust{display:flex;gap:18px;margin-top:18px;padding-top:16px;border-top:1px solid var(--cream2);flex-wrap:wrap}
   .bk-trust-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--mid);font-weight:600}
 
-  .rec-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-
-  @media(max-width:900px){.rec-grid{grid-template-columns:repeat(3,1fr)}}
   @media(max-width:760px){.bk-grid{grid-template-columns:1fr;gap:28px}.bk-cover{max-width:280px;margin:0 auto}.bk-title{font-size:32px}}
-  @media(max-width:600px){.rec-grid{grid-template-columns:repeat(2,1fr)}}
 
   .rev-grid{display:grid;grid-template-columns:1fr 340px;gap:32px;margin-top:24px}
   .rev-list{display:flex;flex-direction:column;gap:20px}
@@ -101,6 +97,10 @@
     .sa-price{font-size:16px}
     .sa-right{gap:10px}
   }
+  /* Avoid overlap with sticky bottom bar */
+  .bk-wrap { padding-bottom: 120px !important; }
+  body .km-chat-btn { bottom: 90px !important; }
+  body .km-chat-window { bottom: 162px !important; }
 </style>
 
 </head>
@@ -181,7 +181,7 @@
 
   <div class="sec" style="padding:48px 0 0" id="recSec">
     <div class="sh"><div><div class="st" id="recTitle">Shu kitob bilan birga</div><div class="ss">Muallif va nashriyot bo'yicha tavsiyalar</div></div></div>
-    <div class="rec-grid" id="recGrid"></div>
+    <div class="books-grid" id="recGrid"></div>
   </div>
 </div>
 
@@ -285,11 +285,7 @@ function initPageData(){
   else{
     document.getElementById('recSec').style.display='block';
     document.getElementById('recGrid').innerHTML=recs.map(function(r){
-      var b=r.b, rp=PUBLISHERS[r.pk];
-      return '<div class="rec"><a class="rec-cover cover-sm" href="book.html?pub='+r.pk+'&book='+b.id+'" style="background:'+b.color+';position:relative;overflow:hidden;display:block">'+coverHTML(b,rp)+'</a>'+
-        '<div class="rec-body"><div class="rec-title">'+b.title+'</div><div class="rec-auth">'+b.author+'</div>'+
-        '<div class="rec-foot"><span class="rec-price">'+money(b.price)+'</span>'+
-        '<button class="rec-cart" onclick="addAndToast(\''+r.pk+'\',\''+b.id+'\')">'+cartIcon(16)+'</button></div></div></div>';
+      return bookCardHTML(r.pk, r.b);
     }).join('');
   }
   if(window.refreshIcons) window.refreshIcons();

@@ -139,8 +139,38 @@ function money(n){ return (n || 0).toLocaleString('uz-UZ') + " so'm"; }
 function pubLogoHTML(p, size){
   size = size || 60;
   if (!p) return '';
-  if (p.logo) return '<img src="'+p.logo+'" alt="'+p.name+'" style="max-width:100%;max-height:100%;object-fit:contain">';
-  return '<svg viewBox="0 0 100 60" width="'+size+'" height="'+(size*0.6)+'"><text x="50" y="34" text-anchor="middle" font-size="15" font-weight="800" fill="'+(p.color||'#0A1628')+'" font-family="Arial">'+(p.text||p.name||'')+'</text><rect x="16" y="40" width="68" height="2.5" fill="'+(p.color||'#0A1628')+'"/></svg>';
+  
+  var initials = '';
+  if (p.text) {
+    initials = p.text;
+  } else if (p.name) {
+    var parts = p.name.split(' ');
+    if (parts.length >= 2) {
+      initials = (parts[0][0] || '') + (parts[1][0] || '');
+    } else {
+      initials = p.name.substring(0, 2);
+    }
+  }
+  
+  initials = initials.toUpperCase();
+  
+  // Clean up long initials (e.g. "GLOBAL BOOKS" -> "GB", "BEST BOOK" -> "BB")
+  if (initials.indexOf(' ') !== -1) {
+    var initParts = initials.split(' ');
+    initials = (initParts[0][0] || '') + (initParts[1][0] || '');
+  } else if (initials.length > 3) {
+    initials = initials.substring(0, 2);
+  }
+
+  var color = p.color || '#1D9E75';
+  var fallbackHtml = '<div class="pub-avatar-fallback" style="width:'+size+'px;height:'+size+'px;border-radius:50%;background:'+color+'10;border:2px solid '+color+';display:'+(p.logo ? 'none' : 'flex')+';align-items:center;justify-content:center;color:'+color+';font-weight:800;font-size:calc('+size+'px * 0.38);letter-spacing:0.02em;font-family:var(--sans);text-transform:uppercase">'+initials+'</div>';
+  
+  if (p.logo) {
+    var imgHtml = '<img class="pub-img" src="'+p.logo+'" alt="'+p.name+'" style="max-width:100%;max-height:100%;object-fit:contain;display:block" onerror="this.style.display=\'none\'; var fb = this.nextElementSibling; if(fb) fb.style.display=\'flex\';">';
+    return imgHtml + fallbackHtml;
+  }
+  
+  return fallbackHtml;
 }
 
 function findBook(pubKey, bookId){

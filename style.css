@@ -392,3 +392,48 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .la-time { font-size: 11px; color: var(--light); margin-top: 3px; }
 .la-close { background: none; border: none; font-size: 18px; color: var(--light); cursor: pointer; padding: 4px; line-height: 1; }
 @media(max-width: 600px) { .live-activity { bottom: 80px; left: 16px; right: 16px; max-width: none; } }
+
+/* ===== Clean up small book covers (hide duplicate title/author overlay) ===== */
+.cover-sm .cv-mid { display: none !important; }
+
+/* ===== Grid staggered entrance animations ===== */
+.publishers-grid > *, .books-grid > * {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: gridFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.publishers-grid > :nth-child(1), .books-grid > :nth-child(1) { animation-delay: 0.05s; }
+.publishers-grid > :nth-child(2), .books-grid > :nth-child(2) { animation-delay: 0.10s; }
+.publishers-grid > :nth-child(3), .books-grid > :nth-child(3) { animation-delay: 0.15s; }
+.publishers-grid > :nth-child(4), .books-grid > :nth-child(4) { animation-delay: 0.20s; }
+.publishers-grid > :nth-child(5), .books-grid > :nth-child(5) { animation-delay: 0.25s; }
+.publishers-grid > :nth-child(6), .books-grid > :nth-child(6) { animation-delay: 0.30s; }
+.publishers-grid > :nth-child(7), .books-grid > :nth-child(7) { animation-delay: 0.35s; }
+.publishers-grid > :nth-child(8), .books-grid > :nth-child(8) { animation-delay: 0.40s; }
+.publishers-grid > :nth-child(n+9), .books-grid > :nth-child(n+9) { animation-delay: 0.45s; }
+
+@keyframes gridFadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Global Books Grid Layout ===== */
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+@media(max-width: 900px) {
+  .books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+@media(max-width: 600px) {
+  .books-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+}
+
