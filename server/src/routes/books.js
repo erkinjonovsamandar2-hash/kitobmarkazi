@@ -72,13 +72,13 @@ router.get('/:pubSlug/:bookId', async (req, res) => {
 
 /* POST /api/books — admin: create book */
 router.post('/', adminRequired, async (req, res) => {
-  const { id, publisherSlug, title, author, price, color, rating, isTop, pages, year, genre, description } = req.body;
+  const { id, publisherSlug, title, author, price, color, rating, isTop, pages, year, genre, description, cover } = req.body;
   if (!id || !publisherSlug || !title || !author || !price) {
     return res.status(400).json({ error: 'id, publisherSlug, title, author, price required' });
   }
   try {
-    await db.prepare(`INSERT INTO books (id,"publisherSlug",title,author,price,color,rating,"isTop",pages,year,genre,description) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`)
-      .run(id, publisherSlug, title, author, price, color||null, rating||0, isTop?1:0, pages||null, year||null, genre||'roman', description||null);
+    await db.prepare(`INSERT INTO books (id,"publisherSlug",title,author,price,color,rating,"isTop",pages,year,genre,description,cover) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)`)
+      .run(id, publisherSlug, title, author, price, color||null, rating||0, isTop?1:0, pages||null, year||null, genre||'roman', description||null, cover||null);
     res.status(201).json({ ok: true });
   } catch (e) {
     res.status(400).json({ error: e.message });
@@ -88,13 +88,14 @@ router.post('/', adminRequired, async (req, res) => {
 /* PUT /api/books/:pubSlug/:bookId — admin: update book */
 router.put('/:pubSlug/:bookId', adminRequired, async (req, res) => {
   try {
-    const { title, author, price, color, rating, isTop, pages, year, genre, description } = req.body;
+    const { title, author, price, color, rating, isTop, pages, year, genre, description, cover } = req.body;
     const result = await db.prepare(`UPDATE books SET
       title=COALESCE($1,title), author=COALESCE($2,author), price=COALESCE($3,price),
       color=COALESCE($4,color), rating=COALESCE($5,rating), "isTop"=COALESCE($6,"isTop"),
-      pages=COALESCE($7,pages), year=COALESCE($8,year), genre=COALESCE($9,genre), description=COALESCE($10,description)
-      WHERE "publisherSlug"=$11 AND id=$12`)
-      .run(title, author, price, color, rating, isTop!==undefined?(isTop?1:0):null, pages, year, genre, description, req.params.pubSlug, req.params.bookId);
+      pages=COALESCE($7,pages), year=COALESCE($8,year), genre=COALESCE($9,genre), description=COALESCE($10,description),
+      cover=COALESCE($11,cover)
+      WHERE "publisherSlug"=$12 AND id=$13`)
+      .run(title, author, price, color, rating, isTop!==undefined?(isTop?1:0):null, pages, year, genre, description, cover, req.params.pubSlug, req.params.bookId);
     
     if (result.changes === 0) return res.status(404).json({ error: 'Book not found' });
     res.json({ ok: true });

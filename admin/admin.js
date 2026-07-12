@@ -594,6 +594,8 @@ function showBookForm(pub, id) {
       '<div class="field"><label>Janr</label><select id="bGenre">' + genOpts + '</select></div></div>' +
       '<div class="frow"><div class="field"><label>Reyting (0-5)</label><input type="number" id="bRating" value="' + (b.rating||4.5) + '" step="0.1"></div>' +
       '<div class="field" style="display:flex;align-items:center;padding-top:25px"><label style="margin:0"><input type="checkbox" id="bTop" ' + (b.isTop?'checked':'') + '> TOP kitob</label></div></div>' +
+      '<div class="frow"><div class="field"><label>Muqova (Rasm URL yoki Base64)</label><input type="text" id="bCover" value="' + (b.cover||'') + '" placeholder="Rasm URL yoki pastdan fayl tanlang"></div>' +
+      '<div class="field"><label>Muqova rasmini yuklash (.png, .jpg)</label><input type="file" id="bCoverFile" accept="image/*" onchange="handleCoverUpload(this)"></div></div>' +
       '<div class="field"><label>Muqova foni / Gradient</label>' + colorPickerHTML('bColor', b.color || 'linear-gradient(150deg,#1A3A5C,#2A5C8A)') + '</div>' +
       '<div class="field"><label>Tavsif</label><textarea id="bDesc" rows="3">' + (b.description||'') + '</textarea></div>' +
       '<button class="btn-primary" onclick="saveBook(\'' + (isEdit?b.publisherSlug:'') + '\',\'' + (isEdit?b.id:'') + '\')">Saqlash</button></div></div>';
@@ -616,6 +618,7 @@ function saveBook(oldPub, oldId) {
     rating: parseFloat(document.getElementById('bRating').value) || 4.5,
     isTop: document.getElementById('bTop').checked,
     color: document.getElementById('bColor').value,
+    cover: document.getElementById('bCover').value.trim(),
     description: document.getElementById('bDesc').value.trim()
   };
 
@@ -670,9 +673,10 @@ function showPublisherForm(slug) {
       '<div class="field"><label>Tavsif</label><textarea id="pDesc" rows="3">' + (p.description||p.desc||'') + '</textarea></div>' +
       '<div class="frow"><div class="field"><label>Shahar</label><input type="text" id="pCity" value="' + (p.city||'') + '"></div>' +
       '<div class="field"><label>Asos solingan (yil)</label><input type="number" id="pFounded" value="' + (p.founded||2020) + '"></div></div>' +
-      '<div class="frow"><div class="field"><label>Logo (URL)</label><input type="text" id="pLogo" value="' + (p.logo||'') + '"></div>' +
-      '<div class="field"><label>Logo matni (qisqa)</label><input type="text" id="pLogoText" value="' + (p.logoText||'') + '" placeholder="ABC"></div></div>' +
-      '<div class="field"><label>Brend rangi (Logo foni)</label>' + colorPickerHTML('pLogoColor', p.logoColor || p.color || '#13294A') + '</div>' +
+      '<div class="frow"><div class="field"><label>Logo (URL yoki Base64)</label><input type="text" id="pLogo" value="' + (p.logo||'') + '"></div>' +
+      '<div class="field"><label>Logo rasmini yuklash (.png, .jpg)</label><input type="file" id="pLogoFile" accept="image/*" onchange="handleLogoUpload(this)"></div></div>' +
+      '<div class="frow"><div class="field"><label>Logo matni (qisqa)</label><input type="text" id="pLogoText" value="' + (p.logoText||'') + '" placeholder="ABC"></div>' +
+      '<div class="field"><label>Brend rangi (Logo foni)</label>' + colorPickerHTML('pLogoColor', p.logoColor || p.color || '#13294A') + '</div></div>' +
       '<button class="btn-primary" onclick="savePublisher(\'' + (p.slug||'') + '\')">Saqlash</button></div></div>';
 
     document.body.insertAdjacentHTML('beforeend', html);
@@ -834,4 +838,34 @@ function deleteAdminReview(id) {
   if (!confirm('Ushbu fikrni o\'chirishni xohlaysizmi?')) return;
   api('/books/admin/reviews/' + id, { method: 'DELETE' }).then(function() { loadReviewsPage(); });
 }
+
+window.handleCoverUpload = function(input) {
+  var file = input.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) {
+    alert('Rasm hajmi juda katta (maksimal 2MB)!');
+    input.value = '';
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('bCover').value = e.target.result;
+  };
+  reader.readAsDataURL(file);
+};
+
+window.handleLogoUpload = function(input) {
+  var file = input.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) {
+    alert('Rasm hajmi juda katta (maksimal 2MB)!');
+    input.value = '';
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('pLogo').value = e.target.result;
+  };
+  reader.readAsDataURL(file);
+};
 

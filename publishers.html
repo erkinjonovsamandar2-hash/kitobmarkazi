@@ -31,21 +31,32 @@
   .alpha-btn:disabled{opacity:0.3;cursor:default}
 
   .pg-wrap{max-width:1100px;margin:0 auto;padding:28px 32px 40px}
-  .publishers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
-  .pcard{background:var(--white);border-radius:20px;border:1px solid var(--border);overflow:hidden;text-decoration:none;color:var(--ink);transition:all 0.32s var(--ease-premium);display:flex;flex-direction:column;position:relative;box-shadow:var(--sh-sm)}
+  .publishers-grid{display:flex;flex-direction:column;gap:16px}
+  .pcard{background:var(--white);border-radius:20px;border:1px solid var(--border);overflow:hidden;text-decoration:none;color:var(--ink);transition:all 0.3s var(--ease-premium);display:grid;grid-template-columns:160px 1fr auto;align-items:center;position:relative;box-shadow:var(--sh-sm)}
   .pcard::after{content:'';position:absolute;inset:-1px;border-radius:21px;border:2px solid transparent;background:linear-gradient(135deg,rgba(29,158,117,0),rgba(217,169,62,0)) border-box;mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);mask-composite:exclude;-webkit-mask-composite:xor;opacity:0;transition:opacity 0.35s;pointer-events:none}
-  .pcard:hover{transform:translateY(-6px);box-shadow:var(--sh-xl);border-color:transparent}
+  .pcard:hover{transform:translateX(6px);box-shadow:var(--sh-xl);border-color:transparent}
   .pcard:hover::after{opacity:1;background:linear-gradient(135deg,rgba(29,158,117,0.35),rgba(217,169,62,0.25)) border-box}
-  .pcard-logo{display:flex;align-items:center;justify-content:center;padding:24px 20px;background:var(--cream);min-height:140px;transition:background 0.25s;position:relative;overflow:hidden}
+  
+  .pcard-logo{display:flex;align-items:center;justify-content:center;padding:16px 20px;background:var(--cream);height:100%;min-height:110px;transition:background 0.25s;position:relative;overflow:hidden}
   .pcard:hover .pcard-logo{background:rgba(29,158,117,0.02)}
-  .pcard-logo img{max-height:80px;max-width:160px;object-fit:contain;transition:transform 0.3s var(--ease-premium);filter:drop-shadow(0 2px 8px rgba(11,19,32,0.05))}
+  .pcard-logo img{max-height:70px;max-width:120px;object-fit:contain;transition:transform 0.3s var(--ease-premium);filter:drop-shadow(0 2px 8px rgba(11,19,32,0.05))}
   .pcard:hover .pcard-logo img{transform:scale(1.06)}
-  .pcard-logo-text{font-size:22px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase}
-  .pcard-foot{padding:16px 18px;border-top:1px solid var(--border);background:#fff;z-index:2}
-  .pcard-name{font-weight:700;font-size:15px;margin-bottom:4px;color:var(--ink)}
-  .pcard-meta{font-size:12px;color:var(--light);font-weight:500}
-  .first-badge{position:absolute;top:12px;right:12px;background:var(--grad-gold);color:#3D2A00;font-size:9px;font-weight:800;padding:4px 10px;border-radius:16px;z-index:3;letter-spacing:0.04em;box-shadow:0 3px 10px rgba(217,169,62,0.35)}
+  .pcard-logo-text{font-size:20px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase}
+  
+  .pcard-body{padding:20px 24px;display:flex;flex-direction:column;gap:5px;flex:1}
+  .pcard-name-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .pcard-name{font-weight:800;font-size:17px;color:var(--ink);margin:0}
+  .pcard-desc{font-size:13px;color:var(--mid);line-height:1.55;margin:4px 0 0}
+  
+  .pcard-right{padding:20px 32px;display:flex;align-items:center;gap:32px;border-left:1px dashed var(--border)}
+  .pcard-stats{text-align:right}
+  .pcard-count{font-size:24px;font-weight:800;color:var(--teal-d);font-family:var(--serif);line-height:1}
+  .pcard-count-lbl{font-size:11px;color:var(--light);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;font-weight:600}
+  .pcard-arrow{width:40px;height:40px;border-radius:50%;background:rgba(29,158,117,0.06);display:flex;align-items:center;justify-content:center;color:var(--teal);transition:all 0.28s var(--ease-premium)}
+  .pcard:hover .pcard-arrow{background:var(--teal);color:#fff;transform:translateX(4px);box-shadow:var(--sh-teal)}
 
+  .first-badge{background:var(--grad-gold);color:#3D2A00;font-size:9px;font-weight:800;padding:3px 8px;border-radius:10px;letter-spacing:0.04em;box-shadow:0 3px 8px rgba(217,169,62,0.2)}
+  
   .pager{display:flex;justify-content:center;gap:6px;padding:20px 0 40px}
   .page-btn{width:36px;height:36px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);color:var(--ink);font-weight:600;cursor:pointer;font-family:inherit;font-size:14px;transition:all 0.2s;display:flex;align-items:center;justify-content:center}
   .page-btn.on{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--sh-teal)}
@@ -53,11 +64,17 @@
   .page-btn:disabled{opacity:0.3;cursor:default}
   .empty{text-align:center;padding:60px 20px;color:var(--light);font-size:15px}
 
-  @media(max-width:600px){
+  @media(max-width:700px){
     .ph{padding:28px 16px 24px}.ph h1{font-size:24px}
     .alpha-in{padding:0 16px}.pg-wrap{padding:20px 16px 32px}
-    .publishers-grid{grid-template-columns:repeat(2,1fr);gap:12px}
-    .pcard-logo{min-height:90px;padding:18px 12px}.pcard-foot{padding:12px 14px}
+    .publishers-grid{gap:14px}
+    .pcard{grid-template-columns:1fr;align-items:stretch}
+    .pcard:hover{transform:translateY(-4px)}
+    .pcard-logo{height:100px;min-height:auto}
+    .pcard-body{padding:16px}
+    .pcard-right{padding:16px;justify-content:space-between;border-left:none;border-top:1px dashed var(--border)}
+    .pcard-stats{text-align:left}
+    .pcard-count-lbl{margin-top:2px}
   }</style>
 </head>
 <body>
@@ -68,7 +85,6 @@
     <a href="index.html" class="nav-link">Bosh sahifa</a>
     <a href="publishers.html" class="nav-link on">Nashriyotlar</a>
     <a href="search.html" class="nav-link">Kitoblar</a>
-    <a href="track.html" class="nav-link">Kuzatish</a>
     <a href="about.html" class="nav-link">Biz haqimizda</a>
   </div>
   <a href="wishlist.html" class="wish-link" style="margin-left:8px"><i data-lucide="heart" style="width:18px;height:18px"></i><span class="wish-count"></span></a>
@@ -177,9 +193,21 @@ function render(){
   if(slice.length===0){document.getElementById('grid').innerHTML='<div class="empty">Bu harf bo\'yicha nashriyot topilmadi</div>';document.getElementById('pager').innerHTML='';return;}
   document.getElementById('grid').innerHTML=slice.map(function(k){
     var p=PUBLISHERS[k];
-    return '<a class="pcard" href="publisher.html?pub='+k+'">'+(p.first?'<div class="first-badge">★ TOP</div>':'')+
+    var descText = p.desc || 'O\'zbekistonning eng sara nashriyotlaridan biri.';
+    var topBadge = p.first ? '<span class="first-badge">★ TOP</span>' : '';
+    return '<a class="pcard" href="publisher.html?pub='+k+'">'+
       '<div class="pcard-logo">'+pubLogoHTML(p,112)+'</div>'+
-      '<div class="pcard-foot"><div class="pcard-name">'+p.name+'</div><div class="pcard-meta">'+(counts[k]||0)+' ta kitob · 📍 '+(p.city||'Toshkent')+'</div></div></a>';
+      '<div class="pcard-body">'+
+        '<div class="pcard-name-row"><h3 class="pcard-name">'+p.name+'</h3>'+topBadge+'</div>'+
+        '<p class="pcard-desc">'+descText+'</p>'+
+      '</div>'+
+      '<div class="pcard-right">'+
+        '<div class="pcard-stats">'+
+          '<div class="pcard-count">'+(counts[k]||0)+'</div>'+
+          '<div class="pcard-count-lbl">kitoblar</div>'+
+        '</div>'+
+        '<div class="pcard-arrow">→</div>'+
+      '</div></a>';
   }).join('');
   /* pager */
   var ph='';

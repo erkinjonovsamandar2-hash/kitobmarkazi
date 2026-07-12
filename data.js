@@ -221,10 +221,15 @@ function coverHTML(book, pub){
   var designed = '<div class="cv-pat"></div><div class="cv-grad"></div>'+
     '<div class="cv-pub">'+pubName+'</div>'+
     '<div class="cv-mid"><div class="cv-title">'+book.title+'</div><div class="cv-rule"></div><div class="cv-author">'+book.author+'</div></div>';
+  
+  var imgSrc = book.cover || ('images/covers/'+book.id+'.jpg');
+  var fallbackPng = book.cover ? '' : 'data-png="images/covers/'+book.id+'.png"';
+  var errHandler = book.cover ? "this.style.display='none';" : "if(!this.dataset.t){this.dataset.t=1;this.src=this.dataset.png;}else{this.style.display='none';}";
+  
   var img = '<img class="cv-img" alt="" loading="lazy" '+
-    'src="images/covers/'+book.id+'.jpg" '+
-    'data-png="images/covers/'+book.id+'.png" '+
-    'onerror="if(!this.dataset.t){this.dataset.t=1;this.src=this.dataset.png;}else{this.style.display=\'none\';}">';
+    'src="'+imgSrc+'" '+
+    fallbackPng+' '+
+    'onerror="'+errHandler+'">';
   return designed + img;
 }
 
