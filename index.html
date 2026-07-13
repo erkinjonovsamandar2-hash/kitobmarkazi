@@ -112,36 +112,33 @@
   .pday{font-size:19px;font-weight:800;color:#fff;line-height:1}
   .pmon{font-size:9px;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.06em;margin-top:1px}
 
-  .how{background:var(--grad-navy);border-radius:24px;padding:64px 48px 56px;position:relative;overflow:hidden;box-shadow:var(--sh-xl);border:1px solid rgba(255,255,255,0.06)}
+  .how{background:var(--grad-navy);border-radius:24px;padding:72px 48px 60px;position:relative;overflow:hidden;box-shadow:var(--sh-xl);border:1px solid rgba(255,255,255,0.06)}
   .how::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
   .how-orb{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(29,158,117,0.18),transparent 70%);bottom:-140px;right:-80px;animation:drift 13s ease-in-out infinite;pointer-events:none;filter:blur(60px)}
   .how-orb2{position:absolute;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(217,169,62,0.12),transparent 70%);top:-100px;left:-40px;animation:drift 16s ease-in-out infinite reverse;pointer-events:none;filter:blur(50px)}
   .how-head{position:relative;z-index:2;text-align:center;margin-bottom:52px}
   .how-tag{font-size:11.5px;font-weight:700;color:var(--gold-l);text-transform:uppercase;letter-spacing:0.14em;margin-bottom:12px}
-  .how-h{font-family:var(--serif);font-size:38px;font-weight:900;color:#fff;letter-spacing:-0.025em;line-height:1.1}
-  .how-hsub{font-size:15px;color:rgba(255,255,255,0.5);margin-top:12px;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.6}
+  .how-h{font-family:var(--serif);font-size:42px;font-weight:900;color:#fff;letter-spacing:-0.025em;line-height:1.1}
+  .how-hsub{font-size:15px;color:rgba(255,255,255,0.5);margin-top:14px;max-width:460px;margin-left:auto;margin-right:auto;line-height:1.6}
 
-  /* connector curve behind steps */
-  .how-track{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
-  .how-connector{position:absolute;top:56px;left:12%;right:12%;height:2px;z-index:1;background:linear-gradient(90deg,rgba(217,169,62,0.08),rgba(217,169,62,0.25) 30%,rgba(29,158,117,0.25) 70%,rgba(29,158,117,0.08))}
-  .how-connector::before,.how-connector::after{content:'';position:absolute;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px rgba(217,169,62,0.4)}
-  .how-connector::before{left:0}
-  .how-connector::after{right:0;background:var(--teal);box-shadow:0 0 12px rgba(29,158,117,0.4)}
+  /* flowing wavy connector (SVG-based) */
+  .how-track{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .how-wave{position:absolute;top:110px;left:8%;right:8%;height:60px;z-index:1;pointer-events:none}
+  .how-wave svg{width:100%;height:100%}
 
   /* step card */
   .how-step{position:relative;z-index:2;text-align:center;padding:0;transition:transform 0.35s var(--ease-premium)}
   .how-step:hover{transform:translateY(-6px)}
 
   /* big number */
-  .how-num{font-family:var(--serif);font-size:72px;font-weight:900;line-height:1;margin-bottom:20px;background:linear-gradient(135deg,var(--gold-l) 0%,var(--gold) 40%,var(--teal) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;opacity:0.85;transition:opacity 0.3s}
+  .how-num{font-family:var(--serif);font-size:96px;font-weight:900;line-height:0.85;margin-bottom:8px;background:linear-gradient(150deg,#F0CC72 0%,#C2932E 45%,#5DCAA5 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;opacity:0.9;transition:opacity 0.3s;letter-spacing:-0.04em}
   .how-step:hover .how-num{opacity:1}
 
-  /* icon circle */
-  .how-icon-wrap{width:72px;height:72px;border-radius:50%;background:rgba(29,158,117,0.1);border:1.5px solid rgba(29,158,117,0.25);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;transition:all 0.35s var(--ease-premium)}
-  .how-step:hover .how-icon-wrap{background:rgba(29,158,117,0.2);border-color:var(--teal);box-shadow:0 0 24px rgba(29,158,117,0.2)}
-  .how-icon-wrap svg{width:28px;height:28px;stroke:var(--teal-l);stroke-width:1.5;fill:none}
+  /* illustration area */
+  .how-illust{width:140px;height:120px;margin:0 auto 22px;display:flex;align-items:center;justify-content:center;position:relative}
+  .how-illust svg{width:100%;height:100%}
 
-  .how-stitle{font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-0.01em}
+  .how-stitle{font-size:19px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-0.01em}
   .how-ssub{font-size:13.5px;color:rgba(255,255,255,0.52);line-height:1.7;max-width:240px;margin:0 auto}
 
   .pay-row{background:var(--white);border-radius:20px;border:1px solid var(--border);padding:22px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;box-shadow:var(--sh-sm)}
@@ -154,7 +151,7 @@
     .stat-hide{display:none}
     .adhead{padding-left:16px;padding-right:16px}.adscroll{padding-left:16px;padding-right:16px}
     .grid{grid-template-columns:repeat(2,1fr);gap:10px}
-    .adt{font-size:22px}.how{padding:40px 24px 36px}.how-h{font-size:28px}.how-head{margin-bottom:36px}.how-track{grid-template-columns:1fr;gap:36px}.how-connector{display:none}.how-num{font-size:56px;margin-bottom:14px}
+    .adt{font-size:22px}.how{padding:44px 24px 36px}.how-h{font-size:28px}.how-head{margin-bottom:36px}.how-track{grid-template-columns:1fr;gap:40px}.how-wave{display:none}.how-num{font-size:64px}.how-illust{width:110px;height:95px}
   }
 
   /* ===== AI Maslahatchi ===== */
@@ -337,27 +334,133 @@
       <div class="how-hsub">Nashriyot tanlang, kitobni savatga qo'shing va eshigingizgacha yetkazib beramiz. Hammasi shu.</div>
     </div>
     <div class="how-track">
-      <div class="how-connector"></div>
+      <!-- wavy connector -->
+      <div class="how-wave">
+        <svg viewBox="0 0 900 60" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="waveGrad" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C2932E" stop-opacity="0.5"/><stop offset="50%" stop-color="#F0CC72" stop-opacity="0.35"/><stop offset="100%" stop-color="#5DCAA5" stop-opacity="0.5"/></linearGradient></defs>
+          <path d="M0,30 C150,55 200,5 350,30 C500,55 550,5 700,30 C780,42 850,25 900,30" stroke="url(#waveGrad)" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <!-- Step 1: Bookshelf scene -->
       <div class="how-step">
         <div class="how-num">01</div>
-        <div class="how-icon-wrap">
-          <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/></svg>
+        <div class="how-illust">
+          <svg viewBox="0 0 140 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- bookshelf -->
+            <rect x="30" y="10" width="80" height="100" rx="4" fill="#1A3A5C" stroke="#2A5A7C" stroke-width="1.5"/>
+            <rect x="32" y="12" width="76" height="2" fill="#C2932E" opacity="0.6"/>
+            <!-- shelves -->
+            <line x1="32" y1="38" x2="108" y2="38" stroke="#2A5A7C" stroke-width="1.5"/>
+            <line x1="32" y1="64" x2="108" y2="64" stroke="#2A5A7C" stroke-width="1.5"/>
+            <line x1="32" y1="90" x2="108" y2="90" stroke="#2A5A7C" stroke-width="1.5"/>
+            <!-- books row 1 -->
+            <rect x="36" y="16" width="8" height="20" rx="1" fill="#E8B23E"/>
+            <rect x="46" y="18" width="7" height="18" rx="1" fill="#5DCAA5"/>
+            <rect x="55" y="14" width="9" height="22" rx="1" fill="#C0392B" opacity="0.85"/>
+            <rect x="66" y="17" width="7" height="19" rx="1" fill="#3498DB"/>
+            <rect x="75" y="15" width="8" height="21" rx="1" fill="#E8B23E" opacity="0.7"/>
+            <rect x="85" y="19" width="7" height="17" rx="1" fill="#5DCAA5" opacity="0.8"/>
+            <rect x="94" y="16" width="10" height="20" rx="1" fill="#9B59B6" opacity="0.7"/>
+            <!-- books row 2 -->
+            <rect x="36" y="42" width="10" height="20" rx="1" fill="#1D9E75"/>
+            <rect x="48" y="44" width="8" height="18" rx="1" fill="#F0CC72"/>
+            <rect x="58" y="41" width="7" height="21" rx="1" fill="#2980B9"/>
+            <rect x="67" y="45" width="9" height="17" rx="1" fill="#E74C3C" opacity="0.7"/>
+            <rect x="78" y="42" width="8" height="20" rx="1" fill="#C2932E"/>
+            <rect x="88" y="44" width="7" height="18" rx="1" fill="#5DCAA5" opacity="0.6"/>
+            <rect x="97" y="43" width="8" height="19" rx="1" fill="#E8B23E" opacity="0.5"/>
+            <!-- books row 3 -->
+            <rect x="36" y="68" width="9" height="20" rx="1" fill="#F39C12" opacity="0.8"/>
+            <rect x="47" y="70" width="7" height="18" rx="1" fill="#1D9E75" opacity="0.7"/>
+            <rect x="56" y="67" width="10" height="21" rx="1" fill="#E8B23E" opacity="0.6"/>
+            <rect x="68" y="69" width="8" height="19" rx="1" fill="#3498DB" opacity="0.7"/>
+            <rect x="78" y="68" width="7" height="20" rx="1" fill="#C0392B" opacity="0.6"/>
+            <!-- person -->
+            <circle cx="16" cy="52" r="6" fill="#F0CC72"/>
+            <rect x="12" y="60" width="8" height="14" rx="3" fill="#E8B23E"/>
+            <line x1="20" y1="64" x2="30" y2="56" stroke="#E8B23E" stroke-width="2" stroke-linecap="round"/>
+            <line x1="12" y1="74" x2="10" y2="88" stroke="#5DCAA5" stroke-width="2" stroke-linecap="round"/>
+            <line x1="20" y1="74" x2="22" y2="88" stroke="#5DCAA5" stroke-width="2" stroke-linecap="round"/>
+          </svg>
         </div>
         <div class="how-stitle">Kitob tanlang</div>
         <div class="how-ssub">Nashriyot yoki qidiruv orqali o'zingizga yoqqan kitobni toping</div>
       </div>
+
+      <!-- Step 2: Cart with books -->
       <div class="how-step">
         <div class="how-num">02</div>
-        <div class="how-icon-wrap">
-          <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+        <div class="how-illust">
+          <svg viewBox="0 0 140 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- cart body -->
+            <path d="M30,45 L38,45 L52,95 L105,95 L115,55 L45,55" stroke="#5DCAA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <!-- cart handle -->
+            <path d="M20,42 L30,42" stroke="#5DCAA5" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- wheels -->
+            <circle cx="60" cy="102" r="5" fill="none" stroke="#5DCAA5" stroke-width="2"/>
+            <circle cx="60" cy="102" r="1.5" fill="#5DCAA5"/>
+            <circle cx="98" cy="102" r="5" fill="none" stroke="#5DCAA5" stroke-width="2"/>
+            <circle cx="98" cy="102" r="1.5" fill="#5DCAA5"/>
+            <!-- books in cart -->
+            <rect x="50" y="58" width="12" height="34" rx="2" fill="#E8B23E" transform="rotate(-8 50 58)"/>
+            <rect x="60" y="56" width="11" height="36" rx="2" fill="#C0392B" opacity="0.85" transform="rotate(3 60 56)"/>
+            <rect x="72" y="57" width="10" height="35" rx="2" fill="#1D9E75" transform="rotate(-4 72 57)"/>
+            <rect x="83" y="59" width="12" height="33" rx="2" fill="#3498DB" opacity="0.8" transform="rotate(6 83 59)"/>
+            <rect x="94" y="60" width="9" height="30" rx="2" fill="#F0CC72" opacity="0.7" transform="rotate(-2 94 60)"/>
+            <!-- sparkle -->
+            <path d="M118,38 L120,32 L122,38 L128,40 L122,42 L120,48 L118,42 L112,40 Z" fill="#F0CC72" opacity="0.7"/>
+            <path d="M38,28 L39,24 L40,28 L44,29 L40,30 L39,34 L38,30 L34,29 Z" fill="#5DCAA5" opacity="0.6"/>
+          </svg>
         </div>
         <div class="how-stitle">Savatga qo'shing</div>
         <div class="how-ssub">Turli nashriyotlardan bir nechta kitobni bir buyurtmaga jamlang</div>
       </div>
+
+      <!-- Step 3: Delivery handoff -->
       <div class="how-step">
         <div class="how-num">03</div>
-        <div class="how-icon-wrap">
-          <svg viewBox="0 0 24 24"><path d="M16 16h6v-6M1 20L6.5 14.5"/><path d="M21 10V4a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1h6"/><path d="M21 16l-7-7"/></svg>
+        <div class="how-illust">
+          <svg viewBox="0 0 140 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- person 1 (customer) -->
+            <circle cx="45" cy="30" r="8" fill="#F0CC72"/>
+            <rect x="38" y="40" width="14" height="22" rx="5" fill="#3498DB"/>
+            <!-- arms -->
+            <line x1="52" y1="46" x2="62" y2="54" stroke="#3498DB" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="38" y1="48" x2="30" y2="56" stroke="#3498DB" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- legs -->
+            <line x1="42" y1="62" x2="38" y2="82" stroke="#1A3A5C" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="48" y1="62" x2="52" y2="82" stroke="#1A3A5C" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- shoes -->
+            <ellipse cx="36" cy="84" rx="5" ry="3" fill="#2C3E50"/>
+            <ellipse cx="54" cy="84" rx="5" ry="3" fill="#2C3E50"/>
+
+            <!-- package -->
+            <rect x="60" y="44" width="22" height="18" rx="3" fill="#E8B23E"/>
+            <line x1="71" y1="44" x2="71" y2="62" stroke="#C2932E" stroke-width="1"/>
+            <line x1="60" y1="53" x2="82" y2="53" stroke="#C2932E" stroke-width="1"/>
+
+            <!-- person 2 (courier) -->
+            <circle cx="100" cy="28" r="8" fill="#5DCAA5"/>
+            <!-- cap -->
+            <rect x="92" y="22" width="16" height="5" rx="2" fill="#1D9E75"/>
+            <rect x="89" y="26" width="6" height="3" rx="1" fill="#1D9E75"/>
+            <rect x="88" y="38" width="14" height="22" rx="5" fill="#1D9E75"/>
+            <!-- arms -->
+            <line x1="88" y1="44" x2="78" y2="52" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="102" y1="46" x2="112" y2="54" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- legs -->
+            <line x1="92" y1="60" x2="88" y2="82" stroke="#13294A" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="98" y1="60" x2="102" y2="82" stroke="#13294A" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- shoes -->
+            <ellipse cx="86" cy="84" rx="5" ry="3" fill="#0F6E56"/>
+            <ellipse cx="104" cy="84" rx="5" ry="3" fill="#0F6E56"/>
+
+            <!-- sparkles -->
+            <path d="M120,20 L122,14 L124,20 L130,22 L124,24 L122,30 L120,24 L114,22 Z" fill="#F0CC72" opacity="0.5"/>
+            <circle cx="28" cy="42" r="2" fill="#5DCAA5" opacity="0.4"/>
+            <circle cx="126" cy="50" r="1.5" fill="#E8B23E" opacity="0.4"/>
+          </svg>
         </div>
         <div class="how-stitle">Yetkazib beramiz</div>
         <div class="how-ssub">To'lov usulini tanlang — kuryer 1–3 kun ichida eshigingizga olib keladi</div>
