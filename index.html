@@ -478,7 +478,7 @@ heroInput.addEventListener('input',function(){
   }).join('');
   acList.classList.add('show');
 });
-function goFirst(){var q=heroInput.value.trim();if(q)location.href='search.html?q='+encodeURIComponent(q);}
+function goFirst(){var q=heroInput.value.trim();if(q)location.href='/qidirish?q='+encodeURIComponent(q);}
 heroInput.addEventListener('keydown',function(e){if(e.key==='Enter')goFirst();});
 document.addEventListener('click',function(e){if(!e.target.closest('.ac-wrap'))acList.classList.remove('show');});
 
@@ -550,7 +550,7 @@ function aiShowResult(){
     }));
   }catch(e){}
 }
-function aiGoResults(){ location.href='tavsiya.html'; }
+function aiGoResults(){ location.href='/tavsiyalar'; }
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

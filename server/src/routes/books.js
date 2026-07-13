@@ -7,13 +7,15 @@ const { adminRequired } = require('../middleware/auth');
 /* GET /api/books — paginated, filterable */
 router.get('/', async (req, res) => {
   try {
-    const { genre, publisher, sort, top, q, page = 1, limit = 50 } = req.query;
+    const { genre, publisher, sort, top, q, minPrice, maxPrice, page = 1, limit = 50 } = req.query;
     let where = [];
     let params = [];
 
     if (genre && genre !== 'all') { where.push(`b.genre = $${params.length + 1}`); params.push(genre); }
     if (publisher) { where.push(`b."publisherSlug" = $${params.length + 1}`); params.push(publisher); }
     if (top === '1' || top === 'true') { where.push('b."isTop" = 1'); }
+    if (minPrice) { where.push(`b.price >= $${params.length + 1}`); params.push(parseInt(minPrice)); }
+    if (maxPrice) { where.push(`b.price <= $${params.length + 1}`); params.push(parseInt(maxPrice)); }
     if (q) {
       const like = `%${q}%`;
       where.push(`(b.title ILIKE $${params.length + 1} OR b.author ILIKE $${params.length + 2} OR p.name ILIKE $${params.length + 3})`);
@@ -125,11 +127,54 @@ router.get('/:id/reviews', async (req, res) => {
 
 /* POST /api/books/:id/reviews */
 router.post('/:id/reviews', async (req, res) => {
-  const { customerName, rating, comment } = req.body;
-  if (!customerName || !rating) return res.status(400).json({ error: 'Name and rating required' });
-  await db.prepare('INSERT INTO reviews ("bookId", "customerName", rating, comment) VALUES ($1, $2, $3, $4)')
-    .run(req.params.id, customerName, rating, comment || '');
-  res.status(201).json({ ok: true });
+  const { customerName, rating, comment, orderNumber } = req.body;
+  if (!customerName || !rating || !orderNumber) {
+    return res.status(400).json({ error: 'Ism, reyting va buyurtma raqami kiritilishi shart' });
+  }
+
+  try {
+    // 1. Verify if the order contains this book
+    // Wait, the orderNumber can be orderNumber (e.g. 'KM-XXXXXXX') or ID. Let's check both.
+    const purchase = await db.prepare(`
+      SELECT oi.id FROM order_items oi
+      JOIN orders o ON oi."orderId" = o.id
+      WHERE (o."orderNumber" = $1 OR o.id = $2) AND oi."bookId" = $3
+    `).get(orderNumber.trim().toUpperCase(), orderNumber.trim(), req.params.id);
+
+    if (!purchase) {
+      return res.status(400).json({ error: 'Ushbu buyurtmada bu kitob xarid qilinmagan yoki buyurtma raqami noto\'g\'ri' });
+    }
+
+    // 2. Enforce only one review per order for this book
+    const existing = await db.prepare(`
+      SELECT id FROM reviews 
+      WHERE "bookId" = $1 AND "orderNumber" = $2
+    `).get(req.params.id, orderNumber.trim().toUpperCase());
+
+    if (existing) {
+      return res.status(400).json({ error: 'Ushbu buyurtma orqali bu kitobga allaqachon fikr bildirilgan' });
+    }
+
+    // 3. Insert review
+    await db.prepare('INSERT INTO reviews ("bookId", "customerName", rating, comment, "orderNumber") VALUES ($1, $2, $3, $4, $5)')
+      .run(req.params.id, customerName, parseInt(rating), comment || '', orderNumber.trim().toUpperCase());
+    
+    // 4. Update the book's cached average rating
+    const ratingStats = await db.prepare(`
+      SELECT COUNT(*) as count, AVG(rating) as avg 
+      FROM reviews WHERE "bookId" = $1
+    `).get(req.params.id);
+
+    if (ratingStats && ratingStats.count > 0) {
+      const newRating = parseFloat(parseFloat(ratingStats.avg).toFixed(1));
+      await db.prepare('UPDATE books SET rating = $1 WHERE id = $2').run(newRating, req.params.id);
+    }
+
+    res.status(201).json({ ok: true });
+  } catch(e) {
+    console.error('Submit review error:', e);
+    res.status(500).json({ error: 'Fikr yuborishda xatolik yuz berdi' });
+  }
 });
 
 /* GET /api/books/admin/all-reviews */

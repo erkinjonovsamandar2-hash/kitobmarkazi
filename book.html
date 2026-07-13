@@ -160,7 +160,8 @@
       </div>
       <div class="rev-form-card">
         <h3>Fikr qoldiring</h3>
-        <p style="font-size:13px;color:var(--light);margin-bottom:20px">Sizning fikringiz boshqa o'quvchilarga kitob tanlashda yordam beradi.</p>
+        <p style="font-size:13px;color:var(--light);margin-bottom:20px">Sizning fikringiz boshqa o'quvchilarga kitob tanlashda yordam beradi. Fikr qoldirish faqat xaridorlar uchun ochiq.</p>
+        <div class="field"><label>Buyurtma raqami *</label><input type="text" id="revOrderNumber" placeholder="KM-XXXXXXXX"></div>
         <div class="field"><label>Ismingiz *</label><input type="text" id="revName" placeholder="Alisher"></div>
         <div class="field"><label>Baholang *</label>
           <div class="rev-stars-pick">
@@ -230,65 +231,146 @@ var book=null;
 var pub=null;
 var galImages = [], allImages = [];
 
-function initPageData(){
-  if (!isKMDataLoaded) return;
-  pub=PUBLISHERS[pubKey]||PUBLISHERS['booktopia'];
+async function loadBookDetails() {
+  try {
+    var res = await fetch('/api/books/' + pubKey + '/' + bookId);
+    if (!res.ok) throw new Error('Book not found');
+    var data = await res.json();
+    
+    book = {
+      id: data.id,
+      title: data.title,
+      author: data.author,
+      price: data.price,
+      color: data.color || '#13294A',
+      rating: data.rating,
+      top: data.isTop === 1 || data.isTop === true,
+      pages: data.pages,
+      year: data.year,
+      genre: data.genre,
+      stock: data.stock,
+      cover: data.cover,
+      recommendations: data.recommendations
+    };
+    
+    pub = {
+      name: data.publisherName,
+      logo: data.publisherLogo,
+      text: data.logoText,
+      color: data.logoColor,
+      description: data.publisherDesc,
+      city: data.city,
+      founded: data.founded
+    };
+    
+    renderBookPage();
+  } catch (e) {
+    console.warn('API fetch failed, falling back to data.js:', e);
+    if (isKMDataLoaded) {
+      pub = PUBLISHERS[pubKey] || PUBLISHERS['booktopia'];
+      book = findBook(pubKey, bookId);
+      if (book) renderBookPage();
+    }
+  }
+}
 
-  if(!pub) return;
-  book=findBook(pubKey,bookId);
-  if(!book) return;
+function renderBookPage() {
+  if (!book || !pub) return;
 
-  document.title=book.title+' — Kitobmarkazi';
-  var cover=document.getElementById('bkCover');
-  cover.style.background=book.color;
-  cover.innerHTML='<div class="bk-cov-badge" id="bkCovBadge" style="display:'+(book.top?'block':'none')+'">🔥 Top</div>';
-  cover.insertAdjacentHTML('afterbegin', coverHTML(book,pub));
+  document.title = book.title + ' — Kitobmarkazi';
+  var cover = document.getElementById('bkCover');
+  cover.style.background = book.color;
+  cover.innerHTML = '<div class="bk-cov-badge" id="bkCovBadge" style="display:' + (book.top ? 'block' : 'none') + '">🔥 Top</div>';
+  cover.insertAdjacentHTML('afterbegin', coverHTML(book, pub));
 
   // ===== Gallery =====
   galImages = bookImages(book.id);
   allImages = galImages.slice();
-  var thumbsBox=document.getElementById('bkThumbs');
-  if(galImages.length){
-    thumbsBox.style.display='flex';
-    var thumbs=[];
-    thumbs.push('<div class="bk-thumb on" data-i="0" onclick="setMainImage(0)"><div style="width:100%;height:100%;background:'+book.color+';position:relative;overflow:hidden">'+coverHTML(book,pub)+'</div></div>');
-    galImages.forEach(function(src,i){
-      thumbs.push('<div class="bk-thumb" data-i="'+(i+1)+'" onclick="setMainImage('+(i+1)+')"><img src="'+src+'" alt="rasm '+(i+1)+'" onerror="this.parentElement.style.display=\'none\'"></div>');
+  var thumbsBox = document.getElementById('bkThumbs');
+  if (galImages.length) {
+    thumbsBox.style.display = 'flex';
+    var thumbs = [];
+    thumbs.push('<div class="bk-thumb on" data-i="0" onclick="setMainImage(0)"><div style="width:100%;height:100%;background:' + book.color + ';position:relative;overflow:hidden">' + coverHTML(book, pub) + '</div></div>');
+    galImages.forEach(function(src, i) {
+      thumbs.push('<div class="bk-thumb" data-i="' + (i + 1) + '" onclick="setMainImage(' + (i + 1) + ')"><img src="' + src + '" alt="rasm ' + (i + 1) + '" onerror="this.parentElement.style.display=\'none\'"></div>');
     });
-    thumbsBox.innerHTML=thumbs.join('');
+    thumbsBox.innerHTML = thumbs.join('');
   } else {
-    thumbsBox.style.display='none';
-    thumbsBox.innerHTML='';
+    thumbsBox.style.display = 'none';
+    thumbsBox.innerHTML = '';
   }
 
-  document.getElementById('bkPubLogo').innerHTML=pubLogoHTML(pub,22);
-  document.getElementById('bkPubName').textContent=pub.name;
-  document.getElementById('bkPubChip').href='publisher.html?pub='+pubKey;
-  document.getElementById('bkTitle').textContent=book.title;
-  document.getElementById('bkAuthor').textContent=book.author;
-  var full=Math.floor(book.rating);
-  document.getElementById('bkStars').textContent='★★★★★'.slice(0,full)+'☆☆☆☆☆'.slice(0,5-full);
-  document.getElementById('bkRnum').textContent=book.rating+' / 5.0';
-  document.getElementById('bkMeta').innerHTML=
-    '<div class="bk-mchip"><div class="bk-mval">'+book.pages+'</div><div class="bk-mlbl">sahifa</div></div>'+
-    '<div class="bk-mchip"><div class="bk-mval">'+book.year+'</div><div class="bk-mlbl">nashr yili</div></div>'+
-    '<div class="bk-mchip"><div class="bk-mval">O\'zbek</div><div class="bk-mlbl">til</div></div>'+
+  document.getElementById('bkPubLogo').innerHTML = pubLogoHTML(pub, 22);
+  document.getElementById('bkPubName').textContent = pub.name;
+  document.getElementById('bkPubChip').href = 'publisher.html?pub=' + pubKey;
+  document.getElementById('bkTitle').textContent = book.title;
+  document.getElementById('bkAuthor').textContent = book.author;
+  var full = Math.floor(book.rating);
+  document.getElementById('bkStars').textContent = '★★★★★'.slice(0, full) + '☆☆☆☆☆'.slice(0, 5 - full);
+  document.getElementById('bkRnum').textContent = book.rating + ' / 5.0';
+  document.getElementById('bkMeta').innerHTML =
+    '<div class="bk-mchip"><div class="bk-mval">' + book.pages + '</div><div class="bk-mlbl">sahifa</div></div>' +
+    '<div class="bk-mchip"><div class="bk-mval">' + book.year + '</div><div class="bk-mlbl">nashr yili</div></div>' +
+    '<div class="bk-mchip"><div class="bk-mval">O\'zbek</div><div class="bk-mlbl">til</div></div>' +
     '<div class="bk-mchip"><div class="bk-mval">Qattiq</div><div class="bk-mlbl">muqova</div></div>';
-  document.getElementById('bkDesc').textContent=book.title+' — '+pub.name+' nashriyoti tomonidan chop etilgan '+book.author+' qalamiga mansub asar. O\'zbek kitobxonlari orasida katta qiziqish uyg\'otgan ushbu kitob sifatli muqova va zamonaviy dizaynda taqdim etilgan.';
-  document.getElementById('bkPrice').textContent=money(book.price);
-  document.getElementById('addCartBtn').innerHTML=cartIcon(18)+' Savatga qo\'shish';
+  document.getElementById('bkDesc').textContent = book.title + ' — ' + pub.name + ' nashriyoti tomonidan chop etilgan ' + book.author + ' qalamiga mansub asar. O\'zbek kitobxonlari orasida katta qiziqish uyg\'otgan ushbu kitob sifatli muqova va zamonaviy dizaynda taqdim etilgan.';
+  document.getElementById('bkPrice').textContent = money(book.price);
+  document.getElementById('addCartBtn').innerHTML = cartIcon(18) + ' Savatga qo\'shish';
   refreshWish();
 
   /* Recommendations */
-  var recs=recommendFor(pubKey,book,4);
-  if(recs.length===0){document.getElementById('recSec').style.display='none';}
-  else{
-    document.getElementById('recSec').style.display='block';
-    document.getElementById('recGrid').innerHTML=recs.map(function(r){
+  var recs = [];
+  if (book.recommendations && book.recommendations.length > 0) {
+    recs = book.recommendations.map(r => ({
+      pk: r.publisherSlug,
+      b: {
+        id: r.id,
+        title: r.title,
+        author: r.author,
+        price: r.price,
+        color: r.color,
+        rating: r.rating,
+        top: r.isTop === 1 || r.isTop === true,
+        stock: r.stock,
+        cover: r.cover
+      }
+    }));
+  } else {
+    recs = recommendFor(pubKey, book, 4);
+  }
+
+  if (recs.length === 0) {
+    document.getElementById('recSec').style.display = 'none';
+  } else {
+    document.getElementById('recSec').style.display = 'block';
+    document.getElementById('recGrid').innerHTML = recs.map(function(r) {
       return bookCardHTML(r.pk, r.b);
     }).join('');
   }
-  if(window.refreshIcons) window.refreshIcons();
+  
+  loadReviews();
+  
+  var av = document.getElementById('activeViewers');
+  if (av) av.textContent = Math.floor(Math.random() * 16) + 8;
+
+  // Populate sticky bar
+  var saTitle = document.getElementById('saTitle');
+  var saAuthor = document.getElementById('saAuthor');
+  var saPrice = document.getElementById('saPrice');
+  var saThumb = document.getElementById('saThumb');
+  if (saTitle) saTitle.textContent = book.title;
+  if (saAuthor) saAuthor.textContent = book.author;
+  if (saPrice) saPrice.textContent = money(book.price);
+  if (saThumb) {
+    saThumb.style.background = book.color;
+    saThumb.innerHTML = coverHTML(book, pub);
+  }
+
+  if (window.refreshIcons) window.refreshIcons();
+}
+
+function initPageData() {
+  loadBookDetails();
 }
 
 // cover tab behavior
@@ -386,43 +468,32 @@ window.submitReview = function() {
   var name = document.getElementById('revName').value.trim();
   var rate = document.getElementById('revRate').value;
   var comm = document.getElementById('revComment').value.trim();
-  if (!name) { alert('Iltimos ismingizni kiriting'); return; }
+  var orderNum = document.getElementById('revOrderNumber').value.trim();
+  
+  if (!orderNum) { toast('Iltimos buyurtma raqamingizni kiriting. Fikr qoldirish faqat xaridorlar uchun ruxsat etilgan.', 'error'); return; }
+  if (!name) { toast('Iltimos ismingizni kiriting', 'error'); return; }
 
   fetch('/api/books/' + book.id + '/reviews', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ customerName: name, rating: parseInt(rate), comment: comm })
+    body: JSON.stringify({ customerName: name, rating: parseInt(rate), comment: comm, orderNumber: orderNum })
   }).then(r => r.json()).then(res => {
     if (res.ok) {
-      toast('Fikringiz uchun rahmat!');
+      toast('Fikringiz muvaffaqiyatli saqlandi!');
       document.getElementById('revName').value = '';
       document.getElementById('revComment').value = '';
+      document.getElementById('revOrderNumber').value = '';
       loadReviews();
+    } else {
+      toast(res.error || 'Xatolik yuz berdi. Fikr yuborib bo\'lmadi.', 'error');
     }
+  }).catch(err => {
+    console.error(err);
+    toast('Fikr yuborishda xatolik yuz berdi.', 'error');
   });
 };
 
-// Hook into initPageData
-var oldInit = initPageData;
-initPageData = function() {
-  oldInit();
-  loadReviews();
-  var av = document.getElementById('activeViewers');
-  if(av) av.textContent = Math.floor(Math.random() * 16) + 8;
-
-  // Populate sticky bar
-  var saTitle = document.getElementById('saTitle');
-  var saAuthor = document.getElementById('saAuthor');
-  var saPrice = document.getElementById('saPrice');
-  var saThumb = document.getElementById('saThumb');
-  if(saTitle) saTitle.textContent = book.title;
-  if(saAuthor) saAuthor.textContent = book.author;
-  if(saPrice) saPrice.textContent = money(book.price);
-  if(saThumb) {
-    saThumb.style.background = book.color;
-    saThumb.innerHTML = coverHTML(book, pub);
-  }
-};
+// initPageData hook is now handled directly inside renderBookPage
 
 // Scroll listener for sticky bar
 window.addEventListener('scroll', function(){

@@ -136,27 +136,86 @@ var pubKey=params.get('pub')||'booktopia';
 var allBooks=[];
 var curMode='all', curSearch='';
 
-function initPageData(){
-  if (!isKMDataLoaded) return;
-  var pub=PUBLISHERS[pubKey]||PUBLISHERS['booktopia'];
-  if(!pub) return;
-  allBooks=getBooks(pubKey);
+async function loadPublisherPageData() {
+  try {
+    var res = await fetch('/api/publishers/' + pubKey);
+    if (!res.ok) throw new Error('Publisher not found');
+    var data = await res.json();
+    
+    var pub = {
+      name: data.name,
+      logo: data.logo,
+      text: data.logoText || data.name.slice(0, 2),
+      color: data.logoColor || '#1A3A5C',
+      founded: data.founded,
+      city: data.city,
+      desc: data.description
+    };
+    
+    allBooks = data.books.map(function(b) {
+      return {
+        id: b.id,
+        title: b.title,
+        author: b.author,
+        price: b.price,
+        color: b.color || '#13294A',
+        rating: b.rating,
+        top: b.isTop === 1 || b.isTop === true,
+        pages: b.pages,
+        year: b.year,
+        genre: b.genre,
+        stock: b.stock,
+        cover: b.cover
+      };
+    });
+    
+    document.title = pub.name + ' — Kitobmarkazi';
+    document.getElementById('pubName').textContent = pub.name;
+    document.getElementById('pubDesc').textContent = pub.desc || 'O\'zbekiston nashriyoti';
+    
+    var avHTML = '';
+    if (pub.logo) { avHTML = '<img src="' + pub.logo + '" alt="' + pub.name + '">'; }
+    else if (pub.text) { avHTML = '<span class="ph-av-text" style="color:' + (pub.color || '#fff') + '">' + pub.text + '</span>'; }
+    else { avHTML = '<span class="ph-av-text">' + pub.name.substring(0, 2).toUpperCase() + '</span>'; }
+    document.getElementById('pubAv').innerHTML = avHTML;
+    
+    document.getElementById('pubBadges').innerHTML =
+      '<span class="pbadge gold">⭐ Top nashriyot</span><span class="pbadge">' + (pub.founded || 2020) + ' yildan</span>' +
+      '<span class="pbadge">📍 ' + (pub.city || 'Toshkent') + '</span><span class="pbadge">' + allBooks.length + ' ta kitob</span>';
 
-  document.title=pub.name+' — Kitobmarkazi';
-  document.getElementById('pubName').textContent=pub.name;
-  document.getElementById('pubDesc').textContent=pub.desc || 'O\'zbekiston nashriyoti';
+    render();
+  } catch (e) {
+    console.warn('API failed, trying fallback:', e);
+    if (isKMDataLoaded) {
+      fallbackInit();
+    }
+  }
+}
+
+function fallbackInit() {
+  var pub = PUBLISHERS[pubKey] || PUBLISHERS['booktopia'];
+  if (!pub) return;
+  allBooks = getBooks(pubKey);
+
+  document.title = pub.name + ' — Kitobmarkazi';
+  document.getElementById('pubName').textContent = pub.name;
+  document.getElementById('pubDesc').textContent = pub.desc || 'O\'zbekiston nashriyoti';
   
-  var avHTML='';
-  if(pub.logo){avHTML='<img src="'+pub.logo+'" alt="'+pub.name+'">';}
-  else if(pub.text){avHTML='<span class="ph-av-text" style="color:'+(pub.color||'#fff')+'">'+pub.text+'</span>';}
-  else{avHTML='<span class="ph-av-text">'+pub.name.substring(0,2).toUpperCase()+'</span>';}
-  document.getElementById('pubAv').innerHTML=avHTML;
+  var avHTML = '';
+  if (pub.logo) { avHTML = '<img src="' + pub.logo + '" alt="' + pub.name + '">'; }
+  else if (pub.text) { avHTML = '<span class="ph-av-text" style="color:' + (pub.color || '#fff') + '">' + pub.text + '</span>'; }
+  else { avHTML = '<span class="ph-av-text">' + pub.name.substring(0, 2).toUpperCase() + '</span>'; }
+  document.getElementById('pubAv').innerHTML = avHTML;
   
-  document.getElementById('pubBadges').innerHTML=
-    '<span class="pbadge gold">⭐ Top nashriyot</span><span class="pbadge">'+(pub.founded||2020)+' yildan</span>'+
-    '<span class="pbadge">📍 '+(pub.city||'Toshkent')+'</span><span class="pbadge">'+allBooks.length+' ta kitob</span>';
+  document.getElementById('pubBadges').innerHTML =
+    '<span class="pbadge gold">⭐ Top nashriyot</span><span class="pbadge">' + (pub.founded || 2020) + ' yildan</span>' +
+    '<span class="pbadge">📍 ' + (pub.city || 'Toshkent') + '</span><span class="pbadge">' + allBooks.length + ' ta kitob</span>';
 
   render();
+}
+
+function initPageData(){
+  loadPublisherPageData();
 }
 
 function currentList(){

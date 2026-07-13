@@ -75,6 +75,28 @@ app.post('/api/webhook/telegram', async (req, res) => {
 /* ── Serve static files (local dev only) ── */
 if (!process.env.VERCEL) {
   const ROOT = path.join(__dirname, '..', '..');
+  
+  const cleanRoutes = {
+    '/qidirish': 'search.html',
+    '/kitob': 'book.html',
+    '/nashriyotlar': 'publishers.html',
+    '/nashriyot': 'publisher.html',
+    '/savat': 'cart.html',
+    '/sevimlilar': 'wishlist.html',
+    '/kuzatish': 'track.html',
+    '/tavsiyalar': 'tavsiya.html',
+    '/biz-haqimizda': 'about.html',
+    '/aloqa': 'contact.html',
+    '/faq': 'faq.html',
+    '/shartlar': 'terms.html',
+    '/oferta': 'offer.html',
+    '/buyurtma': 'order.html'
+  };
+
+  Object.entries(cleanRoutes).forEach(([route, file]) => {
+    app.get(route, (req, res) => res.sendFile(path.join(ROOT, file)));
+  });
+
   app.use(express.static(ROOT));
   app.use('/admin', express.static(path.join(ROOT, 'admin')));
   app.listen(PORT, () => {

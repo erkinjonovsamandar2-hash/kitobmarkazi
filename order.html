@@ -386,7 +386,7 @@ function courierFee(ck){
 function selCour(ck){courier=ck;document.querySelectorAll('.cour').forEach(function(e){e.classList.remove('on')});document.getElementById('c-'+ck).classList.add('on');document.getElementById('payTimeBlock').style.display='block';updateSummary();}
 
 function selPayTime(t){
-  if(!courier){ alert('Avval yetkazib berish xizmatini tanlang'); return; }
+  if(!courier){ toast('Avval yetkazib berish xizmatini tanlang', 'error'); return; }
   payTime=t;
   document.getElementById('pt-prepaid').classList.toggle('on',t==='prepaid');
   document.getElementById('pt-ondelivery').classList.toggle('on',t==='ondelivery');
@@ -553,7 +553,7 @@ function submitOrder(){
   .then(function(r) { return r.json().then(function(data) { return { ok: r.ok, status: r.status, data: data }; }); })
   .then(function(res) {
     if (!res.ok) {
-      alert('Xatolik: ' + (res.data.error || 'Buyurtma yuborishda xatolik yuz berdi'));
+      toast('Xatolik: ' + (res.data.error || 'Buyurtma yuborishda xatolik yuz berdi'), 'error');
       btn.disabled = false;
       btn.style.opacity = '1';
       btn.textContent = 'Buyurtma berish — ' + payNames[payMethod];
@@ -601,7 +601,7 @@ function submitOrder(){
     
     var trackBtn = document.createElement('a');
     trackBtn.id = 'trackBtn';
-    trackBtn.href = 'track.html?order=' + num;
+    trackBtn.href = '/kuzatish?order=' + num;
     trackBtn.className = 'btn btn-teal';
     trackBtn.style.fontSize = '14px';
     trackBtn.style.padding = '12px 22px';
@@ -615,7 +615,7 @@ function submitOrder(){
   })
   .catch(function(err) {
     console.error(err);
-    alert('Tarmoq xatoligi buyurtma yuborishda');
+    toast('Tarmoq xatoligi buyurtma yuborishda', 'error');
     btn.disabled = false;
     btn.style.opacity = '1';
     btn.textContent = 'Buyurtma berish — ' + payNames[payMethod];

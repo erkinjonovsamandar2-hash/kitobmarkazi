@@ -131,7 +131,7 @@ function sendContact(){
   var name = document.getElementById('cName').value.trim();
   var phone = document.getElementById('cPhone').value.trim();
   var msg = document.getElementById('cMsg').value.trim();
-  if(!name || !phone || !msg){ alert('Iltimos barcha maydonlarni to\'ldiring'); return; }
+  if(!name || !phone || !msg){ toast('Iltimos barcha maydonlarni to\'ldiring', 'error'); return; }
   
   toast('Xabaringiz yuborildi! Tez orada bog\'lanamiz.');
   document.getElementById('cName').value = '';

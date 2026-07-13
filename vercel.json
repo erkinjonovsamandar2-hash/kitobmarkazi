@@ -2,6 +2,21 @@
   "version": 2,
   "rewrites": [
     { "source": "/api/:match*", "destination": "/api" },
-    { "source": "/admin", "destination": "/admin/index.html" }
+    { "source": "/admin", "destination": "/admin/index.html" },
+    { "source": "/qidirish", "destination": "/search.html" },
+    { "source": "/kitob", "destination": "/book.html" },
+    { "source": "/nashriyotlar", "destination": "/publishers.html" },
+    { "source": "/nashriyot", "destination": "/publisher.html" },
+    { "source": "/savat", "destination": "/cart.html" },
+    { "source": "/sevimlilar", "destination": "/wishlist.html" },
+    { "source": "/kuzatish", "destination": "/track.html" },
+    { "source": "/tavsiyalar", "destination": "/tavsiya.html" },
+    { "source": "/biz-haqimizda", "destination": "/about.html" },
+    { "source": "/aloqa", "destination": "/contact.html" },
+    { "source": "/faq", "destination": "/faq.html" },
+    { "source": "/shartlar", "destination": "/terms.html" },
+    { "source": "/oferta", "destination": "/offer.html" },
+    { "source": "/buyurtma", "destination": "/order.html" }
   ]
 }
+

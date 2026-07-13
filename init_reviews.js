@@ -6,6 +6,7 @@ db.prepare(`
     customerName TEXT, 
     rating INTEGER, 
     comment TEXT, 
+    orderNumber TEXT, 
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
   )
 `).run();

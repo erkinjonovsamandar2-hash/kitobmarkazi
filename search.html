@@ -69,7 +69,13 @@
     height: 380px;
     animation: pulse 1.8s infinite ease-in-out;
     border: 1px solid var(--border);
-  }</style>
+  }
+  .pagination{display:flex;justify-content:center;align-items:center;gap:6px;padding:32px 16px 60px}
+  .pg-btn{display:inline-flex;align-items:center;justify-content:center;min-width:40px;height:40px;padding:0 12px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--mid);transition:all 0.22s var(--ease-premium);box-shadow:var(--sh-sm)}
+  .pg-btn:hover:not(.disabled):not(.on){border-color:var(--teal);color:var(--teal);transform:translateY(-1px)}
+  .pg-btn.on{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--sh-teal)}
+  .pg-btn.disabled{opacity:0.4;cursor:not-allowed;pointer-events:none}
+</style>
 </head>
 <body>
 
@@ -127,6 +133,7 @@
     <div class="skeleton-book" style="animation-delay: 0.15s;"></div>
     <div class="skeleton-book" style="animation-delay: 0.3s;"></div>
   </div>
+  <div class="pagination" id="pagination"></div>
 </div>
 
 <footer class="site-foot">
@@ -158,6 +165,7 @@
   </div>
   <div class="site-foot-bot"><div class="sf-bot-in">
     <span class="sf-copy">© 2025�2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
+    <span class="sf-copy">© 20252026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
     <span class="sf-tag">Uzbek Books. One Platform.</span>
   </div></div>
 </footer>
@@ -166,81 +174,231 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 <script src="cart.js"></script>
 <script>
-var params=new URLSearchParams(location.search);
-var query=(params.get('q')||'').trim();
-var curGenre=params.get('genre')||'all';
-var curSort='all';
-document.getElementById('sInput').value=query;
+var params = new URLSearchParams(location.search);
+var query = (params.get('q') || '').trim();
+var curGenre = params.get('genre') || 'all';
+var curSort = 'all';
+var currentPage = 1;
+var itemsPerPage = 24;
 
-/* Genre filter bar */
-function buildGbar(){
-  var all=allBooksFlat();
-  var counts={all:all.length};
-  all.forEach(function(x){counts[x.genre]=(counts[x.genre]||0)+1;});
-  var html='<div class="gfilter '+(curGenre==='all'?'on':'')+'" onclick="setGenre(\'all\')">Barchasi</div>';
-  Object.keys(GENRES).forEach(function(g){
-    if(!counts[g])return;
-    html+='<div class="gfilter '+(curGenre===g?'on':'')+'" onclick="setGenre(\''+g+'\')"><span>'+GENRES[g].icon+'</span>'+GENRES[g].name+'</div>';
-  });
-  document.getElementById('gbar').innerHTML=html;
+document.getElementById('sInput').value = query;
+
+// Add debounce function for price inputs
+var priceTimeout;
+function onPriceInput() {
+  clearTimeout(priceTimeout);
+  priceTimeout = setTimeout(function() {
+    currentPage = 1;
+    loadBooks();
+  }, 400);
 }
 
-function matchesQuery(x){
-  if(!query)return true;
-  var q=query.toLowerCase();
-  return x.b.title.toLowerCase().indexOf(q)!==-1 || x.b.author.toLowerCase().indexOf(q)!==-1 || PUBLISHERS[x.pk].name.toLowerCase().indexOf(q)!==-1;
+// Bind input event to price inputs
+document.getElementById('minP').oninput = onPriceInput;
+document.getElementById('maxP').oninput = onPriceInput;
+
+/* Genre filter bar dynamic builder */
+async function buildGbar() {
+  try {
+    var res = await fetch('/api/books/meta/genres');
+    if (!res.ok) throw new Error('API failed');
+    var rows = await res.json();
+    
+    var counts = { all: 0 };
+    rows.forEach(function(r) {
+      counts[r.genre] = parseInt(r.count);
+      counts.all += parseInt(r.count);
+    });
+    
+    var html = '<div class="gfilter ' + (curGenre === 'all' ? 'on' : '') + '" onclick="setGenre(\'all\')">Barchasi</div>';
+    Object.keys(GENRES).forEach(function(g) {
+      if (!counts[g]) return;
+      html += '<div class="gfilter ' + (curGenre === g ? 'on' : '') + '" onclick="setGenre(\'' + g + '\')"><span>' + GENRES[g].icon + '</span>' + GENRES[g].name + ' (' + counts[g] + ')</div>';
+    });
+    document.getElementById('gbar').innerHTML = html;
+  } catch (e) {
+    console.warn('Fallback to static genre bar:', e);
+    // Static fallback
+    var html = '<div class="gfilter ' + (curGenre === 'all' ? 'on' : '') + '" onclick="setGenre(\'all\')">Barchasi</div>';
+    Object.keys(GENRES).forEach(function(g) {
+      html += '<div class="gfilter ' + (curGenre === g ? 'on' : '') + '" onclick="setGenre(\'' + g + '\')"><span>' + GENRES[g].icon + '</span>' + GENRES[g].name + '</div>';
+    });
+    document.getElementById('gbar').innerHTML = html;
+  }
 }
-function currentList(){
-  var list=allBooksFlat().filter(matchesQuery);
-  var min = parseInt(document.getElementById('minP').value) || 0;
-  var max = parseInt(document.getElementById('maxP').value) || Infinity;
+
+async function loadBooks() {
+  // Show skeletons while fetching
+  document.getElementById('grid').innerHTML = `
+    <div class="skeleton-book"></div>
+    <div class="skeleton-book" style="animation-delay: 0.15s;"></div>
+    <div class="skeleton-book" style="animation-delay: 0.3s;"></div>
+    <div class="skeleton-book" style="animation-delay: 0.45s;"></div>
+  `;
+  document.getElementById('pagination').innerHTML = '';
+
+  var minP = document.getElementById('minP').value;
+  var maxP = document.getElementById('maxP').value;
+
+  var apiParams = new URLSearchParams();
+  if (query) apiParams.set('q', query);
+  if (curGenre && curGenre !== 'all') apiParams.set('genre', curGenre);
   
-  if(curGenre!=='all')list=list.filter(function(x){return x.genre===curGenre;});
-  list = list.filter(function(x){ return x.b.price >= min && x.b.price <= max; });
+  if (curSort === 'top') {
+    apiParams.set('top', 'true');
+  } else if (curSort !== 'all') {
+    apiParams.set('sort', curSort);
+  }
   
-  if(curSort==='top')list=list.filter(function(x){return x.b.top;});
-  else if(curSort==='cheap')list.sort(function(a,b){return a.b.price-b.b.price;});
-  else if(curSort==='rating')list.sort(function(a,b){return b.b.rating-a.b.rating;});
-  else if(curSort==='new')list.sort(function(a,b){return b.b.year-a.b.year;});
-  return list;
-}
+  if (minP) apiParams.set('minPrice', minP);
+  if (maxP) apiParams.set('maxPrice', maxP);
+  
+  apiParams.set('page', currentPage);
+  apiParams.set('limit', itemsPerPage);
 
-function renderPubMatches(){
-  if(!query){document.getElementById('pubMatches').style.display='none';return;}
-  var q=query.toLowerCase();
-  var pm=Object.keys(PUBLISHERS).filter(function(pk){return PUBLISHERS[pk].name.toLowerCase().indexOf(q)!==-1;});
-  if(pm.length===0){document.getElementById('pubMatches').style.display='none';return;}
-  document.getElementById('pubMatches').style.display='block';
-  document.getElementById('pmRow').innerHTML=pm.map(function(pk){
-    var p=PUBLISHERS[pk];
-    return '<a class="pm-card" href="publisher.html?pub='+pk+'"><div class="pm-logo">'+pubLogoHTML(p,28)+'</div><div><div class="pm-name">'+p.name+'</div><div class="pm-cnt">'+getBooks(pk).length+' ta kitob</div></div></a>';
-  }).join('');
-}
-function render(){
-  var list=currentList();
-  var title = query ? ('Qidiruv: <span>"'+query+'"</span>') : (curGenre!=='all' ? (GENRES[curGenre].icon+' '+GENRES[curGenre].name) : 'Barcha kitoblar');
-  document.getElementById('sTitle').innerHTML=title;
-  document.getElementById('sResult').innerHTML='<b>'+list.length+'</b> ta kitob topildi';
+  // Set header/title
+  var title = query ? ('Qidiruv: <span>"' + query + '"</span>') : (curGenre !== 'all' ? (GENRES[curGenre].icon + ' ' + GENRES[curGenre].name) : 'Barcha kitoblar');
+  document.getElementById('sTitle').innerHTML = title;
+
   renderPubMatches();
-  if(list.length===0){
-    document.getElementById('grid').innerHTML='<div class="empty"><div class="ei">🔍</div><div style="font-size:16px;font-weight:600;color:var(--mid);margin-bottom:6px">Hech narsa topilmadi</div><div>Boshqa so\'z yoki janr bilan urinib ko\'ring</div></div>';
+
+  try {
+    var res = await fetch('/api/books?' + apiParams.toString());
+    if (!res.ok) throw new Error('Failed to fetch books');
+    var data = await res.json();
+    
+    document.getElementById('sResult').innerHTML = '<b>' + data.total + '</b> ta kitob topildi';
+    
+    if (!data.books || data.books.length === 0) {
+      document.getElementById('grid').innerHTML = '<div class="empty"><div class="ei">🔍</div><div style="font-size:16px;font-weight:600;color:var(--mid);margin-bottom:6px">Hech narsa topilmadi</div><div>Boshqa so\'z yoki janr bilan urinib ko\'ring</div></div>';
+      return;
+    }
+
+    document.getElementById('grid').innerHTML = data.books.map(function(b) {
+      // Map properties for compatibility with bookCardHTML
+      var mappedBook = {
+        id: b.id,
+        title: b.title,
+        author: b.author,
+        price: b.price,
+        color: b.color,
+        rating: b.rating,
+        top: b.isTop === 1 || b.isTop === true,
+        stock: b.stock,
+        cover: b.cover
+      };
+      return bookCardHTML(b.publisherSlug, mappedBook);
+    }).join('');
+
+    renderPagination(data.total, data.page, data.pages);
+    
+    if (window.refreshIcons) window.refreshIcons();
+  } catch (e) {
+    console.error('Error loading books from API:', e);
+    document.getElementById('grid').innerHTML = '<div class="empty"><div style="color:var(--red)">Xatolik yuz berdi. Iltimos, keyinroq qayta urinib ko\'ring.</div></div>';
+  }
+}
+
+function renderPagination(total, page, pages) {
+  var pagEl = document.getElementById('pagination');
+  if (pages <= 1) {
+    pagEl.innerHTML = '';
     return;
   }
-  document.getElementById('grid').innerHTML=list.map(function(x){return bookCardHTML(x.pk,x.b);}).join('');
-  if(window.refreshIcons) window.refreshIcons();
+  
+  var html = '';
+  // Prev
+  html += '<button class="pg-btn ' + (page === 1 ? 'disabled' : '') + '" onclick="changePage(' + (page - 1) + ')">←</button>';
+  
+  // Page pills
+  for (var i = 1; i <= pages; i++) {
+    if (i === 1 || i === pages || (i >= page - 2 && i <= page + 2)) {
+      html += '<button class="pg-btn ' + (page === i ? 'on' : '') + '" onclick="changePage(' + i + ')">' + i + '</button>';
+    } else if (i === page - 3 || i === page + 3) {
+      html += '<span style="color:var(--light);padding:0 4px">...</span>';
+    }
+  }
+  
+  // Next
+  html += '<button class="pg-btn ' + (page === pages ? 'disabled' : '') + '" onclick="changePage(' + (page + 1) + ')">→</button>';
+  
+  pagEl.innerHTML = html;
 }
-function setGenre(g){curGenre=g;buildGbar();render();var u=new URL(location);if(g==='all')u.searchParams.delete('genre');else u.searchParams.set('genre',g);history.replaceState({},'',u);}
-function setSort(s,el){curSort=s;document.querySelectorAll('.sortpill').forEach(function(p){p.classList.remove('on')});el.classList.add('on');render();}
-function doSearch(){query=document.getElementById('sInput').value.trim();var u=new URL(location);if(query)u.searchParams.set('q',query);else u.searchParams.delete('q');history.replaceState({},'',u);render();}
-document.getElementById('sInput').addEventListener('keydown',function(e){if(e.key==='Enter')doSearch();});
 
-function initPageData(){
-  if (!isKMDataLoaded) return;
-  buildGbar();
-  render();
+function changePage(p) {
+  currentPage = p;
+  loadBooks();
+  window.scrollTo({ top: 200, behavior: 'smooth' });
 }
-if (isKMDataLoaded) initPageData();
-document.addEventListener('kmDataLoaded', initPageData);
+
+function renderPubMatches() {
+  if (!query) {
+    document.getElementById('pubMatches').style.display = 'none';
+    return;
+  }
+  var q = query.toLowerCase();
+  var pm = Object.keys(PUBLISHERS).filter(function(pk) {
+    return PUBLISHERS[pk].name.toLowerCase().indexOf(q) !== -1;
+  });
+  if (pm.length === 0) {
+    document.getElementById('pubMatches').style.display = 'none';
+    return;
+  }
+  document.getElementById('pubMatches').style.display = 'block';
+  document.getElementById('pmRow').innerHTML = pm.map(function(pk) {
+    var p = PUBLISHERS[pk];
+    var count = 0;
+    if (typeof BOOKS !== 'undefined' && BOOKS[pk]) count = BOOKS[pk].length;
+    return '<a class="pm-card" href="publisher.html?pub=' + pk + '"><div class="pm-logo">' + pubLogoHTML(p, 28) + '</div><div><div class="pm-name">' + p.name + '</div><div class="pm-cnt">' + count + ' ta kitob</div></div></a>';
+  }).join('');
+}
+
+function setGenre(g) {
+  curGenre = g;
+  currentPage = 1;
+  buildGbar();
+  loadBooks();
+  var u = new URL(location);
+  if (g === 'all') u.searchParams.delete('genre');
+  else u.searchParams.set('genre', g);
+  history.replaceState({}, '', u);
+}
+
+function setSort(s, el) {
+  curSort = s;
+  currentPage = 1;
+  document.querySelectorAll('.sortpill').forEach(function(p) {
+    p.classList.remove('on');
+  });
+  el.classList.add('on');
+  loadBooks();
+}
+
+function doSearch() {
+  query = document.getElementById('sInput').value.trim();
+  currentPage = 1;
+  var u = new URL(location);
+  if (query) u.searchParams.set('q', query);
+  else u.searchParams.delete('q');
+  history.replaceState({}, '', u);
+  loadBooks();
+}
+
+document.getElementById('sInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doSearch();
+});
+
+function initPageData() {
+  buildGbar();
+  loadBooks();
+}
+
+// Initialize when dynamic data finishes loading
+if (isKMDataLoaded) {
+  initPageData();
+} else {
+  document.addEventListener('kmDataLoaded', initPageData);
+}
 
 </script>
 <script src="chat-widget.js"></script>

@@ -148,8 +148,49 @@ var ALL = [];
 var counts = {};
 var PER=20, curPage=1, curLetter='all';
 
-function initPageData(){
-  if (!isKMDataLoaded) return;
+async function loadPublishersData() {
+  try {
+    var res = await fetch('/api/publishers');
+    if (!res.ok) throw new Error('API failed');
+    var data = await res.json();
+    
+    PUBLISHERS = {};
+    ALL = [];
+    counts = {};
+    
+    data.forEach(function(p) {
+      PUBLISHERS[p.slug] = {
+        name: p.name,
+        color: p.color || '#1A3A5C',
+        text: p.logoText || p.name.slice(0, 2),
+        first: p.isTop === 1 || p.isTop === true,
+        logo: p.logo,
+        desc: p.description
+      };
+      ALL.push(p.slug);
+      counts[p.slug] = p.bookCount;
+    });
+    
+    // Sort ALL: first TOP publishers, then alphabetically
+    var topPubs = ALL.filter(function(k){return PUBLISHERS[k].first});
+    var rest = ALL.filter(function(k){return !PUBLISHERS[k].first}).sort(function(a,b){
+      return PUBLISHERS[a].name.localeCompare(PUBLISHERS[b].name);
+    });
+    ALL = topPubs.concat(rest);
+    
+    document.getElementById('totalCount').textContent = ALL.length;
+    
+    buildAlphabetBar();
+    render();
+  } catch (e) {
+    console.warn('API failed, falling back to data.js:', e);
+    if (isKMDataLoaded) {
+      fallbackInit();
+    }
+  }
+}
+
+function fallbackInit() {
   var allKeys=Object.keys(PUBLISHERS);
   var firstKey=allKeys.filter(function(k){return PUBLISHERS[k].first})[0];
   var rest=allKeys.filter(function(k){return !PUBLISHERS[k].first}).sort(function(a,b){return PUBLISHERS[a].name.localeCompare(PUBLISHERS[b].name)});
@@ -161,8 +202,11 @@ function initPageData(){
   ALL.forEach(function(k){
     counts[k] = getBooks(k).length;
   });
+  buildAlphabetBar();
+  render();
+}
 
-  /* Alphabet bar */
+function buildAlphabetBar() {
   var letters=['all'].concat('ABCDEFGHIJKLMNOPQRSTUVXYZ'.split(''));
   var available={};
   ALL.forEach(function(k){
@@ -174,8 +218,10 @@ function initPageData(){
     var dis=available[L]?'':'disabled';
     return '<button class="alpha-btn '+(curLetter===L?'on':'')+'" data-l="'+L+'" '+dis+' onclick="setLetter(\''+L+'\',this)">'+L+'</button>';
   }).join('');
+}
 
-  render();
+function initPageData(){
+  loadPublishersData();
 }
 
 function filtered(){

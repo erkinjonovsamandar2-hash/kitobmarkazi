@@ -668,7 +668,7 @@
         chatLoading.style.display = 'none';
         addMessage('assistant', "Sizni Savat sahifasiga yo'naltirmoqdaman...");
         setTimeout(function() {
-          window.location.href = 'cart.html';
+          window.location.href = '/savat';
         }, 800);
       }, 400);
       return;
@@ -680,7 +680,7 @@
         chatLoading.style.display = 'none';
         addMessage('assistant', "Buyurtmani kuzatish sahifasiga yo'naltirmoqdaman...");
         setTimeout(function() {
-          window.location.href = 'track.html';
+          window.location.href = '/kuzatish';
         }, 800);
       }, 400);
       return;
@@ -786,7 +786,7 @@
       
       // Set click event to open in same tab
       card.addEventListener('click', function() {
-        window.location.href = 'book.html?pub=' + pk + '&book=' + b.id;
+        window.location.href = '/kitob?pub=' + pk + '&book=' + b.id;
       });
 
       card.innerHTML = 

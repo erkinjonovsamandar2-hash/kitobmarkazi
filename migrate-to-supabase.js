@@ -142,6 +142,7 @@ async function migrate() {
       "customerName" TEXT,
       rating INTEGER,
       comment TEXT,
+      "orderNumber" TEXT,
       "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
@@ -173,7 +174,7 @@ async function migrate() {
   await migrateTable('order_items', ['orderId','publisherSlug','bookId','title','author','price','qty']);
   await migrateTable('users', ['id','username','passwordHash','displayName','role','telegramChatId']);
   await migrateTable('settings', ['key','value']);
-  await migrateTable('reviews', ['bookId','customerName','rating','comment']);
+  await migrateTable('reviews', ['bookId','customerName','rating','comment','orderNumber']);
 
   console.log('Migration complete! 🎉');
   await pg.end();

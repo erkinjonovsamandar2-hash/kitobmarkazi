@@ -269,7 +269,7 @@ function allBooksFlat(){
 function bookCardHTML(pk, b){
   var pub = PUBLISHERS[pk];
   var wished = (typeof inWishlist==='function' && inWishlist(pk,b.id));
-  var href = 'book.html?pub='+pk+'&book='+b.id;
+  var href = '/kitob?pub='+pk+'&book='+b.id;
   return '<div class="book" onclick="location.href=\''+href+'\'" style="cursor:pointer">'+
     '<div class="book-cover cover-sm" style="background:'+(b.color || '#13294A')+'">'+
       coverHTML(b,pub)+
@@ -432,4 +432,60 @@ function bookImages(bookId){
     isKMDataLoaded = true;
     document.dispatchEvent(new CustomEvent('kmDataLoaded'));
   });
+})();
+
+// ===== Clean URL routing & link rewriter (Uzbek routes) =====
+(function() {
+  const URL_MAPPINGS = {
+    'index.html': '/',
+    'search.html': '/qidirish',
+    'book.html': '/kitob',
+    'publishers.html': '/nashriyotlar',
+    'publisher.html': '/nashriyot',
+    'cart.html': '/savat',
+    'wishlist.html': '/sevimlilar',
+    'track.html': '/kuzatish',
+    'tavsiya.html': '/tavsiyalar',
+    'about.html': '/biz-haqimizda',
+    'contact.html': '/aloqa',
+    'faq.html': '/faq',
+    'terms.html': '/shartlar',
+    'offer.html': '/oferta',
+    'order.html': '/buyurtma'
+  };
+
+  // 1. Redirect if landing on raw .html page directly
+  let path = window.location.pathname;
+  let pageName = path.substring(path.lastIndexOf('/') + 1);
+  if (URL_MAPPINGS[pageName]) {
+    // Avoid double slashes in paths
+    let basePath = path.substring(0, path.lastIndexOf('/') + 1);
+    let newPath = (basePath + URL_MAPPINGS[pageName]).replace(/\/+/g, '/');
+    window.location.replace(newPath + window.location.search + window.location.hash);
+    return;
+  }
+
+  // 2. Client-side link rewriter
+  function makeLinksClean() {
+    document.querySelectorAll('a[href]').forEach(a => {
+      let href = a.getAttribute('href');
+      if (!href) return;
+      
+      let urlParts = href.split(/[?#]/);
+      let page = urlParts[0];
+      let queryAndHash = href.substring(page.length);
+      
+      if (URL_MAPPINGS[page]) {
+        a.setAttribute('href', URL_MAPPINGS[page] + queryAndHash);
+      }
+    });
+  }
+
+  // Run on load and whenever dynamic content changes
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', makeLinksClean);
+  } else {
+    makeLinksClean();
+  }
+  document.addEventListener('kmDataLoaded', makeLinksClean);
 })();

@@ -42,19 +42,24 @@ function updateCartBadge(){
     e.style.display = n>0 ? 'flex' : 'none';
   });
 }
-/* Toast */
-function toast(msg){
+function toast(msg, type){
   var t = document.getElementById('km-toast');
   if(!t){
     t = document.createElement('div');
     t.id = 'km-toast';
-    t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#15202E;color:#fff;padding:13px 22px;border-radius:12px;font-size:14px;font-weight:600;box-shadow:0 12px 30px rgba(0,0,0,0.3);z-index:9999;opacity:0;transition:all 0.25s;display:flex;align-items:center;gap:8px';
+    t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);color:#fff;padding:13px 22px;border-radius:12px;font-size:14px;font-weight:600;box-shadow:0 12px 30px rgba(0,0,0,0.3);z-index:9999;opacity:0;transition:all 0.25s;display:flex;align-items:center;gap:8px';
     document.body.appendChild(t);
   }
-  t.innerHTML = '✓ ' + msg;
+  if (type === 'error') {
+    t.style.background = '#E2556F';
+    t.innerHTML = '⚠️ ' + msg;
+  } else {
+    t.style.background = '#15202E';
+    t.innerHTML = '✓ ' + msg;
+  }
   requestAnimationFrame(function(){ t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)'; });
   clearTimeout(window._kmToastT);
-  window._kmToastT = setTimeout(function(){ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(20px)'; }, 1800);
+  window._kmToastT = setTimeout(function(){ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(20px)'; }, 2800);
 }
 document.addEventListener('DOMContentLoaded', updateCartBadge);
 
