@@ -74,8 +74,9 @@
   .bs-card{flex:0 0 200px;background:var(--white);border-radius:18px;overflow:hidden;border:1px solid var(--border);transition:all 0.35s var(--ease-premium);display:flex;flex-direction:column;box-shadow:var(--sh-sm);scroll-snap-align:start}
   .bs-card:hover{transform:translateY(-8px);box-shadow:var(--sh-xl);border-color:var(--teal)}
   .bs-cover{aspect-ratio:2/3;width:100%;height:auto;display:flex;align-items:flex-end;padding:12px;position:relative;overflow:hidden}
+  .bs-cover .cv-pub{padding-left:28px}
   .bs-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.45),transparent 55%)}
-  .bs-rank{position:absolute;top:10px;left:10px;z-index:3;width:28px;height:28px;border-radius:50%;background:var(--grad-gold);color:#3D2A00;font-family:var(--serif);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(217,169,62,0.45)}
+  .bs-rank{position:absolute;top:8px;left:8px;z-index:3;width:28px;height:28px;border-radius:50%;background:var(--grad-gold);color:#3D2A00;font-family:var(--serif);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(217,169,62,0.45)}
   .bs-ct{font-family:var(--serif);font-size:14px;font-weight:700;color:#fff;position:relative;z-index:2;line-height:1.2;text-shadow:0 2px 8px rgba(0,0,0,0.5)}
   .bs-body{padding:16px 16px 18px;display:flex;flex-direction:column;flex:1}
   .bs-title{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.3;margin-bottom:2px}
@@ -131,12 +132,13 @@
   .how-step:hover{transform:translateY(-6px)}
 
   /* big number */
-  .how-num{font-family:var(--serif);font-size:96px;font-weight:900;line-height:0.85;margin-bottom:8px;background:linear-gradient(150deg,#F0CC72 0%,#C2932E 45%,#5DCAA5 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;opacity:0.9;transition:opacity 0.3s;letter-spacing:-0.04em}
+  .how-num{font-family:var(--serif);font-size:96px;font-weight:900;line-height:0.85;margin-bottom:8px;background:linear-gradient(150deg,#F0CC72 0%,#C2932E 45%,#5DCAA5 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;opacity:0.9;transition:opacity 0.3s;letter-spacing:-0.04em;display:block;position:relative;z-index:10}
   .how-step:hover .how-num{opacity:1}
 
   /* illustration area */
   .how-illust{width:140px;height:120px;margin:0 auto 22px;display:flex;align-items:center;justify-content:center;position:relative}
-  .how-illust svg{width:100%;height:100%}
+  .how-illust svg{width:100%;height:100%;transition:transform 0.4s var(--ease-premium)}
+  .how-step:hover .how-illust svg{transform:translateY(-6px) scale(1.05)}
 
   .how-stitle{font-size:19px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-0.01em}
   .how-ssub{font-size:13.5px;color:rgba(255,255,255,0.52);line-height:1.7;max-width:240px;margin:0 auto}
@@ -196,13 +198,19 @@
   .ai-result-cta{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:8px}
   .ai-rc-count{font-size:15px;color:#fff;font-weight:600;margin-bottom:4px}
   .ai-rc-count span{color:var(--teal-l);font-weight:800}
+  /* AI preview cards (#14) */
+  .ai-preview{display:flex;gap:14px;justify-content:center;margin:24px auto 8px;max-width:420px}
+  .ai-prev-card{width:110px;height:160px;border-radius:12px;overflow:hidden;position:relative;box-shadow:0 8px 24px rgba(0,0,0,0.3);transition:all 0.3s var(--ease-premium);flex-shrink:0;display:block}
+  .ai-prev-card:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 14px 32px rgba(0,0,0,0.4)}
+  .ai-prev-card .cv-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:3}
   @media(max-width:760px){
     .ai-sec{padding:0 16px}.ai-inner{padding:38px 22px}
     .ai-h{font-size:25px}.ai-q{font-size:21px}
     .ai-opts{grid-template-columns:1fr}
     .ai-recs{grid-template-columns:repeat(2,1fr);gap:12px}
+    .ai-preview{max-width:340px}.ai-prev-card{width:90px;height:130px}
   }
-  @media(max-width:460px){.ai-recs{grid-template-columns:1fr}}</style>
+  @media(max-width:460px){.ai-recs{grid-template-columns:1fr}.ai-preview{gap:10px}.ai-prev-card{width:80px;height:115px}}</style>
 </head>
 <body>
 
@@ -240,14 +248,14 @@
         <div><div class="snum" id="s3">340<span>+</span></div><div class="slbl">Buyurtmalar</div></div>
       </div>
     </div>
-    <div class="showcase">
+    <div class="showcase" id="heroShowcase">
       <div class="sc-back"></div>
-      <a href="book.html?pub=booktopia&book=otkan" class="sc-card">
+      <a id="scCard" href="#" class="sc-card">
         <div class="cv-pat"></div>
         <div class="sc-badge">★ Haftaning kitobi</div>
-        <div class="sc-top">Booktopia</div>
-        <div><div class="sc-title">O'tkan kunlar</div><div class="sc-auth">Abdulla Qodiriy</div></div>
-        <div class="sc-foot"><span class="sc-price">55 000 <small>so'm</small></span><span class="sc-star">★ 4.9</span></div>
+        <div class="sc-top" id="scPub"></div>
+        <div><div class="sc-title" id="scTitle"></div><div class="sc-auth" id="scAuthor"></div></div>
+        <div class="sc-foot"><span class="sc-price" id="scPrice"></span><span class="sc-star" id="scRating"></span></div>
       </a>
     </div>
   </div>
@@ -262,11 +270,17 @@
 </div>
 
 <div class="sec reveal">
-  <div class="sh"><div><div class="st">Eng ko'p sotilgan</div><div class="ss">Kitobxonlar eng ko'p tanlagan asarlar</div></div></div>
+  <div class="sh">
+    <div><div class="st">Eng ko'p sotilgan</div><div class="ss">Kitobxonlar eng ko'p tanlagan asarlar</div></div>
+    <div class="adnav">
+      <button class="adb" onclick="document.getElementById('bsScroll').scrollBy({left:-428,behavior:'smooth'})">‹</button>
+      <button class="adb" onclick="document.getElementById('bsScroll').scrollBy({left:428,behavior:'smooth'})">›</button>
+    </div>
+  </div>
   <div class="bs-scroll" id="bsScroll"></div>
 </div>
 
-<div class="sec">
+<div class="sec reveal">
   <div class="sh"><div><div class="st">Janrlar bo'yicha</div><div class="ss">Qiziqishingizga mos kitoblarni toping</div></div></div>
   <div class="genre-row" id="genreRow"></div>
 </div>
@@ -314,6 +328,7 @@
         <h2 class="ai-h" id="aiProfTitle"></h2>
         <p class="ai-sub" id="aiProfDesc"></p>
         <div class="ai-tags" id="aiTags"></div>
+        <div id="aiPreview" class="ai-preview" style="display:none"></div>
         <div class="ai-result-cta">
           <div class="ai-rc-count"><span id="aiRecCount">6</span> ta kitob aynan sizga mos keldi</div>
           <button class="ai-start" onclick="aiGoResults()">Tavsiyalarni ko'rish <span style="font-size:18px">→</span></button>
@@ -497,7 +512,7 @@
     </div>
   </div>
   <div class="site-foot-bot"><div class="sf-bot-in">
-    <span class="sf-copy">© 2025�2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
+    <span class="sf-copy">© 2025–2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
     <span class="sf-tag">Uzbek Books. One Platform.</span>
   </div></div>
 </footer>
@@ -572,16 +587,94 @@ function initPageData(){
   /* Genres section */
   var genreCounts={};
   allBooksFlat().forEach(function(x){genreCounts[x.genre]=(genreCounts[x.genre]||0)+1;});
-  document.getElementById('genreRow').innerHTML=Object.keys(GENRES).map(function(g){
+  var totalBooks = allBooksFlat().length;
+  var allPill = '<a class="genre-pill on" href="search.html"><span class="gi">📚</span>Barchasi <span style="color:rgba(255,255,255,0.7);font-weight:600">('+totalBooks+')</span></a>';
+  document.getElementById('genreRow').innerHTML=allPill + Object.keys(GENRES).map(function(g){
     if(!genreCounts[g])return '';
     return '<a class="genre-pill" href="search.html?genre='+g+'"><span class="gi">'+GENRES[g].icon+'</span>'+GENRES[g].name+' <span style="color:var(--light);font-weight:600">('+genreCounts[g]+')</span></a>';
   }).join('');
+
+  /* Dynamic hero showcase card (#2) */
+  var topB = findBook(WEEK_TOP.pubKey, WEEK_TOP.bookId);
+  var topP = PUBLISHERS[WEEK_TOP.pubKey];
+  if (topB && topP) {
+    document.getElementById('scCard').href = 'book.html?pub='+WEEK_TOP.pubKey+'&book='+topB.id;
+    document.getElementById('scPub').textContent = topP.name;
+    document.getElementById('scTitle').textContent = topB.title;
+    document.getElementById('scAuthor').textContent = topB.author;
+    document.getElementById('scPrice').innerHTML = money(topB.price).replace("so'm",'<small>so\'m</small>');
+    document.getElementById('scRating').textContent = '★ ' + (topB.rating || '4.5');
+    var scCard = document.getElementById('scCard');
+    if (topB.color) scCard.style.background = topB.color;
+  }
+
+  /* Dynamic stats counters (#3) */
+  var pubCount = Object.keys(PUBLISHERS).length;
+  var bookCount = allBooksFlat().length;
+  window._statTargets = [pubCount, bookCount, 340];
+
   if(window.refreshIcons) window.refreshIcons();
 }
 
 if (isKMDataLoaded) initPageData();
 document.addEventListener('kmDataLoaded', initPageData);
 
+/* How-it-works step scroll animation (#9) */
+(function(){
+  var howEl = document.querySelector('.how');
+  if (!howEl) return;
+  var steps = howEl.querySelectorAll('.how-step');
+  if (!steps.length) return;
+  if ('IntersectionObserver' in window) {
+    var howObs = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) {
+        steps.forEach(function(step, i) {
+          setTimeout(function(){ step.classList.add('step-in'); }, i * 200);
+        });
+        howObs.disconnect();
+      }
+    }, { threshold: 0.15 });
+    howObs.observe(howEl);
+  } else {
+    steps.forEach(function(s){ s.classList.add('step-in'); });
+  }
+})();
+
+/* Stats Animation on Scroll (#3 + #15) */
+(function(){
+  var animated = false;
+  function startStatsAnim() {
+    if (animated) return;
+    animated = true;
+    var targets = window._statTargets || [20, 150, 340];
+    var ids = ['s1', 's2', 's3'];
+    ids.forEach(function(id, i){
+      var el = document.getElementById(id);
+      if(!el) return;
+      var c = 0, end = targets[i], step = Math.ceil(end / 40);
+      var iv = setInterval(function(){
+        c = Math.min(c + step, end);
+        el.innerHTML = c + '<span>+</span>';
+        if(c >= end) clearInterval(iv);
+      }, 40);
+    });
+  }
+  
+  var statsEl = document.querySelector('.stats');
+  if (statsEl) {
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function(entries) {
+        if (entries[0].isIntersecting) {
+          startStatsAnim();
+          obs.disconnect();
+        }
+      }, { threshold: 0.1 });
+      obs.observe(statsEl);
+    } else {
+      startStatsAnim();
+    }
+  }
+})();
 
 /* Modal + countdown */
 var timerInt=null;
@@ -612,11 +705,6 @@ function openModal(i){
 function closeModal(){document.getElementById('csModal').classList.remove('show');clearInterval(timerInt);}
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
 
-/* Stats */
-var targets=[20,150,340],ids=['s1','s2','s3'];
-/* fill stat ids that exist */
-['s1','s2','s3'].forEach(function(id,i){var el=document.getElementById(id);if(!el)return;var c=0,end=targets[i],s=Math.ceil(end/30);var iv=setInterval(function(){c=Math.min(c+s,end);el.innerHTML=c+'<span>+</span>';if(c>=end)clearInterval(iv)},50)});
-
 /* Autocomplete search */
 var heroInput=document.getElementById('heroSearch'),acList=document.getElementById('acList');
 heroInput.addEventListener('input',function(){
@@ -633,20 +721,11 @@ function goFirst(){var q=heroInput.value.trim();if(q)location.href='/qidirish?q=
 heroInput.addEventListener('keydown',function(e){if(e.key==='Enter')goFirst();});
 document.addEventListener('click',function(e){if(!e.target.closest('.ac-wrap'))acList.classList.remove('show');});
 
-/* Genres section */
-(function(){
-  var counts={};
-  allBooksFlat().forEach(function(x){counts[x.genre]=(counts[x.genre]||0)+1;});
-  document.getElementById('genreRow').innerHTML=Object.keys(GENRES).map(function(g){
-    if(!counts[g])return '';
-    return '<a class="genre-pill" href="search.html?genre='+g+'"><span class="gi">'+GENRES[g].icon+'</span>'+GENRES[g].name+' <span style="color:var(--light);font-weight:600">('+counts[g]+')</span></a>';
-  }).join('');
-})();
 
-/* ===== AI Maslahatchi logic ===== */
-var aiIdx=0, aiScores={};
+/* ===== AI Maslahatchi logic (v2 — professional) ===== */
+var aiIdx=0, aiScores={}, aiAnswers=[];
 function aiStart(){
-  aiIdx=0; aiScores={};
+  aiIdx=0; aiScores={}; aiAnswers=[];
   document.getElementById('aiIntro').style.display='none';
   document.getElementById('aiResult').style.display='none';
   document.getElementById('aiQuiz').style.display='block';
@@ -655,15 +734,29 @@ function aiStart(){
 function aiRenderQ(){
   var q=QUIZ[aiIdx];
   document.getElementById('aiStepNum').textContent=(aiIdx+1);
-  document.getElementById('aiBar').style.width=((aiIdx+1)/QUIZ.length*100)+'%';
+  /* Progress bar: 0% at start, fills as you answer (#12) */
+  document.getElementById('aiBar').style.width=(aiIdx/QUIZ.length*100)+'%';
   document.getElementById('aiQIcon').textContent=q.icon;
   document.getElementById('aiQText').textContent=q.q;
   document.getElementById('aiBackBtn').style.display=aiIdx>0?'inline-block':'none';
-  document.getElementById('aiOpts').innerHTML=q.options.map(function(o,i){
+  /* Smooth transition (#11) */
+  var optsEl = document.getElementById('aiOpts');
+  var quizEl = document.getElementById('aiQuiz');
+  quizEl.classList.remove('ai-stage-enter');
+  void quizEl.offsetWidth; /* force reflow */
+  quizEl.classList.add('ai-stage-enter');
+  optsEl.innerHTML=q.options.map(function(o,i){
     return '<div class="ai-opt" onclick="aiPick('+i+')"><span class="ai-opt-emoji">'+o.emoji+'</span><span class="ai-opt-label">'+o.label+'</span></div>';
   }).join('');
 }
 function aiPick(i){
+  /* If re-answering a previously answered question, undo old answer first (#10) */
+  if (aiAnswers[aiIdx] !== undefined) {
+    var oldOpt = QUIZ[aiIdx].options[aiAnswers[aiIdx]];
+    oldOpt.genres.forEach(function(g){ aiScores[g] = Math.max(0, (aiScores[g]||0) - 1); });
+  }
+  /* Record new answer */
+  aiAnswers[aiIdx] = i;
   var o=QUIZ[aiIdx].options[i];
   o.genres.forEach(function(g){ aiScores[g]=(aiScores[g]||0)+1; });
   if(aiIdx<QUIZ.length-1){ aiIdx++; aiRenderQ(); }
@@ -671,18 +764,29 @@ function aiPick(i){
 }
 function aiBack(){
   if(aiIdx>0){
+    /* Undo the answer for the current step if it was answered (#10) */
+    if (aiAnswers[aiIdx] !== undefined) {
+      var oldOpt = QUIZ[aiIdx].options[aiAnswers[aiIdx]];
+      oldOpt.genres.forEach(function(g){ aiScores[g] = Math.max(0, (aiScores[g]||0) - 1); });
+      aiAnswers[aiIdx] = undefined;
+    }
     aiIdx--;
-    // selected genres of the step we're returning to are removed when re-answered;
-    // simplest: recompute from scratch is complex, so just allow re-pick to add again.
     aiRenderQ();
   }
 }
 function aiShowResult(){
-  var res=quizRecommend(aiScores, 8);
+  /* Progress bar full (#12) */
+  document.getElementById('aiBar').style.width='100%';
+  var res=quizRecommend(aiScores, 6); /* Balanced 6-book grid (#13) */
   var topG=res.topGenres[0]||'roman';
   var prof=QUIZ_PROFILES[topG] || {title:"Kitobxon", desc:"Sizga mos kitoblarni tanladik."};
   document.getElementById('aiQuiz').style.display='none';
   document.getElementById('aiResult').style.display='block';
+  /* Smooth entrance (#11) */
+  var resultEl = document.getElementById('aiResult');
+  resultEl.classList.remove('ai-stage-enter');
+  void resultEl.offsetWidth;
+  resultEl.classList.add('ai-stage-enter');
   document.getElementById('aiProfTitle').textContent=prof.title;
   document.getElementById('aiProfDesc').textContent=prof.desc;
   document.getElementById('aiProfIcon').textContent=(GENRES[topG]&&GENRES[topG].icon)||'📖';
@@ -690,6 +794,17 @@ function aiShowResult(){
     return '<span class="ai-tag">'+((GENRES[g]&&GENRES[g].icon)||'')+' '+((GENRES[g]&&GENRES[g].name)||g)+'</span>';
   }).join('');
   document.getElementById('aiRecCount').textContent=res.books.length;
+  /* Book preview in result panel (#14) — show top 3 */
+  var previewEl = document.getElementById('aiPreview');
+  if (previewEl && res.books.length > 0) {
+    previewEl.innerHTML = res.books.slice(0,3).map(function(x){
+      var b = x.b, pk = x.pk;
+      return '<a href="/kitob?pub='+pk+'&book='+b.id+'" class="ai-prev-card" style="background:'+(b.color||'#13294A')+'">'+
+        coverHTML(b, PUBLISHERS[pk])+
+      '</a>';
+    }).join('');
+    previewEl.style.display = 'flex';
+  }
   // natijani saqlash -> alohida sahifa o'qiydi
   try{
     localStorage.setItem('km_ai_result', JSON.stringify({

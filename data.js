@@ -125,15 +125,9 @@ const QUIZ_PROFILES = {
 /* Week's top book (Fallback) */
 var WEEK_TOP = { pubKey:"booktopia", bookId:"otkan" };
 
-/* Fallback Books (if API fails or is empty) */
-const DEFAULT_BOOKS = [
-  { id:"book1", title:"Tanlangan asarlar", author:"Mualliflar jamoasi", price:45000, color:"linear-gradient(150deg,#1A3A5C,#2A5C8A)", rating:4.5, top:false, pages:280, year:2023 },
-  { id:"book2", title:"Hikoyalar to'plami", author:"Turli mualliflar",  price:38000, color:"linear-gradient(150deg,#0F6E56,#1D9E75)", rating:4.4, top:false, pages:220, year:2023 },
-];
-
 /* ===== Helpers ===== */
 
-function getBooks(key){ return BOOKS[key] || DEFAULT_BOOKS; }
+function getBooks(key){ return BOOKS[key] || []; }
 function money(n){ return (n || 0).toLocaleString('uz-UZ') + " so'm"; }
 
 function pubLogoHTML(p, size){
@@ -377,7 +371,8 @@ function bookImages(bookId){
           top: b.isTop === 1,
           pages: b.pages,
           year: b.year,
-          genre: b.genre
+          genre: b.genre,
+          cover: b.cover
         });
       });
       BOOKS = newBooks;
@@ -399,14 +394,37 @@ function bookImages(bookId){
           now.setHours(0,0,0,0);
           diff = Math.ceil((rel.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
         }
+        
+        // Find matching book in BOOKS to get its correct ID, cover, and color
+        let bookId = cs.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+        let cover = null;
+        let color = cs.bg || 'linear-gradient(135deg,#1A3A6B,#2A5C8A)';
+        
+        // Flatten books database
+        const flatBooks = [];
+        Object.keys(BOOKS).forEach(k => {
+          BOOKS[k].forEach(b => {
+            flatBooks.push(b);
+          });
+        });
+        
+        const matchedBook = flatBooks.find(b => b.title.toLowerCase() === cs.title.toLowerCase());
+        if (matchedBook) {
+          bookId = matchedBook.id;
+          cover = matchedBook.cover;
+          color = matchedBook.color || color;
+        }
+        
         return {
+          id: bookId,
           title: cs.title,
           author: cs.author,
           pubKey: cs.publisherSlug,
-          bg: cs.bg || 'linear-gradient(135deg,#1A3A6B,#2A5C8A)',
+          bg: color,
           offsetDays: Math.max(0, diff),
           label: cs.label || 'Tez kunda',
-          desc: cs.description
+          desc: cs.description,
+          cover: cover
         };
       });
     }
