@@ -267,19 +267,18 @@ function bookCardHTML(pk, b){
   return '<div class="book" onclick="location.href=\''+href+'\'" style="cursor:pointer">'+
     '<div class="book-cover cover-sm" style="background:'+(b.color || '#13294A')+'">'+
       coverHTML(b,pub)+
+      '<button class="wish-btn '+(wished?'on':'')+'" title="Sevimlilar" onclick="event.stopPropagation();toggleWish(\''+pk+'\',\''+b.id+'\',this)"><svg class="wish-ic" width="16" height="16" viewBox="0 0 24 24" fill="'+(wished?'currentColor':'none')+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></button>'+
       (b.top?'<div class="bc-badge">🔥 Top</div>':'')+
       (b.stock && b.stock < 5 ? '<div class="bc-badge" style="top:auto;bottom:12px;right:12px;background:#ef4444;color:#fff;font-size:8px">Faqat '+b.stock+' dona qoldi</div>' : '')+
     '</div>'+
 
-
-    '<div class="book-body"><div class="book-title">'+b.title+'</div><div class="book-author">'+b.author+'</div>'+
-    '<div class="book-foot">'+
-      '<span class="book-price">'+money(b.price)+'</span>'+
-      '<div class="book-actions">'+
-        '<button class="wish-btn-inline '+(wished?'on':'')+'" title="Sevimlilar" onclick="event.stopPropagation();toggleWish(\''+pk+'\',\''+b.id+'\',this)"><svg class="wish-ic" width="16" height="16" viewBox="0 0 24 24" fill="'+(wished?'currentColor':'none')+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></button>' +
-        '<button class="book-cart-btn" title="Savatga" onclick="event.stopPropagation();addAndToast(\''+pk+'\',\''+b.id+'\')">'+cartIcon(18)+'</button>'+
+    '<div class="book-body">'+
+      '<div class="book-meta"><div class="book-title">'+b.title+'</div><div class="book-author">'+b.author+'</div></div>'+
+      '<div class="book-buy">'+
+        '<span class="book-price">'+money(b.price)+'</span>'+
+        '<button class="book-cta-btn" title="Savatga" onclick="event.stopPropagation();addAndToast(\''+pk+'\',\''+b.id+'\')">'+cartIcon(18)+'</button>'+
       '</div>'+
-    '</div></div></div>';
+    '</div></div>';
 }
 
 function cartIcon(size){

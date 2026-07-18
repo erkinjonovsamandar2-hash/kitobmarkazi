@@ -6,7 +6,7 @@
   --teal:#1D9E75;--teal-d:#0F6E56;--teal-l:#5DCAA5;
   --gold:#C2932E;--gold-l:#F0CC72;--gold-d:#9A6E1A; /* Darkened for better contrast */
   --cream:#FAF8F5;--cream2:#F2ECE2;--white:#fff;
-  --surface:#FFFFFF;--surface-tinted:#F5F2EA;
+  --surface:#FFFFFF;--surface-tinted:#F5F2EA;--surface-cool:#ECEFEE;
   --ink:#0B1320;--mid:#3A475C;--light:#5C6B84;--border:#DFE5EC; /* Navy-tinted neutral scale */
   --serif:'Playfair Display',Georgia,serif;
   --sans:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
@@ -213,9 +213,9 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .cover-lg .cv-author{font-size:13px}
 .cover-lg .cv-rule{width:40px;margin:12px 0 10px}
 
-/* ===== Wishlist heart on cards ===== */
+/* ===== Wishlist heart on cards (glassmorphic, floats top-right on cover) ===== */
 .book-cover{position:relative}
-.wish-btn{position:absolute;top:12px;right:12px;left:auto;z-index:5;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.92);border:none;cursor:pointer;font-size:17px;color:#C0392B;display:flex;align-items:center;justify-content:center;line-height:1;box-shadow:0 3px 10px rgba(0,0,0,0.18);transition:all 0.15s}
+.wish-btn{position:absolute;top:12px;right:12px;left:auto;z-index:5;width:36px;height:36px;border-radius:50%;background:var(--glass-bg);border:1px solid var(--glass-border);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));cursor:pointer;font-size:17px;color:#C0392B;display:flex;align-items:center;justify-content:center;line-height:1;box-shadow:0 3px 10px rgba(0,0,0,0.18);transition:all 0.15s}
 .wish-btn:hover{transform:scale(1.12)}
 .wish-btn.on{background:#C0392B;color:#fff}
 
@@ -283,10 +283,17 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .book:hover::after{opacity:1;background:linear-gradient(135deg,rgba(29,158,117,0.3),rgba(217,169,62,0.2)) border-box}
 .book .book-cover{aspect-ratio:2/3;width:100%;height:auto;display:flex;align-items:flex-end;padding:16px;position:relative;overflow:hidden}
 .book-body{padding:16px 16px 18px;display:flex;flex-direction:column;flex:1}
-.book-title{font-size:14.5px;font-weight:600;color:var(--ink);margin-bottom:3px;line-height:1.25}
-.book-author{font-size:12px;color:var(--light);margin-bottom:10px}
+.book-title{font-size:14.5px;font-weight:600;color:var(--ink);line-height:1.25}
+.book-author{font-size:12px;color:var(--light)}
 .book-price{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--teal-d)}
 .bc-badge{position:absolute;top:12px;right:54px;z-index:4;background:var(--grad-gold);color:#3D2A00;font-size:9px;font-weight:800;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em;box-shadow:0 4px 12px rgba(217,169,62,0.4)}
+
+/* Book card body layout: meta (title/author) stacked tight, buy row pinned to bottom */
+.book-meta{display:flex;flex-direction:column;gap:var(--sp-xs);margin-bottom:10px}
+.book-buy{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-sm);margin-top:auto}
+.book-cta-btn{width:42px;height:42px;flex-shrink:0;background:var(--teal);color:#fff;border:1.5px solid var(--teal);border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;padding:0}
+.book-cta-btn:hover{background:var(--teal-d);border-color:var(--teal-d);transform:translateY(-1px)}
+.book-cta-btn:active{transform:scale(0.92)}
 
 /* ============================================================
    MICRO-INTERACTIONS & POLISH LAYER (lightweight)

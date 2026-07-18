@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
-  body{background:#ECEFEE}
+  body{background:var(--surface-cool)}
   .c-hero{background:var(--grad-navy);padding:56px 32px 48px;position:relative;overflow:hidden;box-shadow:0 1px 0 rgba(217,169,62,0.12),0 10px 30px rgba(10,22,40,0.1)}
   .c-orb{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(29,158,117,0.2),transparent 70%);top:-160px;right:-50px;filter:blur(60px);pointer-events:none}
   .c-hin{max-width:1100px;margin:0 auto;position:relative;z-index:2}
@@ -37,7 +37,7 @@
   .cqty{display:flex;align-items:center;gap:0;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:var(--sh-sm);background:#fff;transition:border-color 0.25s}
   .cqty:focus-within{border-color:var(--teal)}
   .cqbtn{width:34px;height:34px;background:none;border:none;cursor:pointer;font-size:18px;color:var(--ink);display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.2s}
-  .cqbtn:hover{background:#F0FAF6;color:var(--teal)}
+  .cqbtn:hover{background:#F0FAF6;color:var(--teal);transform:scale(1.05)}
   .cqval{min-width:34px;text-align:center;font-weight:700;font-size:14.5px;user-select:none;color:var(--ink)}
   .cremove{background:none;border:none;cursor:pointer;color:var(--light);font-size:12px;font-weight:600;font-family:inherit;display:flex;align-items:center;gap:5px;padding:4px 2px;transition:all 0.2s}
   .cremove:hover{color:#C0392B;transform:scale(1.05)}
@@ -67,7 +67,7 @@
   .empty-cart h2{font-family:var(--serif);font-size:26px;font-weight:800;margin-bottom:8px;color:var(--ink)}
   .empty-cart p{font-size:14.5px;color:var(--mid);margin-bottom:24px}
 
-  @media(max-width:860px){.c-wrap{grid-template-columns:1fr}.c-side{position:static}}
+  @media(max-width:900px){.c-wrap{grid-template-columns:1fr}.c-side{position:static}}
   @media(max-width:600px){
     .c-hero{padding:22px 16px 20px}.c-wrap{padding:20px 16px 40px}
     .citem{flex-wrap:wrap;gap:12px}.citem-cover{width:54px;height:74px}
@@ -118,7 +118,7 @@
     </div>
   </div>
   <div class="site-foot-bot"><div class="sf-bot-in">
-    <span class="sf-copy">© 2025�2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
+    <span class="sf-copy">© 2025–2026 Kitobmarkazi · Barcha huquqlar himoyalangan</span>
     <span class="sf-tag">Uzbek Books. One Platform.</span>
   </div></div>
 </footer>
