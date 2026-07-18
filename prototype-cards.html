@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UI Variations — Kitobmarkazi Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* ============ PROTOTYPE CHROME (not part of the real site) ============ */
+  body{background:var(--cream);padding-bottom:120px}
+  .proto-head{background:var(--grad-navy);color:#fff;padding:26px 32px;text-align:center}
+  .proto-head h1{font-family:var(--serif);font-size:26px;font-weight:800;margin-bottom:4px}
+  .proto-head p{font-size:13.5px;color:rgba(255,255,255,0.6)}
+  .proto-sec{max-width:1160px;margin:0 auto;padding:44px 32px 0}
+  .proto-sec.hidden{display:none}
+  .proto-sec > h2{font-family:var(--serif);font-size:22px;font-weight:800;color:var(--ink);margin-bottom:6px}
+  .proto-sec > .desc{font-size:14px;color:var(--mid);margin-bottom:24px;max-width:640px;line-height:1.6}
+  .variant{display:none}
+  .variant.on{display:block;animation:vfade 0.35s var(--ease-premium)}
+  @keyframes vfade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .variant-note{background:var(--white);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:10px;padding:12px 16px;font-size:13px;color:var(--mid);margin-bottom:22px;line-height:1.55}
+  .variant-note b{color:var(--ink)}
+  .demo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+
+  /* ============ FLOATING SWITCHER ============ */
+  .switcher{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--glass-dark-bg);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));border:1px solid var(--glass-dark-border);border-radius:18px;padding:12px 14px;z-index:500;box-shadow:0 20px 50px rgba(0,0,0,0.4);display:flex;flex-direction:column;gap:8px;max-width:calc(100vw - 32px)}
+  .sw-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center}
+  .sw-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-right:4px}
+  .sw-btn{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;transition:all 0.2s var(--ease-premium)}
+  .sw-btn:hover{background:rgba(255,255,255,0.14);color:#fff}
+  .sw-btn.on{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--sh-teal)}
+  .sw-btn.sec.on{background:var(--gold);color:#3D2A00;border-color:var(--gold)}
+
+  /* ============ BOOK CARD — baseline pieces reused from style.css (.book etc.) ============ */
+  .book.demo{cursor:default}
+
+  /* Variant B: editorial cover-overlay */
+  .bk-ed{background:var(--white);border-radius:20px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--sh-sm);transition:all 0.35s var(--ease-premium);display:flex;flex-direction:column;position:relative}
+  .bk-ed:hover{transform:translateY(-8px);box-shadow:var(--sh-xl);border-color:var(--teal)}
+  .bk-ed-cover{aspect-ratio:2/3;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:16px}
+  .bk-ed-scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,12,22,0.92) 8%,rgba(6,12,22,0.45) 42%,transparent 70%);z-index:1}
+  .bk-ed-txt{position:relative;z-index:2}
+  .bk-ed-title{font-family:var(--serif);font-size:18px;font-weight:700;color:#fff;line-height:1.18;text-shadow:0 2px 10px rgba(0,0,0,0.5)}
+  .bk-ed-auth{font-size:12px;color:rgba(255,255,255,0.82);margin-top:3px;font-style:italic}
+  .bk-ed-rating{position:absolute;top:12px;left:12px;z-index:2;background:rgba(0,0,0,0.42);backdrop-filter:blur(6px);color:var(--gold-l);font-size:11px;font-weight:700;padding:5px 10px;border-radius:20px}
+  .bk-ed-buy{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-sm);padding:12px 14px 14px}
+  .bk-ed-price{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--teal-d)}
+  .bk-ed-btn{height:40px;padding:0 18px;background:var(--teal);color:#fff;border:none;border-radius:11px;font-size:13.5px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all 0.15s}
+  .bk-ed-btn:hover{background:var(--teal-d);transform:translateY(-1px)}
+  .bk-ed-btn:active{transform:scale(0.94)}
+
+  /* Variant C: horizontal compact */
+  .bk-hz-grid{display:grid;grid-template-columns:1fr;gap:12px;max-width:520px}
+  .bk-hz{display:flex;gap:14px;background:var(--white);border:1px solid var(--border);border-radius:16px;padding:12px;box-shadow:var(--sh-sm);transition:all 0.28s var(--ease-premium);position:relative}
+  .bk-hz:hover{transform:translateY(-3px);box-shadow:var(--sh-md);border-color:var(--teal)}
+  .bk-hz-cover{width:74px;flex-shrink:0;aspect-ratio:2/3;border-radius:9px;overflow:hidden;position:relative;display:flex;align-items:flex-end;padding:9px}
+  .bk-hz-body{flex:1;min-width:0;display:flex;flex-direction:column;padding:2px 0}
+  .bk-hz-title{font-size:15px;font-weight:700;color:var(--ink);line-height:1.25}
+  .bk-hz-auth{font-size:12.5px;color:var(--light);margin-top:2px}
+  .bk-hz-meta{display:flex;gap:10px;margin-top:6px;font-size:11.5px;color:var(--mid);font-weight:600}
+  .bk-hz-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:8px}
+  .bk-hz-price{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--teal-d)}
+  .bk-hz-btn{width:38px;height:38px;flex-shrink:0;background:var(--teal);color:#fff;border:none;border-radius:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+  .bk-hz-btn:hover{background:var(--teal-d);transform:translateY(-1px)}
+  .bk-hz-heart{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;background:var(--glass-bg);border:1px solid var(--glass-border);backdrop-filter:blur(var(--glass-blur));color:#C0392B;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer}
+
+  /* ============ PUBLISHER CARD ============ */
+  /* Variant A: current logo-tile (from index.html inline styles, replicated) */
+  .pcard{background:var(--white);border-radius:16px;cursor:pointer;border:1px solid var(--border);transition:all 0.3s var(--ease-premium);position:relative;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--sh-sm)}
+  .pcard:hover{transform:translateY(-6px);box-shadow:var(--sh-lg),var(--glow-teal);border-color:var(--teal)}
+  .pcard-logo{height:112px;display:flex;align-items:center;justify-content:center;padding:18px;background:var(--cream);transition:background 0.25s;font-family:var(--serif);font-size:30px;font-weight:800;color:#fff}
+  .pcard-foot{padding:12px 14px 14px;border-top:1px solid var(--border);text-align:center}
+  .pcard-name{font-size:13.5px;color:var(--ink);font-weight:600;margin-bottom:2px}
+  .pcard-cnt{font-size:11.5px;color:var(--light)}
+
+  /* Variant B: gradient header + cover peek */
+  .pv-stack{background:var(--white);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:var(--sh-sm);transition:all 0.32s var(--ease-premium);cursor:pointer}
+  .pv-stack:hover{transform:translateY(-6px);box-shadow:var(--sh-lg);border-color:var(--teal)}
+  .pv-stack-head{position:relative;height:96px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .pv-stack-head::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.16),transparent 45%,rgba(0,0,0,0.28))}
+  .pv-stack-logo{position:relative;z-index:2;font-family:var(--serif);font-size:30px;font-weight:800;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,0.35)}
+  .pv-spines{display:flex;gap:5px;padding:12px 14px 0;justify-content:center;margin-top:-26px;position:relative;z-index:3}
+  .pv-spine{width:34px;height:48px;border-radius:5px;box-shadow:0 6px 14px rgba(13,27,42,0.28);border:1px solid rgba(255,255,255,0.5)}
+  .pv-stack-foot{padding:12px 14px 16px;text-align:center}
+  .pv-stack-name{font-size:14.5px;font-weight:700;color:var(--ink)}
+  .pv-stack-cnt{font-size:12px;color:var(--light);margin-top:2px}
+
+  /* Variant C: horizontal detail row */
+  .pv-row-grid{display:grid;grid-template-columns:1fr;gap:12px;max-width:560px}
+  .pv-row{display:flex;align-items:center;gap:16px;background:var(--white);border:1px solid var(--border);border-radius:16px;padding:16px 18px;box-shadow:var(--sh-sm);transition:all 0.28s var(--ease-premium);cursor:pointer}
+  .pv-row:hover{transform:translateY(-3px);box-shadow:var(--sh-md);border-color:var(--teal)}
+  .pv-row-logo{width:56px;height:56px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:22px;font-weight:800;color:#fff;box-shadow:var(--sh-sm)}
+  .pv-row-body{flex:1;min-width:0}
+  .pv-row-name{font-size:16px;font-weight:700;color:var(--ink)}
+  .pv-row-meta{font-size:12.5px;color:var(--mid);margin-top:3px}
+  .pv-row-cnt{text-align:right;flex-shrink:0}
+  .pv-row-cnt .n{font-family:var(--serif);font-size:22px;font-weight:800;color:var(--teal-d);line-height:1}
+  .pv-row-cnt .l{font-size:10.5px;color:var(--light);text-transform:uppercase;letter-spacing:0.06em;font-weight:600}
+
+  /* ============ HERO ============ */
+  .hero-demo{border-radius:20px;overflow:hidden;background:var(--grad-navy);position:relative}
+  .hero-demo::before{content:'';position:absolute;inset:0;background:radial-gradient(600px circle at 80% 20%,rgba(29,158,117,0.22),transparent 60%),radial-gradient(500px circle at 15% 90%,rgba(194,147,46,0.14),transparent 60%);pointer-events:none}
+  .htag{display:inline-flex;align-items:center;gap:8px;background:rgba(194,147,46,0.1);color:var(--gold-l);font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;padding:9px 18px;border-radius:30px;border:1px solid rgba(194,147,46,0.3)}
+  .hd-h1{font-family:var(--serif);font-weight:900;color:#fff;line-height:1.05;letter-spacing:-0.035em}
+  .hd-h1 em{font-style:normal;background:var(--grad-gold);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .hd-sub{color:rgba(255,255,255,0.68);line-height:1.7}
+  .hd-search{display:flex;background:#fff;border-radius:18px;padding:8px;box-shadow:var(--sh-xl);max-width:520px}
+  .hd-search input{flex:1;padding:14px 18px;border:none;background:transparent;font-size:15px;font-family:inherit;outline:none;color:var(--ink)}
+  .hd-search button{padding:14px 28px;background:var(--teal);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer}
+  .hd-stats{display:flex;gap:28px}
+  .hd-snum{font-family:var(--serif);font-size:32px;font-weight:900;color:#fff;line-height:1}
+  .hd-snum span{color:var(--teal-l);font-size:20px}
+  .hd-slbl{font-size:11.5px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.07em;margin-top:5px;font-weight:600}
+
+  /* Hero A: split (text + 3D card) */
+  .hv-a{position:relative;z-index:2;display:grid;grid-template-columns:1.3fr 1fr;gap:44px;align-items:center;padding:64px 48px}
+  .hv-a .hd-h1{font-size:52px;margin:20px 0}
+  .hv-a .hd-sub{font-size:17px;margin-bottom:26px;max-width:420px}
+  .hv-a .hd-stats{margin-top:32px}
+  .hv-a-card{justify-self:center;width:230px;height:322px;border-radius:16px;background:var(--grad-teal);box-shadow:0 36px 70px rgba(0,0,0,0.45);padding:24px;display:flex;flex-direction:column;justify-content:space-between;transform:rotateY(-12deg) rotateX(8deg) rotateZ(-4deg);border:1px solid rgba(255,255,255,0.14)}
+  .hv-a-card .t{font-size:11px;color:rgba(255,255,255,0.72);text-transform:uppercase;letter-spacing:0.12em;font-weight:700}
+  .hv-a-card .ti{font-family:var(--serif);font-size:26px;font-weight:800;color:#fff;line-height:1.15}
+
+  /* Hero B: centered, search-first, fanned covers */
+  .hv-b{position:relative;z-index:2;text-align:center;padding:60px 32px 48px;max-width:760px;margin:0 auto}
+  .hv-b .hd-h1{font-size:50px;margin:20px 0 16px}
+  .hv-b .hd-sub{font-size:17px;max-width:520px;margin:0 auto 28px}
+  .hv-b .hd-search{margin:0 auto 36px}
+  .hv-b .hd-stats{justify-content:center;margin-bottom:40px}
+  .hv-b-fan{display:flex;justify-content:center;align-items:flex-end;gap:-10px;height:120px}
+  .hv-b-fan .fc{width:80px;height:116px;border-radius:8px;box-shadow:0 16px 34px rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.14);margin:0 -8px}
+  .hv-b-fan .fc:nth-child(1){transform:rotate(-10deg) translateY(8px)}
+  .hv-b-fan .fc:nth-child(2){transform:rotate(-5deg) translateY(2px)}
+  .hv-b-fan .fc:nth-child(3){transform:rotate(0deg);z-index:2}
+  .hv-b-fan .fc:nth-child(4){transform:rotate(5deg) translateY(2px)}
+  .hv-b-fan .fc:nth-child(5){transform:rotate(10deg) translateY(8px)}
+
+  /* Hero C: editorial featured book of the week */
+  .hv-c{position:relative;z-index:2;display:grid;grid-template-columns:1fr 0.9fr;gap:40px;align-items:center;padding:56px 48px}
+  .hv-c .hd-h1{font-size:44px;margin:18px 0 14px}
+  .hv-c .hd-sub{font-size:16px;max-width:400px;margin-bottom:24px}
+  .hv-c .hd-search{max-width:100%}
+  .hv-c-feat{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:22px;display:flex;gap:20px;backdrop-filter:blur(8px)}
+  .hv-c-cover{width:130px;flex-shrink:0;aspect-ratio:2/3;border-radius:10px;box-shadow:0 20px 44px rgba(0,0,0,0.45);overflow:hidden;position:relative}
+  .hv-c-info{display:flex;flex-direction:column;justify-content:center}
+  .hv-c-badge{display:inline-block;background:var(--gold);color:#3D2A00;font-size:10px;font-weight:800;padding:4px 11px;border-radius:20px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px;align-self:flex-start}
+  .hv-c-title{font-family:var(--serif);font-size:24px;font-weight:800;color:#fff;line-height:1.15}
+  .hv-c-auth{font-size:13.5px;color:rgba(255,255,255,0.65);margin:6px 0 14px;font-style:italic}
+  .hv-c-price{font-family:var(--serif);font-size:22px;font-weight:800;color:var(--teal-l);margin-bottom:14px}
+  .hv-c-cta{background:var(--grad-gold);color:#3D2A00;border:none;border-radius:11px;padding:11px 20px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;align-self:flex-start}
+
+  @media(max-width:780px){
+    .hv-a,.hv-c{grid-template-columns:1fr;gap:28px;text-align:center}
+    .hv-a .hd-search,.hv-c .hd-search{margin-left:auto;margin-right:auto}
+    .hv-a .hd-stats,.hv-c .hero-txt{justify-items:center}
+    .hv-a-card{display:none}
+    .hv-a .hd-h1,.hv-b .hd-h1,.hv-c .hd-h1{font-size:34px}
+  }
+</style>
+</head>
+<body>
+
+<div class="proto-head">
+  <h1>UI Variations — Prototype</h1>
+  <p>Real <code>style.css</code> · mock data · flip variants from the bar below, pick winners</p>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="proto-sec" id="sec-hero">
+  <h2>Bosh sahifa — Hero</h2>
+  <p class="desc">Three takes on the landing hero. Baseline mirrors the live split layout (text + tilted 3D card); B and C are alternative directions.</p>
+
+  <div class="variant on" data-v="hero-a">
+    <div class="variant-note"><b>A · Split (current direction)</b> — headline + search left, tilted 3D showcase card right. Punchy, but the 3D card is decorative and eats space on tablet.</div>
+    <div class="hero-demo"><div class="hv-a">
+      <div class="hero-txt">
+        <span class="htag">✦ Uzbek Books. One Platform.</span>
+        <h1 class="hd-h1">O'zbek <em>kitoblari</em> bitta platformada</h1>
+        <p class="hd-sub">20 ta yetakchi nashriyot, minglab kitob — qidiring, buyurtma bering, eshigingizgacha yetkazamiz.</p>
+        <div class="hd-search"><input placeholder="Kitob, muallif yoki nashriyot qidiring…"><button>Qidirish</button></div>
+        <div class="hd-stats">
+          <div><div class="hd-snum">20<span>+</span></div><div class="hd-slbl">Nashriyot</div></div>
+          <div><div class="hd-snum">1500<span>+</span></div><div class="hd-slbl">Kitob</div></div>
+          <div><div class="hd-snum">340<span>+</span></div><div class="hd-slbl">Buyurtma</div></div>
+        </div>
+      </div>
+      <div class="hv-a-card">
+        <div class="t">Haftaning kitobi</div>
+        <div><div class="ti">Otgan kunlar</div></div>
+        <div style="color:rgba(255,255,255,0.9);font-size:14px">Abdulla Qodiriy · 52 000 so'm</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="variant" data-v="hero-b">
+    <div class="variant-note"><b>B · Centered, search-first</b> — one strong axis, the search bar is the hero, a fanned row of covers grounds it in "books". Best for conversion & mobile; drops the 3D gimmick.</div>
+    <div class="hero-demo"><div class="hv-b">
+      <span class="htag">✦ Uzbek Books. One Platform.</span>
+      <h1 class="hd-h1">Minglab o'zbek kitobi, <em>bitta joyda</em></h1>
+      <p class="hd-sub">Qidiring, taqqoslang, buyurtma bering — eshigingizgacha yetkazamiz.</p>
+      <div class="hd-search"><input placeholder="Kitob, muallif yoki nashriyot qidiring…"><button>Qidirish</button></div>
+      <div class="hd-stats">
+        <div><div class="hd-snum">20<span>+</span></div><div class="hd-slbl">Nashriyot</div></div>
+        <div><div class="hd-snum">1500<span>+</span></div><div class="hd-slbl">Kitob</div></div>
+        <div><div class="hd-snum">340<span>+</span></div><div class="hd-slbl">Buyurtma</div></div>
+      </div>
+      <div class="hv-b-fan" id="fan"></div>
+    </div></div>
+  </div>
+
+  <div class="variant" data-v="hero-c">
+    <div class="variant-note"><b>C · Editorial featured</b> — compact headline + search left, a real "Book of the Week" card right (cover, author, price, CTA). Premium, merchandising-forward, no gimmick.</div>
+    <div class="hero-demo"><div class="hv-c">
+      <div class="hero-txt">
+        <span class="htag">✦ Uzbek Books. One Platform.</span>
+        <h1 class="hd-h1">O'zbek adabiyoti <em>qo'lingizda</em></h1>
+        <p class="hd-sub">20 ta nashriyot, minglab kitob — bir platformada.</p>
+        <div class="hd-search"><input placeholder="Qidirish…"><button>Qidirish</button></div>
+      </div>
+      <div class="hv-c-feat">
+        <div class="hv-c-cover" id="featCover"></div>
+        <div class="hv-c-info">
+          <span class="hv-c-badge">Haftaning kitobi</span>
+          <div class="hv-c-title">Otgan kunlar</div>
+          <div class="hv-c-auth">Abdulla Qodiriy</div>
+          <div class="hv-c-price">52 000 so'm</div>
+          <button class="hv-c-cta">Savatga qo'shish</button>
+        </div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ BOOK CARDS ============ -->
+<section class="proto-sec hidden" id="sec-books">
+  <h2>Kitob kartochkasi</h2>
+  <p class="desc">Baseline is the redesigned card you just shipped. B pushes it editorial (title on cover); C is a dense horizontal row for search/list views.</p>
+
+  <div class="variant on" data-v="book-a">
+    <div class="variant-note"><b>A · Current</b> — designed cover, glass heart, title/author, price + teal cart button. Clean, grid-friendly.</div>
+    <div class="demo-grid" id="bookA"></div>
+  </div>
+
+  <div class="variant" data-v="book-b">
+    <div class="variant-note"><b>B · Editorial overlay</b> — title & author sit on a scrim over the cover, rating chip top-left, slim buy bar below. More visual impact, less white space; title legibility depends on cover art.</div>
+    <div class="demo-grid" id="bookB"></div>
+  </div>
+
+  <div class="variant" data-v="book-c">
+    <div class="variant-note"><b>C · Horizontal compact</b> — cover left, details right, with room for meta (pages · year). Great density for search results & wishlist; weaker for a showcase grid.</div>
+    <div class="bk-hz-grid" id="bookC"></div>
+  </div>
+</section>
+
+<!-- ============ PUBLISHER CARDS ============ -->
+<section class="proto-sec hidden" id="sec-pubs">
+  <h2>Nashriyot kartochkasi</h2>
+  <p class="desc">Baseline is the current logo-tile. B adds a branded gradient header + a peek of the publisher's covers. C is an info-dense row (city · founded · count).</p>
+
+  <div class="variant on" data-v="pub-a">
+    <div class="variant-note"><b>A · Current logo tile</b> — logo on cream, name + book count. Simple, but the cream tile can feel flat and doesn't use the publisher's brand color.</div>
+    <div class="demo-grid" id="pubA"></div>
+  </div>
+
+  <div class="variant" data-v="pub-b">
+    <div class="variant-note"><b>B · Branded header + cover peek</b> — publisher's brand color as a gradient header, three spine covers peeking. More alive, previews the catalogue; a bit taller.</div>
+    <div class="demo-grid" id="pubB"></div>
+  </div>
+
+  <div class="variant" data-v="pub-c">
+    <div class="variant-note"><b>C · Detail row</b> — logo + name + (city · founded) + prominent count. Best for the full publishers list where scanning & info matter more than showcase.</div>
+    <div class="pv-row-grid" id="pubC"></div>
+  </div>
+</section>
+
+<!-- ============ SWITCHER ============ -->
+<div class="switcher">
+  <div class="sw-row">
+    <span class="sw-label">Surface</span>
+    <button class="sw-btn sec on" data-sec="hero">Hero</button>
+    <button class="sw-btn sec" data-sec="books">Book cards</button>
+    <button class="sw-btn sec" data-sec="pubs">Publisher cards</button>
+  </div>
+  <div class="sw-row" id="variantRow"></div>
+</div>
+
+<script>
+// ---------- mock data ----------
+var BOOKS_M = [
+  {id:'b1',title:"Otgan kunlar",author:"Abdulla Qodiriy",price:"52 000",color:"linear-gradient(150deg,#1D2B4A,#13294A)",rating:4.9,pages:412,year:1926,pub:"Yangi asr avlodi"},
+  {id:'b2',title:"Mehrobdan chayon",author:"Abdulla Qodiriy",price:"48 000",color:"linear-gradient(150deg,#3A1E2B,#5C2E3E)",rating:4.7,pages:388,year:1929,pub:"Sharq"},
+  {id:'b3',title:"Sarob",author:"Abdulla Qahhor",price:"39 000",color:"linear-gradient(150deg,#123A2E,#0F6E56)",rating:4.6,pages:264,year:1943,pub:"Ilm ziyo"},
+  {id:'b4',title:"Kecha va kunduz",author:"Cho'lpon",price:"45 000",color:"linear-gradient(150deg,#2A2140,#3E2E5C)",rating:4.8,pages:320,year:1936,pub:"Yangi asr avlodi"}
+];
+var PUBS_M = [
+  {name:"Yangi asr avlodi",text:"YA",color:"#1D9E75",city:"Toshkent",founded:2001,count:128},
+  {name:"Sharq",text:"SH",color:"#C2932E",city:"Toshkent",founded:1994,count:96},
+  {name:"Ilm ziyo",text:"IZ",color:"#13294A",city:"Samarqand",founded:2008,count:64}
+];
+var HEART='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>';
+var CART='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2.5 3h2l2.2 11.4a1.6 1.6 0 0 0 1.6 1.3h8.1a1.6 1.6 0 0 0 1.6-1.3L21 7H6"/></svg>';
+
+function cover(b){ // designed cover layers (no image dependency)
+  return '<div class="cv-pat"></div><div class="cv-grad"></div>'+
+    '<div class="cv-pub">'+b.pub+'</div>'+
+    '<div class="cv-mid"><div class="cv-title">'+b.title+'</div><div class="cv-rule"></div><div class="cv-author">'+b.author+'</div></div>';
+}
+
+// ---------- book variants ----------
+function renderBooks(){
+  document.getElementById('bookA').innerHTML = BOOKS_M.map(function(b){
+    return '<div class="book demo">'+
+      '<div class="book-cover cover-sm" style="background:'+b.color+'">'+cover(b)+
+        '<button class="wish-btn">'+HEART+'</button>'+
+        (b.rating>=4.8?'<div class="bc-badge">🔥 Top</div>':'')+
+      '</div>'+
+      '<div class="book-body">'+
+        '<div class="book-meta"><div class="book-title">'+b.title+'</div><div class="book-author">'+b.author+'</div></div>'+
+        '<div class="book-buy"><span class="book-price">'+b.price+' so\'m</span>'+
+          '<button class="book-cta-btn">'+CART+'</button></div>'+
+      '</div></div>';
+  }).join('');
+
+  document.getElementById('bookB').innerHTML = BOOKS_M.map(function(b){
+    return '<div class="bk-ed">'+
+      '<div class="bk-ed-cover cover-sm" style="background:'+b.color+'">'+cover(b)+
+        '<div class="bk-ed-scrim"></div>'+
+        '<div class="bk-ed-rating">★ '+b.rating+'</div>'+
+        '<div class="bk-ed-txt"><div class="bk-ed-title">'+b.title+'</div><div class="bk-ed-auth">'+b.author+'</div></div>'+
+      '</div>'+
+      '<div class="bk-ed-buy"><span class="bk-ed-price">'+b.price+' so\'m</span>'+
+        '<button class="bk-ed-btn">'+CART+' Savatga</button></div>'+
+    '</div>';
+  }).join('');
+
+  document.getElementById('bookC').innerHTML = BOOKS_M.map(function(b){
+    return '<div class="bk-hz">'+
+      '<button class="bk-hz-heart">'+HEART+'</button>'+
+      '<div class="bk-hz-cover cover-sm" style="background:'+b.color+'">'+cover(b)+'</div>'+
+      '<div class="bk-hz-body">'+
+        '<div class="bk-hz-title">'+b.title+'</div>'+
+        '<div class="bk-hz-auth">'+b.author+'</div>'+
+        '<div class="bk-hz-meta"><span>★ '+b.rating+'</span><span>'+b.pages+' bet</span><span>'+b.year+'</span></div>'+
+        '<div class="bk-hz-foot"><span class="bk-hz-price">'+b.price+' so\'m</span>'+
+          '<button class="bk-hz-btn">'+CART+'</button></div>'+
+      '</div></div>';
+  }).join('');
+}
+
+// ---------- publisher variants ----------
+function renderPubs(){
+  document.getElementById('pubA').innerHTML = PUBS_M.map(function(p){
+    return '<a class="pcard">'+
+      '<div class="pcard-logo" style="background:'+p.color+'">'+p.text+'</div>'+
+      '<div class="pcard-foot"><div class="pcard-name">'+p.name+'</div><div class="pcard-cnt">'+p.count+' ta kitob</div></div></a>';
+  }).join('');
+
+  document.getElementById('pubB').innerHTML = PUBS_M.map(function(p){
+    var spines = BOOKS_M.slice(0,3).map(function(b){return '<div class="pv-spine" style="background:'+b.color+'"></div>';}).join('');
+    return '<div class="pv-stack">'+
+      '<div class="pv-stack-head" style="background:linear-gradient(150deg,'+p.color+',rgba(0,0,0,0.35))"><span class="pv-stack-logo">'+p.text+'</span></div>'+
+      '<div class="pv-spines">'+spines+'</div>'+
+      '<div class="pv-stack-foot"><div class="pv-stack-name">'+p.name+'</div><div class="pv-stack-cnt">'+p.count+' ta kitob</div></div>'+
+    '</div>';
+  }).join('');
+
+  document.getElementById('pubC').innerHTML = PUBS_M.map(function(p){
+    return '<div class="pv-row">'+
+      '<div class="pv-row-logo" style="background:'+p.color+'">'+p.text+'</div>'+
+      '<div class="pv-row-body"><div class="pv-row-name">'+p.name+'</div><div class="pv-row-meta">'+p.city+' · '+p.founded+'-yildan</div></div>'+
+      '<div class="pv-row-cnt"><div class="n">'+p.count+'</div><div class="l">kitob</div></div>'+
+    '</div>';
+  }).join('');
+}
+
+// ---------- hero extras ----------
+function renderHero(){
+  document.getElementById('fan').innerHTML = BOOKS_M.concat([BOOKS_M[0]]).slice(0,5).map(function(b){
+    return '<div class="fc" style="background:'+b.color+'"></div>';
+  }).join('');
+  document.getElementById('featCover').innerHTML = cover(BOOKS_M[0]);
+  document.getElementById('featCover').style.background = BOOKS_M[0].color;
+  document.getElementById('featCover').classList.add('cover-sm');
+}
+
+// ---------- switcher ----------
+var VARIANTS = {
+  hero:  [['hero-a','A · Split'],['hero-b','B · Centered'],['hero-c','C · Editorial']],
+  books: [['book-a','A · Current'],['book-b','B · Overlay'],['book-c','C · Horizontal']],
+  pubs:  [['pub-a','A · Tile'],['pub-b','B · Cover peek'],['pub-c','C · Detail row']]
+};
+var curSec='hero';
+
+function showSection(sec){
+  curSec=sec;
+  ['hero','books','pubs'].forEach(function(s){
+    document.getElementById('sec-'+s).classList.toggle('hidden', s!==sec);
+  });
+  document.querySelectorAll('.sw-btn.sec').forEach(function(b){ b.classList.toggle('on', b.dataset.sec===sec); });
+  buildVariantRow(sec);
+  showVariant(VARIANTS[sec][0][0]);
+}
+function buildVariantRow(sec){
+  var row=document.getElementById('variantRow');
+  row.innerHTML='<span class="sw-label">Variant</span>'+VARIANTS[sec].map(function(v){
+    return '<button class="sw-btn vb" data-v="'+v[0]+'">'+v[1]+'</button>';
+  }).join('');
+  row.querySelectorAll('.vb').forEach(function(b){
+    b.onclick=function(){ showVariant(b.dataset.v); };
+  });
+}
+function showVariant(v){
+  document.querySelectorAll('#sec-'+curSec+' .variant').forEach(function(el){
+    el.classList.toggle('on', el.dataset.v===v);
+  });
+  document.querySelectorAll('#variantRow .vb').forEach(function(b){ b.classList.toggle('on', b.dataset.v===v); });
+}
+
+document.querySelectorAll('.sw-btn.sec').forEach(function(b){
+  b.onclick=function(){ showSection(b.dataset.sec); };
+});
+
+renderBooks(); renderPubs(); renderHero();
+showSection('hero');
+</script>
+</body>
+</html>
