@@ -65,8 +65,11 @@
   .pcard:hover{transform:translateY(-6px);box-shadow:var(--sh-lg),var(--glow-teal);border-color:var(--teal)}
   .pcard-logo{height:112px;display:flex;align-items:center;justify-content:center;padding:18px;background:var(--cream);transition:background 0.25s}
   .pcard:hover .pcard-logo{background:rgba(29,158,117,0.03)}
-  .pcard-logo img{transition:transform 0.3s var(--ease-premium)}
-  .pcard:hover .pcard-logo img{transform:scale(1.05)}
+  /* Uniform logo footprint: every tile shows a same-sized mark regardless of
+     the source logo's dimensions (image) or a text fallback. */
+  .pcl-img{max-height:54px;max-width:78%;width:auto;object-fit:contain;display:block;transition:transform 0.3s var(--ease-premium)}
+  .pcl-fallback{width:56px;height:56px;border-radius:14px;background:var(--surface-tinted);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:800;font-size:19px;color:var(--teal-d);letter-spacing:0.02em;transition:transform 0.3s var(--ease-premium)}
+  .pcard:hover .pcl-img,.pcard:hover .pcl-fallback{transform:scale(1.05)}
   .pcard-foot{padding:12px 14px 14px;border-top:1px solid var(--border);text-align:center}
   .pcard-name{font-size:13.5px;color:var(--ink);font-weight:600;margin-bottom:2px}
   .pcard-cnt{font-size:11.5px;color:var(--light)}
@@ -555,9 +558,13 @@ function initPageData(){
   /* Publishers grid (first 20 on home) */
   document.getElementById('pubGrid').innerHTML=order.slice(0,20).map(function(k){
     var p=PUBLISHERS[k];
+    var initials = p.text || (p.name ? p.name.trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').substring(0,2).toUpperCase() : '');
+    var logoInner = p.logo
+      ? '<img class="pcl-img" src="'+p.logo+'" alt="'+esc(p.name)+'" onerror="this.style.display=\'none\';var s=this.nextElementSibling;if(s)s.style.display=\'flex\'"><span class="pcl-fallback" style="display:none">'+esc(initials)+'</span>'
+      : '<span class="pcl-fallback">'+esc(initials)+'</span>';
     return '<a class="pcard" href="publisher.html?pub='+k+'">'+(p.first?'<div class="first-badge">★ TOP</div>':'')+
-      '<div class="pcard-logo">'+pubLogoHTML(p,104)+'</div>'+
-      '<div class="pcard-foot"><div class="pcard-name">'+p.name+'</div><div class="pcard-cnt">'+counts[k]+' ta kitob</div></div></a>';
+      '<div class="pcard-logo">'+logoInner+'</div>'+
+      '<div class="pcard-foot"><div class="pcard-name">'+esc(p.name)+'</div><div class="pcard-cnt">'+counts[k]+' ta kitob</div></div></a>';
   }).join('');
 
   /* Best sellers — top books across publishers */
