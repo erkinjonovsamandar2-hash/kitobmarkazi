@@ -235,7 +235,9 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .genre-pill.on{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--sh-teal)}
 
 /* ===== Real cover image (overlays designed cover when available) ===== */
-.cv-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:3;background:inherit}
+/* No background here: a broken/loading cover must not paint an opaque block
+   over the designed typographic cover underneath it. */
+.cv-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:3}
 
 /* ===== Cart icon (SVG) in card buttons ===== */
 .cart-ic{display:block}
@@ -414,8 +416,12 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   }
 }
 
-/* ===== Clean up small book covers (hide duplicate title/author overlay) ===== */
-.cover-sm .cv-mid { display: none !important; }
+/* ===== Small book covers =====
+   Most of the catalogue has no cover artwork, so the designed typographic
+   cover (title/author) is the default — a bare gradient reads as broken.
+   Once a real image actually loads it sits on top (.cv-img, z-index 3) and we
+   hide the overlay so the title isn't duplicated over the artwork. */
+.cover-sm.cv-hasimg .cv-mid { display: none; }
 
 /* ===== Grid staggered entrance animations ===== */
 .publishers-grid > *, .books-grid > * {

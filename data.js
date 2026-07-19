@@ -9,6 +9,28 @@ var COURIERS = {};
 var isKMDataLoaded = false;
 var isKMDataError = false;
 
+/* The DB's `top` flag is set on well over half the catalogue, which makes the
+   "🔥 Top" badge meaningless. Ratings cluster tightly (4.4–4.9), so we badge
+   only the highest-rated tier — roughly the top 15% — recomputed from the data
+   itself so it stays scarce as the catalogue grows. */
+var KM_TOP_MIN_RATING = 4.9;
+function computeTopThreshold(){
+  var ratings = [];
+  Object.keys(BOOKS).forEach(function(pk){
+    BOOKS[pk].forEach(function(b){
+      var r = Number(b.rating);
+      if (!isNaN(r)) ratings.push(r);
+    });
+  });
+  if (ratings.length < 8) return;
+  ratings.sort(function(a,b){ return b - a; });
+  var idx = Math.max(0, Math.floor(ratings.length * 0.15) - 1);
+  KM_TOP_MIN_RATING = ratings[idx];
+}
+function isTopPick(b){
+  return !!(b && b.top && (Number(b.rating) || 0) >= KM_TOP_MIN_RATING);
+}
+
 /* HTML-escape any dynamic/DB/user text before injecting via innerHTML (XSS guard) */
 function esc(s){
   return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
@@ -233,6 +255,7 @@ function coverHTML(book, pub){
   var img = '<img class="cv-img" alt="" loading="lazy" '+
     'src="'+imgSrc+'" '+
     fallbackPng+' '+
+    'onload="this.parentElement&&this.parentElement.classList.add(\'cv-hasimg\')" '+
     'onerror="'+errHandler+'">';
   return designed + img;
 }
@@ -278,7 +301,7 @@ function bookCardHTML(pk, b){
     '<div class="book-cover cover-sm" style="background:'+(b.color || '#13294A')+'">'+
       coverHTML(b,pub)+
       '<button class="wish-btn '+(wished?'on':'')+'" title="Sevimlilar" aria-label="Sevimlilarga qo\'shish" onclick="event.stopPropagation();toggleWish(\''+pk+'\',\''+b.id+'\',this)"><svg class="wish-ic" width="16" height="16" viewBox="0 0 24 24" fill="'+(wished?'currentColor':'none')+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></button>'+
-      (b.top?'<div class="bc-badge">🔥 Top</div>':'')+
+      (isTopPick(b)?'<div class="bc-badge">🔥 Top</div>':'')+
       (b.stock && b.stock < 5 ? '<div class="bc-badge" style="top:auto;bottom:12px;right:12px;background:#ef4444;color:#fff;font-size:8px">Faqat '+b.stock+' dona qoldi</div>' : '')+
     '</div>'+
 
@@ -385,7 +408,8 @@ function bookImages(bookId){
         });
       });
       BOOKS = newBooks;
-      
+      computeTopThreshold();
+
       // Update WEEK_TOP if any top book is found
       const flat = allBooksFlat();
       const topBook = flat.find(x => x.b.top);

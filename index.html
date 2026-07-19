@@ -248,7 +248,7 @@
       <div class="stats">
         <div><div class="snum" id="s1">20<span>+</span></div><div class="slbl">Nashriyotlar</div></div>
         <div class="stat-div stat-hide"></div>
-        <div class="stat-hide"><div class="snum" id="s2">150<span>+</span></div><div class="slbl">Kitoblar</div></div>
+        <div class="stat-hide"><div class="snum" id="s2">50<span>+</span></div><div class="slbl">Kitoblar</div></div>
         <div class="stat-div"></div>
         <div><div class="snum" id="s3">340<span>+</span></div><div class="slbl">Buyurtmalar</div></div>
       </div>
@@ -618,10 +618,12 @@ function initPageData(){
     if (topB.color) scCard.style.background = topB.color;
   }
 
-  /* Dynamic stats counters (#3) */
+  /* Publishers and books are derived from real data. Orders (340) is still a
+     placeholder — replace with a real count when the API exposes one. */
   var pubCount = Object.keys(PUBLISHERS).length;
   var bookCount = allBooksFlat().length;
   window._statTargets = [pubCount, bookCount, 340];
+  if (window._kmStartStats) window._kmStartStats();
 
   if(window.refreshIcons) window.refreshIcons();
 }
@@ -653,34 +655,43 @@ document.addEventListener('kmDataLoaded', initPageData);
 /* Stats Animation on Scroll (#3 + #15) */
 (function(){
   var animated = false;
+  var inView = false;
+  /* Only ever counts up to real figures. If the section scrolls into view
+     before the API responds, we wait rather than animating placeholders. */
   function startStatsAnim() {
-    if (animated) return;
+    if (animated) return false;
+    if (!window._statTargets) return false;
     animated = true;
-    var targets = window._statTargets || [20, 150, 340];
+    var targets = window._statTargets;
     var ids = ['s1', 's2', 's3'];
     ids.forEach(function(id, i){
       var el = document.getElementById(id);
       if(!el) return;
-      var c = 0, end = targets[i], step = Math.ceil(end / 40);
+      var end = Number(targets[i]) || 0;
+      var c = 0, step = Math.max(1, Math.ceil(end / 40));
       var iv = setInterval(function(){
         c = Math.min(c + step, end);
         el.innerHTML = c + '<span>+</span>';
         if(c >= end) clearInterval(iv);
       }, 40);
     });
+    return true;
   }
-  
+  /* Lets initPageData kick the animation once real data lands. */
+  window._kmStartStats = function(){ if (inView) startStatsAnim(); };
+
   var statsEl = document.querySelector('.stats');
   if (statsEl) {
     if ('IntersectionObserver' in window) {
       var obs = new IntersectionObserver(function(entries) {
         if (entries[0].isIntersecting) {
-          startStatsAnim();
-          obs.disconnect();
+          inView = true;
+          if (startStatsAnim()) obs.disconnect();
         }
       }, { threshold: 0.1 });
       obs.observe(statsEl);
     } else {
+      inView = true;
       startStatsAnim();
     }
   }
