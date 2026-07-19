@@ -141,7 +141,7 @@
 </footer>
 
 <script src="data.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://unpkg.com/lucide@1.25.0"></script>
 <script src="cart.js"></script>
 <script>
 var ALL = [];
@@ -191,6 +191,7 @@ async function loadPublishersData() {
 }
 
 function fallbackInit() {
+  if (typeof isKMDataError !== 'undefined' && isKMDataError && Object.keys(PUBLISHERS).length === 0) { showDataError(); return; }
   var allKeys=Object.keys(PUBLISHERS);
   var firstKey=allKeys.filter(function(k){return PUBLISHERS[k].first})[0];
   var rest=allKeys.filter(function(k){return !PUBLISHERS[k].first}).sort(function(a,b){return PUBLISHERS[a].name.localeCompare(PUBLISHERS[b].name)});

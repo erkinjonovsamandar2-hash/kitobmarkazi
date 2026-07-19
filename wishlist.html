@@ -71,13 +71,13 @@
 </footer>
 
 <script src="data.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://unpkg.com/lucide@1.25.0"></script>
 <script src="cart.js"></script>
 <script src="chat-widget.js"></script>
 <script>
 function render(){
   if (!isKMDataLoaded) return;
-  var items=wishlistDetailed();
+  var items=wishlistDetailed().filter(function(it){ return it.book; });
   var wrap=document.getElementById('wrap');
   if(items.length===0){
     wrap.innerHTML='<div class="empty-w"><div class="ec-ic">🤍</div><h2>Sevimlilar ro\'yxati bo\'sh</h2><p>Yoqqan kitoblarni yurakcha (♡) tugmasi bilan belgilang</p><a class="btn btn-teal" href="search.html">📚 Kitoblarni ko\'rish</a></div>';
@@ -91,7 +91,7 @@ function render(){
   if(window.refreshIcons) window.refreshIcons();
 }
 function addAllToCart(){
-  var items=wishlistDetailed();
+  var items=wishlistDetailed().filter(function(it){ return it.book; });
   if(items.length===0) return;
   items.forEach(function(it){
     addToCart(it.pubKey, it.book.id, 1);

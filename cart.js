@@ -63,11 +63,23 @@ function toast(msg, type){
 }
 document.addEventListener('DOMContentLoaded', updateCartBadge);
 
+/* ===== Shared API-failure banner (call when a page has no data to show) ===== */
+function showDataError(){
+  if(document.getElementById('km-data-err')) return;
+  var bar=document.createElement('div');
+  bar.id='km-data-err';
+  bar.setAttribute('role','alert');
+  bar.style.cssText='background:#FCE9EE;color:#8A2233;border-bottom:1px solid #F1C6D0;padding:11px 16px;font-size:13.5px;font-weight:600;text-align:center;display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap';
+  bar.innerHTML="⚠️ Ma'lumotlarni yuklab bo'lmadi. Internet aloqasini tekshiring va qayta urining. "+
+    '<button onclick="location.reload()" style="background:#C0392B;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit">Qayta urinish</button>';
+  document.body.insertBefore(bar, document.body.firstChild);
+}
+
 /* Add to cart + toast (apostrophe-safe helper) */
 function addAndToast(pubKey, bookId){
   addToCart(pubKey, bookId, 1);
   var b = findBook(pubKey, bookId);
-  toast(b.title + " savatga qo'shildi");
+  toast(((b && b.title) ? b.title : "Kitob") + " savatga qo'shildi");
 }
 
 /* ===== Wishlist (Sevimlilar) ===== */
@@ -83,7 +95,10 @@ function toggleWishlist(pk,id){
 function wishlistCount(){ return getWishlist().length; }
 function wishlistDetailed(){
   return getWishlist().map(function(i){
-    return { pubKey:i.pubKey, bookId:i.bookId, pub:PUBLISHERS[i.pubKey], book:findBook(i.pubKey,i.bookId) };
+    var b = null;
+    if (typeof findBook === 'function') { try { b = findBook(i.pubKey, i.bookId); } catch(e) {} }
+    var p = (typeof PUBLISHERS !== 'undefined' && PUBLISHERS[i.pubKey]) ? PUBLISHERS[i.pubKey] : { name:'Nashriyot', slug:i.pubKey };
+    return { pubKey:i.pubKey, bookId:i.bookId, pub:p, book:b };
   });
 }
 function updateWishlistBadge(){
@@ -103,6 +118,22 @@ function toggleWish(pk,id,btn){
   toast(added?"Sevimlilarga qo'shildi":"Sevimlilardan olib tashlandi");
 }
 document.addEventListener('DOMContentLoaded', updateWishlistBadge);
+
+/* ===== Keyboard activation for click-only elements (a11y) ===== */
+/* Any element carrying data-keyactivate (role=button/link, tabindex=0) is
+   triggered by Enter or Space, so mouse-only widgets become keyboard-usable. */
+document.addEventListener('keydown', function(e){
+  if(e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+  var el = e.target;
+  if(!el || !el.closest) return;
+  var target = el.closest('[data-keyactivate]');
+  if(!target) return;
+  // Let native controls handle their own keys
+  var tag = (el.tagName || '').toLowerCase();
+  if(tag === 'input' || tag === 'textarea' || tag === 'select' || tag === 'button' || tag === 'a') return;
+  e.preventDefault();
+  target.click();
+});
 
 /* ===== Scroll reveal (lightweight, all pages) ===== */
 (function(){

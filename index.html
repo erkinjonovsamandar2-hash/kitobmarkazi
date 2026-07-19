@@ -537,11 +537,12 @@
 </div>
 
 <script src="data.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://unpkg.com/lucide@1.25.0"></script>
 <script src="cart.js"></script>
 <script>
 function initPageData(){
   if (!isKMDataLoaded) return;
+  if (isKMDataError && Object.keys(PUBLISHERS).length === 0) { showDataError(); return; }
   /* Dynamically build order and counts */
   var keys=Object.keys(PUBLISHERS);
   var firstKey=keys.filter(function(k){return PUBLISHERS[k].first})[0];
@@ -578,12 +579,12 @@ function initPageData(){
   document.getElementById('ads').innerHTML=COMING_SOON.map(function(a,i){
     var p=PUBLISHERS[a.pubKey] || {name: a.pubKey, first: false};
     var d=dateFromOffset(a.offsetDays);
-    return '<div class="poster" onclick="openModal('+i+')"><div style="position:absolute;inset:0;background:'+a.bg+'"></div><div class="pov"></div>'+
+    return '<div class="poster" role="button" tabindex="0" data-keyactivate="1" aria-label="'+esc(a.title)+' — batafsil" onclick="openModal('+i+')"><div style="position:absolute;inset:0;background:'+a.bg+'"></div><div class="pov"></div>'+
       '<div class="poster-thumb" style="background:'+a.bg+'">'+coverHTML(a,p)+'</div>'+
       '<div class="pdate"><div class="pday">'+(d.getDate()<10?'0':'')+d.getDate()+'</div><div class="pmon">'+monthsUz[d.getMonth()]+'</div></div>'+
       '<div class="pc"><span class="soon">'+(a.label==='Premyera'?'🔥 ':'⏳ ')+a.label+'</span><div>'+
-      '<div class="ppub"><div class="ppl">'+pubLogoHTML(p,24)+'</div><span class="ppn">'+p.name+'</span></div>'+
-      '<div class="pt">'+a.title+'</div><div class="pa">'+a.author+'</div></div></div></div>';
+      '<div class="ppub"><div class="ppl">'+pubLogoHTML(p,24)+'</div><span class="ppn">'+esc(p.name)+'</span></div>'+
+      '<div class="pt">'+esc(a.title)+'</div><div class="pa">'+esc(a.author)+'</div></div></div></div>';
   }).join('');
 
   /* Genres section */
@@ -715,7 +716,7 @@ heroInput.addEventListener('input',function(){
   acList.innerHTML=res.map(function(r){
     var ic=r.type==='pub'?'<div class="ac-ic pub">'+pubLogoHTML(PUBLISHERS[r.pubKey],26)+'</div>':'<div class="ac-ic" style="background:'+r.color+'">📖</div>';
     var href=r.type==='pub'?'publisher.html?pub='+r.pubKey:'book.html?pub='+r.pubKey+'&book='+r.bookId;
-    return '<a class="ac-item" href="'+href+'">'+ic+'<div><div class="ac-tt">'+r.title+'</div><div class="ac-sub">'+r.sub+'</div></div></a>';
+    return '<a class="ac-item" href="'+href+'">'+ic+'<div><div class="ac-tt">'+esc(r.title)+'</div><div class="ac-sub">'+esc(r.sub)+'</div></div></a>';
   }).join('');
   acList.classList.add('show');
 });
