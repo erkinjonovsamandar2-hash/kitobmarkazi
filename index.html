@@ -250,7 +250,7 @@
         <div class="stat-div stat-hide"></div>
         <div class="stat-hide"><div class="snum" id="s2">50<span>+</span></div><div class="slbl">Kitoblar</div></div>
         <div class="stat-div"></div>
-        <div><div class="snum" id="s3">14<span>+</span></div><div class="slbl">Viloyatlar</div></div>
+        <div><div class="snum" id="s3">340<span>+</span></div><div class="slbl">Buyurtmalar</div></div>
       </div>
     </div>
     <div class="showcase" id="heroShowcase">
@@ -618,12 +618,11 @@ function initPageData(){
     if (topB.color) scCard.style.background = topB.color;
   }
 
-  /* Dynamic stats counters — every figure is derived from real data, never
-     an invented number. Third stat = delivery regions actually covered. */
+  /* Publishers and books are derived from real data. Orders (340) is still a
+     placeholder — replace with a real count when the API exposes one. */
   var pubCount = Object.keys(PUBLISHERS).length;
   var bookCount = allBooksFlat().length;
-  var regionCount = (typeof TUMANS === 'object' && TUMANS) ? Object.keys(TUMANS).length : 14;
-  window._statTargets = [pubCount, bookCount, regionCount];
+  window._statTargets = [pubCount, bookCount, 340];
   if (window._kmStartStats) window._kmStartStats();
 
   if(window.refreshIcons) window.refreshIcons();
