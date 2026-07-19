@@ -170,12 +170,12 @@
         <div id="payTimeBlock" style="display:none">
           <div class="paytime-label">Yetkazib berish narxini qanday to'laysiz?</div>
           <div class="paytime-grid">
-            <div class="paytime" id="pt-prepaid" onclick="selPayTime('prepaid')">
+            <div class="paytime" id="pt-prepaid" role="button" tabindex="0" data-keyactivate="1" aria-label="Oldindan to'lash" onclick="selPayTime('prepaid')">
               <div class="paytime-ic"><i data-lucide="credit-card" style="width:24px;height:24px;color:var(--teal);vertical-align:middle;margin-right:6px"></i></div>
               <div class="paytime-tx"><div class="paytime-t">Oldindan to'lash</div><div class="paytime-s">Kitob narxi bilan birga hozir to'laysiz</div></div>
               <div class="paytime-radio"><div class="paytime-dot"></div></div>
             </div>
-            <div class="paytime" id="pt-ondelivery" onclick="selPayTime('ondelivery')">
+            <div class="paytime" id="pt-ondelivery" role="button" tabindex="0" data-keyactivate="1" aria-label="Yetkazilganda to'lash" onclick="selPayTime('ondelivery')">
               <div class="paytime-ic"><i data-lucide="package" style="width:24px;height:24px;color:var(--teal);vertical-align:middle;margin-right:6px"></i></div>
               <div class="paytime-tx"><div class="paytime-t">Yetkazilganda to'lash</div><div class="paytime-s">Kuryer punktida mustaqil to'laysiz</div></div>
               <div class="paytime-radio"><div class="paytime-dot"></div></div>
@@ -189,13 +189,13 @@
       <div class="fcard-head"><div class="fcard-n">4</div><div class="fcard-t">To'lov usuli</div></div>
       <div class="fcard-body">
         <div class="pgrid">
-          <div class="pay" id="p-payme" onclick="selPay('payme')"><div class="pchk">✓</div>
+          <div class="pay" id="p-payme" role="button" tabindex="0" data-keyactivate="1" aria-label="Payme" onclick="selPay('payme')"><div class="pchk">✓</div>
             <div class="play"><img src="images/pay/payme.png" alt="Payme"></div>
           </div>
-          <div class="pay" id="p-click" onclick="selPay('click')"><div class="pchk">✓</div>
+          <div class="pay" id="p-click" role="button" tabindex="0" data-keyactivate="1" aria-label="Click" onclick="selPay('click')"><div class="pchk">✓</div>
             <div class="play"><img src="images/pay/click.png" alt="Click"></div>
           </div>
-          <div class="pay" id="p-uzum" onclick="selPay('uzum')"><div class="pchk">✓</div>
+          <div class="pay" id="p-uzum" role="button" tabindex="0" data-keyactivate="1" aria-label="Uzum" onclick="selPay('uzum')"><div class="pchk">✓</div>
             <div class="play"><img src="images/pay/uzum.png" alt="Uzum"></div>
           </div>
         </div>
@@ -276,7 +276,7 @@
 </footer>
 
 <script src="data.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://unpkg.com/lucide@1.25.0"></script>
 <script src="cart.js"></script>
 <script>
 var items=cartItemsDetailed();
@@ -355,9 +355,9 @@ function renderCouriers(){
 
       document.getElementById('payTimeBlock').style.display = 'block';
       box.innerHTML = couriers.map(function(c){
-        return '<div class="cour" id="c-'+c.slug+'" onclick="selCour(\''+c.slug+'\')">' +
-          '<div class="cour-logo" style="background:'+(c.color||'var(--teal)')+'">'+c.name+'</div>' +
-          '<div class="cour-info"><div class="cour-name">'+c.name+'</div><div class="cour-desc">'+(c.description||c.desc||'')+'</div></div>' +
+        return '<div class="cour" id="c-'+c.slug+'" role="button" tabindex="0" data-keyactivate="1" aria-label="'+esc(c.name)+'" onclick="selCour(\''+c.slug+'\')">' +
+          '<div class="cour-logo" style="background:'+(c.color||'var(--teal)')+'">'+esc(c.name)+'</div>' +
+          '<div class="cour-info"><div class="cour-name">'+esc(c.name)+'</div><div class="cour-desc">'+esc(c.description||c.desc||'')+'</div></div>' +
           '<div class="cour-price">'+(c.price||'')+'</div>' +
           '<div class="cour-radio"><div class="cour-dot"></div></div></div>';
       }).join('') + '<div style="font-size:11px;color:var(--light);padding:6px 2px 0">📍 '+tuman+', '+region+' — '+couriers.length+' ta kuryer xizmati mavjud</div>';
@@ -368,9 +368,9 @@ function renderCouriers(){
       box.innerHTML=avail.map(function(ck){
         var c=COURIERS[ck];
         _courierCache[ck] = { slug:ck, name:c.name, color:c.color, description:c.desc, price:c.price };
-        return '<div class="cour" id="c-'+ck+'" onclick="selCour(\''+ck+'\')">' +
-          '<div class="cour-logo" style="background:'+c.color+'">'+c.name+'</div>' +
-          '<div class="cour-info"><div class="cour-name">'+c.name+'</div><div class="cour-desc">'+c.desc+'</div></div>' +
+        return '<div class="cour" id="c-'+ck+'" role="button" tabindex="0" data-keyactivate="1" aria-label="'+esc(c.name)+'" onclick="selCour(\''+ck+'\')">' +
+          '<div class="cour-logo" style="background:'+c.color+'">'+esc(c.name)+'</div>' +
+          '<div class="cour-info"><div class="cour-name">'+esc(c.name)+'</div><div class="cour-desc">'+esc(c.desc)+'</div></div>' +
           '<div class="cour-price">'+c.price+'</div>' +
           '<div class="cour-radio"><div class="cour-dot"></div></div></div>';
       }).join('') + '<div style="font-size:11px;color:var(--light);padding:6px 2px 0">📍 '+tuman+', '+region+' — '+avail.length+' ta kuryer xizmati mavjud</div>';
@@ -511,9 +511,9 @@ function submitOrder(){
   
   var valid = isFnameValid && isPhoneValid && isCityValid && isTumanValid && isAddrValid;
   
-  if(!courier){ valid=false; toast('Yetkazib berish xizmatini tanlang','err'); }
-  if(!payTime){ valid=false; toast('To\'lov vaqtini tanlang','err'); }
-  if(!payMethod){ valid=false; toast('To\'lov usulini tanlang','err'); }
+  if(!courier){ valid=false; toast('Yetkazib berish xizmatini tanlang','error'); }
+  if(!payTime){ valid=false; toast('To\'lov vaqtini tanlang','error'); }
+  if(!payMethod){ valid=false; toast('To\'lov usulini tanlang','error'); }
   if(!valid) return;
   
   // Normalize phone number

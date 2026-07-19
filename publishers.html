@@ -31,29 +31,25 @@
   .alpha-btn:disabled{opacity:0.3;cursor:default}
 
   .pg-wrap{max-width:1100px;margin:0 auto;padding:28px 32px 40px}
-  .publishers-grid{display:flex;flex-direction:column;gap:16px}
-  .pcard{background:var(--white);border-radius:20px;border:1px solid var(--border);overflow:hidden;text-decoration:none;color:var(--ink);transition:all 0.3s var(--ease-premium);display:grid;grid-template-columns:160px 1fr auto;align-items:center;position:relative;box-shadow:var(--sh-sm)}
-  .pcard::after{content:'';position:absolute;inset:-1px;border-radius:21px;border:2px solid transparent;background:linear-gradient(135deg,rgba(29,158,117,0),rgba(217,169,62,0)) border-box;mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);mask-composite:exclude;-webkit-mask-composite:xor;opacity:0;transition:opacity 0.35s;pointer-events:none}
-  .pcard:hover{transform:translateX(6px);box-shadow:var(--sh-xl);border-color:transparent}
-  .pcard:hover::after{opacity:1;background:linear-gradient(135deg,rgba(29,158,117,0.35),rgba(217,169,62,0.25)) border-box}
-  
-  .pcard-logo{display:flex;align-items:center;justify-content:center;padding:16px 20px;background:var(--cream);height:100%;min-height:110px;transition:background 0.25s;position:relative;overflow:hidden}
-  .pcard:hover .pcard-logo{background:rgba(29,158,117,0.02)}
-  .pcard-logo img{max-height:70px;max-width:120px;object-fit:contain;transition:transform 0.3s var(--ease-premium);filter:drop-shadow(0 2px 8px rgba(11,19,32,0.05))}
-  .pcard:hover .pcard-logo img{transform:scale(1.06)}
-  .pcard-logo-text{font-size:20px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase}
-  
-  .pcard-body{padding:20px 24px;display:flex;flex-direction:column;gap:5px;flex:1}
-  .pcard-name-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-  .pcard-name{font-weight:800;font-size:17px;color:var(--ink);margin:0}
-  .pcard-desc{font-size:13px;color:var(--mid);line-height:1.55;margin:4px 0 0}
-  
-  .pcard-right{padding:20px 32px;display:flex;align-items:center;gap:32px;border-left:1px dashed var(--border)}
-  .pcard-stats{text-align:right}
-  .pcard-count{font-size:24px;font-weight:800;color:var(--teal-d);font-family:var(--serif);line-height:1}
-  .pcard-count-lbl{font-size:11px;color:var(--light);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;font-weight:600}
-  .pcard-arrow{width:40px;height:40px;border-radius:50%;background:rgba(29,158,117,0.06);display:flex;align-items:center;justify-content:center;color:var(--teal);transition:all 0.28s var(--ease-premium)}
-  .pcard:hover .pcard-arrow{background:var(--teal);color:#fff;transform:translateX(4px);box-shadow:var(--sh-teal)}
+  /* Cover-peek publisher cards: brand-color header + logo, a peek of the
+     publisher's covers, name + book count. */
+  .publishers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:18px}
+  .pcard{background:var(--white);border:1px solid var(--border);border-radius:18px;overflow:hidden;text-decoration:none;color:var(--ink);box-shadow:var(--sh-sm);transition:all 0.32s var(--ease-premium);display:flex;flex-direction:column;position:relative}
+  .pcard:hover{transform:translateY(-6px);box-shadow:var(--sh-lg);border-color:var(--teal)}
+
+  .pcard-head{position:relative;height:106px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .pcard-head::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.18),transparent 45%,rgba(0,0,0,0.30))}
+  .pcard-logo{position:relative;z-index:2;font-family:var(--serif);font-size:26px;font-weight:800;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,0.35);letter-spacing:0.04em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;padding:0 14px;text-align:center;line-height:1.1}
+  .pcard-logo img{max-height:58px;max-width:82%;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.32))}
+
+  .pcard-spines{display:flex;gap:5px;justify-content:center;margin-top:-30px;position:relative;z-index:3;padding:0 14px;min-height:52px}
+  .pcard-spine{width:36px;height:52px;border-radius:5px;box-shadow:0 8px 16px rgba(13,27,42,0.3);border:1px solid rgba(255,255,255,0.55);background-size:cover;background-position:center;transition:transform 0.3s var(--ease-premium)}
+  .pcard:hover .pcard-spine{transform:translateY(-3px)}
+
+  .pcard-foot{padding:12px 16px 18px;text-align:center}
+  .pcard-name{font-size:15px;font-weight:700;color:var(--ink);margin:0;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;line-height:1.25}
+  .pcard-cnt{font-size:12.5px;color:var(--light);margin-top:4px}
+  .pcard-badge{position:absolute;top:10px;left:10px;z-index:3}
 
   .first-badge{background:var(--grad-gold);color:#3D2A00;font-size:9px;font-weight:800;padding:3px 8px;border-radius:10px;letter-spacing:0.04em;box-shadow:0 3px 8px rgba(217,169,62,0.2)}
   
@@ -67,14 +63,11 @@
   @media(max-width:780px){
     .ph{padding:28px 16px 24px}.ph h1{font-size:24px}
     .alpha-in{padding:0 16px}.pg-wrap{padding:20px 16px 32px}
-    .publishers-grid{gap:14px}
-    .pcard{grid-template-columns:1fr;align-items:stretch}
-    .pcard:hover{transform:translateY(-4px)}
-    .pcard-logo{height:100px;min-height:auto}
-    .pcard-body{padding:16px}
-    .pcard-right{padding:16px;justify-content:space-between;border-left:none;border-top:1px dashed var(--border)}
-    .pcard-stats{text-align:left}
-    .pcard-count-lbl{margin-top:2px}
+    .publishers-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}
+  }
+  @media(max-width:600px){
+    .publishers-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+    .pcard-head{height:92px}.pcard-logo{font-size:22px}
   }</style>
 </head>
 <body>
@@ -141,7 +134,7 @@
 </footer>
 
 <script src="data.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://unpkg.com/lucide@1.25.0"></script>
 <script src="cart.js"></script>
 <script>
 var ALL = [];
@@ -191,6 +184,7 @@ async function loadPublishersData() {
 }
 
 function fallbackInit() {
+  if (typeof isKMDataError !== 'undefined' && isKMDataError && Object.keys(PUBLISHERS).length === 0) { showDataError(); return; }
   var allKeys=Object.keys(PUBLISHERS);
   var firstKey=allKeys.filter(function(k){return PUBLISHERS[k].first})[0];
   var rest=allKeys.filter(function(k){return !PUBLISHERS[k].first}).sort(function(a,b){return PUBLISHERS[a].name.localeCompare(PUBLISHERS[b].name)});
@@ -239,20 +233,31 @@ function render(){
   if(slice.length===0){document.getElementById('grid').innerHTML='<div class="empty">Bu harf bo\'yicha nashriyot topilmadi</div>';document.getElementById('pager').innerHTML='';return;}
   document.getElementById('grid').innerHTML=slice.map(function(k){
     var p=PUBLISHERS[k];
-    var descText = p.desc || 'O\'zbekistonning eng sara nashriyotlaridan biri.';
-    var topBadge = p.first ? '<span class="first-badge">★ TOP</span>' : '';
+    var topBadge = p.first ? '<span class="first-badge pcard-badge">★ TOP</span>' : '';
+
+    // Header shows the logo image if present, otherwise brand initials
+    var initials = p.text || (p.name ? p.name.trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').substring(0,2).toUpperCase() : '');
+    var logoInner = p.logo
+      ? '<img src="'+p.logo+'" alt="'+esc(p.name)+'" onerror="this.style.display=\'none\'">'
+      : esc(initials);
+
+    // A peek at up to 3 of the publisher's covers
+    var bks = (typeof getBooks === 'function' ? getBooks(k) : []).slice(0, 3);
+    var spines = bks.map(function(b){
+      var bg = b.cover ? "url('"+b.cover+"') center/cover" : (b.color || '#13294A');
+      return '<span class="pcard-spine" style="background:'+bg+'"></span>';
+    }).join('');
+    var spinesRow = spines ? '<div class="pcard-spines">'+spines+'</div>' : '';
+
     return '<a class="pcard" href="publisher.html?pub='+k+'">'+
-      '<div class="pcard-logo">'+pubLogoHTML(p,112)+'</div>'+
-      '<div class="pcard-body">'+
-        '<div class="pcard-name-row"><h3 class="pcard-name">'+p.name+'</h3>'+topBadge+'</div>'+
-        '<p class="pcard-desc">'+descText+'</p>'+
+      '<div class="pcard-head" style="background:linear-gradient(150deg,'+(p.color||'#13294A')+',rgba(0,0,0,0.42))">'+
+        topBadge+
+        '<span class="pcard-logo">'+logoInner+'</span>'+
       '</div>'+
-      '<div class="pcard-right">'+
-        '<div class="pcard-stats">'+
-          '<div class="pcard-count">'+(counts[k]||0)+'</div>'+
-          '<div class="pcard-count-lbl">kitoblar</div>'+
-        '</div>'+
-        '<div class="pcard-arrow">→</div>'+
+      spinesRow+
+      '<div class="pcard-foot">'+
+        '<div class="pcard-name">'+esc(p.name)+'</div>'+
+        '<div class="pcard-cnt">'+(counts[k]||0)+' ta kitob</div>'+
       '</div></a>';
   }).join('');
   /* pager */

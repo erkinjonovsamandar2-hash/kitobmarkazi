@@ -14,3 +14,8 @@ migrate_reviews.js
 server/migrate_p5.js
 *.sqlite
 server/*.sqlite
+
+# Installed agent skills & throwaway experiment folders (not project code)
+.agents/
+temp-skills/
+scratch_*.js

@@ -219,7 +219,7 @@
 </footer>
 
 <script src="data.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://unpkg.com/lucide@1.25.0"></script>
 <script src="cart.js"></script>
 <script>
 var params=new URLSearchParams(location.search);
@@ -453,11 +453,12 @@ window.loadReviews = function() {
         return;
       }
       list.innerHTML = data.map(function(r) {
-        var stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+        var rating = Math.max(0, Math.min(5, parseInt(r.rating, 10) || 0));
+        var stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
         return '<div class="rev-item">' +
-          '<div class="rev-head"><div class="rev-user">' + r.customerName + ' <span style="color:var(--gold);margin-left:8px">' + stars + '</span></div>' +
+          '<div class="rev-head"><div class="rev-user">' + esc(r.customerName) + ' <span style="color:var(--gold);margin-left:8px">' + stars + '</span></div>' +
           '<div class="rev-date">' + new Date(r.createdAt).toLocaleDateString() + '</div></div>' +
-          '<div class="rev-body">' + r.comment + '</div></div>';
+          '<div class="rev-body">' + esc(r.comment) + '</div></div>';
       }).join('');
     });
 };

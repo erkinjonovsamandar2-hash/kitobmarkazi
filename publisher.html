@@ -128,7 +128,7 @@
 </footer>
 
 <script src="data.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://unpkg.com/lucide@1.25.0"></script>
 <script src="cart.js"></script>
 <script>
 var params=new URLSearchParams(location.search);
@@ -194,7 +194,7 @@ async function loadPublisherPageData() {
 
 function fallbackInit() {
   var pub = PUBLISHERS[pubKey] || PUBLISHERS['booktopia'];
-  if (!pub) return;
+  if (!pub) { if (typeof isKMDataError !== 'undefined' && isKMDataError) showDataError(); return; }
   allBooks = getBooks(pubKey);
 
   document.title = pub.name + ' — Kitobmarkazi';

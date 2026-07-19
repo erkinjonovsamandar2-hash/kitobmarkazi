@@ -7,6 +7,14 @@ var COMING_SOON = [];
 var COURIERS = {};
 
 var isKMDataLoaded = false;
+var isKMDataError = false;
+
+/* HTML-escape any dynamic/DB/user text before injecting via innerHTML (XSS guard) */
+function esc(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+    return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+  });
+}
 
 /* ===== Static Configuration & Mapping Data ===== */
 
@@ -169,7 +177,9 @@ function pubLogoHTML(p, size){
 
 function findBook(pubKey, bookId){
   var arr = getBooks(pubKey);
-  return arr.filter(function(b){return b.id===bookId})[0] || arr[0];
+  // Return the exact match, or null when the id no longer exists — never a
+  // silently-wrong fallback book (callers guard for null).
+  return arr.filter(function(b){return b.id===bookId})[0] || null;
 }
 
 function buildSearchIndex(){
@@ -213,8 +223,8 @@ function couriersFor(region, tuman){
 function coverHTML(book, pub){
   var pubName = pub ? (pub.name) : '';
   var designed = '<div class="cv-pat"></div><div class="cv-grad"></div>'+
-    '<div class="cv-pub">'+pubName+'</div>'+
-    '<div class="cv-mid"><div class="cv-title">'+book.title+'</div><div class="cv-rule"></div><div class="cv-author">'+book.author+'</div></div>';
+    '<div class="cv-pub">'+esc(pubName)+'</div>'+
+    '<div class="cv-mid"><div class="cv-title">'+esc(book.title)+'</div><div class="cv-rule"></div><div class="cv-author">'+esc(book.author)+'</div></div>';
   
   var imgSrc = book.cover || ('images/covers/'+book.id+'.jpg');
   var fallbackPng = book.cover ? '' : 'data-png="images/covers/'+book.id+'.png"';
@@ -264,19 +274,19 @@ function bookCardHTML(pk, b){
   var pub = PUBLISHERS[pk];
   var wished = (typeof inWishlist==='function' && inWishlist(pk,b.id));
   var href = '/kitob?pub='+pk+'&book='+b.id;
-  return '<div class="book" onclick="location.href=\''+href+'\'" style="cursor:pointer">'+
+  return '<div class="book" role="link" tabindex="0" data-keyactivate="1" aria-label="'+esc(b.title)+' — batafsil" onclick="location.href=\''+href+'\'" style="cursor:pointer">'+
     '<div class="book-cover cover-sm" style="background:'+(b.color || '#13294A')+'">'+
       coverHTML(b,pub)+
-      '<button class="wish-btn '+(wished?'on':'')+'" title="Sevimlilar" onclick="event.stopPropagation();toggleWish(\''+pk+'\',\''+b.id+'\',this)"><svg class="wish-ic" width="16" height="16" viewBox="0 0 24 24" fill="'+(wished?'currentColor':'none')+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></button>'+
+      '<button class="wish-btn '+(wished?'on':'')+'" title="Sevimlilar" aria-label="Sevimlilarga qo\'shish" onclick="event.stopPropagation();toggleWish(\''+pk+'\',\''+b.id+'\',this)"><svg class="wish-ic" width="16" height="16" viewBox="0 0 24 24" fill="'+(wished?'currentColor':'none')+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></button>'+
       (b.top?'<div class="bc-badge">🔥 Top</div>':'')+
       (b.stock && b.stock < 5 ? '<div class="bc-badge" style="top:auto;bottom:12px;right:12px;background:#ef4444;color:#fff;font-size:8px">Faqat '+b.stock+' dona qoldi</div>' : '')+
     '</div>'+
 
     '<div class="book-body">'+
-      '<div class="book-meta"><div class="book-title">'+b.title+'</div><div class="book-author">'+b.author+'</div></div>'+
+      '<div class="book-meta"><div class="book-title">'+esc(b.title)+'</div><div class="book-author">'+esc(b.author)+'</div></div>'+
       '<div class="book-buy">'+
         '<span class="book-price">'+money(b.price)+'</span>'+
-        '<button class="book-cta-btn" title="Savatga" onclick="event.stopPropagation();addAndToast(\''+pk+'\',\''+b.id+'\')">'+cartIcon(18)+'</button>'+
+        '<button class="book-cta-btn" title="Savatga" aria-label="Savatga qo\'shish" onclick="event.stopPropagation();addAndToast(\''+pk+'\',\''+b.id+'\')">'+cartIcon(18)+'</button>'+
       '</div>'+
     '</div></div>';
 }
@@ -446,6 +456,7 @@ function bookImages(bookId){
     console.log('✅ Kitobmarkazi dynamic data synchronized');
   }).catch(err => {
     console.warn('⚠️ API Sync failed, using fallback data:', err);
+    isKMDataError = true;
     isKMDataLoaded = true;
     document.dispatchEvent(new CustomEvent('kmDataLoaded'));
   });

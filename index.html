@@ -65,8 +65,11 @@
   .pcard:hover{transform:translateY(-6px);box-shadow:var(--sh-lg),var(--glow-teal);border-color:var(--teal)}
   .pcard-logo{height:112px;display:flex;align-items:center;justify-content:center;padding:18px;background:var(--cream);transition:background 0.25s}
   .pcard:hover .pcard-logo{background:rgba(29,158,117,0.03)}
-  .pcard-logo img{transition:transform 0.3s var(--ease-premium)}
-  .pcard:hover .pcard-logo img{transform:scale(1.05)}
+  /* Uniform logo footprint: every tile shows a same-sized mark regardless of
+     the source logo's dimensions (image) or a text fallback. */
+  .pcl-img{max-height:54px;max-width:78%;width:auto;object-fit:contain;display:block;transition:transform 0.3s var(--ease-premium)}
+  .pcl-fallback{width:56px;height:56px;border-radius:14px;background:var(--surface-tinted);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:800;font-size:19px;color:var(--teal-d);letter-spacing:0.02em;transition:transform 0.3s var(--ease-premium)}
+  .pcard:hover .pcl-img,.pcard:hover .pcl-fallback{transform:scale(1.05)}
   .pcard-foot{padding:12px 14px 14px;border-top:1px solid var(--border);text-align:center}
   .pcard-name{font-size:13.5px;color:var(--ink);font-weight:600;margin-bottom:2px}
   .pcard-cnt{font-size:11.5px;color:var(--light)}
@@ -537,11 +540,12 @@
 </div>
 
 <script src="data.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://unpkg.com/lucide@1.25.0"></script>
 <script src="cart.js"></script>
 <script>
 function initPageData(){
   if (!isKMDataLoaded) return;
+  if (isKMDataError && Object.keys(PUBLISHERS).length === 0) { showDataError(); return; }
   /* Dynamically build order and counts */
   var keys=Object.keys(PUBLISHERS);
   var firstKey=keys.filter(function(k){return PUBLISHERS[k].first})[0];
@@ -554,9 +558,13 @@ function initPageData(){
   /* Publishers grid (first 20 on home) */
   document.getElementById('pubGrid').innerHTML=order.slice(0,20).map(function(k){
     var p=PUBLISHERS[k];
+    var initials = p.text || (p.name ? p.name.trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').substring(0,2).toUpperCase() : '');
+    var logoInner = p.logo
+      ? '<img class="pcl-img" src="'+p.logo+'" alt="'+esc(p.name)+'" onerror="this.style.display=\'none\';var s=this.nextElementSibling;if(s)s.style.display=\'flex\'"><span class="pcl-fallback" style="display:none">'+esc(initials)+'</span>'
+      : '<span class="pcl-fallback">'+esc(initials)+'</span>';
     return '<a class="pcard" href="publisher.html?pub='+k+'">'+(p.first?'<div class="first-badge">★ TOP</div>':'')+
-      '<div class="pcard-logo">'+pubLogoHTML(p,104)+'</div>'+
-      '<div class="pcard-foot"><div class="pcard-name">'+p.name+'</div><div class="pcard-cnt">'+counts[k]+' ta kitob</div></div></a>';
+      '<div class="pcard-logo">'+logoInner+'</div>'+
+      '<div class="pcard-foot"><div class="pcard-name">'+esc(p.name)+'</div><div class="pcard-cnt">'+counts[k]+' ta kitob</div></div></a>';
   }).join('');
 
   /* Best sellers — top books across publishers */
@@ -578,12 +586,12 @@ function initPageData(){
   document.getElementById('ads').innerHTML=COMING_SOON.map(function(a,i){
     var p=PUBLISHERS[a.pubKey] || {name: a.pubKey, first: false};
     var d=dateFromOffset(a.offsetDays);
-    return '<div class="poster" onclick="openModal('+i+')"><div style="position:absolute;inset:0;background:'+a.bg+'"></div><div class="pov"></div>'+
+    return '<div class="poster" role="button" tabindex="0" data-keyactivate="1" aria-label="'+esc(a.title)+' — batafsil" onclick="openModal('+i+')"><div style="position:absolute;inset:0;background:'+a.bg+'"></div><div class="pov"></div>'+
       '<div class="poster-thumb" style="background:'+a.bg+'">'+coverHTML(a,p)+'</div>'+
       '<div class="pdate"><div class="pday">'+(d.getDate()<10?'0':'')+d.getDate()+'</div><div class="pmon">'+monthsUz[d.getMonth()]+'</div></div>'+
       '<div class="pc"><span class="soon">'+(a.label==='Premyera'?'🔥 ':'⏳ ')+a.label+'</span><div>'+
-      '<div class="ppub"><div class="ppl">'+pubLogoHTML(p,24)+'</div><span class="ppn">'+p.name+'</span></div>'+
-      '<div class="pt">'+a.title+'</div><div class="pa">'+a.author+'</div></div></div></div>';
+      '<div class="ppub"><div class="ppl">'+pubLogoHTML(p,24)+'</div><span class="ppn">'+esc(p.name)+'</span></div>'+
+      '<div class="pt">'+esc(a.title)+'</div><div class="pa">'+esc(a.author)+'</div></div></div></div>';
   }).join('');
 
   /* Genres section */
@@ -715,7 +723,7 @@ heroInput.addEventListener('input',function(){
   acList.innerHTML=res.map(function(r){
     var ic=r.type==='pub'?'<div class="ac-ic pub">'+pubLogoHTML(PUBLISHERS[r.pubKey],26)+'</div>':'<div class="ac-ic" style="background:'+r.color+'">📖</div>';
     var href=r.type==='pub'?'publisher.html?pub='+r.pubKey:'book.html?pub='+r.pubKey+'&book='+r.bookId;
-    return '<a class="ac-item" href="'+href+'">'+ic+'<div><div class="ac-tt">'+r.title+'</div><div class="ac-sub">'+r.sub+'</div></div></a>';
+    return '<a class="ac-item" href="'+href+'">'+ic+'<div><div class="ac-tt">'+esc(r.title)+'</div><div class="ac-sub">'+esc(r.sub)+'</div></div></a>';
   }).join('');
   acList.classList.add('show');
 });
