@@ -309,11 +309,11 @@
     <div class="ai-inner">
       <!-- INTRO -->
       <div id="aiIntro" class="ai-stage">
-        <div class="ai-badge">🤖 AI Maslahatchi</div>
+        <div class="ai-badge"><i data-lucide="sparkles" style="width:14px;height:14px;display:inline-block;vertical-align:-2px;margin-right:4px"></i> AI Maslahatchi</div>
         <h2 class="ai-h">Qaysi kitob aynan siz uchun?</h2>
         <p class="ai-sub">4 ta qisqa savolga javob bering — kayfiyatingiz, xarakteringiz va didingizga qarab sizga eng mos kitoblarni tavsiya qilamiz.</p>
         <button class="ai-start" onclick="aiStart()">Testni boshlash <span style="font-size:18px">→</span></button>
-        <div class="ai-meta">⏱️ 30 soniya · 📚 Shaxsiy tavsiya</div>
+        <div class="ai-meta"><i data-lucide="timer" style="width:13px;height:13px;display:inline-block;vertical-align:-2px;margin-right:2px"></i> 30 soniya · <i data-lucide="book-open" style="width:13px;height:13px;display:inline-block;vertical-align:-2px;margin-right:2px"></i> Shaxsiy tavsiya</div>
       </div>
 
       <!-- QUIZ -->
@@ -328,7 +328,7 @@
 
       <!-- RESULT -->
       <div id="aiResult" class="ai-stage" style="display:none">
-        <div class="ai-badge">✨ Tahlil tayyor</div>
+        <div class="ai-badge"><i data-lucide="sparkles" style="width:14px;height:14px;display:inline-block;vertical-align:-2px;margin-right:4px"></i> Tahlil tayyor</div>
         <div class="ai-profile-icon" id="aiProfIcon">📖</div>
         <h2 class="ai-h" id="aiProfTitle"></h2>
         <p class="ai-sub" id="aiProfDesc"></p>
@@ -349,7 +349,7 @@
     <div class="how-orb"></div>
     <div class="how-orb2"></div>
     <div class="how-head">
-      <div class="how-tag">✦ 3 ta oddiy qadam</div>
+      <div class="how-tag"><i data-lucide="zap" style="width:13px;height:13px;display:inline-block;vertical-align:-2px;margin-right:3px"></i> 3 ta oddiy qadam</div>
       <div class="how-h">Qanday buyurtma beraman?</div>
       <div class="how-hsub">Nashriyot tanlang, kitobni savatga qo'shing va eshigingizgacha yetkazib beramiz. Hammasi shu.</div>
     </div>
@@ -589,7 +589,7 @@ function initPageData(){
     return '<div class="poster" role="button" tabindex="0" data-keyactivate="1" aria-label="'+esc(a.title)+' — batafsil" onclick="openModal('+i+')"><div style="position:absolute;inset:0;background:'+a.bg+'"></div><div class="pov"></div>'+
       '<div class="poster-thumb" style="background:'+a.bg+'">'+coverHTML(a,p)+'</div>'+
       '<div class="pdate"><div class="pday">'+(d.getDate()<10?'0':'')+d.getDate()+'</div><div class="pmon">'+monthsUz[d.getMonth()]+'</div></div>'+
-      '<div class="pc"><span class="soon">'+(a.label==='Premyera'?'🔥 ':'⏳ ')+a.label+'</span><div>'+
+      '<div class="pc"><span class="soon">'+(a.label==='Premyera'?'<i data-lucide="flame" style="width:12px;height:12px;display:inline-block;vertical-align:-1px;margin-right:3px"></i> ':'<i data-lucide="clock" style="width:12px;height:12px;display:inline-block;vertical-align:-1px;margin-right:3px"></i> ')+a.label+'</span><div>'+
       '<div class="ppub"><div class="ppl">'+pubLogoHTML(p,24)+'</div><span class="ppn">'+esc(p.name)+'</span></div>'+
       '<div class="pt">'+esc(a.title)+'</div><div class="pa">'+esc(a.author)+'</div></div></div></div>';
   }).join('');
@@ -598,7 +598,7 @@ function initPageData(){
   var genreCounts={};
   allBooksFlat().forEach(function(x){genreCounts[x.genre]=(genreCounts[x.genre]||0)+1;});
   var totalBooks = allBooksFlat().length;
-  var allPill = '<a class="genre-pill on" href="search.html"><span class="gi">📚</span>Barchasi <span style="color:rgba(255,255,255,0.7);font-weight:600">('+totalBooks+')</span></a>';
+  var allPill = '<a class="genre-pill on" href="search.html"><span class="gi"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="M8 7h6"/><path d="M8 11h8"/></svg></span>Barchasi <span style="color:rgba(255,255,255,0.7);font-weight:600">('+totalBooks+')</span></a>';
   document.getElementById('genreRow').innerHTML=allPill + Object.keys(GENRES).map(function(g){
     if(!genreCounts[g])return '';
     return '<a class="genre-pill" href="search.html?genre='+g+'"><span class="gi">'+GENRES[g].icon+'</span>'+GENRES[g].name+' <span style="color:var(--light);font-weight:600">('+genreCounts[g]+')</span></a>';
@@ -707,11 +707,11 @@ function openModal(i){
   document.getElementById('csCovTitle').textContent=a.title;
   document.getElementById('csPubLogo').innerHTML=pubLogoHTML(p,20);
   document.getElementById('csPubName').textContent=p.name;
-  document.getElementById('csLabel').textContent=(a.label==='Premyera'?'🔥 ':'⏳ ')+a.label;
+  document.getElementById('csLabel').textContent=(a.label==='Premyera'?'★ ':'◷ ')+a.label;
   document.getElementById('csTitle').textContent=a.title;
   document.getElementById('csAuthor').textContent=a.author;
   document.getElementById('csDesc').textContent=a.desc;
-  document.getElementById('csDate').innerHTML='📅 Nashr sanasi: <b style="margin-left:4px">'+d.getDate()+' '+monthsUz[d.getMonth()]+' '+d.getFullYear()+'</b>';
+  document.getElementById('csDate').innerHTML='<i data-lucide="calendar" style="width:14px;height:14px;display:inline-block;vertical-align:-2px;margin-right:4px"></i> Nashr sanasi: <b style="margin-left:4px">'+d.getDate()+' '+monthsUz[d.getMonth()]+' '+d.getFullYear()+'</b>';
   var target=d.getTime();
   function tick(){
     var diff=target-Date.now();if(diff<0)diff=0;
@@ -732,7 +732,7 @@ heroInput.addEventListener('input',function(){
   var q=this.value;var res=searchAll(q);
   if(res.length===0){acList.classList.remove('show');acList.innerHTML='';if(q.trim().length>=2){acList.innerHTML='<div class="ac-empty">Hech narsa topilmadi</div>';acList.classList.add('show');}return;}
   acList.innerHTML=res.map(function(r){
-    var ic=r.type==='pub'?'<div class="ac-ic pub">'+pubLogoHTML(PUBLISHERS[r.pubKey],26)+'</div>':'<div class="ac-ic" style="background:'+r.color+'">📖</div>';
+    var ic=r.type==='pub'?'<div class="ac-ic pub">'+pubLogoHTML(PUBLISHERS[r.pubKey],26)+'</div>':'<div class="ac-ic" style="background:'+r.color+'"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></div>';
     var href=r.type==='pub'?'publisher.html?pub='+r.pubKey:'book.html?pub='+r.pubKey+'&book='+r.bookId;
     return '<a class="ac-item" href="'+href+'">'+ic+'<div><div class="ac-tt">'+esc(r.title)+'</div><div class="ac-sub">'+esc(r.sub)+'</div></div></a>';
   }).join('');
