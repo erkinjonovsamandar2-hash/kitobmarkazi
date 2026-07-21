@@ -301,7 +301,7 @@ function bookCardHTML(pk, b){
     '<div class="book-cover cover-sm" style="background:'+(b.color || '#13294A')+'">'+
       coverHTML(b,pub)+
       '<button class="wish-btn '+(wished?'on':'')+'" title="Sevimlilar" aria-label="Sevimlilarga qo\'shish" onclick="event.stopPropagation();toggleWish(\''+pk+'\',\''+b.id+'\',this)"><svg class="wish-ic" width="16" height="16" viewBox="0 0 24 24" fill="'+(wished?'currentColor':'none')+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></button>'+
-      (isTopPick(b)?'<div class="bc-badge">🔥 Top</div>':'')+
+      (isTopPick(b)?'<div class="bc-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 12.9a3.02 3.02 0 0 0 0 5.1 3.02 3.02 0 0 0 0-5.1Zm0-10.5C7 6.4 4 10.2 4 14a8 8 0 0 0 16 0c0-3.8-3-7.6-8-11.6Z"/></svg> Top</div>':'') +
       (b.stock && b.stock < 5 ? '<div class="bc-badge" style="top:auto;bottom:12px;right:12px;background:#ef4444;color:#fff;font-size:8px">Faqat '+b.stock+' dona qoldi</div>' : '')+
     '</div>'+
 

@@ -75,11 +75,11 @@ button:focus:not(:focus-visible), a:focus:not(:focus-visible), input:focus:not(:
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.28s var(--ease-premium);font-size:15px;position:relative;overflow:hidden}
 .btn::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.12),transparent 50%);opacity:0;transition:opacity 0.28s;pointer-events:none;border-radius:inherit}
 .btn:hover::before{opacity:1}
-.btn-teal{background:var(--grad-teal);color:#fff;padding:14px 26px;box-shadow:var(--sh-teal)}
+.btn-teal{background:var(--grad-teal);color:#fff;padding:15px 28px;box-shadow:var(--sh-teal);font-size:15px}
 .btn-teal:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(29,158,117,0.38),var(--glow-teal)}
 .btn-navy{background:var(--navy);color:#fff;padding:12px 22px;box-shadow:0 4px 14px rgba(10,22,40,0.2)}
 .btn-navy:hover{background:var(--navy2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(10,22,40,0.3)}
-.btn-ghost{background:var(--white);color:var(--ink);border:1.5px solid var(--border);padding:12px 22px;box-shadow:var(--sh-sm)}
+.btn-ghost{background:var(--white);color:var(--ink);border:1.5px solid var(--border);padding:13px 24px;box-shadow:var(--sh-sm)}
 .btn-ghost:hover{border-color:var(--teal);color:var(--teal-d);transform:translateY(-2px);box-shadow:var(--sh-md),var(--glow-teal)}
 .btn-gold{background:var(--grad-gold);color:#3D2A00;padding:14px 26px;box-shadow:var(--sh-gold);font-weight:700}
 .btn-gold:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(217,169,62,0.42),var(--glow-gold)}
@@ -153,8 +153,8 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .book-actions{display:flex;gap:8px;margin-top:auto}
 .book-detail-btn{flex:1;background:var(--white);color:var(--ink);border:1.5px solid var(--border);border-radius:10px;padding:9px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;text-align:center;transition:all 0.15s}
 .book-detail-btn:hover{border-color:var(--teal);color:var(--teal-d)}
-.book-cart-btn{width:42px;height:42px;flex-shrink:0;background:var(--teal);color:#fff;border:1.5px solid var(--teal);border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;padding:0}
-.book-cart-btn:hover{background:var(--teal-d);border-color:var(--teal-d);transform:translateY(-1px)}
+.book-cart-btn{width:44px;height:44px;flex-shrink:0;background:var(--grad-teal);color:#fff;border:none;border-radius:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s var(--ease-premium);padding:0;box-shadow:var(--sh-teal)}
+.book-cart-btn:hover{background:var(--teal-d);border-color:var(--teal-d);transform:translateY(-2px) scale(1.05);box-shadow:0 8px 20px rgba(29,158,117,0.35)}
 .book-cart-btn:hover{background:var(--teal-d)}
 
 /* ===== Autocomplete dropdown ===== */
@@ -275,28 +275,29 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 /* ===== Book card footer: price + inline actions (heart, cart) ===== */
 .book-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}
 .book-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.wish-btn-inline{width:42px;height:42px;flex-shrink:0;border-radius:12px;background:var(--white);border:1.5px solid var(--border);cursor:pointer;font-size:19px;color:var(--mid);display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.15s;padding:0}
-.wish-btn-inline:hover{border-color:#E2556F;color:#E2556F;transform:translateY(-1px)}
+.wish-btn-inline{width:44px;height:44px;flex-shrink:0;border-radius:13px;background:var(--white);border:1.5px solid var(--border);cursor:pointer;font-size:19px;color:var(--mid);display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.2s var(--ease-premium);padding:0;box-shadow:var(--sh-sm)}
+.wish-btn-inline:hover{border-color:#E2556F;color:#E2556F;transform:translateY(-2px);box-shadow:var(--sh-md),0 0 0 3px rgba(226,85,111,0.12)}
 .wish-btn-inline.on{background:#FCE9EE;color:#E2556F;border-color:#E2556F}
 
 /* ── Book card base (premium surface, hover glow) ── */
-.book{background:var(--white);border-radius:20px;overflow:hidden;border:1px solid var(--border);transition:all 0.35s var(--ease-premium);display:flex;flex-direction:column;box-shadow:var(--sh-sm);position:relative}
+.book{background:var(--white);border-radius:20px;overflow:hidden;border:1px solid var(--border);transition:all 0.35s var(--ease-premium);display:flex;flex-direction:column;box-shadow:var(--sh-md);position:relative}
 .book::after{content:'';position:absolute;inset:-1px;border-radius:21px;border:2px solid transparent;background:linear-gradient(135deg,rgba(29,158,117,0),rgba(217,169,62,0)) border-box;mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);mask-composite:exclude;-webkit-mask-composite:xor;opacity:0;transition:opacity 0.35s;pointer-events:none}
-.book:hover{transform:translateY(-8px);box-shadow:var(--sh-xl);border-color:transparent}
-.book:hover::after{opacity:1;background:linear-gradient(135deg,rgba(29,158,117,0.3),rgba(217,169,62,0.2)) border-box}
+.book:hover{transform:translateY(-6px);box-shadow:0 20px 40px -8px rgba(11,19,32,0.15),0 8px 16px -4px rgba(11,19,32,0.08);border-color:transparent}
+.book:hover::after{opacity:1;background:linear-gradient(135deg,rgba(29,158,117,0.35),rgba(217,169,62,0.25)) border-box}
 .book .book-cover{aspect-ratio:2/3;width:100%;height:auto;display:flex;align-items:flex-end;padding:16px;position:relative;overflow:hidden}
-.book-body{padding:16px 16px 18px;display:flex;flex-direction:column;flex:1}
-.book-title{font-size:14.5px;font-weight:600;color:var(--ink);line-height:1.25}
-.book-author{font-size:12px;color:var(--light)}
-.book-price{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--teal-d)}
+.book .book-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.12),transparent 40%);pointer-events:none;z-index:1}
+.book-body{padding:18px 18px 20px;display:flex;flex-direction:column;flex:1}
+.book-title{font-size:15px;font-weight:700;color:var(--ink);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.book-author{font-size:12.5px;color:var(--light);margin-top:3px}
+.book-price{font-family:var(--serif);font-size:18px;font-weight:800;color:var(--teal-d);letter-spacing:-0.01em}
 .bc-badge{position:absolute;top:12px;right:54px;z-index:4;background:var(--grad-gold);color:#3D2A00;font-size:9px;font-weight:800;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em;box-shadow:0 4px 12px rgba(217,169,62,0.4)}
 
 /* Book card body layout: meta (title/author) stacked tight, buy row pinned to bottom */
 .book-meta{display:flex;flex-direction:column;gap:var(--sp-xs);margin-bottom:10px}
 .book-buy{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-sm);margin-top:auto}
-.book-cta-btn{width:42px;height:42px;flex-shrink:0;background:var(--teal);color:#fff;border:1.5px solid var(--teal);border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;padding:0}
-.book-cta-btn:hover{background:var(--teal-d);border-color:var(--teal-d);transform:translateY(-1px)}
-.book-cta-btn:active{transform:scale(0.92)}
+.book-cta-btn{width:44px;height:44px;flex-shrink:0;background:var(--grad-teal);color:#fff;border:none;border-radius:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s var(--ease-premium);padding:0;box-shadow:var(--sh-teal)}
+.book-cta-btn:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 8px 20px rgba(29,158,117,0.35)}
+.book-cta-btn:active{transform:scale(0.93)}
 
 /* ============================================================
    MICRO-INTERACTIONS & POLISH LAYER (lightweight)
