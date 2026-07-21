@@ -90,10 +90,10 @@
   <div class="pb-filter">
     <div class="f-left">
       <button class="fpill on" onclick="filt('all',this)">Barchasi</button>
-      <button class="fpill" onclick="filt('top',this)">🔥 Top</button>
-      <button class="fpill" onclick="filt('new',this)">✨ Yangi</button>
-      <button class="fpill" onclick="filt('cheap',this)">💰 Arzon</button>
-      <button class="fpill" onclick="filt('rating',this)">⭐ Reyting</button>
+      <button class="fpill" onclick="filt('top',this)"><i data-lucide="flame" style="width:14px;height:14px;display:inline-block;vertical-align:-2px;margin-right:2px"></i> Top</button>
+      <button class="fpill" onclick="filt('new',this)"><i data-lucide="sparkles" style="width:14px;height:14px;display:inline-block;vertical-align:-2px;margin-right:2px"></i> Yangi</button>
+      <button class="fpill" onclick="filt('cheap',this)"><i data-lucide="tag" style="width:14px;height:14px;display:inline-block;vertical-align:-2px;margin-right:2px"></i> Arzon</button>
+      <button class="fpill" onclick="filt('rating',this)"><i data-lucide="star" style="width:14px;height:14px;display:inline-block;vertical-align:-2px;margin-right:2px"></i> Reyting</button>
     </div>
     <div class="f-right" id="fcount">0 ta kitob</div>
   </div>
@@ -208,8 +208,8 @@ function fallbackInit() {
   document.getElementById('pubAv').innerHTML = avHTML;
   
   document.getElementById('pubBadges').innerHTML =
-    '<span class="pbadge gold">⭐ Top nashriyot</span><span class="pbadge">' + (pub.founded || 2020) + ' yildan</span>' +
-    '<span class="pbadge">📍 ' + (pub.city || 'Toshkent') + '</span><span class="pbadge">' + allBooks.length + ' ta kitob</span>';
+    '<span class="pbadge gold"><i data-lucide="award" style="width:12px;height:12px;display:inline-block;vertical-align:-1px;margin-right:2px"></i> Top nashriyot</span><span class="pbadge">' + (pub.founded || 2020) + ' yildan</span>' +
+    '<span class="pbadge"><i data-lucide="map-pin" style="width:12px;height:12px;display:inline-block;vertical-align:-1px;margin-right:2px"></i> ' + (pub.city || 'Toshkent') + '</span><span class="pbadge">' + allBooks.length + ' ta kitob</span>';
 
   render();
 }

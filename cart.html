@@ -44,7 +44,7 @@
 
   /* Summary (sticky) */
   .c-side{position:sticky;top:90px}
-  .summary{background:var(--white);border:1px solid #E4E8E7;border-radius:20px;padding:24px;box-shadow:var(--sh-lg);position:relative;overflow:hidden}
+  .summary{background:rgba(255,255,255,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(228,232,231,0.7);border-radius:20px;padding:24px;box-shadow:var(--sh-lg);position:relative;overflow:hidden}
   .summary::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--grad-teal)}
   .sum-title{font-family:var(--serif);font-size:19px;font-weight:800;margin-bottom:18px;color:var(--ink)}
   .sum-row{display:flex;justify-content:space-between;align-items:center;font-size:14.5px;color:var(--mid);padding:9px 0}
@@ -72,7 +72,14 @@
     .c-hero{padding:22px 16px 20px}.c-wrap{padding:20px 16px 40px}
     .citem{flex-wrap:wrap;gap:12px}.citem-cover{width:54px;height:74px}
     .citem-ctrl{flex-direction:row;width:100%;justify-content:space-between;align-items:center}
-  }</style>
+  }
+  /* Undo toast */
+  .undo-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:rgba(10,22,40,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);color:#fff;border-radius:14px;padding:14px 22px;display:flex;align-items:center;gap:14px;font-size:14px;font-weight:600;box-shadow:0 16px 40px rgba(0,0,0,0.2);z-index:999;transition:transform 0.4s var(--ease-premium);border:1px solid rgba(255,255,255,0.08)}
+  .undo-toast.show{transform:translateX(-50%) translateY(0)}
+  .undo-toast .undo-btn{background:var(--teal);color:#fff;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;box-shadow:var(--sh-teal)}
+  .undo-toast .undo-btn:hover{background:var(--teal-d);transform:scale(1.03)}
+  .undo-toast .undo-timer{width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--gold-l);flex-shrink:0}
+</style>
 </head>
 <body>
 
@@ -171,8 +178,8 @@ function render(){
     '<div class="sum-divider"></div>'+
     '<div class="sum-total"><span class="l">Jami</span><span class="v">'+money(total)+'</span></div>'+
     '<a class="btn btn-teal checkout" href="order.html">Buyurtmani rasmiylashtirish →</a>'+
-    '<div class="sum-note">🔒 Xavfsiz va himoyalangan to\'lov</div>'+
-    '<div class="sum-trust"><span>🚚 Tez yetkazish</span><span>↩️ Qaytarish</span><span>✓ Original</span></div>'+
+    '<div class="sum-note"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Xavfsiz va himoyalangan to\'lov</div>'+
+    '<div class="sum-trust"><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg> Tez yetkazish</span><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg> Qaytarish</span><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Original</span></div>'+
     '</div><a class="keepshop" href="publishers.html">← Xaridni davom ettirish</a></div>';
 
   page.innerHTML='<div class="c-hero"><div class="c-orb"></div><div class="c-hin"><div class="c-htitle">Savatcha</div><div class="c-hsub">'+cartCount()+' ta kitob · '+Object.keys(groups).length+' ta nashriyotdan</div></div></div>'+
@@ -185,10 +192,48 @@ function dec(pk,id){var c=getCart();c.forEach(function(i){if(i.pubKey===pk&&i.bo
 function rem(pk,id){
   var b = findBook(pk,id);
   var title = (b && b.title) ? b.title : 'Kitob';
-  if(confirm('"' + title + '" savatdan o\'chirilsinmi?')){
-    removeFromCart(pk,id);
-    render();
-  }
+  var qty = 0;
+  var c = getCart();
+  c.forEach(function(i){if(i.pubKey===pk&&i.bookId===id)qty=i.qty;});
+  removeFromCart(pk,id);
+  render();
+  showUndoToast(title, pk, id, qty);
+}
+
+var _undoTimer = null;
+function showUndoToast(title, pk, id, qty) {
+  var existing = document.getElementById('undoToast');
+  if (existing) existing.remove();
+  clearTimeout(_undoTimer);
+
+  var toast = document.createElement('div');
+  toast.className = 'undo-toast';
+  toast.id = 'undoToast';
+  var secs = 5;
+  toast.innerHTML = '<span>"' + title + '" o\'chirildi</span><button class="undo-btn" onclick="undoRemove(\'' + pk + '\',\'' + id + '\',' + qty + ')">Qaytarish</button><div class="undo-timer" id="undoSecs">' + secs + '</div>';
+  document.body.appendChild(toast);
+  setTimeout(function(){ toast.classList.add('show'); }, 50);
+
+  var iv = setInterval(function(){
+    secs--;
+    var el = document.getElementById('undoSecs');
+    if (el) el.textContent = secs;
+    if (secs <= 0) { clearInterval(iv); dismissToast(); }
+  }, 1000);
+
+  _undoTimer = setTimeout(function(){ clearInterval(iv); dismissToast(); }, 5200);
+}
+function undoRemove(pk, id, qty) {
+  clearTimeout(_undoTimer);
+  var c = getCart();
+  c.push({pubKey: pk, bookId: id, qty: qty || 1});
+  saveCart(c);
+  render();
+  dismissToast();
+}
+function dismissToast() {
+  var t = document.getElementById('undoToast');
+  if (t) { t.classList.remove('show'); setTimeout(function(){ t.remove(); }, 400); }
 }
 if (isKMDataLoaded) render();
 document.addEventListener('kmDataLoaded', render);

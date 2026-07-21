@@ -95,7 +95,7 @@
   try{ raw=localStorage.getItem('km_ai_result'); }catch(e){}
   var page=document.getElementById('page');
   if(!raw){
-    page.innerHTML='<div class="tv-wrap"><div class="tv-empty"><div class="te-ic">🤖</div><h2>Hali test ishlamadingiz</h2><p>AI Maslahatchi sizga mos kitoblarni tavsiya qilishi uchun avval qisqa testdan o\'ting.</p><a class="btn btn-teal" href="index.html#ai">Testni boshlash →</a></div></div>';
+    page.innerHTML='<div class="tv-wrap"><div class="tv-empty"><div class="te-ic"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg></div><h2>Hali test ishlamadingiz</h2><p>AI Maslahatchi sizga mos kitoblarni tavsiya qilishi uchun avval qisqa testdan o\'ting.</p><a class="btn btn-teal" href="index.html#ai">Testni boshlash →</a></div></div>';
     return;
   }
   var data=JSON.parse(raw);
@@ -109,7 +109,7 @@
   page.innerHTML=
     '<div class="tv-hero"><div class="tv-orb tv-orb1"></div><div class="tv-orb tv-orb2"></div><div class="tv-pat"></div>'+
       '<div class="tv-hin">'+
-        '<div class="tv-badge">🤖 AI Maslahatchi tahlili</div>'+
+        '<div class="tv-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-2px;margin-right:4px"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg> AI Maslahatchi tahlili</div>'+
         '<div class="tv-prof-icon">'+data.profileIcon+'</div>'+
         '<h1 class="tv-h">'+data.profileTitle+'</h1>'+
         '<p class="tv-desc">'+data.profileDesc+'</p>'+
@@ -117,7 +117,7 @@
       '</div>'+
     '</div>'+
     '<div class="tv-wrap">'+
-      '<div class="tv-label"><span class="tl-txt">📚 Sizga ushbu kitoblarni tavsiya qilamiz</span><span class="tl-line"></span></div>'+
+      '<div class="tv-label"><span class="tl-txt"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-2px;margin-right:4px"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="M8 7h6"/><path d="M8 11h8"/></svg> Sizga ushbu kitoblarni tavsiya qilamiz</span><span class="tl-line"></span></div>'+
       '<div class="tv-grid">'+cards+'</div>'+
       '<div class="tv-actions">'+
         '<a class="btn btn-ghost" href="index.html#ai">↻ Qaytadan test</a>'+
