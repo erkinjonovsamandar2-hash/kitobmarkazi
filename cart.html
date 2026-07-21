@@ -133,7 +133,7 @@ function render(){
   var items=cartItemsDetailed();
   var page=document.getElementById('page');
   if(items.length===0){
-    page.innerHTML='<div class="c-wrap"><div class="empty-cart"><div class="ec-ic">🛒</div><h2>Savatchangiz bo\'sh</h2><p>Nashriyotlardan kitob tanlab, savatga qo\'shing</p><a class="btn btn-teal" href="publishers.html">📚 Nashriyotlarni ko\'rish</a></div></div>';
+    page.innerHTML='<div class="c-wrap"><div class="empty-cart"><img src="images/empty-cart.png" alt="" style="width:180px;height:auto;margin:0 auto 24px;display:block;opacity:0.9"><h2>Savatchangiz bo\'sh</h2><p>Nashriyotlardan kitob tanlab, savatga qo\'shing</p><a class="btn btn-teal" href="publishers.html"><i data-lucide="book-open" style="width:16px;height:16px;display:inline-block;vertical-align:-2px;margin-right:6px"></i> Nashriyotlarni ko\'rish</a></div></div>';
     return;
   }
   var groups={};
