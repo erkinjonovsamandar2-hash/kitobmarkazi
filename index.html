@@ -182,19 +182,20 @@
   .ai-progress{height:6px;background:rgba(255,255,255,0.08);border-radius:5px;overflow:hidden;max-width:420px;margin:0 auto 16px;border:1px solid rgba(255,255,255,0.04)}
   .ai-progress-bar{height:100%;background:linear-gradient(90deg,var(--teal),var(--teal-l));border-radius:5px;width:25%;transition:width 0.4s var(--ease-premium);box-shadow:0 0 10px rgba(93,202,165,0.5)}
   .ai-step-meta{font-size:12.5px;color:var(--teal-l);font-weight:700;letter-spacing:0.05em;margin-bottom:18px}
-  .ai-q-icon{font-size:42px;margin-bottom:12px}
+  .ai-q-icon{margin-bottom:12px;display:flex;align-items:center;justify-content:center;color:var(--gold-l)}
   .ai-q{font-family:var(--serif);font-size:26px;font-weight:800;color:#fff;margin-bottom:26px;line-height:1.25}
   .ai-opts{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:620px;margin:0 auto}
   .ai-opt{display:flex;align-items:center;gap:13px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:16px;padding:18px 20px;cursor:pointer;transition:all 0.25s var(--ease-premium);text-align:left}
   .ai-opt:hover{background:rgba(29,158,117,0.15);border-color:var(--teal);transform:translateY(-2px);box-shadow:var(--sh-md),var(--glow-teal)}
-  .ai-opt-emoji{font-size:26px;flex-shrink:0}
+  .ai-opt-emoji{flex-shrink:0;display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,0.06);color:var(--teal-l)}
   .ai-opt-label{font-size:15.5px;font-weight:600;color:#fff;line-height:1.35}
   .ai-back{background:none;border:none;color:rgba(255,255,255,0.5);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;margin-top:24px;padding:8px}
   .ai-back:hover{color:#fff}
   /* result */
-  .ai-profile-icon{font-size:52px;margin-bottom:10px}
+  .ai-profile-icon{margin-bottom:10px;display:flex;align-items:center;justify-content:center;color:var(--teal-l)}
   .ai-tags{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
-  .ai-tag{background:rgba(232,178,62,0.15);color:var(--gold);font-size:12.5px;font-weight:700;padding:7px 15px;border-radius:18px;border:1px solid rgba(232,178,62,0.3)}
+  .ai-tag{background:rgba(232,178,62,0.15);color:var(--gold);font-size:12.5px;font-weight:700;padding:7px 15px;border-radius:18px;border:1px solid rgba(232,178,62,0.3);display:inline-flex;align-items:center;gap:6px}
+  .ai-tag svg{width:14px;height:14px;flex-shrink:0}
   .ai-recs-label{font-size:13px;font-weight:700;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:18px}
   .ai-recs{grid-template-columns:repeat(3,1fr);gap:18px;text-align:left;margin-bottom:8px}
   .ai-recs .book{background:#fff}
@@ -757,7 +758,7 @@ function aiRenderQ(){
   document.getElementById('aiStepNum').textContent=(aiIdx+1);
   /* Progress bar: 0% at start, fills as you answer (#12) */
   document.getElementById('aiBar').style.width=(aiIdx/QUIZ.length*100)+'%';
-  document.getElementById('aiQIcon').textContent=q.icon;
+  document.getElementById('aiQIcon').innerHTML=q.icon;
   document.getElementById('aiQText').textContent=q.q;
   document.getElementById('aiBackBtn').style.display=aiIdx>0?'inline-block':'none';
   /* Smooth transition (#11) */
@@ -810,7 +811,7 @@ function aiShowResult(){
   resultEl.classList.add('ai-stage-enter');
   document.getElementById('aiProfTitle').textContent=prof.title;
   document.getElementById('aiProfDesc').textContent=prof.desc;
-  document.getElementById('aiProfIcon').textContent=(GENRES[topG]&&GENRES[topG].icon)||'📖';
+  document.getElementById('aiProfIcon').innerHTML=(GENRES[topG]&&GENRES[topG].icon)||'<svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>';
   document.getElementById('aiTags').innerHTML=res.topGenres.map(function(g){
     return '<span class="ai-tag">'+((GENRES[g]&&GENRES[g].icon)||'')+' '+((GENRES[g]&&GENRES[g].name)||g)+'</span>';
   }).join('');
