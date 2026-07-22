@@ -90,10 +90,11 @@ button:focus:not(:focus-visible), a:focus:not(:focus-visible), input:focus:not(:
 .sec-alt{background:var(--white);padding:72px 0 0}
 .sec-alt > *{max-width:1100px;margin-left:auto;margin-right:auto;padding-left:32px;padding-right:32px}
 .sh{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;gap:16px;flex-wrap:wrap}
-.st{font-family:var(--serif);font-size:30px;font-weight:800;color:var(--ink);letter-spacing:-0.025em;position:relative;display:inline-block}
-.st::after{content:'';position:absolute;left:0;bottom:-8px;width:60%;min-width:40px;height:3px;background:var(--grad-gold);border-radius:3px}
+.st{font-family:var(--serif);font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-0.03em;line-height:1.1;position:relative;display:inline-block;padding-top:18px}
+/* editorial masthead rule ABOVE the title (was a cramped underline below it) */
+.st::before{content:'';position:absolute;left:0;top:0;width:36px;height:3px;background:var(--grad-gold);border-radius:3px}
 .sh{padding-bottom:4px}
-.ss{font-size:14px;color:var(--mid);margin-top:5px;line-height:1.5}
+.ss{font-size:14.5px;color:var(--light);margin-top:9px;line-height:1.5;max-width:52ch}
 .sa{font-size:13.5px;color:var(--teal-d);font-weight:600;white-space:nowrap;transition:color 0.2s}
 .sa:hover{color:var(--teal)}
 
@@ -477,14 +478,14 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== Section Title Underline Swipe (#5) ===== */
-.st::after {
+/* ===== Section masthead rule swipe-in (#5) ===== */
+.st::before {
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.6s 0.15s cubic-bezier(0.16,1,0.3,1);
 }
-.reveal.in .st::after,
-.sec .st::after { transform: scaleX(1); }
+.reveal.in .st::before,
+.sec .st::before { transform: scaleX(1); }
 
 /* ===== Best Sellers Scroll Fade Hint (#6) ===== */
 .bs-scroll {
