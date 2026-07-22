@@ -487,11 +487,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .reveal.in .st::before,
 .sec .st::before { transform: scaleX(1); }
 
-/* ===== Best Sellers Scroll Fade Hint (#6) ===== */
-.bs-scroll {
-  -webkit-mask-image: linear-gradient(to right, #000 85%, transparent 100%);
-  mask-image: linear-gradient(to right, #000 85%, transparent 100%);
-}
+/* Best-sellers scroll fade is handled dynamically in index.html (.fade-l/.fade-r) */
 
 /* ===== Genre Pills Wave Cascade (#7) ===== */
 .reveal.in .genre-pill {

@@ -118,7 +118,13 @@
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(232,178,62,0.6)}70%{box-shadow:0 0 0 12px rgba(232,178,62,0)}100%{box-shadow:0 0 0 0 rgba(232,178,62,0)}}
   .adnav{display:flex;gap:8px}
   .adb{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--border);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--mid);font-size:20px;transition:all 0.2s var(--ease-premium);line-height:1;box-shadow:var(--sh-sm)}
-  .adb:hover{border-color:var(--teal);color:var(--teal);background:#F0FAF6;transform:scale(1.05)}
+  .adb:hover:not(:disabled){border-color:var(--teal);color:var(--teal);background:#F0FAF6;transform:scale(1.05)}
+  .adb:disabled{opacity:0.32;cursor:default;box-shadow:none}
+  /* Carousel: grab-to-drag + dynamic edge fades (whichever side has more content) */
+  .bs-scroll,.adscroll{cursor:grab;user-select:none;--fl:#000;--fr:#000;-webkit-mask-image:linear-gradient(to right,var(--fl),#000 5%,#000 95%,var(--fr));mask-image:linear-gradient(to right,var(--fl),#000 5%,#000 95%,var(--fr))}
+  .bs-scroll.fade-l,.adscroll.fade-l{--fl:transparent}
+  .bs-scroll.fade-r,.adscroll.fade-r{--fr:transparent}
+  .bs-scroll.dragging,.adscroll.dragging{cursor:grabbing;scroll-snap-type:none;scroll-behavior:auto}
   .adscroll{display:flex;gap:18px;overflow-x:auto;padding:6px 32px 18px;scroll-behavior:smooth;scrollbar-width:none}
   .adscroll::-webkit-scrollbar{display:none}
   .poster{flex:0 0 400px;border-radius:20px;overflow:hidden;position:relative;height:240px;cursor:pointer;transition:all 0.3s var(--ease-premium);box-shadow:var(--sh-md)}
@@ -297,9 +303,9 @@
 <div class="sec reveal">
   <div class="sh">
     <div><div class="st">Eng ko'p sotilgan</div><div class="ss">Kitobxonlar eng ko'p tanlagan asarlar</div></div>
-    <div class="adnav">
-      <button class="adb" onclick="document.getElementById('bsScroll').scrollBy({left:-428,behavior:'smooth'})">‹</button>
-      <button class="adb" onclick="document.getElementById('bsScroll').scrollBy({left:428,behavior:'smooth'})">›</button>
+    <div class="adnav" data-track="bsScroll">
+      <button class="adb adb-prev" aria-label="Oldingi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+      <button class="adb adb-next" aria-label="Keyingi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
   </div>
   <div class="bs-scroll" id="bsScroll"></div>
@@ -313,9 +319,9 @@
 <section class="adsec reveal">
   <div class="adhead">
     <div class="adtitle"><span class="pulse"></span><span class="adt">Tez kunda sotuvda</span></div>
-    <div class="adnav">
-      <button class="adb" onclick="document.getElementById('ads').scrollBy({left:-418,behavior:'smooth'})">‹</button>
-      <button class="adb" onclick="document.getElementById('ads').scrollBy({left:418,behavior:'smooth'})">›</button>
+    <div class="adnav" data-track="ads">
+      <button class="adb adb-prev" aria-label="Oldingi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+      <button class="adb adb-next" aria-label="Keyingi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
   </div>
   <div class="adscroll" id="ads"></div>
@@ -657,6 +663,43 @@ function initPageData(){
   if (window._kmStartStats) window._kmStartStats();
 
   if(window.refreshIcons) window.refreshIcons();
+  initCarousels();
+}
+
+/* ===== Carousels: drag-to-scroll, arrows that disable at the ends, dynamic edge fades ===== */
+function initCarousel(track, prev, next){
+  if(!track || track.dataset.carInit) return;
+  track.dataset.carInit = '1';
+  function step(){ var c = track.firstElementChild; return c ? (c.offsetWidth + 14) : Math.round(track.clientWidth*0.8); }
+  function update(){
+    var max = track.scrollWidth - track.clientWidth - 1;
+    var x = track.scrollLeft;
+    if(prev) prev.disabled = x <= 2;
+    if(next) next.disabled = x >= max - 2;
+    track.classList.toggle('fade-l', x > 8);
+    track.classList.toggle('fade-r', x < max - 8);
+  }
+  if(prev) prev.onclick = function(){ track.scrollBy({left:-step()*2, behavior:'smooth'}); };
+  if(next) next.onclick = function(){ track.scrollBy({left: step()*2, behavior:'smooth'}); };
+  track.addEventListener('scroll', update, {passive:true});
+  window.addEventListener('resize', update);
+  // drag / swipe to scroll
+  var down=false, startX=0, startLeft=0, moved=false;
+  track.addEventListener('pointerdown', function(e){ down=true; moved=false; startX=e.clientX; startLeft=track.scrollLeft; track.classList.add('dragging'); });
+  track.addEventListener('pointermove', function(e){ if(!down) return; var dx=e.clientX-startX; if(Math.abs(dx)>4) moved=true; track.scrollLeft = startLeft - dx; });
+  function end(){ if(!down) return; down=false; track.classList.remove('dragging'); update(); }
+  track.addEventListener('pointerup', end);
+  track.addEventListener('pointercancel', end);
+  track.addEventListener('pointerleave', end);
+  // swallow the click that ends a drag so it doesn't navigate into a card
+  track.addEventListener('click', function(e){ if(moved){ e.preventDefault(); e.stopPropagation(); moved=false; } }, true);
+  update();
+}
+function initCarousels(){
+  document.querySelectorAll('.adnav[data-track]').forEach(function(nav){
+    var track = document.getElementById(nav.dataset.track);
+    initCarousel(track, nav.querySelector('.adb-prev'), nav.querySelector('.adb-next'));
+  });
 }
 
 if (isKMDataLoaded) initPageData();
