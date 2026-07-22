@@ -46,12 +46,14 @@
   .snum span{font-size:22px;color:var(--teal-l)}
   .slbl{font-size:12.5px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.07em;margin-top:5px;font-weight:600}
   .stat-div{width:1px;height:44px;background:rgba(255,255,255,0.12);align-self:center}
-  .showcase{position:relative;height:360px;display:flex;align-items:center;justify-content:center;perspective:1000px}
-  .sc-back{position:absolute;width:200px;height:290px;border-radius:16px;background:linear-gradient(150deg,var(--navy2),var(--navy3));transform:rotate(7deg) translateX(24px);z-index:1;box-shadow:0 24px 48px rgba(0,0,0,0.32);opacity:0.85;border:1px solid rgba(255,255,255,0.06)}
-  .sc-card{position:relative;z-index:2;overflow:hidden;width:224px;height:312px;border-radius:16px;background:linear-gradient(150deg,var(--teal),var(--teal-d));box-shadow:0 36px 70px rgba(0,0,0,0.42);padding:26px;display:flex;flex-direction:column;justify-content:space-between;transform:rotateY(-12deg) rotateX(10deg) rotateZ(-4deg);transition:all 0.5s var(--ease-premium);cursor:pointer;border:1px solid rgba(255,255,255,0.1);transform-style:preserve-3d}
-  .sc-card:hover{transform:rotateY(0deg) rotateX(0deg) rotateZ(-1deg) translateY(-10px) scale(1.03);box-shadow:0 45px 85px rgba(0,0,0,0.52),var(--glow-teal);border-color:rgba(255,255,255,0.25)}
+  .showcase{position:relative;height:360px;display:flex;align-items:center;justify-content:center;perspective:1700px}
+  /* book body / pages behind the front cover, revealed when it swings open */
+  .sc-back{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:222px;height:312px;border-radius:10px 16px 16px 10px;background:linear-gradient(90deg,#cbc4b6,#eeeae1 9%,#faf8f5 58%),repeating-linear-gradient(90deg,rgba(0,0,0,0.05) 0 1px,transparent 1px 6px);z-index:1;box-shadow:0 30px 58px rgba(0,0,0,0.34);border:1px solid rgba(0,0,0,0.06)}
+  .sc-card{position:relative;z-index:2;overflow:hidden;width:224px;height:312px;border-radius:16px;background:linear-gradient(150deg,var(--teal),var(--teal-d));box-shadow:0 36px 70px rgba(0,0,0,0.42);padding:26px;display:flex;flex-direction:column;justify-content:space-between;transform-origin:left center;transform:rotateY(-11deg);transition:transform 0.6s var(--ease-premium),box-shadow 0.6s var(--ease-premium);cursor:pointer;border:1px solid rgba(255,255,255,0.1);backface-visibility:hidden}
+  .showcase:hover .sc-card{transform:rotateY(-56deg);box-shadow:34px 30px 74px -22px rgba(0,0,0,0.62)}
   .sc-card>.sc-top,.sc-card>div,.sc-card>.sc-foot{position:relative;z-index:2}
-  .sc-badge{position:absolute;z-index:4;top:-12px;right:-12px;background:var(--gold);color:#3D2A00;font-size:11.5px;font-weight:800;padding:8px 15px;border-radius:30px;transform:rotate(6deg);box-shadow:0 10px 24px rgba(217,169,62,0.3);animation:badgeFloat 3s infinite alternate}
+  .sc-badge{position:absolute;z-index:5;top:14px;right:calc(50% - 132px);background:var(--gold);color:#3D2A00;font-size:11.5px;font-weight:800;padding:8px 15px;border-radius:30px;box-shadow:0 10px 24px rgba(217,169,62,0.35);animation:badgeFloat 3s infinite alternate}
+  @media(prefers-reduced-motion:reduce){.showcase:hover .sc-card{transform:rotateY(-11deg)}}
   @keyframes badgeFloat{0%{transform:rotate(6deg) translateY(0)}100%{transform:rotate(8deg) translateY(-4px)}}
   .sc-top{font-size:11px;color:rgba(255,255,255,0.72);text-transform:uppercase;letter-spacing:0.12em;font-weight:700}
   .sc-title{font-family:var(--serif);font-size:30px;font-weight:800;color:#fff;line-height:1.15;text-shadow:0 2px 10px rgba(0,0,0,0.25)}
@@ -95,9 +97,12 @@
   @media(max-width:600px){.col-grid{grid-template-columns:repeat(2,1fr);gap:12px}.col-sp{width:52px;height:76px}}
   .bs-scroll{display:flex;gap:14px;overflow-x:auto;padding:6px 2px 22px;scroll-behavior:smooth;scrollbar-width:none;scroll-snap-type:x mandatory}
   .bs-scroll::-webkit-scrollbar{display:none}
-  .bs-card{flex:0 0 200px;background:var(--white);border-radius:18px;overflow:hidden;border:1px solid var(--border);transition:all 0.35s var(--ease-premium);display:flex;flex-direction:column;box-shadow:var(--sh-sm);scroll-snap-align:start}
-  .bs-card:hover{transform:translateY(-8px);box-shadow:var(--sh-xl);border-color:var(--teal)}
-  .bs-cover{aspect-ratio:2/3;width:100%;height:auto;display:flex;align-items:flex-end;padding:12px;position:relative;overflow:hidden}
+  .bs-card{flex:0 0 200px;background:var(--white);border-radius:18px;overflow:hidden;border:1px solid var(--border);transition:transform 0.4s var(--ease-premium),box-shadow 0.4s var(--ease-premium);display:flex;flex-direction:column;box-shadow:var(--sh-sm);scroll-snap-align:start;position:relative;perspective:1400px}
+  .bs-card::after{content:'';position:absolute;top:0;left:0;right:0;aspect-ratio:2/3;z-index:1;border-radius:18px 18px 0 0;background:linear-gradient(90deg,#d7d0c2,#f3f0e8 11%,#faf8f5 55%),repeating-linear-gradient(90deg,rgba(0,0,0,0.05) 0 1px,transparent 1px 5px);box-shadow:inset 0 0 0 1px rgba(0,0,0,0.05)}
+  .bs-card:hover{transform:translateY(-6px);box-shadow:var(--sh-xl)}
+  .bs-cover{aspect-ratio:2/3;width:100%;height:auto;display:flex;align-items:flex-end;padding:12px;position:relative;overflow:hidden;z-index:2;transform-origin:left center;transition:transform 0.55s var(--ease-premium),box-shadow 0.55s var(--ease-premium);backface-visibility:hidden}
+  .bs-card:hover .bs-cover{transform:rotateY(-24deg);box-shadow:16px 14px 32px -14px rgba(11,19,32,0.5)}
+  @media(prefers-reduced-motion:reduce){.bs-card:hover .bs-cover{transform:none}}
   .bs-cover .cv-pub{padding-left:28px}
   .bs-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.45),transparent 55%)}
   .bs-rank{position:absolute;top:8px;left:8px;z-index:3;width:28px;height:28px;border-radius:50%;background:var(--grad-gold);color:#3D2A00;font-family:var(--serif);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(217,169,62,0.45)}
@@ -118,7 +123,13 @@
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(232,178,62,0.6)}70%{box-shadow:0 0 0 12px rgba(232,178,62,0)}100%{box-shadow:0 0 0 0 rgba(232,178,62,0)}}
   .adnav{display:flex;gap:8px}
   .adb{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--border);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--mid);font-size:20px;transition:all 0.2s var(--ease-premium);line-height:1;box-shadow:var(--sh-sm)}
-  .adb:hover{border-color:var(--teal);color:var(--teal);background:#F0FAF6;transform:scale(1.05)}
+  .adb:hover:not(:disabled){border-color:var(--teal);color:var(--teal);background:#F0FAF6;transform:scale(1.05)}
+  .adb:disabled{opacity:0.32;cursor:default;box-shadow:none}
+  /* Carousel: grab-to-drag + dynamic edge fades (whichever side has more content) */
+  .bs-scroll,.adscroll{cursor:grab;user-select:none;--fl:#000;--fr:#000;-webkit-mask-image:linear-gradient(to right,var(--fl),#000 5%,#000 95%,var(--fr));mask-image:linear-gradient(to right,var(--fl),#000 5%,#000 95%,var(--fr))}
+  .bs-scroll.fade-l,.adscroll.fade-l{--fl:transparent}
+  .bs-scroll.fade-r,.adscroll.fade-r{--fr:transparent}
+  .bs-scroll.dragging,.adscroll.dragging{cursor:grabbing;scroll-snap-type:none;scroll-behavior:auto}
   .adscroll{display:flex;gap:18px;overflow-x:auto;padding:6px 32px 18px;scroll-behavior:smooth;scrollbar-width:none}
   .adscroll::-webkit-scrollbar{display:none}
   .poster{flex:0 0 400px;border-radius:20px;overflow:hidden;position:relative;height:240px;cursor:pointer;transition:all 0.3s var(--ease-premium);box-shadow:var(--sh-md)}
@@ -277,11 +288,11 @@
       <div class="sc-back"></div>
       <a id="scCard" href="#" class="sc-card">
         <div class="cv-pat"></div>
-        <div class="sc-badge">★ Haftaning kitobi</div>
         <div class="sc-top" id="scPub"></div>
         <div><div class="sc-title" id="scTitle"></div><div class="sc-auth" id="scAuthor"></div></div>
         <div class="sc-foot"><span class="sc-price" id="scPrice"></span><span class="sc-star" id="scRating"></span></div>
       </a>
+      <div class="sc-badge">★ Haftaning kitobi</div>
     </div>
   </div>
 </section>
@@ -297,9 +308,9 @@
 <div class="sec reveal">
   <div class="sh">
     <div><div class="st">Eng ko'p sotilgan</div><div class="ss">Kitobxonlar eng ko'p tanlagan asarlar</div></div>
-    <div class="adnav">
-      <button class="adb" onclick="document.getElementById('bsScroll').scrollBy({left:-428,behavior:'smooth'})">‹</button>
-      <button class="adb" onclick="document.getElementById('bsScroll').scrollBy({left:428,behavior:'smooth'})">›</button>
+    <div class="adnav" data-track="bsScroll">
+      <button class="adb adb-prev" aria-label="Oldingi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+      <button class="adb adb-next" aria-label="Keyingi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
   </div>
   <div class="bs-scroll" id="bsScroll"></div>
@@ -313,9 +324,9 @@
 <section class="adsec reveal">
   <div class="adhead">
     <div class="adtitle"><span class="pulse"></span><span class="adt">Tez kunda sotuvda</span></div>
-    <div class="adnav">
-      <button class="adb" onclick="document.getElementById('ads').scrollBy({left:-418,behavior:'smooth'})">‹</button>
-      <button class="adb" onclick="document.getElementById('ads').scrollBy({left:418,behavior:'smooth'})">›</button>
+    <div class="adnav" data-track="ads">
+      <button class="adb adb-prev" aria-label="Oldingi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+      <button class="adb adb-next" aria-label="Keyingi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
   </div>
   <div class="adscroll" id="ads"></div>
@@ -657,6 +668,43 @@ function initPageData(){
   if (window._kmStartStats) window._kmStartStats();
 
   if(window.refreshIcons) window.refreshIcons();
+  initCarousels();
+}
+
+/* ===== Carousels: drag-to-scroll, arrows that disable at the ends, dynamic edge fades ===== */
+function initCarousel(track, prev, next){
+  if(!track || track.dataset.carInit) return;
+  track.dataset.carInit = '1';
+  function step(){ var c = track.firstElementChild; return c ? (c.offsetWidth + 14) : Math.round(track.clientWidth*0.8); }
+  function update(){
+    var max = track.scrollWidth - track.clientWidth - 1;
+    var x = track.scrollLeft;
+    if(prev) prev.disabled = x <= 2;
+    if(next) next.disabled = x >= max - 2;
+    track.classList.toggle('fade-l', x > 8);
+    track.classList.toggle('fade-r', x < max - 8);
+  }
+  if(prev) prev.onclick = function(){ track.scrollBy({left:-step()*2, behavior:'smooth'}); };
+  if(next) next.onclick = function(){ track.scrollBy({left: step()*2, behavior:'smooth'}); };
+  track.addEventListener('scroll', update, {passive:true});
+  window.addEventListener('resize', update);
+  // drag / swipe to scroll
+  var down=false, startX=0, startLeft=0, moved=false;
+  track.addEventListener('pointerdown', function(e){ down=true; moved=false; startX=e.clientX; startLeft=track.scrollLeft; track.classList.add('dragging'); });
+  track.addEventListener('pointermove', function(e){ if(!down) return; var dx=e.clientX-startX; if(Math.abs(dx)>4) moved=true; track.scrollLeft = startLeft - dx; });
+  function end(){ if(!down) return; down=false; track.classList.remove('dragging'); update(); }
+  track.addEventListener('pointerup', end);
+  track.addEventListener('pointercancel', end);
+  track.addEventListener('pointerleave', end);
+  // swallow the click that ends a drag so it doesn't navigate into a card
+  track.addEventListener('click', function(e){ if(moved){ e.preventDefault(); e.stopPropagation(); moved=false; } }, true);
+  update();
+}
+function initCarousels(){
+  document.querySelectorAll('.adnav[data-track]').forEach(function(nav){
+    var track = document.getElementById(nav.dataset.track);
+    initCarousel(track, nav.querySelector('.adb-prev'), nav.querySelector('.adb-next'));
+  });
 }
 
 if (isKMDataLoaded) initPageData();
