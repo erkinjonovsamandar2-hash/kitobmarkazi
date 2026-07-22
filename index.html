@@ -74,6 +74,25 @@
   .pcard-name{font-size:13.5px;color:var(--ink);font-weight:600;margin-bottom:2px}
   .pcard-cnt{font-size:11.5px;color:var(--light)}
   .first-badge{position:absolute;top:10px;right:10px;background:var(--grad-gold);color:#3D2A00;font-size:9px;font-weight:800;padding:4px 10px;border-radius:20px;z-index:2;letter-spacing:0.04em;box-shadow:0 3px 8px rgba(217,169,62,0.25)}
+
+  /* ── Genre → collection cards: each genre is a fanned stack of its book spines ── */
+  .col-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px}
+  .col-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px 16px 16px;display:flex;flex-direction:column;align-items:center;gap:16px;text-decoration:none;box-shadow:var(--sh-sm);transition:transform .32s var(--ease-premium),box-shadow .32s var(--ease-premium),border-color .3s}
+  .col-card:hover{transform:translateY(-5px);box-shadow:var(--sh-lg);border-color:var(--teal)}
+  .col-stack{position:relative;width:100%;height:96px;display:flex;align-items:flex-end;justify-content:center}
+  .col-sp{position:absolute;bottom:0;width:60px;height:88px;border-radius:4px 7px 7px 4px;background-size:cover;background-position:center;box-shadow:0 10px 20px rgba(13,27,42,0.22);border:1px solid rgba(255,255,255,0.45);transition:transform .38s var(--ease-premium)}
+  .col-sp::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:4px 0 0 4px;background:rgba(0,0,0,0.28)}
+  .col-sp::after{content:'';position:absolute;right:0;top:2px;bottom:2px;width:2px;background:rgba(255,255,255,0.35)}
+  .col-sp-c{z-index:3}
+  .col-sp-l{z-index:1;transform:translateX(-34px) rotate(-9deg)}
+  .col-sp-r{z-index:2;transform:translateX(34px) rotate(9deg)}
+  .col-card:hover .col-sp-l{transform:translateX(-44px) rotate(-13deg)}
+  .col-card:hover .col-sp-r{transform:translateX(44px) rotate(13deg)}
+  .col-card:hover .col-sp-c{transform:translateY(-5px)}
+  .col-meta{text-align:center}
+  .col-name{font-size:14.5px;font-weight:700;color:var(--ink)}
+  .col-cnt{font-size:12px;color:var(--light);margin-top:3px}
+  @media(max-width:600px){.col-grid{grid-template-columns:repeat(2,1fr);gap:12px}.col-sp{width:52px;height:76px}}
   .bs-scroll{display:flex;gap:14px;overflow-x:auto;padding:6px 2px 22px;scroll-behavior:smooth;scrollbar-width:none;scroll-snap-type:x mandatory}
   .bs-scroll::-webkit-scrollbar{display:none}
   .bs-card{flex:0 0 200px;background:var(--white);border-radius:18px;overflow:hidden;border:1px solid var(--border);transition:all 0.35s var(--ease-premium);display:flex;flex-direction:column;box-shadow:var(--sh-sm);scroll-snap-align:start}
@@ -287,8 +306,8 @@
 </div>
 
 <div class="sec reveal">
-  <div class="sh"><div><div class="st">Janrlar bo'yicha</div><div class="ss">Qiziqishingizga mos kitoblarni toping</div></div></div>
-  <div class="genre-row" id="genreRow"></div>
+  <div class="sh"><div><div class="st">Janrlar bo'yicha</div><div class="ss">Qiziqishingizga mos kitoblarni toping</div></div><a class="sa" href="/qidirish">Barchasi →</a></div>
+  <div class="col-grid" id="genreRow"></div>
 </div>
 
 <section class="adsec reveal">
@@ -598,11 +617,22 @@ function initPageData(){
   /* Genres section */
   var genreCounts={};
   allBooksFlat().forEach(function(x){genreCounts[x.genre]=(genreCounts[x.genre]||0)+1;});
-  var totalBooks = allBooksFlat().length;
-  var allPill = '<a class="genre-pill on" href="search.html"><span class="gi"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="M8 7h6"/><path d="M8 11h8"/></svg></span>Barchasi <span style="color:rgba(255,255,255,0.7);font-weight:600">('+totalBooks+')</span></a>';
-  document.getElementById('genreRow').innerHTML=allPill + Object.keys(GENRES).map(function(g){
-    if(!genreCounts[g])return '';
-    return '<a class="genre-pill" href="search.html?genre='+g+'"><span class="gi">'+GENRES[g].icon+'</span>'+GENRES[g].name+' <span style="color:var(--light);font-weight:600">('+genreCounts[g]+')</span></a>';
+  // Group books by genre so each collection card can show a fanned stack of
+  // that genre's real covers/colours.
+  var byGenre = {};
+  allBooksFlat().forEach(function(x){ (byGenre[x.genre] = byGenre[x.genre] || []).push(x.b); });
+  var spineCls = ['col-sp-c','col-sp-l','col-sp-r'];
+  document.getElementById('genreRow').innerHTML = Object.keys(GENRES).map(function(g){
+    if(!genreCounts[g]) return '';
+    var bks = (byGenre[g] || []).slice(0, 3);
+    var spines = bks.map(function(b, i){
+      var bg = b.cover ? ("url('" + b.cover + "') center/cover") : (b.color || '#13294A');
+      return '<span class="col-sp ' + (spineCls[i] || 'col-sp-c') + '" style="background:' + bg + '"></span>';
+    }).join('');
+    return '<a class="col-card" href="/qidirish?genre=' + g + '">' +
+      '<div class="col-stack">' + spines + '</div>' +
+      '<div class="col-meta"><div class="col-name">' + esc(GENRES[g].name) + '</div>' +
+      '<div class="col-cnt">' + genreCounts[g] + ' ta kitob</div></div></a>';
   }).join('');
 
   /* Dynamic hero showcase card (#2) */

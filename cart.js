@@ -135,6 +135,50 @@ document.addEventListener('keydown', function(e){
   target.click();
 });
 
+/* ===== Book cards: pointer/touch-reactive 3D tilt =====
+   Each .book leans in perspective toward the cursor/finger, like a physical
+   book you turn in your hand — the depth cue that a flat hover-lift can't give.
+   Skipped entirely when the user prefers reduced motion. */
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return;
+  var MAX = 9;        // max degrees of tilt
+  var LIFT = 8;       // px lift, matches the CSS hover
+  var current = null;
+
+  function tilt(card, cx, cy){
+    var r = card.getBoundingClientRect();
+    var px = (cx - r.left) / r.width;   // 0..1 across
+    var py = (cy - r.top) / r.height;   // 0..1 down
+    var ry = (px - 0.5) * 2 * MAX;      // rotateY: left/right
+    var rx = (0.5 - py) * 2 * MAX;      // rotateX: up/down
+    card.style.transition = 'transform 0.12s ease-out';
+    card.style.transform = 'perspective(900px) rotateX('+rx.toFixed(2)+'deg) rotateY('+ry.toFixed(2)+'deg) translateY(-'+LIFT+'px)';
+  }
+  function reset(card){
+    if(!card) return;
+    card.style.transition = '';   // fall back to CSS transition for a smooth settle
+    card.style.transform = '';
+  }
+
+  document.addEventListener('pointermove', function(e){
+    var card = e.target.closest ? e.target.closest('.book') : null;
+    if (card !== current){ reset(current); current = card; }
+    if (card) tilt(card, e.clientX, e.clientY);
+  }, { passive: true });
+  document.addEventListener('pointerout', function(e){
+    if (current && (!e.relatedTarget || !current.contains(e.relatedTarget))){ reset(current); current = null; }
+  }, { passive: true });
+  // Touch: lean toward the finger, release on lift
+  document.addEventListener('touchstart', function(e){
+    var t = e.target.closest ? e.target.closest('.book') : null;
+    if (t){ var p = e.touches[0]; current = t; tilt(t, p.clientX, p.clientY); }
+  }, { passive: true });
+  function endTouch(){ reset(current); current = null; }
+  document.addEventListener('touchend', endTouch, { passive: true });
+  document.addEventListener('touchcancel', endTouch, { passive: true });
+})();
+
 /* ===== Scroll reveal (lightweight, all pages) ===== */
 (function(){
   function initReveal(){
