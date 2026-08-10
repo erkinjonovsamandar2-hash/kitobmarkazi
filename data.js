@@ -260,6 +260,22 @@ function coverHTML(book, pub){
   return designed + img;
 }
 
+/* A solid 3D book: front cover, page block, and rear cover rotate together.
+   The geometry mirrors the approved Mutolaa reference while cover artwork and
+   commerce controls remain Kitobmarkazi's own. */
+function physicalBookHTML(book, pub, frontExtra, frontClass){
+  var color = book.color || '#13294A';
+  frontExtra = frontExtra || '';
+  frontClass = frontClass || 'book-cover cover-sm';
+  return '<div class="physical-book">'+
+    '<div class="physical-book-inner">'+
+      '<div class="physical-book-front '+frontClass+'" style="background:'+color+'">'+coverHTML(book,pub)+frontExtra+'</div>'+
+      '<div class="physical-book-pages" aria-hidden="true"></div>'+
+      '<div class="physical-book-back cover-sm" aria-hidden="true" style="background:'+color+'">'+coverHTML(book,pub)+'</div>'+
+    '</div>'+
+  '</div>';
+}
+
 function recommendFor(pubKey, book, limit){
   limit = limit || 4;
   var recs = [], seen = {};
@@ -297,14 +313,12 @@ function bookCardHTML(pk, b){
   var pub = PUBLISHERS[pk];
   var wished = (typeof inWishlist==='function' && inWishlist(pk,b.id));
   var href = '/kitob?pub='+pk+'&book='+b.id;
+  var coverExtras =
+    '<button class="wish-btn '+(wished?'on':'')+'" title="Sevimlilar" aria-label="Sevimlilarga qo\'shish" onclick="event.stopPropagation();toggleWish(\''+pk+'\',\''+b.id+'\',this)"><svg class="wish-ic" width="16" height="16" viewBox="0 0 24 24" fill="'+(wished?'currentColor':'none')+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></button>'+
+    (isTopPick(b)?'<div class="bc-badge">'+flameIcon(10)+'Top</div>':'')+
+    (b.stock && b.stock < 5 ? '<div class="bc-badge low-stock">Faqat '+b.stock+' dona qoldi</div>' : '');
   return '<div class="book" role="link" tabindex="0" data-keyactivate="1" aria-label="'+esc(b.title)+' — batafsil" onclick="location.href=\''+href+'\'" style="cursor:pointer">'+
-    '<div class="book-cover cover-sm" style="background:'+(b.color || '#13294A')+'">'+
-      coverHTML(b,pub)+
-      '<button class="wish-btn '+(wished?'on':'')+'" title="Sevimlilar" aria-label="Sevimlilarga qo\'shish" onclick="event.stopPropagation();toggleWish(\''+pk+'\',\''+b.id+'\',this)"><svg class="wish-ic" width="16" height="16" viewBox="0 0 24 24" fill="'+(wished?'currentColor':'none')+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></button>'+
-      (isTopPick(b)?'<div class="bc-badge">'+flameIcon(10)+'Top</div>':'') +
-      (b.stock && b.stock < 5 ? '<div class="bc-badge" style="top:auto;bottom:12px;right:12px;background:#ef4444;color:#fff;font-size:8px">Faqat '+b.stock+' dona qoldi</div>' : '')+
-    '</div>'+
-
+    physicalBookHTML(b,pub,coverExtras)+
     '<div class="book-body">'+
       '<div class="book-meta"><div class="book-title">'+esc(b.title)+'</div><div class="book-author">'+esc(b.author)+'</div></div>'+
       '<div class="book-buy">'+

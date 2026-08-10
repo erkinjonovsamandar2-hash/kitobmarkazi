@@ -576,3 +576,33 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   }
 }
 
+/* ===== Solid 3D book cards (Mutolaa reference) =====
+   Front cover, page edge, and rear cover form one object. The surrounding
+   commerce card stays still so the interaction reads as a physical book. */
+.book{background:var(--white);border-radius:16px;border:1px solid var(--border);display:flex;flex-direction:column;position:relative;padding:20px 16px 16px;box-shadow:none;transition:border-color .25s ease,box-shadow .25s ease;overflow:visible;perspective:none}
+.book::before,.book::after{content:none}
+.book:hover{transform:none;border-color:#DDE3EA;box-shadow:0 10px 28px -24px rgba(11,19,32,.34)}
+.physical-book{width:min(100%,200px);aspect-ratio:200/304;margin:0 auto;perspective:800px;position:relative;z-index:2}
+.physical-book-inner{position:relative;width:100%;height:100%;border-radius:4px;transform-style:preserve-3d;transform:rotateY(0deg);transition:transform 720ms cubic-bezier(.22,1,.36,1)}
+.book:hover .physical-book-inner,.book:focus-visible .physical-book-inner,.book:active .physical-book-inner,.bs-card:hover .physical-book-inner,.bs-book-link:focus-visible .physical-book-inner,.bs-book-link:active .physical-book-inner{transform:rotateY(-28deg)}
+.physical-book-front,.physical-book-back{position:absolute;inset:0;border-radius:4px;overflow:hidden;backface-visibility:hidden}
+.book .physical-book-front,.physical-book-front{aspect-ratio:auto;width:auto;height:auto;display:flex;align-items:flex-end;padding:16px;position:absolute;inset:0;z-index:auto;transform:translateZ(26px);transform-origin:center;transition:none;box-shadow:0 1px 2px rgba(15,23,42,.08),0 6px 14px -4px rgba(15,23,42,.14),0 14px 32px -8px rgba(15,23,42,.08)}
+.book:hover .physical-book-front,.book:active .physical-book-front{transform:translateZ(26px);box-shadow:0 1px 2px rgba(15,23,42,.08),0 6px 14px -4px rgba(15,23,42,.14),0 14px 32px -8px rgba(15,23,42,.08)}
+.physical-book-front::after{content:'';position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(to top,rgba(0,0,0,.20),transparent 50%,rgba(255,255,255,.05)),linear-gradient(90deg,transparent 0,transparent 1%,rgba(0,0,0,.20) 2%,rgba(255,255,255,.32) 4%,rgba(0,0,0,.06) 7%,transparent 9%)}
+.physical-book-front .wish-btn,.physical-book-front .bc-badge,.physical-book-front .bs-rank{z-index:6}
+.physical-book-pages{position:absolute;left:calc(100% - 26px);top:3px;bottom:3px;width:36px;transform:rotateY(90deg);background:linear-gradient(90deg,#fff 50%,#f9f9f9 50%),repeating-linear-gradient(0deg,transparent 0 3px,rgba(15,23,42,.045) 3px 4px);box-shadow:inset -1px 0 2px rgba(0,0,0,.08)}
+.physical-book-back{transform:translateZ(-26px);filter:brightness(.4) saturate(.85);box-shadow:-4px 0 16px -4px rgba(15,23,42,.08),-10px 0 28px -8px rgba(15,23,42,.14)}
+.physical-book-back .wish-btn,.physical-book-back .bc-badge{display:none}
+.book .physical-book-front .cv-img,.book:hover .physical-book-front .cv-img{transform:none;transition:opacity .7s ease-out}
+.book-body{padding:15px 2px 0;display:flex;flex-direction:column;flex:1;text-align:center}
+.book-title{font-size:15px;font-weight:700;color:var(--ink);line-height:1.35;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.book-author{font-size:12.5px;color:var(--light);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.book-price{font-size:15px;white-space:nowrap}
+.book-meta{display:flex;flex-direction:column;gap:2px;margin-bottom:12px}
+.book-buy{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-sm);margin-top:auto;min-height:42px;border:1.5px solid var(--border);border-radius:999px;padding:3px 4px 3px 14px}
+.book-cta-btn{width:34px;height:34px;flex-shrink:0;background:var(--grad-teal);color:#fff;border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s var(--ease-premium);padding:0;box-shadow:none}
+.book-cta-btn:hover{transform:scale(1.05);box-shadow:0 6px 16px rgba(29,158,117,.28)}
+.bc-badge.low-stock{top:auto;bottom:12px;right:12px;background:#ef4444;color:#fff;font-size:8px}
+@media(max-width:600px){.book{padding:12px 9px 10px;border-radius:13px}.physical-book{width:min(100%,160px)}.book .physical-book-front,.physical-book-front{padding:12px;transform:translateZ(20px)}.book:hover .physical-book-front,.book:active .physical-book-front{transform:translateZ(20px)}.physical-book-back{transform:translateZ(-20px)}.physical-book-pages{left:calc(100% - 20px);width:30px}.book-body{padding-top:12px}.book-title{font-size:13.5px}.book-author{font-size:11.5px}.book-price{font-size:14px}.book-buy{min-height:36px;padding-left:10px}.book-cta-btn{width:28px;height:28px}}
+@media(prefers-reduced-motion:reduce){.physical-book-inner{transition:none!important}.book:hover .physical-book-inner,.book:focus-visible .physical-book-inner,.book:active .physical-book-inner,.bs-card:hover .physical-book-inner,.bs-book-link:focus-visible .physical-book-inner,.bs-book-link:active .physical-book-inner{transform:none}}
+

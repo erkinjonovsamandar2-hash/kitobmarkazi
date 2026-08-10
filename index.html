@@ -90,6 +90,20 @@
   .bs-cart{width:34px;height:34px;border-radius:10px;background:var(--teal);color:#fff;border:none;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all 0.25s var(--ease-premium);box-shadow:var(--sh-teal)}
   .bs-cart:hover{background:var(--teal-d);transform:scale(1.05)}
 
+  /* Bestseller cards use the same solid-book construction as catalogue cards. */
+  .bs-card{flex-basis:220px;border-radius:16px;padding:20px 14px 14px;overflow:visible;perspective:none;box-shadow:none}
+  .bs-card::after{content:none}
+  .bs-card:hover{transform:none;border-color:#DDE3EA;box-shadow:0 10px 28px -24px rgba(11,19,32,.34)}
+  .bs-book-link{display:block;color:inherit;text-decoration:none;outline:none}
+  .bs-card .physical-book{width:min(100%,180px)}
+  .bs-card .physical-book-front{position:absolute;inset:0;width:auto;height:auto;aspect-ratio:auto;z-index:auto;transform:translateZ(26px);transform-origin:center;transition:none;box-shadow:0 1px 2px rgba(15,23,42,.08),0 6px 14px -4px rgba(15,23,42,.14),0 14px 32px -8px rgba(15,23,42,.08)}
+  .bs-card:hover .physical-book-front{transform:translateZ(26px);box-shadow:0 1px 2px rgba(15,23,42,.08),0 6px 14px -4px rgba(15,23,42,.14),0 14px 32px -8px rgba(15,23,42,.08)}
+  .bs-body{padding:15px 2px 0;text-align:center}
+  .bs-title{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bs-auth{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bs-foot{border:1.5px solid var(--border);border-radius:999px;min-height:38px;padding:3px 4px 3px 12px}
+  .bs-cart{width:30px;height:30px;border-radius:50%;box-shadow:none}
+
   .adsec{padding:38px 0 18px;max-width:1100px;margin:0 auto}
   .adhead{display:flex;align-items:center;justify-content:space-between;padding:0 32px;margin-bottom:20px}
   .adtitle{display:flex;align-items:center;gap:12px}
@@ -451,7 +465,7 @@ function initPageData(){
   document.getElementById('bsScroll').innerHTML=best.map(function(x,i){
     var b=x.b;
     return '<div class="bs-card">'+
-      '<a href="book.html?pub='+x.pk+'&book='+b.id+'" class="bs-cover cover-sm" style="background:'+(b.color || '#13294A')+'">'+coverHTML(b,PUBLISHERS[x.pk])+'<div class="bs-rank">'+(i+1)+'</div></a>'+
+      '<a href="book.html?pub='+x.pk+'&book='+b.id+'" class="bs-book-link">'+physicalBookHTML(b,PUBLISHERS[x.pk],'<div class="bs-rank">'+(i+1)+'</div>','bs-cover cover-sm')+'</a>'+
       '<div class="bs-body"><div class="bs-title">'+b.title+'</div><div class="bs-auth">'+b.author+'</div>'+
       '<div class="bs-foot"><span class="bs-price">'+money(b.price)+'</span>'+
       '<button class="bs-cart" onclick="addAndToast(\''+x.pk+'\',\''+b.id+'\')">'+cartIcon(17)+'</button></div></div></div>';
