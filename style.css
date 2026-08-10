@@ -144,6 +144,13 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   .st{font-size:22px}.frow{grid-template-columns:1fr}
   .foot{padding:18px 16px;flex-direction:column;text-align:center}
 }
+@media(max-width:360px){
+  .nav{gap:8px}
+  .nav .brand{min-width:0;gap:0}
+  .nav .brand img{height:36px}
+  .nav .brand .bname{display:none}
+  .nav .wish-link,.nav .cart-link,.nav .nav-burger{width:38px;height:38px;flex:0 0 38px;margin-left:0!important}
+}
 
 /* ===== Cart badge in nav ===== */
 .cart-link{position:relative;display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,0.09);color:#fff;font-size:19px;transition:all 0.16s;text-decoration:none;border:1px solid rgba(255,255,255,0.06)}

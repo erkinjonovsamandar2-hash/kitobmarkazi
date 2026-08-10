@@ -48,6 +48,25 @@ router.get('/', async (req, res) => {
   }
 });
 
+/* Specific GET routes must be registered before the generic book-detail route. */
+/* GET /api/books/meta/genres */
+router.get('/meta/genres', async (req, res) => {
+  const rows = await db.prepare('SELECT genre, COUNT(*) as count FROM books GROUP BY genre ORDER BY count DESC').all();
+  res.json(rows);
+});
+
+/* GET /api/books/admin/all-reviews */
+router.get('/admin/all-reviews', adminRequired, async (req, res) => {
+  const rows = await db.prepare(`SELECT r.*, b.title as "bookTitle" FROM reviews r LEFT JOIN books b ON r."bookId" = b.id ORDER BY r."createdAt" DESC`).all();
+  res.json(rows);
+});
+
+/* GET /api/books/:id/reviews */
+router.get('/:id/reviews', async (req, res) => {
+  const reviews = await db.prepare('SELECT * FROM reviews WHERE "bookId" = $1 ORDER BY "createdAt" DESC').all(req.params.id);
+  res.json(reviews);
+});
+
 /* GET /api/books/:pubSlug/:bookId — single book */
 router.get('/:pubSlug/:bookId', async (req, res) => {
   try {
@@ -114,17 +133,6 @@ router.delete('/:pubSlug/:bookId', adminRequired, async (req, res) => {
 });
 
 /* GET /api/books/meta/genres */
-router.get('/meta/genres', async (req, res) => {
-  const rows = await db.prepare('SELECT genre, COUNT(*) as count FROM books GROUP BY genre ORDER BY count DESC').all();
-  res.json(rows);
-});
-
-/* GET /api/books/:id/reviews */
-router.get('/:id/reviews', async (req, res) => {
-  const reviews = await db.prepare('SELECT * FROM reviews WHERE "bookId" = $1 ORDER BY "createdAt" DESC').all(req.params.id);
-  res.json(reviews);
-});
-
 /* POST /api/books/:id/reviews */
 router.post('/:id/reviews', async (req, res) => {
   const { customerName, rating, comment, orderNumber } = req.body;
@@ -178,11 +186,6 @@ router.post('/:id/reviews', async (req, res) => {
 });
 
 /* GET /api/books/admin/all-reviews */
-router.get('/admin/all-reviews', adminRequired, async (req, res) => {
-  const rows = await db.prepare(`SELECT r.*, b.title as "bookTitle" FROM reviews r LEFT JOIN books b ON r."bookId" = b.id ORDER BY r."createdAt" DESC`).all();
-  res.json(rows);
-});
-
 /* DELETE /api/books/admin/reviews/:id */
 router.delete('/admin/reviews/:id', adminRequired, async (req, res) => {
   await db.prepare('DELETE FROM reviews WHERE id = $1').run(req.params.id);
