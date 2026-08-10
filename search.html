@@ -288,7 +288,10 @@ async function loadBooks() {
         rating: b.rating,
         top: b.isTop === 1 || b.isTop === true,
         stock: b.stock,
-        cover: b.cover
+        cover: b.cover,
+        coverPositionX: b.coverPositionX,
+        coverPositionY: b.coverPositionY,
+        coverScale: b.coverScale
       };
       return bookCardHTML(b.publisherSlug, mappedBook);
     }).join('');

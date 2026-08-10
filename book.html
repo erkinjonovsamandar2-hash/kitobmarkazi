@@ -265,6 +265,15 @@ async function loadBookDetails() {
       genre: data.genre,
       stock: data.stock,
       cover: data.cover,
+      description: data.description,
+      isbn: data.isbn,
+      language: data.language,
+      script: data.script,
+      binding: data.binding,
+      edition: data.edition,
+      coverPositionX: data.coverPositionX,
+      coverPositionY: data.coverPositionY,
+      coverScale: data.coverScale,
       recommendations: data.recommendations
     };
     
@@ -324,15 +333,20 @@ function renderBookPage() {
   document.getElementById('bkPubChip').href = 'publisher.html?pub=' + pubKey;
   document.getElementById('bkTitle').textContent = book.title;
   document.getElementById('bkAuthor').textContent = book.author;
-  var full = Math.floor(book.rating);
+  var full = Math.floor(Number(book.rating) || 0);
   document.getElementById('bkStars').textContent = '★★★★★'.slice(0, full) + '☆☆☆☆☆'.slice(0, 5 - full);
-  document.getElementById('bkRnum').textContent = book.rating + ' / 5.0';
-  document.getElementById('bkMeta').innerHTML =
-    '<div class="bk-mchip"><div class="bk-mval">' + book.pages + '</div><div class="bk-mlbl">sahifa</div></div>' +
-    '<div class="bk-mchip"><div class="bk-mval">' + book.year + '</div><div class="bk-mlbl">nashr yili</div></div>' +
-    '<div class="bk-mchip"><div class="bk-mval">O\'zbek</div><div class="bk-mlbl">til</div></div>' +
-    '<div class="bk-mchip"><div class="bk-mval">Qattiq</div><div class="bk-mlbl">muqova</div></div>';
-  document.getElementById('bkDesc').textContent = book.title + ' — ' + pub.name + ' nashriyoti tomonidan chop etilgan ' + book.author + ' qalamiga mansub asar. O\'zbek kitobxonlari orasida katta qiziqish uyg\'otgan ushbu kitob sifatli muqova va zamonaviy dizaynda taqdim etilgan.';
+  document.getElementById('bkRnum').textContent = full > 0 ? book.rating + ' / 5.0' : 'Hali baholanmagan';
+  var meta = [];
+  if (book.pages) meta.push([book.pages, 'sahifa']);
+  if (book.year) meta.push([book.year, 'nashr yili']);
+  if (book.language) meta.push([book.language, 'til']);
+  if (book.script) meta.push([book.script, 'yozuv']);
+  if (book.binding) meta.push([book.binding, 'muqova']);
+  if (book.isbn) meta.push([book.isbn, 'ISBN']);
+  document.getElementById('bkMeta').innerHTML = meta.map(function(item) {
+    return '<div class="bk-mchip"><div class="bk-mval">' + item[0] + '</div><div class="bk-mlbl">' + item[1] + '</div></div>';
+  }).join('');
+  document.getElementById('bkDesc').textContent = book.description || (book.title + ' — ' + book.author + ' asari, ' + pub.name + ' nashri.');
   document.getElementById('bkPrice').textContent = money(book.price);
   document.getElementById('addCartBtn').innerHTML = cartIcon(18) + ' Savatga qo\'shish';
   refreshWish();
@@ -351,7 +365,10 @@ function renderBookPage() {
         rating: r.rating,
         top: r.isTop === 1 || r.isTop === true,
         stock: r.stock,
-        cover: r.cover
+        cover: r.cover,
+        coverPositionX: r.coverPositionX,
+        coverPositionY: r.coverPositionY,
+        coverScale: r.coverScale
       }
     }));
   } else {

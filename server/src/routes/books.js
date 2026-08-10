@@ -93,13 +93,25 @@ router.get('/:pubSlug/:bookId', async (req, res) => {
 
 /* POST /api/books — admin: create book */
 router.post('/', adminRequired, async (req, res) => {
-  const { id, publisherSlug, title, author, price, color, rating, isTop, pages, year, genre, description, cover } = req.body;
+  const {
+    id, publisherSlug, title, author, price, color, rating, isTop, pages, year,
+    genre, description, cover, isbn, language, script, binding, edition, sourceUrl,
+    coverPositionX, coverPositionY, coverScale
+  } = req.body;
   if (!id || !publisherSlug || !title || !author || !price) {
     return res.status(400).json({ error: 'id, publisherSlug, title, author, price required' });
   }
   try {
-    await db.prepare(`INSERT INTO books (id,"publisherSlug",title,author,price,color,rating,"isTop",pages,year,genre,description,cover) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)`)
-      .run(id, publisherSlug, title, author, price, color||null, rating||0, isTop?1:0, pages||null, year||null, genre||'roman', description||null, cover||null);
+    await db.prepare(`INSERT INTO books (
+      id,"publisherSlug",title,author,price,color,rating,"isTop",pages,year,genre,description,cover,
+      isbn,language,script,binding,edition,"sourceUrl","coverPositionX","coverPositionY","coverScale"
+    ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22)`)
+      .run(
+        id, publisherSlug, title, author, price, color||null, rating||0, isTop?1:0,
+        pages||null, year||null, genre||'roman', description||null, cover||null,
+        isbn||null, language||null, script||null, binding||null, edition||null, sourceUrl||null,
+        coverPositionX ?? 50, coverPositionY ?? 50, coverScale ?? 1
+      );
     res.status(201).json({ ok: true });
   } catch (e) {
     res.status(400).json({ error: e.message });
@@ -109,14 +121,26 @@ router.post('/', adminRequired, async (req, res) => {
 /* PUT /api/books/:pubSlug/:bookId — admin: update book */
 router.put('/:pubSlug/:bookId', adminRequired, async (req, res) => {
   try {
-    const { title, author, price, color, rating, isTop, pages, year, genre, description, cover } = req.body;
+    const {
+      title, author, price, color, rating, isTop, pages, year, genre, description,
+      cover, isbn, language, script, binding, edition, sourceUrl,
+      coverPositionX, coverPositionY, coverScale
+    } = req.body;
     const result = await db.prepare(`UPDATE books SET
       title=COALESCE($1,title), author=COALESCE($2,author), price=COALESCE($3,price),
       color=COALESCE($4,color), rating=COALESCE($5,rating), "isTop"=COALESCE($6,"isTop"),
       pages=COALESCE($7,pages), year=COALESCE($8,year), genre=COALESCE($9,genre), description=COALESCE($10,description),
-      cover=COALESCE($11,cover)
-      WHERE "publisherSlug"=$12 AND id=$13`)
-      .run(title, author, price, color, rating, isTop!==undefined?(isTop?1:0):null, pages, year, genre, description, cover, req.params.pubSlug, req.params.bookId);
+      cover=COALESCE($11,cover), isbn=COALESCE($12,isbn), language=COALESCE($13,language),
+      script=COALESCE($14,script), binding=COALESCE($15,binding), edition=COALESCE($16,edition),
+      "sourceUrl"=COALESCE($17,"sourceUrl"), "coverPositionX"=COALESCE($18,"coverPositionX"),
+      "coverPositionY"=COALESCE($19,"coverPositionY"), "coverScale"=COALESCE($20,"coverScale")
+      WHERE "publisherSlug"=$21 AND id=$22`)
+      .run(
+        title, author, price, color, rating, isTop!==undefined?(isTop?1:0):null,
+        pages, year, genre, description, cover, isbn, language, script, binding,
+        edition, sourceUrl, coverPositionX, coverPositionY, coverScale,
+        req.params.pubSlug, req.params.bookId
+      );
     
     if (result.changes === 0) return res.status(404).json({ error: 'Book not found' });
     res.json({ ok: true });

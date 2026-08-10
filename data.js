@@ -252,7 +252,10 @@ function coverHTML(book, pub){
   var fallbackPng = book.cover ? '' : 'data-png="images/covers/'+book.id+'.png"';
   var errHandler = book.cover ? "this.style.display='none';" : "if(!this.dataset.t){this.dataset.t=1;this.src=this.dataset.png;}else{this.style.display='none';}";
   
-  var img = '<img class="cv-img" alt="" loading="lazy" '+
+  var coverX = Math.max(0, Math.min(100, Number(book.coverPositionX ?? 50)));
+  var coverY = Math.max(0, Math.min(100, Number(book.coverPositionY ?? 50)));
+  var coverScale = Math.max(1, Math.min(3, Number(book.coverScale ?? 1)));
+  var img = '<img class="cv-img" alt="" loading="lazy" style="--cover-x:'+coverX+'%;--cover-y:'+coverY+'%;--cover-scale:'+coverScale+';object-position:var(--cover-x) var(--cover-y);transform-origin:var(--cover-x) var(--cover-y);transform:scale(var(--cover-scale))" '+
     'src="'+imgSrc+'" '+
     fallbackPng+' '+
     'onload="this.parentElement&&this.parentElement.classList.add(\'cv-hasimg\')" '+
@@ -425,10 +428,18 @@ function bookImages(bookId){
           pages: b.pages,
           year: b.year,
           genre: b.genre,
-          cover: b.cover
+          cover: b.cover,
+          coverPositionX: b.coverPositionX,
+          coverPositionY: b.coverPositionY,
+          coverScale: b.coverScale
         });
       });
       BOOKS = newBooks;
+      // Storefront publisher lists should only expose publishers with a real,
+      // purchasable catalogue. Deferred publishers remain manageable in admin.
+      Object.keys(PUBLISHERS).forEach(function(slug) {
+        if (!newBooks[slug] || newBooks[slug].length === 0) delete PUBLISHERS[slug];
+      });
       computeTopThreshold();
 
       // Update WEEK_TOP if any top book is found
