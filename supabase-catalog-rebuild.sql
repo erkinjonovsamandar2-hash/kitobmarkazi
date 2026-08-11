@@ -46,8 +46,10 @@ DELETE FROM books;
 -- Existing coming-soon entries were unverified demo announcements. Keep the
 -- feature empty until a publisher supplies a real release date and cover.
 DELETE FROM coming_soon;
--- 'booktopia' is a real publisher (kept live, see data.js/index.html TOP badge) — not demo data.
-DELETE FROM publishers WHERE slug IN ('gutenberg');
+-- 'booktopia' (booktopia.uz) and 'gutenberg' (gutenbergnu.uz) are real publishers, confirmed
+-- with the client — not demo data. This DELETE previously targeted both; now a no-op kept
+-- for history. If another slug turns out to be genuine placeholder data, add it here.
+DELETE FROM publishers WHERE slug IN ('__none__');
 
 INSERT INTO books (
   id, "publisherSlug", title, author, price, color, rating, "isTop", pages,
