@@ -48,11 +48,10 @@
   .hero-book-link .physical-book{width:220px;filter:drop-shadow(0 34px 34px rgba(0,0,0,.34))}
   .hero-book-link:hover .physical-book-inner,.hero-book-link:focus-visible .physical-book-inner,.hero-book-link:active .physical-book-inner{transform:rotateY(-28deg)}
   .hero-book-caption{width:278px;min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:11px 12px 11px 15px;border:1px solid rgba(255,255,255,.16);border-radius:16px;background:rgba(8,22,35,.58);backdrop-filter:blur(14px);box-shadow:0 18px 36px -24px rgba(0,0,0,.7)}
-  .hero-book-copy{min-width:0}.sc-top{font-size:9px;color:var(--gold-l);text-transform:uppercase;letter-spacing:.1em;font-weight:800;margin-bottom:3px}.sc-title{font-family:var(--serif);font-size:15px;font-weight:800;color:#fff;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sc-auth{font-size:10.5px;color:rgba(255,255,255,.62);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
-  .hero-book-price{flex-shrink:0;text-align:right}.sc-price{display:block;font-family:var(--serif);font-size:15px;font-weight:800;color:#fff;white-space:nowrap}.sc-price small{font-size:9px;font-weight:500;opacity:.72}.sc-star{display:inline-block;margin-top:3px;font-size:9.5px;color:var(--gold-l);font-weight:800}
-  .sc-badge{position:absolute;z-index:5;top:22px;right:calc(50% - 145px);background:var(--gold);color:#3D2A00;font-size:11.5px;font-weight:800;padding:8px 15px;border-radius:30px;box-shadow:0 10px 24px rgba(217,169,62,0.35);animation:badgeFloat 3s infinite alternate}
+  .hero-book-copy{min-width:0;flex:1}.sc-top{font-size:9px;color:var(--gold-l);text-transform:uppercase;letter-spacing:.1em;font-weight:800;margin-bottom:3px}.sc-title{font-family:var(--serif);font-size:15px;font-weight:800;color:#fff;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sc-auth{font-size:10.5px;color:rgba(255,255,255,.62);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+  .hero-book-open{width:34px;height:34px;flex:0 0 34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.13);color:var(--teal-l);font-size:18px;transition:transform .25s var(--ease-premium),background .25s}
+  .hero-book-link:hover .hero-book-open,.hero-book-link:focus-visible .hero-book-open{transform:translateX(2px);background:rgba(255,255,255,.14)}
   @media(prefers-reduced-motion:reduce){.hero-book-link{transition:none}.hero-book-link:hover,.hero-book-link:focus-visible,.hero-book-link:active{transform:none}.hero-book-link:hover .physical-book-inner,.hero-book-link:focus-visible .physical-book-inner,.hero-book-link:active .physical-book-inner{transform:none}}
-  @keyframes badgeFloat{0%{transform:rotate(6deg) translateY(0)}100%{transform:rotate(8deg) translateY(-4px)}}
   /* Publisher card — compact horizontal row (client-approved "kartochka" direction) */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
   .publisher-rail{display:flex;overflow-x:auto;gap:12px;padding:4px 2px 14px;scroll-snap-type:x mandatory;scrollbar-width:none}
@@ -183,7 +182,7 @@
     .tag{font-size:9.5px;padding:7px 11px;margin-bottom:16px;letter-spacing:.12em}.hero h1{font-size:37px;line-height:1.03;letter-spacing:-0.036em;max-width:270px;margin-bottom:16px}
     .hsub{font-size:13.5px;line-height:1.65;max-width:225px;margin-bottom:22px}.stats{display:none}
     .showcase{display:flex;position:absolute;right:-2px;top:65px;width:126px;height:214px;align-items:flex-start;z-index:1;pointer-events:auto}
-    .hero-book-link{width:116px;gap:0}.hero-book-link .physical-book{width:104px;filter:drop-shadow(0 18px 18px rgba(0,0,0,.32))}.hero-book-caption,.sc-badge{display:none}
+    .hero-book-link{width:116px;gap:0}.hero-book-link .physical-book{width:104px;filter:drop-shadow(0 18px 18px rgba(0,0,0,.32))}.hero-book-caption{display:none}
     .ac-wrap{max-width:none!important}.search{border-radius:16px;padding:6px}.sinput{min-width:0;padding:12px 10px;font-size:13px}.sbtn{padding:12px 16px;border-radius:11px;font-size:13px}
     .adhead{padding-left:16px;padding-right:16px}.adscroll{padding-left:16px;padding-right:16px}
     .publisher-rail{display:flex;margin-right:-16px;padding-right:16px}.publisher-rail .pcard{flex-basis:230px}.collection-grid{grid-template-columns:1fr}.collection-banner{min-height:270px}.collection-content{min-height:270px;width:54%;padding:24px 20px}.collection-title{font-size:23px}.collection-sub{display:none}
@@ -291,10 +290,9 @@
         <div id="scBookMount"></div>
         <div class="hero-book-caption">
           <div class="hero-book-copy"><div class="sc-top" id="scPub"></div><div class="sc-title" id="scTitle"></div><div class="sc-auth" id="scAuthor"></div></div>
-          <div class="hero-book-price"><span class="sc-price" id="scPrice"></span><span class="sc-star" id="scRating"></span></div>
+          <span class="hero-book-open" aria-hidden="true">→</span>
         </div>
       </a>
-      <div class="sc-badge">★ Haftaning kitobi</div>
     </div>
   </div>
 </section>
@@ -548,8 +546,6 @@ function initPageData(){
     document.getElementById('scPub').textContent = topP.name;
     document.getElementById('scTitle').textContent = topB.title;
     document.getElementById('scAuthor').textContent = topB.author;
-    document.getElementById('scPrice').innerHTML = money(topB.price).replace("so'm",'<small>so\'m</small>');
-    document.getElementById('scRating').textContent = '★ ' + (topB.rating || '4.5');
   }
 
   /* Publishers and books are derived from real data. Orders (340) is still a
