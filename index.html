@@ -55,6 +55,11 @@
   @keyframes badgeFloat{0%{transform:rotate(6deg) translateY(0)}100%{transform:rotate(8deg) translateY(-4px)}}
   /* Publisher card — compact horizontal row (client-approved "kartochka" direction) */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+  .publisher-rail{display:flex;overflow-x:auto;gap:12px;padding:4px 2px 14px;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .publisher-rail::-webkit-scrollbar{display:none}
+  .publisher-rail .pcard{flex:0 0 248px;scroll-snap-align:start}
+  .interest-strip{margin-top:38px;padding:30px 32px 28px;background:linear-gradient(135deg,var(--white),var(--surface-cool));border:1px solid var(--border);border-radius:28px;box-shadow:0 20px 50px -42px rgba(10,42,36,.42)}
+  .interest-strip .sh{margin-bottom:18px}
   .pcard{display:flex;align-items:center;gap:14px;background:var(--white);border-radius:14px;cursor:pointer;border:1px solid var(--border);transition:all 0.25s var(--ease-premium);position:relative;box-shadow:var(--sh-sm);padding:12px 16px}
   .pcard:hover{transform:translateX(4px);box-shadow:var(--sh-md),var(--glow-teal);border-color:var(--teal)}
   .pcard-logo{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--cream);flex-shrink:0;overflow:hidden}
@@ -87,11 +92,11 @@
   .bs-cart:hover{background:var(--teal-d);transform:scale(1.05)}
 
   /* Bestseller cards use the same solid-book construction as catalogue cards. */
-  .bs-card{flex-basis:220px;border-radius:16px;padding:20px 14px 14px;overflow:visible;perspective:none;box-shadow:none}
+  .bs-card{flex-basis:244px;border-radius:20px;padding:22px 16px 16px;overflow:visible;perspective:none;box-shadow:none}
   .bs-card::after{content:none}
   .bs-card:hover{transform:none;border-color:#DDE3EA;box-shadow:0 10px 28px -24px rgba(11,19,32,.34)}
   .bs-book-link{display:block;color:inherit;text-decoration:none;outline:none}
-  .bs-card .physical-book{width:min(100%,180px)}
+  .bs-card .physical-book{width:min(100%,192px)}
   .bs-card .physical-book-front{position:absolute;inset:0;width:auto;height:auto;aspect-ratio:auto;z-index:auto;transform:translateZ(26px);transform-origin:center;transition:none;box-shadow:0 1px 2px rgba(15,23,42,.08),0 6px 14px -4px rgba(15,23,42,.14),0 14px 32px -8px rgba(15,23,42,.08)}
   .bs-card:hover .physical-book-front{transform:translateZ(26px);box-shadow:0 1px 2px rgba(15,23,42,.08),0 6px 14px -4px rgba(15,23,42,.14),0 14px 32px -8px rgba(15,23,42,.08)}
   .bs-body{padding:15px 2px 0;text-align:center}
@@ -174,10 +179,17 @@
 
   @media(max-width:900px){.hgrid{grid-template-columns:1fr}.showcase{display:none}}
   @media(max-width:600px){
-    .hero{padding:38px 16px 32px}.hero h1{font-size:38px;letter-spacing:-0.032em}.stats{gap:20px}
-    .stat-hide{display:none}
+    .hero{padding:28px 16px 30px}.hgrid{display:block;position:relative}.hero-copy{position:relative;z-index:2}
+    .tag{font-size:9.5px;padding:7px 11px;margin-bottom:16px;letter-spacing:.12em}.hero h1{font-size:37px;line-height:1.03;letter-spacing:-0.036em;max-width:270px;margin-bottom:16px}
+    .hsub{font-size:13.5px;line-height:1.65;max-width:225px;margin-bottom:22px}.stats{display:none}
+    .showcase{display:flex;position:absolute;right:-2px;top:65px;width:126px;height:214px;align-items:flex-start;z-index:1;pointer-events:auto}
+    .hero-book-link{width:116px;gap:0}.hero-book-link .physical-book{width:104px;filter:drop-shadow(0 18px 18px rgba(0,0,0,.32))}.hero-book-caption,.sc-badge{display:none}
+    .ac-wrap{max-width:none!important}.search{border-radius:16px;padding:6px}.sinput{min-width:0;padding:12px 10px;font-size:13px}.sbtn{padding:12px 16px;border-radius:11px;font-size:13px}
     .adhead{padding-left:16px;padding-right:16px}.adscroll{padding-left:16px;padding-right:16px}
-    .grid{grid-template-columns:1fr;gap:10px}.collection-grid{grid-template-columns:1fr}.collection-banner{min-height:270px}.collection-content{min-height:270px;width:54%;padding:24px 20px}.collection-title{font-size:23px}.collection-sub{display:none}
+    .publisher-rail{display:flex;margin-right:-16px;padding-right:16px}.publisher-rail .pcard{flex-basis:230px}.collection-grid{grid-template-columns:1fr}.collection-banner{min-height:270px}.collection-content{min-height:270px;width:54%;padding:24px 20px}.collection-title{font-size:23px}.collection-sub{display:none}
+    .bs-scroll{margin-right:-16px;padding-right:16px}.bs-card{flex-basis:min(248px,68vw);padding:18px 13px 14px}.bs-card .physical-book{width:min(100%,180px)}
+    .genre-row{flex-wrap:nowrap;overflow-x:auto;margin-right:-16px;padding:2px 16px 8px 0;scroll-snap-type:x proximity;scrollbar-width:none}.genre-row::-webkit-scrollbar{display:none}.genre-pill{flex:0 0 auto;scroll-snap-align:start;padding:10px 15px}
+    .interest-strip{margin:24px 16px 0;padding:24px 18px 18px;border-radius:24px}.interest-strip .sh{margin-bottom:16px}
     .adt{font-size:22px}.how{padding:32px 20px}.how-track{grid-template-columns:1fr;gap:28px}.how-line{display:none}
   }
 
@@ -255,7 +267,7 @@
 <section class="hero">
   <div class="hero-bg"><div class="horb ho1"></div><div class="horb ho2"></div></div>
   <div class="hgrid">
-    <div>
+    <div class="hero-copy">
       <div class="tag"><i data-lucide="sparkles" style="width:13px;height:13px;display:inline-block;vertical-align:-1px;margin-right:3px"></i> Uzbek Books. One Platform.</div>
       <h1>O'zbek <em>kitoblari</em> bitta platformada</h1>
       <p class="hsub">Yetakchi nashriyotlar, saralangan kitoblar — qidiring, buyurtma bering, eshigingizgacha yetkazamiz.</p>
@@ -287,12 +299,9 @@
   </div>
 </section>
 
-<div class="sec reveal" id="publishers">
-  <div class="sh">
-    <div><div class="st">Nashriyotlar</div><div class="ss">Nashriyotni tanlang — uning barcha kitoblarini ko'ring</div></div>
-    <a href="publishers.html" class="sa">Barchasi →</a>
-  </div>
-  <div class="grid" id="pubGrid"></div>
+<div class="sec reveal interest-strip" id="genreDiscovery">
+  <div class="sh"><div><div class="st">Nimaga qiziqasiz?</div><div class="ss">Kayfiyatingizga mos yo'nalishni tanlang</div></div><a class="sa" href="/qidirish">Barchasi →</a></div>
+  <div class="genre-row" id="genreRow"></div>
 </div>
 
 <div class="sec reveal">
@@ -304,6 +313,14 @@
     </div>
   </div>
   <div class="bs-scroll" id="bsScroll"></div>
+</div>
+
+<div class="sec reveal" id="publishers">
+  <div class="sh">
+    <div><div class="st">Nashriyotlar</div><div class="ss">Ishonchli nashriyotlarning kitoblarini bir joyda ko'ring</div></div>
+    <a href="publishers.html" class="sa">Barchasi →</a>
+  </div>
+  <div class="grid publisher-rail" id="pubGrid"></div>
 </div>
 
 <section class="sec reveal" aria-labelledby="collectionsTitle">
@@ -320,11 +337,6 @@
     </a>
   </div>
 </section>
-
-<div class="sec reveal">
-  <div class="sh"><div><div class="st">Janrlar bo'yicha</div><div class="ss">Qiziqishingizga mos kitoblarni toping</div></div><a class="sa" href="/qidirish">Barchasi →</a></div>
-  <div class="genre-row" id="genreRow"></div>
-</div>
 
 <section class="adsec reveal" id="comingSoonSection">
   <div class="adhead">
@@ -805,7 +817,6 @@ if ('serviceWorker' in navigator) {
 }
 </script>
 
-<script src="live-activity.js"></script>
 <script src="chat-widget.js"></script>
 
 </body>

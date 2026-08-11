@@ -182,23 +182,26 @@ document.addEventListener('keydown', function(e){
     var burger = document.createElement('button');
     burger.className = 'nav-burger';
     burger.setAttribute('aria-label','Menyu');
+    burger.setAttribute('aria-expanded','false');
+    burger.setAttribute('aria-controls','mobileAppMenu');
     burger.innerHTML = '<span></span><span></span><span></span>';
     nav.appendChild(burger);
 
     // Backdrop + panel
     var backdrop = document.createElement('div'); backdrop.className='nav-backdrop';
-    var panel = document.createElement('div'); panel.className='nav-mobile';
+    var panel = document.createElement('div'); panel.className='nav-mobile'; panel.id='mobileAppMenu'; panel.setAttribute('aria-label','Asosiy menyu');
     var linkHTML = items.map(function(it){ return '<a href="'+it.href+'">'+it.text+'</a>'; }).join('');
     panel.innerHTML = '<div class="nm-top">KITOB<span>MARKAZI</span></div>'+
                       '<button class="nav-mobile-close" aria-label="Yopish">&times;</button>'+ linkHTML;
     document.body.appendChild(backdrop);
     document.body.appendChild(panel);
 
-    function open(){ panel.classList.add('open'); backdrop.classList.add('open'); burger.classList.add('open'); document.body.style.overflow='hidden'; }
-    function close(){ panel.classList.remove('open'); backdrop.classList.remove('open'); burger.classList.remove('open'); document.body.style.overflow=''; }
+    function open(){ panel.classList.add('open'); backdrop.classList.add('open'); burger.classList.add('open'); burger.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; panel.querySelector('a').focus(); }
+    function close(){ panel.classList.remove('open'); backdrop.classList.remove('open'); burger.classList.remove('open'); burger.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
     burger.addEventListener('click', function(){ panel.classList.contains('open')?close():open(); });
     backdrop.addEventListener('click', close);
     panel.querySelector('.nav-mobile-close').addEventListener('click', close);
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && panel.classList.contains('open')){ close(); burger.focus(); } });
   }
   if(document.readyState!=='loading') buildMobileNav();
   else document.addEventListener('DOMContentLoaded', buildMobileNav);
