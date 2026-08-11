@@ -41,22 +41,18 @@
   .snum span{font-size:22px;color:var(--teal-l)}
   .slbl{font-size:12.5px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.07em;margin-top:5px;font-weight:600}
   .stat-div{width:1px;height:44px;background:rgba(255,255,255,0.12);align-self:center}
-  .showcase{position:relative;height:360px;display:flex;align-items:center;justify-content:center;perspective:1700px}
-  /* book body / pages behind the front cover, revealed when it swings open */
-  .sc-back{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:222px;height:312px;border-radius:10px 16px 16px 10px;background:linear-gradient(90deg,#cbc4b6,#eeeae1 9%,#faf8f5 58%),repeating-linear-gradient(90deg,rgba(0,0,0,0.05) 0 1px,transparent 1px 6px);z-index:1;box-shadow:0 30px 58px rgba(0,0,0,0.34);border:1px solid rgba(0,0,0,0.06)}
-  .sc-card{position:relative;z-index:2;overflow:hidden;width:224px;height:312px;border-radius:16px;background:linear-gradient(150deg,var(--teal),var(--teal-d));box-shadow:0 36px 70px rgba(0,0,0,0.42);padding:26px;display:flex;flex-direction:column;justify-content:space-between;transform-origin:left center;transform:rotateY(-11deg);transition:transform 0.6s var(--ease-premium),box-shadow 0.6s var(--ease-premium);cursor:pointer;border:1px solid rgba(255,255,255,0.1);backface-visibility:hidden}
-  .showcase:hover .sc-card{transform:rotateY(-56deg);box-shadow:34px 30px 74px -22px rgba(0,0,0,0.62)}
-  .sc-card>.sc-top,.sc-card>div,.sc-card>.sc-foot{position:relative;z-index:2}
-  .sc-badge{position:absolute;z-index:5;top:14px;right:calc(50% - 132px);background:var(--gold);color:#3D2A00;font-size:11.5px;font-weight:800;padding:8px 15px;border-radius:30px;box-shadow:0 10px 24px rgba(217,169,62,0.35);animation:badgeFloat 3s infinite alternate}
-  @media(prefers-reduced-motion:reduce){.showcase:hover .sc-card{transform:rotateY(-11deg)}}
+  .showcase{position:relative;height:420px;display:flex;align-items:center;justify-content:center;perspective:1700px}
+  .hero-book-link{position:relative;z-index:2;width:278px;display:flex;flex-direction:column;align-items:center;gap:16px;color:#fff;text-decoration:none;transition:transform .4s var(--ease-premium);outline:none}
+  .hero-book-link:hover,.hero-book-link:focus-visible{transform:translateY(-5px) scale(1.01)}
+  .hero-book-link:active{transform:translateY(-1px) scale(.98)}
+  .hero-book-link .physical-book{width:220px;filter:drop-shadow(0 34px 34px rgba(0,0,0,.34))}
+  .hero-book-link:hover .physical-book-inner,.hero-book-link:focus-visible .physical-book-inner,.hero-book-link:active .physical-book-inner{transform:rotateY(-28deg)}
+  .hero-book-caption{width:278px;min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:11px 12px 11px 15px;border:1px solid rgba(255,255,255,.16);border-radius:16px;background:rgba(8,22,35,.58);backdrop-filter:blur(14px);box-shadow:0 18px 36px -24px rgba(0,0,0,.7)}
+  .hero-book-copy{min-width:0}.sc-top{font-size:9px;color:var(--gold-l);text-transform:uppercase;letter-spacing:.1em;font-weight:800;margin-bottom:3px}.sc-title{font-family:var(--serif);font-size:15px;font-weight:800;color:#fff;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sc-auth{font-size:10.5px;color:rgba(255,255,255,.62);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+  .hero-book-price{flex-shrink:0;text-align:right}.sc-price{display:block;font-family:var(--serif);font-size:15px;font-weight:800;color:#fff;white-space:nowrap}.sc-price small{font-size:9px;font-weight:500;opacity:.72}.sc-star{display:inline-block;margin-top:3px;font-size:9.5px;color:var(--gold-l);font-weight:800}
+  .sc-badge{position:absolute;z-index:5;top:22px;right:calc(50% - 145px);background:var(--gold);color:#3D2A00;font-size:11.5px;font-weight:800;padding:8px 15px;border-radius:30px;box-shadow:0 10px 24px rgba(217,169,62,0.35);animation:badgeFloat 3s infinite alternate}
+  @media(prefers-reduced-motion:reduce){.hero-book-link{transition:none}.hero-book-link:hover,.hero-book-link:focus-visible,.hero-book-link:active{transform:none}.hero-book-link:hover .physical-book-inner,.hero-book-link:focus-visible .physical-book-inner,.hero-book-link:active .physical-book-inner{transform:none}}
   @keyframes badgeFloat{0%{transform:rotate(6deg) translateY(0)}100%{transform:rotate(8deg) translateY(-4px)}}
-  .sc-top{font-size:11px;color:rgba(255,255,255,0.72);text-transform:uppercase;letter-spacing:0.12em;font-weight:700}
-  .sc-title{font-family:var(--serif);font-size:30px;font-weight:800;color:#fff;line-height:1.15;text-shadow:0 2px 10px rgba(0,0,0,0.25)}
-  .sc-auth{font-size:14px;color:rgba(255,255,255,0.85);margin-top:7px;font-style:italic}
-  .sc-foot{display:flex;align-items:center;justify-content:space-between}
-  .sc-price{font-size:21px;font-weight:800;color:#fff}.sc-price small{font-size:12px;font-weight:500;opacity:0.7}
-  .sc-star{font-size:13px;color:var(--gold);background:rgba(0,0,0,0.3);padding:5px 12px;border-radius:20px;font-weight:700;backdrop-filter:blur(4px)}
-
   /* Publisher card — compact horizontal row (client-approved "kartochka" direction) */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
   .pcard{display:flex;align-items:center;gap:14px;background:var(--white);border-radius:14px;cursor:pointer;border:1px solid var(--border);transition:all 0.25s var(--ease-premium);position:relative;box-shadow:var(--sh-sm);padding:12px 16px}
@@ -259,12 +255,12 @@
       </div>
     </div>
     <div class="showcase" id="heroShowcase">
-      <div class="sc-back"></div>
-      <a id="scCard" href="#" class="sc-card">
-        <div class="cv-pat"></div>
-        <div class="sc-top" id="scPub"></div>
-        <div><div class="sc-title" id="scTitle"></div><div class="sc-auth" id="scAuthor"></div></div>
-        <div class="sc-foot"><span class="sc-price" id="scPrice"></span><span class="sc-star" id="scRating"></span></div>
+      <a id="scCard" href="#" class="hero-book-link">
+        <div id="scBookMount"></div>
+        <div class="hero-book-caption">
+          <div class="hero-book-copy"><div class="sc-top" id="scPub"></div><div class="sc-title" id="scTitle"></div><div class="sc-auth" id="scAuthor"></div></div>
+          <div class="hero-book-price"><span class="sc-price" id="scPrice"></span><span class="sc-star" id="scRating"></span></div>
+        </div>
       </a>
       <div class="sc-badge">★ Haftaning kitobi</div>
     </div>
@@ -499,13 +495,13 @@ function initPageData(){
   var topP = PUBLISHERS[WEEK_TOP.pubKey];
   if (topB && topP) {
     document.getElementById('scCard').href = 'book.html?pub='+WEEK_TOP.pubKey+'&book='+topB.id;
+    document.getElementById('scCard').setAttribute('aria-label', topB.title+' — batafsil');
+    document.getElementById('scBookMount').innerHTML = physicalBookHTML(topB, topP, '', 'hero-book-cover');
     document.getElementById('scPub').textContent = topP.name;
     document.getElementById('scTitle').textContent = topB.title;
     document.getElementById('scAuthor').textContent = topB.author;
     document.getElementById('scPrice').innerHTML = money(topB.price).replace("so'm",'<small>so\'m</small>');
     document.getElementById('scRating').textContent = '★ ' + (topB.rating || '4.5');
-    var scCard = document.getElementById('scCard');
-    if (topB.color) scCard.style.background = topB.color;
   }
 
   /* Publishers and books are derived from real data. Orders (340) is still a
