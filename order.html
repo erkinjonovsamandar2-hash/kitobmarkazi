@@ -139,7 +139,7 @@
           <div class="field"><label>Ism *</label><input type="text" id="fname" placeholder="Alisher"></div>
           <div class="field"><label>Familiya</label><input type="text" id="lname" placeholder="Umarov"></div>
         </div>
-        <div class="field"><label>Telefon *</label><input type="tel" id="phone" placeholder="+998 90 123 45 67"></div>
+        <div class="field"><label>Telefon *</label><input type="tel" id="phone" placeholder="+998 90 123 45 67" inputmode="numeric" oninput="maskPhone(this)"></div>
       </div>
     </div>
 
@@ -290,6 +290,7 @@ function initPageData(){
     document.getElementById('formWrap').innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px 20px"><div style="display:flex;justify-content:center;margin-bottom:14px"><i data-lucide="shopping-cart" style="width:56px;height:56px;color:var(--mid)"></i></div><h2 style="font-family:var(--serif);font-size:23px;margin-bottom:10px">Savatcha bo\'sh</h2><p style="color:var(--mid);margin-bottom:22px">Buyurtma berish uchun avval kitob tanlang</p><a class="btn btn-teal" href="publishers.html"><i data-lucide="book-open" style="width:16px;height:16px;margin-right:6px;display:inline-block;vertical-align:middle"></i> Nashriyotlarni ko\'rish</a></div>'; if(window.refreshIcons) window.refreshIcons();
   } else {
     renderItems();
+    initContactPersistence();
     onRegionChange();
   }
 }
@@ -361,6 +362,7 @@ function renderCouriers(){
           '<div class="cour-price">'+(c.price||'')+'</div>' +
           '<div class="cour-radio"><div class="cour-dot"></div></div></div>';
       }).join('') + '<div style="font-size:11px;color:var(--light);padding:6px 2px 0">📍 '+tuman+', '+region+' — '+couriers.length+' ta kuryer xizmati mavjud</div>';
+      if (couriers.length === 1) selCour(couriers[0].slug);
     })
     .catch(function(){
       var avail=couriersFor(region,tuman);
@@ -374,6 +376,7 @@ function renderCouriers(){
           '<div class="cour-price">'+c.price+'</div>' +
           '<div class="cour-radio"><div class="cour-dot"></div></div></div>';
       }).join('') + '<div style="font-size:11px;color:var(--light);padding:6px 2px 0">📍 '+tuman+', '+region+' — '+avail.length+' ta kuryer xizmati mavjud</div>';
+      if (avail.length === 1) selCour(avail[0]);
     });
 }
 
@@ -490,6 +493,72 @@ function isValidUzPhone(phone) {
   // Accept formats: +998901234567, 998901234567, 901234567, +998 90 123 45 67
   var cleaned = phone.replace(/[\s\-\(\)]/g, '');
   return /^(\+?998)?[0-9]{9}$/.test(cleaned);
+}
+
+/* ── Phone input mask: +998 90 123 45 67 as the user types ── */
+function maskPhone(el){
+  var digits = el.value.replace(/\D/g, '');
+  if (digits.startsWith('998')) digits = digits.slice(3);
+  digits = digits.slice(0, 9);
+  var out = '+998';
+  if (digits.length) out += ' ' + digits.slice(0, 2);
+  if (digits.length > 2) out += ' ' + digits.slice(2, 5);
+  if (digits.length > 5) out += ' ' + digits.slice(5, 7);
+  if (digits.length > 7) out += ' ' + digits.slice(7, 9);
+  el.value = out;
+}
+
+/* ── Remember contact/address details for next visit + survive accidental
+   navigation away mid-form. Only ever holds delivery-relevant fields, never
+   payment info. ── */
+var SAVED_INFO_KEY = 'km_order_info';
+
+function saveContactInfo(){
+  try {
+    localStorage.setItem(SAVED_INFO_KEY, JSON.stringify({
+      fname: document.getElementById('fname').value,
+      lname: document.getElementById('lname').value,
+      phone: document.getElementById('phone').value,
+      city: document.getElementById('city').value,
+      tuman: document.getElementById('tuman').value,
+      addr: document.getElementById('addr').value
+    }));
+  } catch(e) {}
+}
+
+function loadSavedContactInfo(){
+  var saved;
+  try { saved = JSON.parse(localStorage.getItem(SAVED_INFO_KEY) || 'null'); } catch(e) { saved = null; }
+  if (!saved) return;
+  if (saved.fname) document.getElementById('fname').value = saved.fname;
+  if (saved.lname) document.getElementById('lname').value = saved.lname;
+  if (saved.phone) document.getElementById('phone').value = saved.phone;
+  if (saved.addr) document.getElementById('addr').value = saved.addr;
+  if (saved.city) {
+    document.getElementById('city').value = saved.city;
+    onRegionChange();
+    if (saved.tuman) document.getElementById('tuman').value = saved.tuman;
+  }
+}
+
+function initContactPersistence(){
+  loadSavedContactInfo();
+  ['fname','lname','phone','addr'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', saveContactInfo);
+  });
+  ['city','tuman'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', saveContactInfo);
+  });
+  // Live validation on blur, instead of only surfacing errors on submit
+  document.getElementById('fname').addEventListener('blur', function(){
+    validateField('fname', this.value.trim().length >= 2, 'Ismingiz kamida 2 ta harf bo\'lishi kerak');
+  });
+  document.getElementById('phone').addEventListener('blur', function(){
+    validateField('phone', isValidUzPhone(this.value), 'To\'g\'ri telefon raqam kiriting: +998 XX XXX XX XX');
+  });
+  document.getElementById('addr').addEventListener('blur', function(){
+    validateField('addr', this.value.trim().length >= 5, 'Manzilni to\'liqroq kiriting (kamida 5 ta belgi)');
+  });
 }
 
 function submitOrder(){
