@@ -291,7 +291,7 @@
   <div class="genre-row" id="genreRow"></div>
 </div>
 
-<section class="adsec reveal">
+<section class="adsec reveal" id="comingSoonSection">
   <div class="adhead">
     <div class="adtitle"><span class="pulse"></span><span class="adt">Tez kunda sotuvda</span></div>
     <div class="adnav" data-track="ads">
@@ -470,6 +470,7 @@ function initPageData(){
   /* Coming soon posters */
   var monthsUz=["Yan","Fev","Mar","Apr","May","Iyun","Iyul","Avg","Sen","Okt","Noy","Dek"];
   function dateFromOffset(days){var d=new Date();d.setDate(d.getDate()+days);return d;}
+  document.getElementById('comingSoonSection').hidden = COMING_SOON.length === 0;
   document.getElementById('ads').innerHTML=COMING_SOON.map(function(a,i){
     var p=PUBLISHERS[a.pubKey] || {name: a.pubKey, first: false};
     var d=dateFromOffset(a.offsetDays);

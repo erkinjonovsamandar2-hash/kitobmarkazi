@@ -43,7 +43,9 @@ ON CONFLICT (slug) DO UPDATE SET
 DELETE FROM reviews WHERE "bookId" IN (SELECT id FROM books);
 DELETE FROM books;
 
-DELETE FROM coming_soon WHERE "publisherSlug" IN ('booktopia', 'gutenberg');
+-- Existing coming-soon entries were unverified demo announcements. Keep the
+-- feature empty until a publisher supplies a real release date and cover.
+DELETE FROM coming_soon;
 DELETE FROM publishers WHERE slug IN ('booktopia', 'gutenberg');
 
 INSERT INTO books (
