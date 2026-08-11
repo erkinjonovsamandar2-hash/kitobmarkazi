@@ -240,3 +240,18 @@ function refreshIcons() {
 }
 document.addEventListener('DOMContentLoaded', refreshIcons);
 window.refreshIcons = refreshIcons;
+
+/* ===== Card touch/press feedback (publisher cards, book cards, best-sellers, posters) ===== */
+(function(){
+  var PRESS_SEL = '.pcard,.book,.bs-card,.poster';
+  function press(e){
+    var el = e.target.closest && e.target.closest(PRESS_SEL);
+    if(el) el.classList.add('is-pressed');
+  }
+  function release(){
+    document.querySelectorAll('.is-pressed').forEach(function(el){ el.classList.remove('is-pressed'); });
+  }
+  document.addEventListener('pointerdown', press, {passive:true});
+  document.addEventListener('pointerup', release, {passive:true});
+  document.addEventListener('pointercancel', release, {passive:true});
+})();
