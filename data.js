@@ -252,12 +252,31 @@ function coverHTML(book, pub){
   var fallbackPng = book.cover ? '' : 'data-png="images/covers/'+book.id+'.png"';
   var errHandler = book.cover ? "this.style.display='none';" : "if(!this.dataset.t){this.dataset.t=1;this.src=this.dataset.png;}else{this.style.display='none';}";
   
-  var img = '<img class="cv-img" alt="" loading="lazy" '+
+  var coverX = Math.max(0, Math.min(100, Number(book.coverPositionX ?? 50)));
+  var coverY = Math.max(0, Math.min(100, Number(book.coverPositionY ?? 50)));
+  var coverScale = Math.max(1, Math.min(3, Number(book.coverScale ?? 1)));
+  var img = '<img class="cv-img" alt="" loading="lazy" style="--cover-x:'+coverX+'%;--cover-y:'+coverY+'%;--cover-scale:'+coverScale+';object-position:var(--cover-x) var(--cover-y);transform-origin:var(--cover-x) var(--cover-y);transform:scale(var(--cover-scale))" '+
     'src="'+imgSrc+'" '+
     fallbackPng+' '+
     'onload="this.parentElement&&this.parentElement.classList.add(\'cv-hasimg\')" '+
     'onerror="'+errHandler+'">';
   return designed + img;
+}
+
+/* A solid 3D book: front cover, page block, and rear cover rotate together.
+   The geometry mirrors the approved Mutolaa reference while cover artwork and
+   commerce controls remain Kitobmarkazi's own. */
+function physicalBookHTML(book, pub, frontExtra, frontClass){
+  var color = book.color || '#13294A';
+  frontExtra = frontExtra || '';
+  frontClass = frontClass || 'book-cover cover-sm';
+  return '<div class="physical-book">'+
+    '<div class="physical-book-inner">'+
+      '<div class="physical-book-front '+frontClass+'" style="background:'+color+'">'+coverHTML(book,pub)+frontExtra+'</div>'+
+      '<div class="physical-book-pages" aria-hidden="true"></div>'+
+      '<div class="physical-book-back cover-sm" aria-hidden="true" style="background:'+color+'">'+coverHTML(book,pub)+'</div>'+
+    '</div>'+
+  '</div>';
 }
 
 function recommendFor(pubKey, book, limit){
@@ -297,14 +316,12 @@ function bookCardHTML(pk, b){
   var pub = PUBLISHERS[pk];
   var wished = (typeof inWishlist==='function' && inWishlist(pk,b.id));
   var href = '/kitob?pub='+pk+'&book='+b.id;
+  var coverExtras =
+    '<button class="wish-btn '+(wished?'on':'')+'" title="Sevimlilar" aria-label="Sevimlilarga qo\'shish" onclick="event.stopPropagation();toggleWish(\''+pk+'\',\''+b.id+'\',this)"><svg class="wish-ic" width="16" height="16" viewBox="0 0 24 24" fill="'+(wished?'currentColor':'none')+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></button>'+
+    (isTopPick(b)?'<div class="bc-badge">'+flameIcon(10)+'Top</div>':'')+
+    (b.stock && b.stock < 5 ? '<div class="bc-badge low-stock">Faqat '+b.stock+' dona qoldi</div>' : '');
   return '<div class="book" role="link" tabindex="0" data-keyactivate="1" aria-label="'+esc(b.title)+' — batafsil" onclick="location.href=\''+href+'\'" style="cursor:pointer">'+
-    '<div class="book-cover cover-sm" style="background:'+(b.color || '#13294A')+'">'+
-      coverHTML(b,pub)+
-      '<button class="wish-btn '+(wished?'on':'')+'" title="Sevimlilar" aria-label="Sevimlilarga qo\'shish" onclick="event.stopPropagation();toggleWish(\''+pk+'\',\''+b.id+'\',this)"><svg class="wish-ic" width="16" height="16" viewBox="0 0 24 24" fill="'+(wished?'currentColor':'none')+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></button>'+
-      (isTopPick(b)?'<div class="bc-badge">'+flameIcon(10)+'Top</div>':'') +
-      (b.stock && b.stock < 5 ? '<div class="bc-badge" style="top:auto;bottom:12px;right:12px;background:#ef4444;color:#fff;font-size:8px">Faqat '+b.stock+' dona qoldi</div>' : '')+
-    '</div>'+
-
+    physicalBookHTML(b,pub,coverExtras)+
     '<div class="book-body">'+
       '<div class="book-meta"><div class="book-title">'+esc(b.title)+'</div><div class="book-author">'+esc(b.author)+'</div></div>'+
       '<div class="book-buy">'+
@@ -411,10 +428,18 @@ function bookImages(bookId){
           pages: b.pages,
           year: b.year,
           genre: b.genre,
-          cover: b.cover
+          cover: b.cover,
+          coverPositionX: b.coverPositionX,
+          coverPositionY: b.coverPositionY,
+          coverScale: b.coverScale
         });
       });
       BOOKS = newBooks;
+      // Storefront publisher lists should only expose publishers with a real,
+      // purchasable catalogue. Deferred publishers remain manageable in admin.
+      Object.keys(PUBLISHERS).forEach(function(slug) {
+        if (!newBooks[slug] || newBooks[slug].length === 0) delete PUBLISHERS[slug];
+      });
       computeTopThreshold();
 
       // Update WEEK_TOP if any top book is found

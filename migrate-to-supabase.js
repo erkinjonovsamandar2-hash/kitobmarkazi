@@ -40,6 +40,16 @@ async function migrate() {
       year          INTEGER,
       genre         TEXT,
       description   TEXT,
+      cover         TEXT,
+      isbn          TEXT,
+      language      TEXT,
+      script        TEXT,
+      binding       TEXT,
+      edition       TEXT,
+      "sourceUrl"    TEXT,
+      "coverPositionX" REAL DEFAULT 50,
+      "coverPositionY" REAL DEFAULT 50,
+      "coverScale"     REAL DEFAULT 1,
       stock         INTEGER DEFAULT 10,
       PRIMARY KEY ("publisherSlug", id)
     );
@@ -164,7 +174,7 @@ async function migrate() {
   };
 
   await migrateTable('publishers', ['slug','name','logo','logoText','logoColor','founded','city','description','isTop','sortOrder']);
-  await migrateTable('books', ['id','publisherSlug','title','author','price','color','rating','isTop','pages','year','genre','description']);
+  await migrateTable('books', ['id','publisherSlug','title','author','price','color','rating','isTop','pages','year','genre','description','cover','isbn','language','script','binding','edition','sourceUrl','coverPositionX','coverPositionY','coverScale','stock']);
   await migrateTable('coming_soon', ['title','author','publisherSlug','bg','releaseDate','label','description']);
   await migrateTable('couriers', ['slug','name','color','description','price']);
   await migrateTable('courier_regions', ['courierSlug','region']);

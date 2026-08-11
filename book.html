@@ -54,25 +54,26 @@
   .bk-mval{font-size:16px;font-weight:800;color:var(--ink)}
   .bk-mlbl{font-size:11px;color:var(--mid);margin-top:2px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em}
   .bk-desc{font-size:15.5px;color:var(--mid);line-height:1.8;margin-bottom:26px}
-  .bk-buy{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:24px;box-shadow:var(--sh-md);position:relative;overflow:hidden}
+  .bk-buy{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:var(--sh-md);position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:14px 24px;align-items:center;margin-bottom:22px}
   .bk-buy::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--grad-teal)}
-  .bk-price-row{display:flex;align-items:baseline;gap:10px;margin-bottom:18px}
+  .bk-price-row{display:flex;align-items:baseline;gap:10px;margin:0}
   .bk-price{font-family:var(--serif);font-size:36px;font-weight:800;color:var(--teal-d)}
-  .bk-qty-row{display:flex;align-items:center;gap:18px;margin-bottom:20px}
+  .bk-qty-row{display:flex;align-items:center;justify-content:flex-end;gap:18px;margin:0}
   .bk-qty{display:flex;align-items:center;gap:14px}
   .qbtn{width:38px;height:38px;border-radius:11px;border:1.5px solid var(--border);background:var(--white);cursor:pointer;font-size:20px;color:var(--ink);display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.2s}
   .qbtn:hover{border-color:var(--teal);color:var(--teal);background:#F0FAF6;transform:scale(1.05)}
   .qval{font-family:var(--serif);font-size:20px;font-weight:800;min-width:24px;text-align:center}
-  .bk-actions{display:flex;gap:12px;align-items:stretch;height:52px}
-  .bk-wish{flex:none;height:52px;padding:0 20px;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;transition:all 0.25s var(--ease-premium)}
+  .bk-actions{grid-column:1/-1;display:flex;gap:12px;align-items:stretch;height:50px}
+  .bk-wish{flex:none;height:50px;padding:0 20px;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;transition:all 0.25s var(--ease-premium)}
   .bk-wish:hover{border-color:#C0392B;color:#C0392B;background:#FFF0F2;transform:translateY(-1px)}
-  .bk-addcart{flex:1;height:52px;background:var(--teal);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:var(--sh-teal);transition:all 0.25s var(--ease-premium);display:flex;align-items:center;justify-content:center}
+  .bk-addcart{flex:1;height:50px;background:var(--teal);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:var(--sh-teal);transition:all 0.25s var(--ease-premium);display:flex;align-items:center;justify-content:center}
   .bk-addcart:hover{background:var(--teal-d);transform:translateY(-1px);box-shadow:0 8px 24px rgba(29,158,117,0.38)}
   .bk-wish.on{border-color:#C0392B;background:#FCE9EE;color:#C0392B}
-  .bk-trust{display:flex;gap:18px;margin-top:18px;padding-top:16px;border-top:1px solid var(--cream2);flex-wrap:wrap}
+  .bk-trust{grid-column:1/-1;display:flex;gap:18px;margin-top:0;padding-top:14px;border-top:1px solid var(--cream2);flex-wrap:wrap}
   .bk-trust-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--mid);font-weight:600}
 
-  @media(max-width:780px){.bk-grid{grid-template-columns:1fr;gap:28px}.bk-cover{max-width:280px;margin:0 auto}.bk-title{font-size:32px}.rev-grid{grid-template-columns:1fr}.bk-gallery{position:static}.bk-breadcrumb{padding-left:16px;padding-right:16px;font-size:12px}}
+  .bk-rate.empty{display:none}
+  @media(max-width:780px){.bk-grid{grid-template-columns:minmax(0,1fr);gap:28px}.bk-cover{max-width:280px;margin:0 auto}.bk-title{font-size:32px}.bk-gallery{position:static}.bk-breadcrumb{padding-left:16px;padding-right:16px;font-size:12px}.bk-buy{grid-template-columns:1fr}.bk-qty-row{justify-content:flex-start}.bk-actions,.bk-trust{grid-column:1}.bk-price{font-size:32px}}
 
   .rev-grid{display:grid;grid-template-columns:1fr 340px;gap:32px;margin-top:24px}
   .rev-list{display:flex;flex-direction:column;gap:20px}
@@ -96,11 +97,18 @@
   .sa-right{display:flex;align-items:center;gap:20px}
   .sa-price{font-family:var(--serif);font-size:18px;font-weight:800;color:var(--teal-d)}
   @media(max-width:600px){
+    .nav .brand{margin-left:0!important}
+    .nav .brand .bname{display:none}
+    .bk-wrap{padding-left:16px;padding-right:16px}
+    .rev-grid{grid-template-columns:minmax(0,1fr)}
+    .rev-form-card{position:static;padding:20px}
     .sticky-addcart{padding:10px 16px}
     .sa-title{max-width:140px;font-size:13px}
     .sa-auth{display:none}
     .sa-price{font-size:16px}
-    .sa-right{gap:10px}
+    .sa-info{display:none}
+    .sa-right{gap:12px;width:100%;justify-content:space-between}
+    .sa-right .btn{flex:1}
   }
   /* Avoid overlap with sticky bottom bar */
   .bk-wrap { padding-bottom: 120px !important; }
@@ -133,14 +141,13 @@
       <a class="bk-pubchip" id="bkPubChip" href="#"><span class="pl" id="bkPubLogo"></span><span class="pn" id="bkPubName"></span></a>
       <h1 class="bk-title" id="bkTitle"></h1>
       <div class="bk-author" id="bkAuthor"></div>
-      <div style="font-size:12px;color:var(--teal-d);font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:6px">
-        <span style="display:inline-block;width:6px;height:6px;background:var(--teal);border-radius:50%;animation:pulse 1.5s infinite"></span>
-        <span id="activeViewers">12</span> kishi hozir ko'rib turibdi
+      <div style="font-size:12px;color:var(--teal-d);font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:6px">
+        <span style="display:inline-block;width:7px;height:7px;background:var(--teal);border-radius:50%"></span>
+        Omborda mavjud
       </div>
 
       <div class="bk-rate"><span class="bk-stars" id="bkStars"></span><span class="bk-rnum" id="bkRnum"></span></div>
       <div class="bk-meta" id="bkMeta"></div>
-      <p class="bk-desc" id="bkDesc"></p>
       <div class="bk-buy">
         <div class="bk-price-row"><span class="bk-price" id="bkPrice"></span></div>
         <div class="bk-qty-row">
@@ -157,6 +164,7 @@
           <div class="bk-trust-item"><i data-lucide="rotate-ccw" style="width:16px;height:16px;color:var(--teal)"></i> Qaytarish kafolati</div>
         </div>
       </div>
+      <p class="bk-desc" id="bkDesc"></p>
     </div>
   </div>
 
@@ -260,6 +268,15 @@ async function loadBookDetails() {
       genre: data.genre,
       stock: data.stock,
       cover: data.cover,
+      description: data.description,
+      isbn: data.isbn,
+      language: data.language,
+      script: data.script,
+      binding: data.binding,
+      edition: data.edition,
+      coverPositionX: data.coverPositionX,
+      coverPositionY: data.coverPositionY,
+      coverScale: data.coverScale,
       recommendations: data.recommendations
     };
     
@@ -319,15 +336,21 @@ function renderBookPage() {
   document.getElementById('bkPubChip').href = 'publisher.html?pub=' + pubKey;
   document.getElementById('bkTitle').textContent = book.title;
   document.getElementById('bkAuthor').textContent = book.author;
-  var full = Math.floor(book.rating);
+  var full = Math.floor(Number(book.rating) || 0);
   document.getElementById('bkStars').textContent = '★★★★★'.slice(0, full) + '☆☆☆☆☆'.slice(0, 5 - full);
-  document.getElementById('bkRnum').textContent = book.rating + ' / 5.0';
-  document.getElementById('bkMeta').innerHTML =
-    '<div class="bk-mchip"><div class="bk-mval">' + book.pages + '</div><div class="bk-mlbl">sahifa</div></div>' +
-    '<div class="bk-mchip"><div class="bk-mval">' + book.year + '</div><div class="bk-mlbl">nashr yili</div></div>' +
-    '<div class="bk-mchip"><div class="bk-mval">O\'zbek</div><div class="bk-mlbl">til</div></div>' +
-    '<div class="bk-mchip"><div class="bk-mval">Qattiq</div><div class="bk-mlbl">muqova</div></div>';
-  document.getElementById('bkDesc').textContent = book.title + ' — ' + pub.name + ' nashriyoti tomonidan chop etilgan ' + book.author + ' qalamiga mansub asar. O\'zbek kitobxonlari orasida katta qiziqish uyg\'otgan ushbu kitob sifatli muqova va zamonaviy dizaynda taqdim etilgan.';
+  document.getElementById('bkRnum').textContent = full > 0 ? book.rating + ' / 5.0' : 'Hali baholanmagan';
+  document.querySelector('.bk-rate').classList.toggle('empty', full === 0);
+  var meta = [];
+  if (book.pages) meta.push([book.pages, 'sahifa']);
+  if (book.year) meta.push([book.year, 'nashr yili']);
+  if (book.language) meta.push([book.language, 'til']);
+  if (book.script) meta.push([book.script, 'yozuv']);
+  if (book.binding) meta.push([book.binding, 'muqova']);
+  if (book.isbn) meta.push([book.isbn, 'ISBN']);
+  document.getElementById('bkMeta').innerHTML = meta.map(function(item) {
+    return '<div class="bk-mchip"><div class="bk-mval">' + item[0] + '</div><div class="bk-mlbl">' + item[1] + '</div></div>';
+  }).join('');
+  document.getElementById('bkDesc').textContent = book.description || (book.title + ' — ' + book.author + ' asari, ' + pub.name + ' nashri.');
   document.getElementById('bkPrice').textContent = money(book.price);
   document.getElementById('addCartBtn').innerHTML = cartIcon(18) + ' Savatga qo\'shish';
   refreshWish();
@@ -346,7 +369,10 @@ function renderBookPage() {
         rating: r.rating,
         top: r.isTop === 1 || r.isTop === true,
         stock: r.stock,
-        cover: r.cover
+        cover: r.cover,
+        coverPositionX: r.coverPositionX,
+        coverPositionY: r.coverPositionY,
+        coverScale: r.coverScale
       }
     }));
   } else {
@@ -364,9 +390,6 @@ function renderBookPage() {
   
   loadReviews();
   
-  var av = document.getElementById('activeViewers');
-  if (av) av.textContent = Math.floor(Math.random() * 16) + 8;
-
   // Populate sticky bar
   var saTitle = document.getElementById('saTitle');
   var saAuthor = document.getElementById('saAuthor');
@@ -381,6 +404,7 @@ function renderBookPage() {
   }
 
   if (window.refreshIcons) window.refreshIcons();
+  window.setTimeout(updateStickyCart, 0);
 }
 
 function initPageData() {
@@ -510,18 +534,20 @@ window.submitReview = function() {
 
 // initPageData hook is now handled directly inside renderBookPage
 
-// Scroll listener for sticky bar
-window.addEventListener('scroll', function(){
+// Keep the mobile purchase action available whenever its main counterpart is off-screen.
+function updateStickyCart(){
   var buyBtn = document.getElementById('addCartBtn');
   var stickyBar = document.getElementById('stickyAddCart');
   if (!buyBtn || !stickyBar) return;
-  var pos = buyBtn.getBoundingClientRect().bottom;
-  if (pos < 0) {
-    stickyBar.classList.add('show');
-  } else {
-    stickyBar.classList.remove('show');
-  }
-});
+  var rect = buyBtn.getBoundingClientRect();
+  var show = window.innerWidth <= 780
+    ? (rect.bottom < 0 || rect.top > window.innerHeight)
+    : rect.bottom < 0;
+  stickyBar.classList.toggle('show', show);
+}
+window.addEventListener('scroll', updateStickyCart, { passive:true });
+window.addEventListener('resize', updateStickyCart);
+window.setTimeout(updateStickyCart, 600);
 
 </script>
 <script src="chat-widget.js"></script>

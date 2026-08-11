@@ -582,8 +582,11 @@ function showBookForm(pub, id) {
     var pubOpts = pubs.map(function(p) { return '<option value="' + p.slug + '"' + (b.publisherSlug===p.slug?' selected':'') + '>' + p.name + '</option>'; }).join('');
     var genres = ['roman','klassik','biznes','psixologiya','diniy','bolalar','sheriyat','ilmiy','tarix','tarjima'];
     var genOpts = genres.map(function(g) { return '<option value="' + g + '"' + (b.genre===g?' selected':'') + '>' + g.charAt(0).toUpperCase()+g.slice(1) + '</option>'; }).join('');
+    var coverX = b.coverPositionX != null ? b.coverPositionX : 50;
+    var coverY = b.coverPositionY != null ? b.coverPositionY : 50;
+    var coverScale = b.coverScale != null ? b.coverScale : 1;
 
-    var html = '<div class="modal-bg" onclick="if(event.target===this)this.remove()"><div class="modal"><h3>' + (isEdit ? 'Kitobni tahrirlash' : 'Yangi kitob qo\'shish') + '</h3>' +
+    var html = '<div class="modal-bg" onclick="if(event.target===this)this.remove()"><div class="modal book-modal"><h3>' + (isEdit ? 'Kitobni tahrirlash' : 'Yangi kitob qo\'shish') + '</h3>' +
       '<div class="frow"><div class="field"><label>ID (lotin, bo\'shsiz)</label><input type="text" id="bId" value="' + (b.id||'') + '" ' + (isEdit?'disabled':'') + ' placeholder="atom"></div>' +
       '<div class="field"><label>Nashriyot</label><select id="bPub" ' + (isEdit?'disabled':'') + '>' + pubOpts + '</select></div></div>' +
       '<div class="frow"><div class="field"><label>Nomi</label><input type="text" id="bTitle" value="' + (b.title||'') + '" placeholder="Kitob nomi"></div>' +
@@ -592,15 +595,40 @@ function showBookForm(pub, id) {
       '<div class="field"><label>Sahifalar</label><input type="number" id="bPages" value="' + (b.pages||'') + '"></div></div>' +
       '<div class="frow"><div class="field"><label>Yil</label><input type="number" id="bYear" value="' + (b.year||2025) + '"></div>' +
       '<div class="field"><label>Janr</label><select id="bGenre">' + genOpts + '</select></div></div>' +
-      '<div class="frow"><div class="field"><label>Reyting (0-5)</label><input type="number" id="bRating" value="' + (b.rating||4.5) + '" step="0.1"></div>' +
+      '<div class="frow"><div class="field"><label>ISBN</label><input type="text" id="bIsbn" value="' + (b.isbn||'') + '" placeholder="978-..."></div>' +
+      '<div class="field"><label>Nashr / edition</label><input type="text" id="bEdition" value="' + (b.edition||'') + '" placeholder="1-nashr"></div></div>' +
+      '<div class="frow"><div class="field"><label>Til</label><input type="text" id="bLanguage" value="' + (b.language||'') + '" placeholder="O\'zbek"></div>' +
+      '<div class="field"><label>Yozuv</label><input type="text" id="bScript" value="' + (b.script||'') + '" placeholder="Lotin yoki Kirill"></div></div>' +
+      '<div class="frow"><div class="field"><label>Muqova turi</label><input type="text" id="bBinding" value="' + (b.binding||'') + '" placeholder="Yumshoq yoki Qattiq"></div>' +
+      '<div class="field"><label>Ma\'lumot manbasi</label><input type="url" id="bSourceUrl" value="' + (b.sourceUrl||'') + '" placeholder="https://..."></div></div>' +
+      '<div class="frow"><div class="field"><label>Reyting (0-5)</label><input type="number" id="bRating" value="' + (b.rating != null ? b.rating : 0) + '" step="0.1"></div>' +
       '<div class="field" style="display:flex;align-items:center;padding-top:25px"><label style="margin:0"><input type="checkbox" id="bTop" ' + (b.isTop?'checked':'') + '> TOP kitob</label></div></div>' +
       '<div class="frow"><div class="field"><label>Muqova (Rasm URL yoki Base64)</label><input type="text" id="bCover" value="' + (b.cover||'') + '" placeholder="Rasm URL yoki pastdan fayl tanlang"></div>' +
       '<div class="field"><label>Muqova rasmini yuklash (.png, .jpg)</label><input type="file" id="bCoverFile" accept="image/*" onchange="handleCoverUpload(this)"></div></div>' +
+      '<div class="cover-editor">' +
+        '<div class="cover-preview-column"><div class="cover-preview-label">Saytdagi ko‘rinishi</div>' +
+          '<div class="admin-physical-book"><div class="admin-physical-inner">' +
+            '<div class="admin-cover-front"><div class="admin-cover-fallback"><strong id="bPreviewTitle">' + (b.title||'Kitob nomi') + '</strong><span id="bPreviewAuthor">' + (b.author||'Muallif') + '</span></div>' +
+              '<img id="bCoverPreview" src="' + (b.cover||'') + '" alt="Muqova ko‘rinishi" onerror="this.style.display=\'none\'">' +
+            '</div><div class="admin-book-pages"></div><div class="admin-book-back"></div>' +
+          '</div></div><div class="cover-preview-hint">Kartadagi 3D burilish bilan bir xil nisbat</div></div>' +
+        '<div class="cover-controls">' +
+          '<div class="cover-control"><label for="bCoverScale">Yaqinlashtirish <output id="bCoverScaleOut">' + Number(coverScale).toFixed(2) + '×</output></label><input type="range" id="bCoverScale" min="1" max="2.5" step="0.01" value="' + coverScale + '" oninput="updateBookCoverPreview()"></div>' +
+          '<div class="cover-control"><label for="bCoverX">Gorizontal joylashuv <output id="bCoverXOut">' + coverX + '%</output></label><input type="range" id="bCoverX" min="0" max="100" step="1" value="' + coverX + '" oninput="updateBookCoverPreview()"></div>' +
+          '<div class="cover-control"><label for="bCoverY">Vertikal joylashuv <output id="bCoverYOut">' + coverY + '%</output></label><input type="range" id="bCoverY" min="0" max="100" step="1" value="' + coverY + '" oninput="updateBookCoverPreview()"></div>' +
+          '<button type="button" class="btn-sm btn-ghost" onclick="resetBookCoverPreview()">Ramkani tiklash</button>' +
+          '<p>Rasmning o‘zi o‘zgarmaydi. Faqat saytda ko‘rinadigan kadr saqlanadi.</p>' +
+        '</div>' +
+      '</div>' +
       '<div class="field"><label>Muqova foni / Gradient</label>' + colorPickerHTML('bColor', b.color || 'linear-gradient(150deg,#1A3A5C,#2A5C8A)') + '</div>' +
       '<div class="field"><label>Tavsif</label><textarea id="bDesc" rows="3">' + (b.description||'') + '</textarea></div>' +
       '<button class="btn-primary" onclick="saveBook(\'' + (isEdit?b.publisherSlug:'') + '\',\'' + (isEdit?b.id:'') + '\')">Saqlash</button></div></div>';
 
     document.body.insertAdjacentHTML('beforeend', html);
+    document.getElementById('bCover').addEventListener('input', updateBookCoverPreview);
+    document.getElementById('bTitle').addEventListener('input', updateBookCoverPreview);
+    document.getElementById('bAuthor').addEventListener('input', updateBookCoverPreview);
+    updateBookCoverPreview();
     refreshAdminIcons();
   });
 }
@@ -615,14 +643,23 @@ function saveBook(oldPub, oldId) {
     pages: parseInt(document.getElementById('bPages').value) || null,
     year: parseInt(document.getElementById('bYear').value) || 2025,
     genre: document.getElementById('bGenre').value,
-    rating: parseFloat(document.getElementById('bRating').value) || 4.5,
+    isbn: document.getElementById('bIsbn').value.trim(),
+    edition: document.getElementById('bEdition').value.trim(),
+    language: document.getElementById('bLanguage').value.trim(),
+    script: document.getElementById('bScript').value.trim(),
+    binding: document.getElementById('bBinding').value.trim(),
+    sourceUrl: document.getElementById('bSourceUrl').value.trim(),
+    rating: parseFloat(document.getElementById('bRating').value) || 0,
     isTop: document.getElementById('bTop').checked,
     color: document.getElementById('bColor').value,
     cover: document.getElementById('bCover').value.trim(),
+    coverPositionX: parseFloat(document.getElementById('bCoverX').value),
+    coverPositionY: parseFloat(document.getElementById('bCoverY').value),
+    coverScale: parseFloat(document.getElementById('bCoverScale').value),
     description: document.getElementById('bDesc').value.trim()
   };
 
-  if (!data.id || !data.title || !data.author || !data.price) { alert('Barcha maydonlarni to\'ldiring'); return; }
+  if (!data.id || !data.title || !data.author || !data.price) { adminToast('Majburiy maydonlarni to\'ldiring', 'error'); return; }
   
   var method = oldId ? 'PUT' : 'POST';
   var path = oldId ? '/books/' + oldPub + '/' + oldId : '/books';
@@ -843,15 +880,45 @@ window.handleCoverUpload = function(input) {
   var file = input.files[0];
   if (!file) return;
   if (file.size > 2 * 1024 * 1024) {
-    alert('Rasm hajmi juda katta (maksimal 2MB)!');
+    adminToast('Rasm hajmi 2 MB dan oshmasligi kerak', 'error');
     input.value = '';
     return;
   }
   var reader = new FileReader();
   reader.onload = function(e) {
     document.getElementById('bCover').value = e.target.result;
+    updateBookCoverPreview();
   };
   reader.readAsDataURL(file);
+};
+
+window.updateBookCoverPreview = function() {
+  var preview = document.getElementById('bCoverPreview');
+  if (!preview) return;
+  var src = document.getElementById('bCover').value.trim();
+  var x = parseFloat(document.getElementById('bCoverX').value);
+  var y = parseFloat(document.getElementById('bCoverY').value);
+  var scale = parseFloat(document.getElementById('bCoverScale').value);
+  if (!Number.isFinite(x)) x = 50;
+  if (!Number.isFinite(y)) y = 50;
+  if (!Number.isFinite(scale)) scale = 1;
+  preview.style.display = src ? 'block' : 'none';
+  if (src && preview.getAttribute('src') !== src) preview.src = src;
+  preview.style.objectPosition = x + '% ' + y + '%';
+  preview.style.transformOrigin = x + '% ' + y + '%';
+  preview.style.transform = 'scale(' + scale + ')';
+  document.getElementById('bCoverXOut').textContent = Math.round(x) + '%';
+  document.getElementById('bCoverYOut').textContent = Math.round(y) + '%';
+  document.getElementById('bCoverScaleOut').textContent = scale.toFixed(2) + '×';
+  document.getElementById('bPreviewTitle').textContent = document.getElementById('bTitle').value.trim() || 'Kitob nomi';
+  document.getElementById('bPreviewAuthor').textContent = document.getElementById('bAuthor').value.trim() || 'Muallif';
+};
+
+window.resetBookCoverPreview = function() {
+  document.getElementById('bCoverX').value = 50;
+  document.getElementById('bCoverY').value = 50;
+  document.getElementById('bCoverScale').value = 1;
+  updateBookCoverPreview();
 };
 
 window.handleLogoUpload = function(input) {
@@ -868,4 +935,3 @@ window.handleLogoUpload = function(input) {
   };
   reader.readAsDataURL(file);
 };
-

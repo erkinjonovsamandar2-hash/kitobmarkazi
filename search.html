@@ -11,9 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
-  .s-hero{position:relative;padding:64px 32px 56px;overflow:hidden;box-shadow:0 1px 0 rgba(217,169,62,0.12),0 10px 30px rgba(10,22,40,0.1)}
-  .s-hero-bg{position:absolute;inset:0;background:url('images/search-hero.png') center/cover no-repeat;z-index:0}
-  .s-hero-ov{position:absolute;inset:0;background:linear-gradient(165deg,rgba(10,22,40,0.92) 0%,rgba(10,22,40,0.78) 40%,rgba(11,42,37,0.85) 100%);z-index:1}
+  .s-hero{position:relative;padding:64px 32px 56px;overflow:hidden;box-shadow:0 1px 0 rgba(217,169,62,0.12),0 10px 30px rgba(10,22,40,0.1);background:var(--grad-navy)}
   .s-hero::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(217,169,62,0.35),transparent);z-index:3}
   .s-orb{position:absolute;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(29,158,117,0.15),transparent 70%);top:-170px;right:-60px;filter:blur(60px);pointer-events:none;z-index:2}
   .s-in{max-width:1100px;margin:0 auto;position:relative;z-index:3}
@@ -97,8 +95,6 @@
 </nav>
 
 <section class="s-hero">
-  <div class="s-hero-bg"></div>
-  <div class="s-hero-ov"></div>
   <div class="s-orb"></div>
   <div class="s-in">
     <div class="s-title" id="sTitle">Barcha kitoblar</div>
@@ -292,7 +288,10 @@ async function loadBooks() {
         rating: b.rating,
         top: b.isTop === 1 || b.isTop === true,
         stock: b.stock,
-        cover: b.cover
+        cover: b.cover,
+        coverPositionX: b.coverPositionX,
+        coverPositionY: b.coverPositionY,
+        coverScale: b.coverScale
       };
       return bookCardHTML(b.publisherSlug, mappedBook);
     }).join('');
