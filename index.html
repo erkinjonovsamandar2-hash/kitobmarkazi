@@ -100,6 +100,26 @@
   .bs-foot{border:1.5px solid var(--border);border-radius:999px;min-height:38px;padding:3px 4px 3px 12px}
   .bs-cart{width:30px;height:30px;border-radius:50%;box-shadow:none}
 
+  /* Publisher collection campaigns: generated compositions using verified covers. */
+  .collection-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+  .collection-banner{--banner-image:none;position:relative;min-height:310px;border-radius:24px;overflow:hidden;isolation:isolate;color:#fff;text-decoration:none;border:1px solid rgba(15,23,42,.08);box-shadow:0 20px 50px -34px rgba(15,23,42,.46);transition:transform .4s var(--ease-premium),box-shadow .4s var(--ease-premium)}
+  .collection-banner::before{content:'';position:absolute;inset:0;z-index:-2;background-image:var(--banner-image);background-size:cover;background-position:center;transition:transform .7s cubic-bezier(.16,1,.3,1)}
+  .collection-banner::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(8,22,35,.86) 0%,rgba(8,22,35,.62) 34%,rgba(8,22,35,.08) 64%,transparent 78%)}
+  .collection-banner.collection-light{color:var(--navy)}
+  .collection-banner.collection-light::after{background:linear-gradient(90deg,rgba(255,255,255,.96) 0%,rgba(255,255,255,.82) 34%,rgba(255,255,255,.08) 65%,transparent 78%)}
+  .collection-banner:hover,.collection-banner:focus-visible{transform:translateY(-5px) scale(1.01);box-shadow:0 30px 64px -34px rgba(15,23,42,.56);outline:none}
+  .collection-banner:hover::before,.collection-banner:focus-visible::before{transform:scale(1.035)}
+  .collection-banner:active{transform:scale(.97)}
+  .collection-content{position:relative;z-index:2;width:48%;min-height:310px;padding:34px 28px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+  .collection-kicker{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-l);margin-bottom:10px}
+  .collection-light .collection-kicker{color:#126CC3}
+  .collection-title{font-family:var(--serif);font-size:28px;line-height:1.08;letter-spacing:-.025em;margin:0 0 10px;font-weight:900}
+  .collection-sub{font-size:12px;line-height:1.55;color:rgba(255,255,255,.72);max-width:210px;margin-bottom:20px}
+  .collection-light .collection-sub{color:rgba(10,22,40,.66)}
+  .collection-cta{display:inline-flex;align-items:center;gap:7px;padding:9px 13px;border-radius:999px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(12px);font-size:11px;font-weight:800}
+  .collection-light .collection-cta{background:rgba(255,255,255,.78);border-color:rgba(18,108,195,.18);color:#105B9F}
+  @media(prefers-reduced-motion:reduce){.collection-banner,.collection-banner::before{transition:none}.collection-banner:hover,.collection-banner:focus-visible,.collection-banner:active{transform:none}.collection-banner:hover::before,.collection-banner:focus-visible::before{transform:none}}
+
   .adsec{padding:38px 0 18px;max-width:1100px;margin:0 auto}
   .adhead{display:flex;align-items:center;justify-content:space-between;padding:0 32px;margin-bottom:20px}
   .adtitle{display:flex;align-items:center;gap:12px}
@@ -157,7 +177,7 @@
     .hero{padding:38px 16px 32px}.hero h1{font-size:38px;letter-spacing:-0.032em}.stats{gap:20px}
     .stat-hide{display:none}
     .adhead{padding-left:16px;padding-right:16px}.adscroll{padding-left:16px;padding-right:16px}
-    .grid{grid-template-columns:1fr;gap:10px}
+    .grid{grid-template-columns:1fr;gap:10px}.collection-grid{grid-template-columns:1fr}.collection-banner{min-height:270px}.collection-content{min-height:270px;width:54%;padding:24px 20px}.collection-title{font-size:23px}.collection-sub{display:none}
     .adt{font-size:22px}.how{padding:32px 20px}.how-track{grid-template-columns:1fr;gap:28px}.how-line{display:none}
   }
 
@@ -285,6 +305,21 @@
   </div>
   <div class="bs-scroll" id="bsScroll"></div>
 </div>
+
+<section class="sec reveal" aria-labelledby="collectionsTitle">
+  <div class="sh">
+    <div><div class="st" id="collectionsTitle">Nashriyot tanlovlari</div><div class="ss">Bir nashriyotning sara kitoblarini bir joyda ko'ring</div></div>
+    <a class="sa" href="/nashriyotlar">Barcha nashriyotlar →</a>
+  </div>
+  <div class="collection-grid">
+    <a class="collection-banner collection-light" href="publisher.html?pub=asaxiy" aria-label="Asaxiy Books sara kitoblarini ko'rish" style="--banner-image:url('images/collection-banners/asaxiy-collection.jpg')">
+      <div class="collection-content"><span class="collection-kicker">Nashriyot tanlovi</span><h3 class="collection-title">Asaxiy Books<br>sara kitoblari</h3><p class="collection-sub">Odatlar, tarix va jahon adabiyotidan tasdiqlangan nashrlar.</p><span class="collection-cta">To'plamni ko'rish <span aria-hidden="true">→</span></span></div>
+    </a>
+    <a class="collection-banner" href="publisher.html?pub=hilol" aria-label="Hilol Nashr sara kitoblarini ko'rish" style="--banner-image:url('images/collection-banners/hilol-collection.jpg')">
+      <div class="collection-content"><span class="collection-kicker">Nashriyot tanlovi</span><h3 class="collection-title">Hilol Nashr<br>ma'rifiy tanlovi</h3><p class="collection-sub">Diniy-ma'rifiy bilim va kundalik odobga bag'ishlangan kitoblar.</p><span class="collection-cta">To'plamni ko'rish <span aria-hidden="true">→</span></span></div>
+    </a>
+  </div>
+</section>
 
 <div class="sec reveal">
   <div class="sh"><div><div class="st">Janrlar bo'yicha</div><div class="ss">Qiziqishingizga mos kitoblarni toping</div></div><a class="sa" href="/qidirish">Barchasi →</a></div>
