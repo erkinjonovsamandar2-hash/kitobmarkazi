@@ -22,13 +22,13 @@ INSERT INTO publishers
   (slug, name, "logoText", "logoColor", founded, description, "isTop", "sortOrder")
 VALUES
   ('asaxiy', 'Asaxiy Books', 'AB', '#E53935', '2018', 'Asaxiy kompaniyasining o‘zbek tilidagi kitoblar nashr loyihasi.', 1, 1),
-  ('yangiasr', 'Yangi Asr Avlodi', 'YA', '#1565C0', NULL, 'O‘zbek va jahon adabiyoti nashrlari.', 1, 2),
-  ('zabarjad', 'Zabarjad Media', 'ZM', '#E9A91B', NULL, 'Badiiy, mumtoz va ma’rifiy kitoblar nashriyoti.', 1, 3),
-  ('akadem', 'Akademnashr', 'AK', '#3F51B5', '2004', '2004-yilda tashkil etilgan nashriyot.', 1, 4),
-  ('hilol', 'Hilol Nashr', 'HN', '#188A63', NULL, 'Diniy-ma’rifiy kitoblar nashriyoti.', 1, 5),
-  ('bukhara', 'Bukhara Books', 'BB', '#1D4E89', NULL, 'Badiiy va tarixiy kitoblar nashriyoti.', 1, 6),
-  ('turonzamin', 'Turon Zamin Ziyo', 'TZ', '#0F766E', NULL, 'O‘zbek va jahon adabiyoti nashrlari.', 1, 7),
-  ('bayoz', 'Bayoz', 'BY', '#7C3AED', NULL, 'Badiiy va ommabop kitoblar nashriyoti.', 1, 8)
+  ('yangiasr', 'Yangi Asr Avlodi', 'YA', '#1565C0', NULL, 'O‘zbek va jahon adabiyoti nashrlari.', 0, 2),
+  ('zabarjad', 'Zabarjad Media', 'ZM', '#E9A91B', NULL, 'Badiiy, mumtoz va ma’rifiy kitoblar nashriyoti.', 0, 3),
+  ('akadem', 'Akademnashr', 'AK', '#3F51B5', '2004', '2004-yilda tashkil etilgan nashriyot.', 0, 4),
+  ('hilol', 'Hilol Nashr', 'HN', '#188A63', NULL, 'Diniy-ma’rifiy kitoblar nashriyoti.', 0, 5),
+  ('bukhara', 'Bukhara Books', 'BB', '#1D4E89', NULL, 'Badiiy va tarixiy kitoblar nashriyoti.', 0, 6),
+  ('turonzamin', 'Turon Zamin Ziyo', 'TZ', '#0F766E', NULL, 'O‘zbek va jahon adabiyoti nashrlari.', 0, 7),
+  ('bayoz', 'Bayoz', 'BY', '#7C3AED', NULL, 'Badiiy va ommabop kitoblar nashriyoti.', 0, 8)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name,
   "logoText" = COALESCE(publishers."logoText", EXCLUDED."logoText"),
