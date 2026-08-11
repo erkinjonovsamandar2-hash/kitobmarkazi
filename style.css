@@ -617,6 +617,11 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
    needs a real touch listener before :active applies at all). JS in cart.js toggles
    .is-pressed on pointerdown/up so every card type gets a felt response on tap. */
 .pcard,.book,.bs-card,.poster{-webkit-tap-highlight-color:transparent}
-.pcard.is-pressed,.book.is-pressed,.bs-card.is-pressed,.poster.is-pressed{transform:scale(0.94)!important;transition:transform 0.08s ease-out!important;box-shadow:var(--sh-sm)!important}
+.pcard.is-pressed,.book.is-pressed,.bs-card.is-pressed,.poster.is-pressed{transform:scale(0.94)!important;transition:transform 0.08s ease-out,border-color 0.08s ease-out!important;box-shadow:var(--sh-sm)!important}
+.pcard.is-pressed{border-color:var(--teal)!important}
+/* Bright color tint on press: an overlay film (not the base background) so it reads
+   across the whole card, including over the logo tile's own opaque background. */
+.pcard::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;background:transparent;transition:background 0.15s ease-out}
+.pcard.is-pressed::after{background:linear-gradient(135deg,rgba(29,158,117,.18),rgba(194,147,46,.18))}
 @media(prefers-reduced-motion:reduce){.pcard.is-pressed,.book.is-pressed,.bs-card.is-pressed,.poster.is-pressed{transform:none!important}}
 
