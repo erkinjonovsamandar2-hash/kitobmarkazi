@@ -149,6 +149,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   .sec{padding:48px 16px 0}.steps-wrap{padding:0 16px 18px}
   .st{font-size:22px}.frow{grid-template-columns:1fr}
   .foot{padding:18px 16px;flex-direction:column;text-align:center}
+  #km-back-to-top{display:none!important}
 }
 @media(max-width:360px){
   .nav{gap:8px}

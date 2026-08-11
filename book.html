@@ -106,7 +106,9 @@
     .sa-title{max-width:140px;font-size:13px}
     .sa-auth{display:none}
     .sa-price{font-size:16px}
-    .sa-right{gap:10px}
+    .sa-info{display:none}
+    .sa-right{gap:12px;width:100%;justify-content:space-between}
+    .sa-right .btn{flex:1}
   }
   /* Avoid overlap with sticky bottom bar */
   .bk-wrap { padding-bottom: 120px !important; }
@@ -531,18 +533,20 @@ window.submitReview = function() {
 
 // initPageData hook is now handled directly inside renderBookPage
 
-// Scroll listener for sticky bar
-window.addEventListener('scroll', function(){
+// Keep the mobile purchase action available whenever its main counterpart is off-screen.
+function updateStickyCart(){
   var buyBtn = document.getElementById('addCartBtn');
   var stickyBar = document.getElementById('stickyAddCart');
   if (!buyBtn || !stickyBar) return;
-  var pos = buyBtn.getBoundingClientRect().bottom;
-  if (pos < 0) {
-    stickyBar.classList.add('show');
-  } else {
-    stickyBar.classList.remove('show');
-  }
-});
+  var rect = buyBtn.getBoundingClientRect();
+  var show = window.innerWidth <= 780
+    ? (rect.bottom < 0 || rect.top > window.innerHeight)
+    : rect.bottom < 0;
+  stickyBar.classList.toggle('show', show);
+}
+window.addEventListener('scroll', updateStickyCart, { passive:true });
+window.addEventListener('resize', updateStickyCart);
+window.setTimeout(updateStickyCart, 600);
 
 </script>
 <script src="chat-widget.js"></script>
