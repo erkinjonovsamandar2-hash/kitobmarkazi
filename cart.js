@@ -240,3 +240,29 @@ function refreshIcons() {
 }
 document.addEventListener('DOMContentLoaded', refreshIcons);
 window.refreshIcons = refreshIcons;
+
+/* ===== Card touch/press feedback (publisher cards, book cards, best-sellers, posters) =====
+   A touch that turns into a scroll fires pointercancel almost immediately — often before
+   the pressed state has even painted, so a finger brushing past a card feels nothing. We
+   hold the press for a minimum visible duration regardless of how the gesture ends. */
+(function(){
+  var PRESS_SEL = '.pcard,.book,.bs-card,.poster';
+  var MIN_MS = 120;
+  var current = null;
+  function press(e){
+    var el = e.target.closest && e.target.closest(PRESS_SEL);
+    if(!el) return;
+    el.classList.add('is-pressed');
+    current = { el: el, at: Date.now() };
+  }
+  function release(){
+    if(!current) return;
+    var el = current.el, wait = MIN_MS - (Date.now() - current.at);
+    current = null;
+    if(wait > 0) setTimeout(function(){ el.classList.remove('is-pressed'); }, wait);
+    else el.classList.remove('is-pressed');
+  }
+  document.addEventListener('pointerdown', press, {passive:true});
+  document.addEventListener('pointerup', release, {passive:true});
+  document.addEventListener('pointercancel', release, {passive:true});
+})();
