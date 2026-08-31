@@ -17,6 +17,11 @@
     { "source": "/shartlar", "destination": "/terms.html" },
     { "source": "/oferta", "destination": "/offer.html" },
     { "source": "/buyurtma", "destination": "/order.html" }
-  ]
+  ],
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "server/data/kitobmarkazi.db"
+    }
+  }
 }
 
