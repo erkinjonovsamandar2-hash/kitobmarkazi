@@ -2,6 +2,7 @@
 const { Pool } = require('pg');
 const Database = require('better-sqlite3');
 const path = require('path');
+const fs = require('fs');
 
 let useSqlite = false;
 let sqliteDb = null;
@@ -38,7 +39,20 @@ function initDb() {
 function loadSqliteFallback() {
   if (sqliteDb) return;
   try {
-    const dbPath = path.join(__dirname, '..', 'data', 'kitobmarkazi.db');
+    const paths = [
+      path.join(__dirname, '..', 'data', 'kitobmarkazi.db'),
+      path.join(process.cwd(), 'server', 'data', 'kitobmarkazi.db'),
+      path.join(process.cwd(), 'data', 'kitobmarkazi.db')
+    ];
+    
+    let dbPath = paths[0];
+    for (const p of paths) {
+      if (fs.existsSync(p)) {
+        dbPath = p;
+        break;
+      }
+    }
+
     console.log(`🔌 Initializing SQLite connection at: ${dbPath}`);
     const isVercel = !!process.env.VERCEL;
     sqliteDb = new Database(dbPath, { readonly: isVercel });
