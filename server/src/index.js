@@ -45,6 +45,42 @@ validateEnv();
 app.use(cors());
 app.use(express.json({ limit: '5mb' }));
 
+/* ── Debug filesystem ── */
+app.get('/api/debug-files', (req, res) => {
+  const fs = require('fs');
+  const path = require('path');
+  
+  function listFiles(dir, depth = 0) {
+    if (depth > 3) return [];
+    try {
+      const entries = fs.readdirSync(dir, { withFileTypes: true });
+      let results = [];
+      for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          if (entry.name === 'node_modules' || entry.name === '.git') {
+            results.push({ name: entry.name, type: 'dir' });
+          } else {
+            results.push({ name: entry.name, type: 'dir', children: listFiles(fullPath, depth + 1) });
+          }
+        } else {
+          results.push({ name: entry.name, type: 'file', size: fs.statSync(fullPath).size });
+        }
+      }
+      return results;
+    } catch(e) {
+      return [{ error: e.message }];
+    }
+  }
+
+  res.json({
+    cwd: process.cwd(),
+    __dirname: __dirname,
+    cwdFiles: listFiles(process.cwd()),
+    dirnameFiles: listFiles(__dirname)
+  });
+});
+
 /* ── Health check ── */
 app.get('/api/health', async (req, res) => {
   try {
