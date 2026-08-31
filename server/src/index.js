@@ -81,6 +81,35 @@ app.get('/api/debug-files', (req, res) => {
   });
 });
 
+app.get('/api/debug-sqlite', (req, res) => {
+  const Database = require('better-sqlite3');
+  const path = require('path');
+  const fs = require('fs');
+  
+  const p = path.join(process.cwd(), 'server', 'data', 'kitobmarkazi.db');
+  const exists = fs.existsSync(p);
+  let status = 'unknown';
+  let err = null;
+  
+  try {
+    const dbInstance = new Database(p, { readonly: true });
+    status = 'opened successfully';
+    const row = dbInstance.prepare("SELECT datetime('now')").get();
+    status = `queried successfully: ${JSON.stringify(row)}`;
+    dbInstance.close();
+  } catch(e) {
+    status = 'failed';
+    err = { message: e.message, stack: e.stack, code: e.code };
+  }
+  
+  res.json({
+    path: p,
+    exists,
+    status,
+    error: err
+  });
+});
+
 /* ── Health check ── */
 app.get('/api/health', async (req, res) => {
   try {
