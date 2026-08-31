@@ -40,8 +40,11 @@ function loadSqliteFallback() {
   try {
     const dbPath = path.join(__dirname, '..', 'data', 'kitobmarkazi.db');
     console.log(`🔌 Initializing SQLite connection at: ${dbPath}`);
-    sqliteDb = new Database(dbPath);
-    sqliteDb.pragma('journal_mode = WAL');
+    const isVercel = !!process.env.VERCEL;
+    sqliteDb = new Database(dbPath, { readonly: isVercel });
+    if (!isVercel) {
+      sqliteDb.pragma('journal_mode = WAL');
+    }
     useSqlite = true;
     console.log('✅ SQLite fallback initialized successfully.');
   } catch (e) {
