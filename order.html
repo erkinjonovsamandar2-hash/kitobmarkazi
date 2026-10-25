@@ -31,6 +31,19 @@
   .fcard-n{width:30px;height:30px;border-radius:9px;background:var(--teal);color:#fff;font-family:var(--serif);font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
   .fcard-t{font-size:15px;font-weight:700;color:var(--ink)}
   .fcard-body{padding:16px 22px 22px}
+  .fcard-edit{margin-left:auto;background:none;border:1px solid var(--border);border-radius:20px;padding:6px 14px 6px 22px;font-size:12px;font-weight:600;color:var(--mid);cursor:pointer;position:relative}
+  .fcard-edit:before{content:'✎';position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:11px}
+  .fcard-edit:hover{border-color:var(--teal);color:var(--teal)}
+  .fcard-confirm{margin-top:14px;padding:11px 20px;background:var(--teal);color:#fff;border:none;border-radius:11px;font-size:13.5px;font-weight:700;cursor:pointer}
+  .fcard-confirm:hover{background:var(--teal-d)}
+  .fcard-summary-row{font-size:14.5px;font-weight:700;color:var(--ink)}
+  .saved-addr{display:flex;align-items:center;gap:12px;border:1.5px solid #DDE3E1;border-radius:14px;padding:13px 15px;cursor:pointer;transition:all .16s;background:#fff;margin-bottom:10px}
+  .saved-addr:hover{border-color:#A9D9C8;transform:translateY(-1px)}
+  .saved-addr-text{flex:1;font-size:13.5px;color:var(--ink);line-height:1.4}
+  .saved-addr-del{width:26px;height:26px;border-radius:50%;border:none;background:#F7F9F8;color:var(--light);cursor:pointer;font-size:13px;flex-shrink:0}
+  .saved-addr-del:hover{background:#fee2e2;color:#E2556F}
+  .fcard-addnew{width:100%;padding:13px;border:1.5px dashed #C7CDD3;border-radius:14px;background:none;color:var(--mid);font-size:13.5px;font-weight:600;cursor:pointer;margin-bottom:14px}
+  .fcard-addnew:hover{border-color:var(--teal);color:var(--teal)}
   .field{margin-bottom:14px}.field:last-child{margin-bottom:0}
   label{display:block;font-size:12px;font-weight:600;color:var(--mid);margin-bottom:6px}
   input[type=text],input[type=tel],textarea,select{width:100%;padding:12px 14px;border:1.5px solid #DDE3E1;border-radius:11px;font-size:15px;color:var(--ink);background:#F7F9F8;font-family:inherit;transition:all 0.15s;outline:none;appearance:none}
@@ -63,7 +76,7 @@
 
 
   .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:0}
-  .pay{border:1.5px solid #DDE3E1;border-radius:14px;padding:22px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.18s;background:#fff;position:relative;min-height:78px}
+  .pay{border:1.5px solid #DDE3E1;border-radius:14px;padding:18px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:all 0.18s;background:#fff;position:relative;min-height:78px}
   .pay:hover{border-color:#A9D9C8}.pay.on{border-color:var(--teal);background:#EEFAF5;box-shadow:0 0 0 3px rgba(29,158,117,0.1)}
   .pchk{position:absolute;top:9px;right:9px;width:20px;height:20px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;opacity:0;transform:scale(0.5);transition:all 0.18s}
   .pay.on .pchk{opacity:1;transform:scale(1)}
@@ -133,33 +146,45 @@
 <div class="o-wrap" id="formWrap">
   <div class="o-form">
     <div class="fcard">
-      <div class="fcard-head"><div class="fcard-n">1</div><div class="fcard-t">Buyurtmachi ma'lumotlari</div></div>
-      <div class="fcard-body">
+      <div class="fcard-head"><div class="fcard-n" id="contactCheck">1</div><div class="fcard-t">Buyurtmachi ma'lumotlari</div><button type="button" id="contactEditBtn" class="fcard-edit" style="display:none" onclick="openContactForm()">O'zgartirish</button></div>
+      <div class="fcard-body" id="contactFormBody">
         <div class="frow">
           <div class="field"><label>Ism *</label><input type="text" id="fname" placeholder="Alisher"></div>
           <div class="field"><label>Familiya</label><input type="text" id="lname" placeholder="Umarov"></div>
         </div>
-        <div class="field"><label>Telefon *</label><input type="tel" id="phone" placeholder="+998 90 123 45 67"></div>
+        <div class="field"><label>Telefon *</label><input type="tel" id="phone" placeholder="+998 90 123 45 67" inputmode="numeric" oninput="maskPhone(this)"></div>
+        <button type="button" class="fcard-confirm" onclick="confirmContact()">Saqlash</button>
+      </div>
+      <div class="fcard-body" id="contactSummary" style="display:none">
+        <div class="fcard-summary-row" id="contactSummaryText"></div>
       </div>
     </div>
 
     <div class="fcard">
-      <div class="fcard-head"><div class="fcard-n">2</div><div class="fcard-t">Yetkazib berish manzili</div></div>
-      <div class="fcard-body">
-        <div class="frow">
-          <div class="field"><label>Shahar / Viloyat *</label>
-            <select id="city" onchange="onRegionChange()"><option value="">Tanlang...</option>
-              <option>Toshkent shahri</option><option>Toshkent viloyati</option><option>Samarqand</option>
-              <option>Buxoro</option><option>Namangan</option><option>Andijon</option><option>Farg'ona</option>
-              <option>Qashqadaryo</option><option>Surxondaryo</option><option>Xorazm</option><option>Navoiy</option>
-              <option>Jizzax</option><option>Sirdaryo</option><option>Qoraqalpog'iston</option>
-            </select>
+      <div class="fcard-head"><div class="fcard-n" id="addrCheck">2</div><div class="fcard-t">Yetkazib berish manzili</div><button type="button" id="addrEditBtn" class="fcard-edit" style="display:none" onclick="openAddressPicker()">Boshqa manzil</button></div>
+      <div class="fcard-body" id="addressPicker">
+        <div id="addressList"></div>
+        <button type="button" class="fcard-addnew" id="addNewAddrBtn" onclick="showAddressForm()">+ Yangi manzil qo'shish</button>
+        <div id="addressFormBody" style="display:none">
+          <div class="frow">
+            <div class="field"><label>Shahar / Viloyat *</label>
+              <select id="city" onchange="onRegionChange()"><option value="">Tanlang...</option>
+                <option>Toshkent shahri</option><option>Toshkent viloyati</option><option>Samarqand</option>
+                <option>Buxoro</option><option>Namangan</option><option>Andijon</option><option>Farg'ona</option>
+                <option>Qashqadaryo</option><option>Surxondaryo</option><option>Xorazm</option><option>Navoiy</option>
+                <option>Jizzax</option><option>Sirdaryo</option><option>Qoraqalpog'iston</option>
+              </select>
+            </div>
+            <div class="field"><label>Tuman *</label>
+              <select id="tuman" onchange="renderCouriers()" disabled><option value="">Avval viloyat...</option></select>
+            </div>
           </div>
-          <div class="field"><label>Tuman *</label>
-            <select id="tuman" onchange="renderCouriers()" disabled><option value="">Avval viloyat...</option></select>
-          </div>
+          <div class="field"><label>Aniq manzil *</label><textarea id="addr" placeholder="Ko'cha, uy/kvartira raqami, mo'ljal..."></textarea></div>
+          <button type="button" class="fcard-confirm" onclick="confirmAddress()">Manzilni saqlash</button>
         </div>
-        <div class="field"><label>Aniq manzil *</label><textarea id="addr" placeholder="Ko'cha, uy/kvartira raqami, mo'ljal..."></textarea></div>
+      </div>
+      <div class="fcard-body" id="addressSummary" style="display:none">
+        <div class="fcard-summary-row" id="addressSummaryText"></div>
       </div>
     </div>
 
@@ -191,12 +216,15 @@
         <div class="pgrid">
           <div class="pay" id="p-payme" role="button" tabindex="0" data-keyactivate="1" aria-label="Payme" onclick="selPay('payme')"><div class="pchk">✓</div>
             <div class="play"><img src="images/pay/payme.png" alt="Payme"></div>
+            <div class="pname">Payme</div>
           </div>
           <div class="pay" id="p-click" role="button" tabindex="0" data-keyactivate="1" aria-label="Click" onclick="selPay('click')"><div class="pchk">✓</div>
             <div class="play"><img src="images/pay/click.png" alt="Click"></div>
+            <div class="pname">Click</div>
           </div>
           <div class="pay" id="p-uzum" role="button" tabindex="0" data-keyactivate="1" aria-label="Uzum" onclick="selPay('uzum')"><div class="pchk">✓</div>
             <div class="play"><img src="images/pay/uzum.png" alt="Uzum"></div>
+            <div class="pname">Uzum · bo'lib to'lash</div>
           </div>
         </div>
         <div class="secure">🔒 Barcha onlayn to'lovlar SSL orqali himoyalangan · PCI DSS sertifikatlangan</div>
@@ -290,7 +318,7 @@ function initPageData(){
     document.getElementById('formWrap').innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px 20px"><div style="display:flex;justify-content:center;margin-bottom:14px"><i data-lucide="shopping-cart" style="width:56px;height:56px;color:var(--mid)"></i></div><h2 style="font-family:var(--serif);font-size:23px;margin-bottom:10px">Savatcha bo\'sh</h2><p style="color:var(--mid);margin-bottom:22px">Buyurtma berish uchun avval kitob tanlang</p><a class="btn btn-teal" href="publishers.html"><i data-lucide="book-open" style="width:16px;height:16px;margin-right:6px;display:inline-block;vertical-align:middle"></i> Nashriyotlarni ko\'rish</a></div>'; if(window.refreshIcons) window.refreshIcons();
   } else {
     renderItems();
-    onRegionChange();
+    initCheckoutProfile();
   }
 }
 
@@ -361,6 +389,7 @@ function renderCouriers(){
           '<div class="cour-price">'+(c.price||'')+'</div>' +
           '<div class="cour-radio"><div class="cour-dot"></div></div></div>';
       }).join('') + '<div style="font-size:11px;color:var(--light);padding:6px 2px 0">📍 '+tuman+', '+region+' — '+couriers.length+' ta kuryer xizmati mavjud</div>';
+      if (couriers.length === 1) selCour(couriers[0].slug);
     })
     .catch(function(){
       var avail=couriersFor(region,tuman);
@@ -374,6 +403,7 @@ function renderCouriers(){
           '<div class="cour-price">'+c.price+'</div>' +
           '<div class="cour-radio"><div class="cour-dot"></div></div></div>';
       }).join('') + '<div style="font-size:11px;color:var(--light);padding:6px 2px 0">📍 '+tuman+', '+region+' — '+avail.length+' ta kuryer xizmati mavjud</div>';
+      if (avail.length === 1) selCour(avail[0]);
     });
 }
 
@@ -490,6 +520,158 @@ function isValidUzPhone(phone) {
   // Accept formats: +998901234567, 998901234567, 901234567, +998 90 123 45 67
   var cleaned = phone.replace(/[\s\-\(\)]/g, '');
   return /^(\+?998)?[0-9]{9}$/.test(cleaned);
+}
+
+/* ── Phone input mask: +998 90 123 45 67 as the user types ── */
+function maskPhone(el){
+  var digits = el.value.replace(/\D/g, '');
+  if (digits.startsWith('998')) digits = digits.slice(3);
+  digits = digits.slice(0, 9);
+  var out = '+998';
+  if (digits.length) out += ' ' + digits.slice(0, 2);
+  if (digits.length > 2) out += ' ' + digits.slice(2, 5);
+  if (digits.length > 5) out += ' ' + digits.slice(5, 7);
+  if (digits.length > 7) out += ' ' + digits.slice(7, 9);
+  el.value = out;
+}
+
+/* ── Checkout profile: remembered contact info + a small address book,
+   modeled on collapse-once-confirmed reference checkout flows. Only ever
+   holds delivery-relevant fields, never payment info. Local to this
+   browser only -- no account/server sync. ── */
+var PROFILE_KEY = 'km_checkout_profile';
+
+function loadProfile(){
+  var p;
+  try { p = JSON.parse(localStorage.getItem(PROFILE_KEY) || 'null'); } catch(e) { p = null; }
+  if (!p || typeof p !== 'object') p = {};
+  if (!Array.isArray(p.addresses)) p.addresses = [];
+  p.fname = p.fname || ''; p.lname = p.lname || ''; p.phone = p.phone || '';
+  return p;
+}
+function saveProfile(){ try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)); } catch(e) {} }
+function genId(){ return 'a' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+var profile = loadProfile();
+
+/* — Contact card — */
+function confirmContact(){
+  var f = document.getElementById('fname').value.trim();
+  var p = document.getElementById('phone').value.trim();
+  var okF = validateField('fname', f.length >= 2, 'Ismingiz kamida 2 ta harf bo\'lishi kerak');
+  var okP = validateField('phone', isValidUzPhone(p), 'To\'g\'ri telefon raqam kiriting: +998 XX XXX XX XX');
+  if (!okF || !okP) return;
+  profile.fname = f;
+  profile.lname = document.getElementById('lname').value.trim();
+  profile.phone = p;
+  saveProfile();
+  showContactSummary();
+}
+function showContactSummary(){
+  var name = profile.fname + (profile.lname ? ' ' + profile.lname : '');
+  document.getElementById('contactSummaryText').textContent = name + ' · ' + profile.phone;
+  document.getElementById('contactFormBody').style.display = 'none';
+  document.getElementById('contactSummary').style.display = 'block';
+  document.getElementById('contactEditBtn').style.display = 'block';
+  document.getElementById('contactCheck').textContent = '✓';
+}
+function openContactForm(){
+  document.getElementById('contactFormBody').style.display = 'block';
+  document.getElementById('contactSummary').style.display = 'none';
+  document.getElementById('contactEditBtn').style.display = 'none';
+  document.getElementById('contactCheck').textContent = '1';
+}
+
+/* — Address card / saved address book — */
+function renderAddressList(){
+  var box = document.getElementById('addressList');
+  if (!profile.addresses.length) { box.innerHTML = ''; return; }
+  box.innerHTML = profile.addresses.map(function(a){
+    return '<div class="saved-addr" role="button" tabindex="0" onclick="selectSavedAddress(\''+a.id+'\')">' +
+      '<div class="saved-addr-text"><b>'+esc(a.tuman)+', '+esc(a.city)+'</b><br>'+esc(a.addr)+'</div>' +
+      '<button type="button" class="saved-addr-del" aria-label="O\'chirish" onclick="event.stopPropagation();deleteSavedAddress(\''+a.id+'\')">✕</button>' +
+    '</div>';
+  }).join('');
+}
+function selectSavedAddress(id){
+  var a = profile.addresses.filter(function(x){ return x.id === id; })[0];
+  if (!a) return;
+  document.getElementById('city').value = a.city;
+  onRegionChange();
+  document.getElementById('tuman').value = a.tuman;
+  document.getElementById('addr').value = a.addr;
+  renderCouriers();
+  profile.lastAddressId = id;
+  saveProfile();
+  showAddressSummary(a);
+}
+function deleteSavedAddress(id){
+  profile.addresses = profile.addresses.filter(function(x){ return x.id !== id; });
+  if (profile.lastAddressId === id) profile.lastAddressId = null;
+  saveProfile();
+  renderAddressList();
+}
+function showAddressForm(){
+  document.getElementById('addressFormBody').style.display = 'block';
+  document.getElementById('addressSummary').style.display = 'none';
+}
+function showAddressSummary(a){
+  document.getElementById('addressSummaryText').innerHTML = '<b>'+esc(a.tuman)+', '+esc(a.city)+'</b><br>'+esc(a.addr);
+  document.getElementById('addressPicker').style.display = 'none';
+  document.getElementById('addressSummary').style.display = 'block';
+  document.getElementById('addrEditBtn').style.display = 'block';
+  document.getElementById('addrCheck').textContent = '✓';
+}
+function openAddressPicker(){
+  document.getElementById('addressPicker').style.display = 'block';
+  document.getElementById('addressSummary').style.display = 'none';
+  document.getElementById('addrEditBtn').style.display = 'none';
+  document.getElementById('addrCheck').textContent = '2';
+}
+function confirmAddress(){
+  var c = document.getElementById('city').value;
+  var t = document.getElementById('tuman').value;
+  var a = document.getElementById('addr').value.trim();
+  var okC = validateField('city', !!c, 'Viloyatni tanlang');
+  var okT = validateField('tuman', !!t, 'Tumanni tanlang');
+  var okA = validateField('addr', a.length >= 5, 'Manzilni to\'liqroq kiriting (kamida 5 ta belgi)');
+  if (!okC || !okT || !okA) return;
+  var existing = profile.addresses.filter(function(x){ return x.city===c && x.tuman===t && x.addr===a; })[0];
+  var entry = existing || { id: genId(), city: c, tuman: t, addr: a };
+  if (!existing) profile.addresses.push(entry);
+  profile.lastAddressId = entry.id;
+  saveProfile();
+  renderAddressList();
+  showAddressSummary(entry);
+}
+
+function initCheckoutProfile(){
+  document.getElementById('fname').value = profile.fname;
+  document.getElementById('lname').value = profile.lname;
+  document.getElementById('phone').value = profile.phone;
+
+  renderAddressList();
+  if (profile.addresses.length) {
+    document.getElementById('addNewAddrBtn').style.display = 'block';
+    var last = profile.addresses.filter(function(a){ return a.id === profile.lastAddressId; })[0] || profile.addresses[0];
+    selectSavedAddress(last.id);
+  } else {
+    document.getElementById('addNewAddrBtn').style.display = 'none';
+    showAddressForm();
+  }
+
+  if (profile.fname && isValidUzPhone(profile.phone)) showContactSummary();
+
+  // Live validation on blur, instead of only surfacing errors on submit
+  document.getElementById('fname').addEventListener('blur', function(){
+    validateField('fname', this.value.trim().length >= 2, 'Ismingiz kamida 2 ta harf bo\'lishi kerak');
+  });
+  document.getElementById('phone').addEventListener('blur', function(){
+    validateField('phone', isValidUzPhone(this.value), 'To\'g\'ri telefon raqam kiriting: +998 XX XXX XX XX');
+  });
+  document.getElementById('addr').addEventListener('blur', function(){
+    validateField('addr', this.value.trim().length >= 5, 'Manzilni to\'liqroq kiriting (kamida 5 ta belgi)');
+  });
 }
 
 function submitOrder(){
