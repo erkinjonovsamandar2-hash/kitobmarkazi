@@ -42,24 +42,30 @@ function updateCartBadge(){
     e.style.display = n>0 ? 'flex' : 'none';
   });
 }
-function toast(msg, type){
+/* Optional 3rd arg: {href,label} adds an inline action link (e.g. go to cart) and keeps the toast up longer */
+var CART_LINK = { href:'cart.html', label:"Savatga o'tish →" };
+function toast(msg, type, link){
   var t = document.getElementById('km-toast');
   if(!t){
     t = document.createElement('div');
     t.id = 'km-toast';
-    t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);color:#fff;padding:13px 22px;border-radius:12px;font-size:14px;font-weight:600;box-shadow:0 12px 30px rgba(0,0,0,0.3);z-index:9999;opacity:0;transition:all 0.25s;display:flex;align-items:center;gap:8px';
+    t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);color:#fff;padding:13px 22px;border-radius:12px;font-size:14px;font-weight:600;box-shadow:0 12px 30px rgba(0,0,0,0.3);z-index:9999;opacity:0;pointer-events:none;transition:opacity 0.25s,transform 0.25s;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 32px)';
     document.body.appendChild(t);
   }
+  var html;
   if (type === 'error') {
     t.style.background = '#E2556F';
-    t.innerHTML = '⚠️ ' + msg;
+    html = '⚠️ ' + msg;
   } else {
     t.style.background = '#15202E';
-    t.innerHTML = '✓ ' + msg;
+    html = '✓ ' + msg;
   }
+  if (link) html += '<a href="' + link.href + '" style="color:#72C8A7;font-weight:800;margin-left:8px;white-space:nowrap">' + link.label + '</a>';
+  t.innerHTML = html;
+  t.style.pointerEvents = link ? 'auto' : 'none';
   requestAnimationFrame(function(){ t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)'; });
   clearTimeout(window._kmToastT);
-  window._kmToastT = setTimeout(function(){ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(20px)'; }, 2800);
+  window._kmToastT = setTimeout(function(){ t.style.opacity='0'; t.style.pointerEvents='none'; t.style.transform='translateX(-50%) translateY(20px)'; }, link ? 4500 : 2800);
 }
 document.addEventListener('DOMContentLoaded', updateCartBadge);
 
@@ -79,7 +85,7 @@ function showDataError(){
 function addAndToast(pubKey, bookId){
   addToCart(pubKey, bookId, 1);
   var b = findBook(pubKey, bookId);
-  toast(((b && b.title) ? b.title : "Kitob") + " savatga qo'shildi");
+  toast(((b && b.title) ? b.title : "Kitob") + " savatga qo'shildi", null, CART_LINK);
 }
 
 /* ===== Wishlist (Sevimlilar) ===== */
@@ -214,19 +220,15 @@ document.addEventListener('keydown', function(e){
     var btn = document.createElement('button');
     btn.id = 'km-back-to-top';
     btn.innerHTML = '↑'; // UPWARDS ARROW emoji
-    btn.style.cssText = 'position:fixed;bottom:85px;right:24px;width:44px;height:44px;border-radius:50%;background:#1D9E75;color:#fff;border:none;box-shadow:0 4px 12px rgba(0,0,0,0.15);cursor:pointer;font-size:18px;font-weight:bold;z-index:999;display:none;align-items:center;justify-content:center;transition:all 0.2s;opacity:0.9;outline:none';
-    btn.addEventListener('mouseenter', function(){ btn.style.transform='translateY(-3px)'; btn.style.background='#15805d'; });
-    btn.addEventListener('mouseleave', function(){ btn.style.transform='translateY(0)'; btn.style.background='#1D9E75'; });
+    btn.setAttribute('aria-label','Tepaga');
     btn.addEventListener('click', function(){ window.scrollTo({top:0,behavior:'smooth'}); });
     document.body.appendChild(btn);
 
+    var shown = false;
     window.addEventListener('scroll', function(){
-      if(window.scrollY > 400){
-        btn.style.display = 'flex';
-      } else {
-        btn.style.display = 'none';
-      }
-    });
+      var want = window.scrollY > 400;
+      if(want !== shown){ shown = want; btn.classList.toggle('on', want); }
+    }, { passive:true });
   }
   if(document.readyState!=='loading') initBackToTop();
   else document.addEventListener('DOMContentLoaded', initBackToTop);
@@ -265,4 +267,30 @@ window.refreshIcons = refreshIcons;
   document.addEventListener('pointerdown', press, {passive:true});
   document.addEventListener('pointerup', release, {passive:true});
   document.addEventListener('pointercancel', release, {passive:true});
+})();
+
+/* ===== Prefetch a page when the pointer/finger lands on a link or book card ===== */
+(function(){
+  var done = {};
+  function prefetch(url){
+    if(!url || done[url]) return;
+    try{
+      var u = new URL(url, location.href);
+      if(u.origin !== location.origin || u.href === location.href || /\.(png|jpe?g|webp|svg|pdf)$/i.test(u.pathname) || u.pathname.indexOf('/api/') === 0) return;
+      done[url] = 1;
+      var l = document.createElement('link');
+      l.rel = 'prefetch'; l.href = u.href;
+      document.head.appendChild(l);
+    }catch(e){}
+  }
+  function urlFor(el){
+    var a = el.closest && el.closest('a[href]');
+    if(a) return a.getAttribute('href');
+    var card = el.closest && el.closest('.book[onclick]');
+    if(card){ var m = /location\.href='([^']+)'/.exec(card.getAttribute('onclick')||''); if(m) return m[1]; }
+    return null;
+  }
+  function onIntent(e){ prefetch(urlFor(e.target)); }
+  document.addEventListener('pointerover', onIntent, { passive:true });
+  document.addEventListener('touchstart', onIntent, { passive:true });
 })();

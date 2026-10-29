@@ -38,6 +38,28 @@
       width: 28px;
       height: 28px;
       fill: currentColor;
+      flex: none;
+    }
+    /* Labelled pill on desktop so the button reads as "ask us", not an anonymous icon */
+    .km-chat-btn.has-label {
+      width: auto;
+      padding: 0 22px 0 18px;
+      gap: 9px;
+      border-radius: 30px;
+      height: 54px;
+    }
+    .km-chat-btn.has-label svg { width: 24px; height: 24px; }
+    .km-chat-lbl {
+      font-family: 'Manrope', -apple-system, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    @media (max-width: 600px) {
+      .km-chat-btn.has-label { width: 54px; padding: 0; gap: 0; border-radius: 50%; }
+      .km-chat-lbl { display: none; }
     }
     .km-chat-btn .km-badge {
       position: absolute;
@@ -503,8 +525,9 @@
   btnEl.className = 'km-chat-btn';
   btnEl.id = 'kmChatBtn';
   btnEl.setAttribute('type', 'button');
-  btnEl.setAttribute('aria-label', 'Chat');
-  btnEl.innerHTML = `<svg viewBox="0 0 24 24" style="pointer-events:none"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>`;
+  btnEl.setAttribute('aria-label', 'Savol bering');
+  btnEl.classList.add('has-label');
+  btnEl.innerHTML = `<svg viewBox="0 0 24 24" style="pointer-events:none"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg><span class="km-chat-lbl">Savol bering</span>`;
   document.body.appendChild(btnEl);
 
   var windowEl = document.createElement('div');

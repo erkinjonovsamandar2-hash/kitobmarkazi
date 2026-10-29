@@ -1,5 +1,5 @@
 /* ===== KITOBMARKAZI — Premium Design System ===== */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;900&display=swap');
+/* Fonts are loaded via <link> in each page's <head> (no render-blocking @import) */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --navy:#0B1D28;--navy2:#12362F;--navy3:#0A2A24;
@@ -53,7 +53,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 button:focus:not(:focus-visible), a:focus:not(:focus-visible), input:focus:not(:focus-visible), textarea:focus:not(:focus-visible){outline:none}
 
 /* ── NAV (glassmorphic, elevated) ── */
-.nav{background:var(--grad-navy);padding:0 32px;display:flex;align-items:center;height:70px;gap:14px;position:sticky;top:0;z-index:100;box-shadow:0 1px 0 rgba(232,200,117,.16),0 8px 32px rgba(10,42,36,.18);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.nav{background:var(--grad-navy);padding:0 32px;display:flex;align-items:center;height:70px;gap:14px;position:sticky;top:0;z-index:100;box-shadow:0 1px 0 rgba(232,200,117,.16),0 8px 32px rgba(10,42,36,.18);view-transition-name:site-nav}
 .brand{display:flex;align-items:center;gap:11px;transition:transform 0.3s var(--ease-premium)}
 .brand:hover{transform:scale(1.02)}
 .brand img{height:42px;width:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.3))}
@@ -66,13 +66,13 @@ button:focus:not(:focus-visible), a:focus:not(:focus-visible), input:focus:not(:
 .nav-link:hover{color:#fff}
 .nav-link.on{color:#fff;font-weight:600}
 .nav-link.on::after{content:'';position:absolute;left:2px;right:2px;bottom:-2px;height:2px;background:var(--grad-gold);border-radius:2px;transform:scaleX(1)}
-.nav-cta{background:var(--teal);color:#fff;font-size:13.5px;font-weight:600;padding:11px 19px;border-radius:11px;border:none;cursor:pointer;font-family:inherit;margin-left:10px;transition:all 0.25s var(--ease-premium);box-shadow:0 4px 16px rgba(29,158,117,0.25)}
+.nav-cta{background:var(--teal);color:#fff;font-size:13.5px;font-weight:600;padding:11px 19px;border-radius:11px;border:none;cursor:pointer;font-family:inherit;margin-left:10px;transition:transform 0.25s var(--ease-premium),opacity 0.25s var(--ease-premium),box-shadow 0.25s var(--ease-premium),border-color 0.25s var(--ease-premium),background-color 0.25s var(--ease-premium),color 0.25s var(--ease-premium);box-shadow:0 4px 16px rgba(29,158,117,0.25)}
 .nav-cta:hover{background:var(--teal-d);transform:translateY(-1px);box-shadow:0 6px 22px rgba(29,158,117,0.35)}
-.nav-back{display:flex;align-items:center;gap:7px;color:rgba(255,255,255,0.65);font-size:13.5px;font-weight:500;transition:all 0.2s}
+.nav-back{display:flex;align-items:center;gap:7px;color:rgba(255,255,255,0.65);font-size:13.5px;font-weight:500;transition:transform 0.2s,opacity 0.2s,box-shadow 0.2s,border-color 0.2s,background-color 0.2s,color 0.2s}
 .nav-back:hover{color:#fff;gap:9px}
 
 /* ── BUTTONS (premium, 3D press, gradient shift) ── */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.28s var(--ease-premium);font-size:15px;position:relative;overflow:hidden}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:transform 0.28s var(--ease-premium),opacity 0.28s var(--ease-premium),box-shadow 0.28s var(--ease-premium),border-color 0.28s var(--ease-premium),background-color 0.28s var(--ease-premium),color 0.28s var(--ease-premium);font-size:15px;position:relative;overflow:hidden}
 .btn::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.12),transparent 50%);opacity:0;transition:opacity 0.28s;pointer-events:none;border-radius:inherit}
 .btn:hover::before{opacity:1}
 .btn-teal{background:var(--grad-teal);color:#fff;padding:15px 28px;box-shadow:var(--sh-teal);font-size:15px}
@@ -112,7 +112,7 @@ button:focus:not(:focus-visible), a:focus:not(:focus-visible), input:focus:not(:
 .sb-line{flex:1;max-width:40px;height:1.5px;background:rgba(255,255,255,0.1);margin:0 6px}
 
 /* ── CARDS & FORM (glassmorphic surface, focus glow) ── */
-.card{background:var(--white);border-radius:20px;border:1px solid var(--border);overflow:hidden;margin-bottom:14px;transition:all 0.3s var(--ease-premium);box-shadow:var(--sh-sm)}
+.card{background:var(--white);border-radius:20px;border:1px solid var(--border);overflow:hidden;margin-bottom:14px;transition:transform 0.3s var(--ease-premium),opacity 0.3s var(--ease-premium),box-shadow 0.3s var(--ease-premium),border-color 0.3s var(--ease-premium),background-color 0.3s var(--ease-premium),color 0.3s var(--ease-premium);box-shadow:var(--sh-sm)}
 .card:hover{transform:translateY(-2px);box-shadow:var(--sh-md);border-color:var(--teal)}
 .card-title{font-size:12px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:0.07em;padding:16px 20px 0}
 .card-body{padding:14px 20px 20px}
@@ -120,7 +120,7 @@ button:focus:not(:focus-visible), a:focus:not(:focus-visible), input:focus:not(:
 .field{margin-bottom:14px}
 .field:last-child{margin-bottom:0}
 label{display:block;font-size:12px;font-weight:600;color:var(--mid);margin-bottom:6px;transition:color 0.2s}
-input[type=text],input[type=tel],textarea,select{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:11px;font-size:15px;color:var(--ink);background:#FAFAF7;font-family:inherit;transition:all 0.25s var(--ease-premium);outline:none;appearance:none}
+input[type=text],input[type=tel],textarea,select{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:11px;font-size:15px;color:var(--ink);background:#FAFAF7;font-family:inherit;transition:transform 0.25s var(--ease-premium),opacity 0.25s var(--ease-premium),box-shadow 0.25s var(--ease-premium),border-color 0.25s var(--ease-premium),background-color 0.25s var(--ease-premium),color 0.25s var(--ease-premium);outline:none;appearance:none}
 input:focus,textarea:focus,select:focus{border-color:var(--teal);background:#fff;box-shadow:var(--glow-teal)}
 .field:focus-within label{color:var(--teal-d)}
 input::placeholder,textarea::placeholder{color:#B6BCC4}
@@ -160,15 +160,15 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 }
 
 /* ===== Cart badge in nav ===== */
-.cart-link{position:relative;display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,0.09);color:#fff;font-size:19px;transition:all 0.16s;text-decoration:none;border:1px solid rgba(255,255,255,0.06)}
+.cart-link{position:relative;display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,0.09);color:#fff;font-size:19px;transition:transform 0.16s,opacity 0.16s,box-shadow 0.16s,border-color 0.16s,background-color 0.16s,color 0.16s;text-decoration:none;border:1px solid rgba(255,255,255,0.06)}
 .cart-link:hover{background:rgba(255,255,255,0.16)}
 .cart-count{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:var(--gold);color:#3D2A00;font-size:11px;font-weight:800;display:none;align-items:center;justify-content:center}
 
 /* ===== Book card cart actions (shared) ===== */
 .book-actions{display:flex;gap:8px;margin-top:auto}
-.book-detail-btn{flex:1;background:var(--white);color:var(--ink);border:1.5px solid var(--border);border-radius:10px;padding:9px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;text-align:center;transition:all 0.15s}
+.book-detail-btn{flex:1;background:var(--white);color:var(--ink);border:1.5px solid var(--border);border-radius:10px;padding:9px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;text-align:center;transition:transform 0.15s,opacity 0.15s,box-shadow 0.15s,border-color 0.15s,background-color 0.15s,color 0.15s}
 .book-detail-btn:hover{border-color:var(--teal);color:var(--teal-d)}
-.book-cart-btn{width:44px;height:44px;flex-shrink:0;background:var(--grad-teal);color:#fff;border:none;border-radius:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s var(--ease-premium);padding:0;box-shadow:var(--sh-teal)}
+.book-cart-btn{width:44px;height:44px;flex-shrink:0;background:var(--grad-teal);color:#fff;border:none;border-radius:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.2s var(--ease-premium),opacity 0.2s var(--ease-premium),box-shadow 0.2s var(--ease-premium),border-color 0.2s var(--ease-premium),background-color 0.2s var(--ease-premium),color 0.2s var(--ease-premium);padding:0;box-shadow:var(--sh-teal)}
 .book-cart-btn:hover{background:var(--teal-d);border-color:var(--teal-d);transform:translateY(-2px) scale(1.05);box-shadow:0 8px 20px rgba(29,158,117,0.35)}
 .book-cart-btn:hover{background:var(--teal-d)}
 
@@ -230,18 +230,18 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 
 /* ===== Wishlist heart on cards (glassmorphic, floats top-right on cover) ===== */
 .book-cover{position:relative}
-.wish-btn{position:absolute;top:12px;right:12px;left:auto;z-index:5;width:36px;height:36px;border-radius:50%;background:var(--glass-bg);border:1px solid var(--glass-border);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));cursor:pointer;font-size:17px;color:#C0392B;display:flex;align-items:center;justify-content:center;line-height:1;box-shadow:0 3px 10px rgba(0,0,0,0.18);transition:all 0.15s}
+.wish-btn{position:absolute;top:12px;right:12px;left:auto;z-index:5;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.88);border:1px solid var(--glass-border);cursor:pointer;font-size:17px;color:#C0392B;display:flex;align-items:center;justify-content:center;line-height:1;box-shadow:0 3px 10px rgba(0,0,0,0.18);transition:transform 0.15s,opacity 0.15s,box-shadow 0.15s,border-color 0.15s,background-color 0.15s,color 0.15s}
 .wish-btn:hover{transform:scale(1.12)}
 .wish-btn.on{background:#C0392B;color:#fff}
 
 /* ===== Wishlist nav link ===== */
-.wish-link{position:relative;display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,0.09);color:#fff;font-size:18px;text-decoration:none;transition:all 0.16s;border:1px solid rgba(255,255,255,0.06)}
+.wish-link{position:relative;display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,0.09);color:#fff;font-size:18px;text-decoration:none;transition:transform 0.16s,opacity 0.16s,box-shadow 0.16s,border-color 0.16s,background-color 0.16s,color 0.16s;border:1px solid rgba(255,255,255,0.06)}
 .wish-link:hover{background:rgba(255,255,255,0.16)}
 .wish-count{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:#C0392B;color:#fff;font-size:11px;font-weight:800;display:none;align-items:center;justify-content:center}
 
 /* ── Genre pills (gradient hover, glow) ── */
 .genre-row{display:flex;flex-wrap:wrap;gap:10px;row-gap:10px}
-.genre-pill{display:inline-flex;align-items:center;gap:8px;background:var(--white);border:1.5px solid var(--border);border-radius:30px;padding:11px 20px;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;transition:all 0.28s var(--ease-premium);text-decoration:none;position:relative;overflow:hidden;line-height:1}
+.genre-pill{display:inline-flex;align-items:center;gap:8px;background:var(--white);border:1.5px solid var(--border);border-radius:30px;padding:11px 20px;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;transition:transform 0.28s var(--ease-premium),opacity 0.28s var(--ease-premium),box-shadow 0.28s var(--ease-premium),border-color 0.28s var(--ease-premium),background-color 0.28s var(--ease-premium),color 0.28s var(--ease-premium);text-decoration:none;position:relative;overflow:hidden;line-height:1}
 .genre-pill::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(29,158,117,0.04),rgba(217,169,62,0.04));opacity:0;transition:opacity 0.3s;border-radius:inherit}
 .genre-pill:hover::before{opacity:1}
 .genre-pill:hover{border-color:var(--teal);color:var(--teal-d);transform:translateY(-3px);box-shadow:var(--sh-md),var(--glow-teal)}
@@ -290,7 +290,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 /* ===== Book card footer: price + inline actions (heart, cart) ===== */
 .book-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}
 .book-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.wish-btn-inline{width:44px;height:44px;flex-shrink:0;border-radius:13px;background:var(--white);border:1.5px solid var(--border);cursor:pointer;font-size:19px;color:var(--mid);display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.2s var(--ease-premium);padding:0;box-shadow:var(--sh-sm)}
+.wish-btn-inline{width:44px;height:44px;flex-shrink:0;border-radius:13px;background:var(--white);border:1.5px solid var(--border);cursor:pointer;font-size:19px;color:var(--mid);display:flex;align-items:center;justify-content:center;line-height:1;transition:transform 0.2s var(--ease-premium),opacity 0.2s var(--ease-premium),box-shadow 0.2s var(--ease-premium),border-color 0.2s var(--ease-premium),background-color 0.2s var(--ease-premium),color 0.2s var(--ease-premium);padding:0;box-shadow:var(--sh-sm)}
 .wish-btn-inline:hover{border-color:#E2556F;color:#E2556F;transform:translateY(-2px);box-shadow:var(--sh-md),0 0 0 3px rgba(226,85,111,0.12)}
 .wish-btn-inline.on{background:#FCE9EE;color:#E2556F;border-color:#E2556F}
 
@@ -321,7 +321,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 /* Book card body layout: meta (title/author) stacked tight, buy row pinned to bottom */
 .book-meta{display:flex;flex-direction:column;gap:var(--sp-xs);margin-bottom:10px}
 .book-buy{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-sm);margin-top:auto}
-.book-cta-btn{width:44px;height:44px;flex-shrink:0;background:var(--grad-teal);color:#fff;border:none;border-radius:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s var(--ease-premium);padding:0;box-shadow:var(--sh-teal)}
+.book-cta-btn{width:44px;height:44px;flex-shrink:0;background:var(--grad-teal);color:#fff;border:none;border-radius:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.2s var(--ease-premium),opacity 0.2s var(--ease-premium),box-shadow 0.2s var(--ease-premium),border-color 0.2s var(--ease-premium),background-color 0.2s var(--ease-premium),color 0.2s var(--ease-premium);padding:0;box-shadow:var(--sh-teal)}
 .book-cta-btn:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 8px 20px rgba(29,158,117,0.35)}
 .book-cta-btn:active{transform:scale(0.93)}
 
@@ -356,7 +356,8 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .sf-col a,.nav-link{will-change:auto}
 
 /* ===== Scroll reveal (sections fade up as you scroll) ===== */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s cubic-bezier(.2,.7,.3,1)}
+/* Hidden-until-revealed only when scripting is on, so content never stays invisible if JS fails */
+@media (scripting:enabled){.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s cubic-bezier(.2,.7,.3,1)}}
 .reveal.in{opacity:1;transform:none}
 
 /* Staggered children (cards appear one-by-one) */
@@ -375,7 +376,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 
 /* ===== Mobile app bar + anchored menu (built by cart.js) ===== */
 .nav-burger{display:none;align-items:center;justify-content:center;width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.08);cursor:pointer;flex-direction:column;gap:4px;padding:0;margin:0}
-.nav-burger span{display:block;width:18px;height:2px;background:#fff;border-radius:2px;transition:all 0.25s}
+.nav-burger span{display:block;width:18px;height:2px;background:#fff;border-radius:2px;transition:transform 0.25s,opacity 0.25s,box-shadow 0.25s,border-color 0.25s,background-color 0.25s,color 0.25s}
 .nav-burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
 .nav-burger.open span:nth-child(2){opacity:0}
 .nav-burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
@@ -467,6 +468,9 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .publishers-grid > :nth-child(7), .books-grid > :nth-child(7) { animation-delay: 0.35s; }
 .publishers-grid > :nth-child(8), .books-grid > :nth-child(8) { animation-delay: 0.40s; }
 .publishers-grid > :nth-child(n+9), .books-grid > :nth-child(n+9) { animation-delay: 0.45s; }
+/* Cap the cascade so late cards don't wait ~1s on every re-render (filter, search, pagination) */
+.publishers-grid > *, .books-grid > * { animation-duration: 0.4s; }
+.publishers-grid > :nth-child(n+5), .books-grid > :nth-child(n+5) { animation-delay: 0.2s; }
 
 @keyframes gridFadeUp {
   to {
@@ -525,7 +529,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 /* ===== Coming Soon 3D Parallax Tilt (#8) ===== */
 .poster {
   transform-style: preserve-3d;
-  transition: all 0.4s var(--ease-premium);
+  transition:transform 0.4s var(--ease-premium),opacity 0.4s var(--ease-premium),box-shadow 0.4s var(--ease-premium),border-color 0.4s var(--ease-premium),background-color 0.4s var(--ease-premium),color 0.4s var(--ease-premium);
 }
 .poster:hover {
   transform: translateY(-6px);
@@ -533,10 +537,12 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 }
 
 /* ===== How-It-Works Step Scale-Up (#9) ===== */
-.how-step {
-  opacity: 0;
-  transform: translateY(30px) scale(0.9);
-  transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1);
+@media (scripting:enabled){
+  .how-step {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+    transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1);
+  }
 }
 .how-step.step-in {
   opacity: 1;
@@ -607,7 +613,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .book-price{font-size:15px;white-space:nowrap}
 .book-meta{display:flex;flex-direction:column;gap:2px;margin-bottom:12px}
 .book-buy{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-sm);margin-top:auto;min-height:42px;border:1.5px solid var(--border);border-radius:999px;padding:3px 4px 3px 14px}
-.book-cta-btn{width:34px;height:34px;flex-shrink:0;background:var(--grad-teal);color:#fff;border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s var(--ease-premium);padding:0;box-shadow:none}
+.book-cta-btn{width:34px;height:34px;flex-shrink:0;background:var(--grad-teal);color:#fff;border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s var(--ease-premium),opacity .2s var(--ease-premium),box-shadow .2s var(--ease-premium),border-color .2s var(--ease-premium),background-color .2s var(--ease-premium),color .2s var(--ease-premium);padding:0;box-shadow:none}
 .book-cta-btn:hover{transform:scale(1.05);box-shadow:0 6px 16px rgba(29,158,117,.28)}
 .bc-badge.low-stock{top:auto;bottom:12px;right:12px;background:#ef4444;color:#fff;font-size:8px}
 @media(max-width:600px){.book{padding:12px 9px 10px;border-radius:13px}.physical-book{width:min(100%,160px)}.book .physical-book-front,.physical-book-front{padding:12px;transform:translateZ(20px)}.book:hover .physical-book-front,.book:active .physical-book-front{transform:translateZ(20px)}.physical-book-back{transform:translateZ(-20px)}.physical-book-pages{left:calc(100% - 20px);width:30px}.book-body{padding-top:12px}.book-title{font-size:13.5px}.book-author{font-size:11.5px}.book-price{font-size:14px}.book-buy{min-height:36px;padding-left:10px}.book-cta-btn{width:28px;height:28px}}
@@ -617,7 +623,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
    needs a real touch listener before :active applies at all). JS in cart.js toggles
    .is-pressed on pointerdown/up so every card type gets a felt response on tap. */
 .pcard,.book,.bs-card,.poster{-webkit-tap-highlight-color:transparent}
-.pcard.is-pressed,.book.is-pressed,.bs-card.is-pressed,.poster.is-pressed{transform:scale(0.94)!important;transition:transform 0.08s ease-out,border-color 0.08s ease-out!important;box-shadow:var(--sh-sm)!important}
+.pcard.is-pressed,.book.is-pressed,.bs-card.is-pressed,.poster.is-pressed{transform:scale(0.97)!important;transition:transform 0.08s ease-out,border-color 0.08s ease-out!important;box-shadow:var(--sh-sm)!important}
 .pcard.is-pressed{border-color:var(--teal)!important}
 /* Bright color tint on press: an overlay film (not the base background) so it reads
    across the whole card, including over the logo tile's own opaque background. */
@@ -625,3 +631,40 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .pcard.is-pressed::after{background:linear-gradient(135deg,rgba(29,158,117,.18),rgba(194,147,46,.18))}
 @media(prefers-reduced-motion:reduce){.pcard.is-pressed,.book.is-pressed,.bs-card.is-pressed,.poster.is-pressed{transform:none!important}}
 
+
+/* ===== Cross-page view transitions (crossfade; nav stays put) ===== */
+@view-transition{navigation:auto}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.22s;animation-timing-function:var(--ease-smooth)}
+::view-transition-group(site-nav){animation-duration:0s}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+
+/* ===== Scroll-progress line under the nav (CSS scroll-driven, no JS) ===== */
+@supports (animation-timeline:scroll()){
+  .nav::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--grad-gold);transform:scaleX(0);transform-origin:left;pointer-events:none;animation:kmProgress linear both;animation-timeline:scroll(root block)}
+  @keyframes kmProgress{to{transform:scaleX(1)}}
+  @media (prefers-reduced-motion:reduce){.nav::after{display:none}}
+}
+
+/* ===== Back-to-top (state via class, not display toggling) ===== */
+#km-back-to-top{position:fixed;bottom:85px;right:24px;width:44px;height:44px;border-radius:50%;background:#1D9E75;color:#fff;border:none;box-shadow:0 4px 12px rgba(0,0,0,.15);cursor:pointer;font-size:18px;font-weight:700;z-index:999;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(10px);transition:opacity .25s var(--ease-premium),transform .25s var(--ease-premium),visibility 0s .25s,background-color .2s}
+#km-back-to-top.on{opacity:.9;visibility:visible;pointer-events:auto;transform:none;transition:opacity .25s var(--ease-premium),transform .25s var(--ease-premium),visibility 0s,background-color .2s}
+#km-back-to-top.on:hover{transform:translateY(-3px);background:#15805d}
+
+/* ===== Loading polish ===== */
+/* Real cover fades in over the designed cover once it has loaded (cv-hasimg is set by coverHTML's onload) */
+.cv-img{opacity:0;transition:opacity .35s ease-out}
+.cv-hasimg>.cv-img{opacity:1}
+.book .physical-book-front .cv-img,.book:hover .physical-book-front .cv-img{transition:opacity .35s ease-out}
+
+/* Empty grid = still loading: show one shimmering placeholder block instead of blank space */
+.books-grid:empty::before{content:'';grid-column:1/-1;height:340px;border-radius:16px;background:linear-gradient(100deg,var(--cream2) 30%,var(--surface-tinted) 50%,var(--cream2) 70%);background-size:220% 100%;animation:kmShimmer 1.3s linear infinite}
+@keyframes kmShimmer{from{background-position:120% 0}to{background-position:-120% 0}}
+
+/* ===== Scroll hygiene ===== */
+html{scrollbar-gutter:stable}
+.nav-mobile,.ac-list,.modal-overlay,.modal{overscroll-behavior:contain}
+.bs-scroll,.adscroll,.genre-row{overscroll-behavior-x:contain}
+
+/* ===== Tilt only where hover exists; promote layer only while hovered ===== */
+.book:hover .physical-book-inner,.bs-card:hover .physical-book-inner{will-change:transform}
+@media (hover:none){.physical-book-inner{transition:none}}

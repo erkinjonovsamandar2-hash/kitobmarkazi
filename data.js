@@ -255,7 +255,7 @@ function coverHTML(book, pub){
   var coverX = Math.max(0, Math.min(100, Number(book.coverPositionX ?? 50)));
   var coverY = Math.max(0, Math.min(100, Number(book.coverPositionY ?? 50)));
   var coverScale = Math.max(1, Math.min(3, Number(book.coverScale ?? 1)));
-  var img = '<img class="cv-img" alt="" loading="lazy" style="--cover-x:'+coverX+'%;--cover-y:'+coverY+'%;--cover-scale:'+coverScale+';object-position:var(--cover-x) var(--cover-y);transform-origin:var(--cover-x) var(--cover-y);transform:scale(var(--cover-scale))" '+
+  var img = '<img class="cv-img" alt="" loading="lazy" decoding="async" style="--cover-x:'+coverX+'%;--cover-y:'+coverY+'%;--cover-scale:'+coverScale+';object-position:var(--cover-x) var(--cover-y);transform-origin:var(--cover-x) var(--cover-y);transform:scale(var(--cover-scale))" '+
     'src="'+imgSrc+'" '+
     fallbackPng+' '+
     'onload="this.parentElement&&this.parentElement.classList.add(\'cv-hasimg\')" '+

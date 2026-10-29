@@ -70,6 +70,10 @@
   .bk-addcart:hover{background:var(--teal-d);transform:translateY(-1px);box-shadow:0 8px 24px rgba(29,158,117,0.38)}
   .bk-wish.on{border-color:#C0392B;background:#FCE9EE;color:#C0392B}
   .bk-trust{grid-column:1/-1;display:flex;gap:18px;margin-top:0;padding-top:14px;border-top:1px solid var(--cream2);flex-wrap:wrap}
+  .bk-incart{grid-column:1/-1;display:none;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13.5px;font-weight:600;color:var(--teal-d);background:var(--surface-cool);border-radius:12px;padding:10px 14px}
+  .bk-incart.show{display:flex;animation:staggerUp .3s var(--ease-premium) both}
+  .bk-incart a{color:var(--teal-d);font-weight:800}
+  .bk-incart a:hover{text-decoration:underline}
   .bk-trust-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--mid);font-weight:600}
 
   .bk-rate.empty{display:none}
@@ -158,10 +162,12 @@
           <button class="btn btn-ghost bk-wish" id="bkWish" onclick="toggleWishBtn()"><i data-lucide="heart" style="width:16px;height:16px;margin-right:6px"></i> Sevimlilarga</button>
           <button class="btn btn-teal bk-addcart" onclick="addCart()" id="addCartBtn">Savatga qo'shish</button>
         </div>
+        <div class="bk-incart" id="bkInCart" role="status"><span id="bkInCartTxt"></span><a href="cart.html">Savatga o'tish →</a></div>
         <div class="bk-trust">
-          <div class="bk-trust-item"><i data-lucide="truck" style="width:16px;height:16px;color:var(--teal)"></i> Tez yetkazib berish</div>
+          <div class="bk-trust-item"><i data-lucide="truck" style="width:16px;height:16px;color:var(--teal)"></i> Kuryer yetkazib berish: hududni buyurtmada tanlaysiz</div>
+          <div class="bk-trust-item"><i data-lucide="credit-card" style="width:16px;height:16px;color:var(--teal)"></i> To'lov: Payme, Click, Uzum</div>
           <div class="bk-trust-item"><i data-lucide="shield-check" style="width:16px;height:16px;color:var(--teal)"></i> 100% original asarlar</div>
-          <div class="bk-trust-item"><i data-lucide="rotate-ccw" style="width:16px;height:16px;color:var(--teal)"></i> Qaytarish kafolati</div>
+          <div class="bk-trust-item"><i data-lucide="rotate-ccw" style="width:16px;height:16px;color:var(--teal)"></i> Nuqsonli kitob 3 kun ichida qaytariladi</div>
         </div>
       </div>
       <p class="bk-desc" id="bkDesc"></p>
@@ -201,6 +207,11 @@
   <div class="sec" style="padding:48px 0 0" id="recSec">
     <div class="sh"><div><div class="st" id="recTitle">Shu kitob bilan birga</div><div class="ss">Muallif va nashriyot bo'yicha tavsiyalar</div></div></div>
     <div class="books-grid" id="recGrid"></div>
+  </div>
+
+  <div class="sec" style="padding:48px 0 0;display:none" id="genreSec">
+    <div class="sh"><div><div class="st" id="genreTitle">Shu bo'limdan eng yaxshilar</div><div class="ss">Yuqori baholangan kitoblar</div></div><a class="sa" id="genreAll" href="search.html">Barchasi →</a></div>
+    <div class="books-grid" id="genreGrid"></div>
   </div>
 </div>
 
@@ -387,7 +398,8 @@ function renderBookPage() {
       return bookCardHTML(r.pk, r.b);
     }).join('');
   }
-  
+
+  loadGenreTop(recs);
   loadReviews();
   
   // Populate sticky bar
@@ -405,6 +417,35 @@ function renderBookPage() {
 
   if (window.refreshIcons) window.refreshIcons();
   window.setTimeout(updateStickyCart, 0);
+window.setTimeout(function(){ if(window.refreshInCart) refreshInCart(); }, 0);
+}
+
+/* Same-genre top-rated books, excluding this book and anything already in the first strip */
+function loadGenreTop(shown) {
+  var sec = document.getElementById('genreSec');
+  if (!book.genre) return;
+  var skip = {};
+  skip[pubKey + '/' + book.id] = 1;
+  (shown || []).forEach(function(r){ skip[r.pk + '/' + r.b.id] = 1; });
+  fetch('/api/books?genre=' + encodeURIComponent(book.genre) + '&sort=rating&limit=12')
+    .then(function(r){ return r.ok ? r.json() : { books: [] }; })
+    .then(function(d){
+      var list = (d.books || []).filter(function(b){ return !skip[b.publisherSlug + '/' + b.id]; }).slice(0, 4);
+      if (!list.length) return;
+      var g = (typeof GENRES !== 'undefined' && GENRES[book.genre]) ? GENRES[book.genre].name : '';
+      if (g) document.getElementById('genreTitle').textContent = g + ' bo\'limidan eng yaxshilar';
+      document.getElementById('genreAll').href = 'search.html?genre=' + encodeURIComponent(book.genre);
+      document.getElementById('genreGrid').innerHTML = list.map(function(b){
+        return bookCardHTML(b.publisherSlug, {
+          id:b.id, title:b.title, author:b.author, price:b.price, color:b.color, rating:b.rating,
+          top:b.isTop === 1 || b.isTop === true, stock:b.stock, cover:b.cover,
+          coverPositionX:b.coverPositionX, coverPositionY:b.coverPositionY, coverScale:b.coverScale
+        });
+      }).join('');
+      sec.style.display = 'block';
+      if (window.refreshIcons) window.refreshIcons();
+    })
+    .catch(function(){});
 }
 
 function initPageData() {
@@ -445,7 +486,14 @@ window.lbNav=function(dir){
 };
 
 window.ch=function(d){qty=Math.max(1,Math.min(10,qty+d));document.getElementById('qv').textContent=qty;};
-window.addCart=function(){addToCart(pubKey,book.id,qty);toast(book.title+' savatga qo\'shildi');};
+window.refreshInCart=function(){
+  var box=document.getElementById('bkInCart');
+  if(!box||!book) return;
+  var it=getCart().filter(function(i){return i.pubKey===pubKey&&i.bookId===book.id;})[0];
+  box.classList.toggle('show',!!it);
+  if(it) document.getElementById('bkInCartTxt').textContent='✓ Savatda: '+it.qty+' ta';
+};
+window.addCart=function(){addToCart(pubKey,book.id,qty);refreshInCart();toast(book.title+' savatga qo\'shildi',null,CART_LINK);};
 window.refreshWish=function(){
   var on=inWishlist(pubKey,book.id);
   var b=document.getElementById('bkWish');
