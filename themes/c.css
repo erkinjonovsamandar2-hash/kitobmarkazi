@@ -34,3 +34,9 @@ html[data-km-theme="c"]{
   & .site-foot::before{background:linear-gradient(90deg,#14B8A6,#FF5A36)}
 }
 html[data-km-theme="c"] .km-chat-btn{background:#FF5A36 !important;color:#0C1230 !important;box-shadow:0 6px 18px rgba(255,90,54,.4) !important}
+
+html[data-km-theme="c"]{
+  --t-radius:20px;--t-radius-sm:14px;--t-pill:999px;--t-border:#D5DBF3;--t-bw:2px;--t-hover-border:#1632A8;--t-orb:none;
+  --t-shadow:none;--t-shadow-hover:0 16px 28px -16px rgba(22,50,168,.45);
+  --t-head-w:800;--t-head-ls:-.03em;--t-step:#1632A8;--t-step-ink:#fff;--t-sel:#FF5A36;--t-sel-ink:#0C1230;--t-focus:#FF5A36;
+}

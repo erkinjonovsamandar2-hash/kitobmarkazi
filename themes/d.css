@@ -1,0 +1,110 @@
+/* Theme D — Silliq: the same cream / navy / teal / gold, made smoother and more beautiful.
+   Refinement only: same identity, content and layout logic. Better rhythm, depth, type and motion. */
+html[data-km-theme="d"]{
+  --teal:#13795C;--teal-d:#0B5A45;
+  --mid:#3C4944;--light:#586761;--border:#E3DBCD;
+  --t-radius:18px;--t-radius-sm:12px;--t-pill:999px;--t-border:rgba(11,29,40,.09);--t-hover-border:rgba(19,121,92,.6);--t-orb:block;
+  --t-shadow:0 1px 2px rgba(11,29,40,.05),0 10px 24px -16px rgba(11,29,40,.2);
+  --t-shadow-hover:0 2px 4px rgba(11,29,40,.05),0 24px 36px -18px rgba(11,29,40,.34);
+  --t-head-w:800;--t-head-ls:-.028em;--t-step:#13795C;--t-focus:#13795C;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --sh-md:0 1px 2px rgba(11,29,40,.05),0 8px 20px -12px rgba(11,29,40,.2);
+  --sh-lg:0 2px 4px rgba(11,29,40,.05),0 18px 32px -16px rgba(11,29,40,.28);
+  --sh-teal:0 10px 22px -10px rgba(19,121,92,.55);
+  --grad-teal:linear-gradient(135deg,#17896A,#0B5A45);
+
+  & body{line-height:1.65;text-rendering:optimizeLegibility;scrollbar-color:#B9C7C0 transparent}
+
+  /* ---- type & rhythm ---- */
+  & .hero h1{font-size:clamp(38px,5.2vw,64px);line-height:1.04;letter-spacing:-.035em;text-wrap:balance}
+  & :is(.hsub,.ss,.lead){line-height:1.7}
+  & .st{font-size:clamp(26px,3vw,36px);letter-spacing:-.03em}
+  & .sec{padding-top:88px}
+  & .sh{margin-bottom:36px}
+  & :is(.sa,.more){transition:color .2s,transform .25s var(--ease)}
+  & .sa:hover{transform:translateX(3px)}
+
+  /* ---- nav: calm at rest, depth appears as you scroll ---- */
+  & .nav{box-shadow:0 1px 0 rgba(232,200,117,.16)}
+  & .nav-link{transition:color .25s var(--ease)}
+  & :is(.cart-link,.wish-link){transition:background-color .2s,transform .25s var(--ease)}
+  & :is(.cart-link,.wish-link):hover{transform:translateY(-1px)}
+
+  /* ---- buttons: depth + tactile press ---- */
+  & :is(.btn-teal,.bk-addcart,.submit,.checkout,.nav-cta,.sbtn,.btn-track){
+    background-image:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,0) 55%);
+    box-shadow:0 1px 0 rgba(255,255,255,.18) inset,var(--sh-teal);
+    transition:transform .25s var(--ease),box-shadow .25s var(--ease),background-color .2s;
+  }
+  & :is(.btn-teal,.bk-addcart,.submit,.checkout,.nav-cta,.sbtn,.btn-track):hover{transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,.2) inset,0 16px 28px -12px rgba(19,121,92,.6)}
+  & :is(.btn,.btn-teal,.bk-addcart,.submit,.checkout,.sbtn,.qbtn,.cqbtn,.book-cta-btn,.book-cart-btn,.wish-btn-inline):active{transform:translateY(1px) scale(.975);transition-duration:.08s}
+  & :is(.bk-addcart,.submit,.checkout){min-height:56px;border-radius:14px}
+  & :is(.qbtn,.cqbtn){min-width:44px;min-height:44px;border-radius:12px}
+
+  /* ---- book cards ---- */
+  & .book{border-radius:18px;border:1px solid var(--t-border);box-shadow:var(--t-shadow);transition:box-shadow .35s var(--ease),border-color .25s,transform .35s var(--ease)}
+  & .book:hover{transform:translateY(-4px);box-shadow:var(--t-shadow-hover);border-color:var(--t-hover-border)}
+  & .book-title{font-weight:700;letter-spacing:-.01em}
+  & :is(.book-price,.bs-price){font-size:17px;font-weight:800}
+  & .physical-book-front{box-shadow:0 2px 3px rgba(11,29,40,.1),0 14px 22px -10px rgba(11,29,40,.38)}
+  & .bs-card{border-radius:18px;box-shadow:var(--t-shadow)}
+
+  /* ---- inner-page structure ---- */
+  & :is(.c-side,.o-side){position:sticky;top:96px;align-self:start}
+  & .gbar{position:sticky;top:70px;z-index:25;background:rgba(250,248,245,.96);border-bottom:1px solid var(--t-border)}
+  & :is(.sortpill,.gfilter,.alpha-btn){transition:background-color .2s,color .2s,border-color .2s,transform .2s var(--ease)}
+  & :is(.sortpill,.gfilter,.alpha-btn):hover{transform:translateY(-1px)}
+  & .pcard-logo{border-radius:14px}
+  & .first-badge{letter-spacing:.04em}
+  & .citem{padding-block:18px;border-bottom:1px solid var(--t-border)}
+  & .citem:last-child{border-bottom:0}
+  & .summary{box-shadow:var(--t-shadow-hover)}
+  & .track-card{padding:44px}
+  & .faq-q{padding-block:20px}
+  & .faq-item.open{border-color:var(--t-hover-border);box-shadow:var(--t-shadow-hover)}
+  & .site-foot a{transition:color .2s,transform .25s var(--ease)}
+
+  /* ---- loading: skeleton shimmer instead of blank space ---- */
+  & .skeleton-book{background:linear-gradient(100deg,#EFE9DE 30%,#F8F4EC 50%,#EFE9DE 70%);background-size:220% 100%;animation:kmShimmer 1.3s linear infinite}
+  & :is(.books-grid,.publishers-grid):empty::before{content:'';grid-column:1/-1;height:320px;border-radius:18px;background:linear-gradient(100deg,#EFE9DE 30%,#F8F4EC 50%,#EFE9DE 70%);background-size:220% 100%;animation:kmShimmer 1.3s linear infinite}
+
+  /* ---- images settle in instead of popping ---- */
+  & .cv-img{opacity:0;transition:opacity .4s ease-out}
+  & .cv-hasimg>.cv-img{opacity:1}
+
+  /* ---- motion: one calm entrance, capped stagger ---- */
+  & .reveal{transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  & :is(.publishers-grid,.books-grid)>*{animation-duration:.45s}
+  & :is(.publishers-grid,.books-grid)>:nth-child(n+5){animation-delay:.2s}
+  & :is(.hero,.info-hero,.ab-hero,.s-hero,.pub-hero,.ph-hero,.c-hero,.o-hero){animation-duration:.4s}
+
+  /* ---- chat button: say what it is ---- */
+  & .km-chat-btn.has-label{width:auto !important;padding:0 20px 0 16px !important;gap:8px !important;border-radius:30px !important;height:54px !important}
+  & .km-chat-btn.has-label svg{width:24px !important;height:24px !important}
+  & .km-chat-lbl{font:700 14px/1 'Manrope',system-ui,sans-serif;color:#fff;white-space:nowrap;pointer-events:none}
+}
+@keyframes kmShimmer{from{background-position:120% 0}to{background-position:-120% 0}}
+@media (max-width:600px){
+  html[data-km-theme="d"] .km-chat-btn.has-label{width:54px !important;padding:0 !important;border-radius:50% !important}
+  html[data-km-theme="d"] .km-chat-lbl{display:none}
+  html[data-km-theme="d"] .sec{padding-top:56px}
+  html[data-km-theme="d"] :is(.c-side,.o-side){position:static}
+  html[data-km-theme="d"] .gbar{top:64px}
+}
+
+/* scroll-linked touches (progressive enhancement) */
+@supports (animation-timeline:scroll()){
+  html[data-km-theme="d"] .nav{animation:kmNavShadow linear both;animation-timeline:scroll(root block);animation-range:0 120px}
+  html[data-km-theme="d"] .nav::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,#E8C875,#B88C37);transform:scaleX(0);transform-origin:left;pointer-events:none;animation:kmProg linear both;animation-timeline:scroll(root block)}
+}
+@keyframes kmNavShadow{from{box-shadow:0 1px 0 rgba(232,200,117,.16),0 0 0 rgba(10,42,36,0)}to{box-shadow:0 1px 0 rgba(232,200,117,.22),0 14px 30px -10px rgba(10,42,36,.4)}}
+@keyframes kmProg{to{transform:scaleX(1)}}
+
+/* page-to-page crossfade, nav stays put */
+@view-transition{navigation:auto}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.22s}
+@media (prefers-reduced-motion:reduce){
+  @view-transition{navigation:none}
+  html[data-km-theme="d"] .nav::after{display:none}
+  html[data-km-theme="d"] *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}

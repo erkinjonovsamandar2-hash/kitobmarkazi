@@ -1,0 +1,30 @@
+/* Shared page layer for every demo theme: gives all inner pages (publishers, publisher,
+   search, book, cart, checkout, wishlist, tracking, about, contact, FAQ) one consistent
+   surface, shape and motion language. Each theme only supplies the --t-* variables. */
+html[data-km-theme]{
+  & :is(.cgroup,.summary,.fcard,.info-card,.faq-item,.ab-vcard,.ab-mcard,.contact-box,.track-card,.rev-item,.rev-form-card,.pm-card,.bk-buy,.bk-mchip,.empty-cart,.empty-w,.paytime,.cour,.pay){
+    border-radius:var(--t-radius);border:var(--t-bw,1px) solid var(--t-border);box-shadow:var(--t-shadow);background-color:var(--white);
+  }
+  & :is(.pcard,.pm-card,.ab-vcard,.ab-mcard,.cour,.paytime,.pay,.faq-item){
+    transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s cubic-bezier(.16,1,.3,1),border-color .2s;
+  }
+  & :is(.pcard,.pm-card,.ab-vcard,.ab-mcard):hover{transform:translateY(-3px);box-shadow:var(--t-shadow-hover);border-color:var(--t-hover-border)}
+  & :is(.cour,.paytime,.pay,.faq-item):hover{border-color:var(--t-hover-border)}
+  & .pcard{border-radius:var(--t-radius);border:var(--t-bw,1px) solid var(--t-border);box-shadow:var(--t-shadow)}
+  & :is(input[type=text],input[type=tel],input[type=search],textarea,select){border-radius:var(--t-radius-sm)}
+  & :is(.sortpill,.gfilter,.alpha-btn,.page-btn,.pg-btn,.fpill,.pb-filter){border-radius:var(--t-pill)}
+  & :is(.ph-orb,.s-orb,.c-orb,.o-orb,.ab-orb,.info-orb){display:var(--t-orb,block)}
+  & :is(.ph,.s-hero,.c-hero,.o-hero,.ab-hero,.info-hero,.pub-header) :is(h1,h2,.c-htitle,.o-htitle,.s-title){
+    font-family:var(--serif);font-weight:var(--t-head-w,800);letter-spacing:var(--t-head-ls,-.02em);text-wrap:balance}
+  & :is(.st,.ss){text-wrap:balance}
+  & :is(.book-price,.bs-price,.bk-price,.citem-sum,.sum-total,.sa-price,.oitem-p){font-variant-numeric:tabular-nums}
+  /* checkout steps + timeline pick up the theme accent */
+  & :is(.fcard-n,.os-ic,.sb-done,.dot.on){background:var(--t-step,var(--teal));color:var(--t-step-ink,#fff)}
+  & .undo-timer{color:var(--t-step,var(--teal))}
+  & :is(.cour-radio,.paytime-radio,.pchk):is(.on,.active,:checked){border-color:var(--t-step,var(--teal))}
+  & .sticky-addcart{border-radius:var(--t-radius) var(--t-radius) 0 0}
+  & .bk-cover,& .bk-thumb{border-radius:var(--t-radius-sm)}
+  & .site-foot{margin-top:56px}
+  & ::selection{background:var(--t-sel,var(--teal-l));color:var(--t-sel-ink,#0B1D28)}
+  & :focus-visible{outline:3px solid var(--t-focus,var(--teal));outline-offset:2px}
+}

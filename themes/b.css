@@ -36,3 +36,9 @@ html[data-km-theme="b"]{
 }
 html[data-km-theme="b"] .km-chat-btn{background:#101B34 !important;box-shadow:0 6px 18px rgba(16,27,52,.35) !important}
 html[data-km-theme="b"] .km-chat-btn .km-badge{background:#F5B301 !important;color:#101B34 !important}
+
+html[data-km-theme="b"]{
+  --t-radius:8px;--t-radius-sm:8px;--t-pill:8px;--t-border:#DDE2EC;--t-hover-border:#101B34;--t-orb:none;
+  --t-shadow:none;--t-shadow-hover:0 12px 22px -16px rgba(16,27,52,.5);
+  --t-head-w:700;--t-head-ls:-.015em;--t-step:#101B34;--t-step-ink:#fff;--t-sel:#F5B301;--t-sel-ink:#101B34;--t-focus:#2447C9;
+}

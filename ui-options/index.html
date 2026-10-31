@@ -8,7 +8,7 @@ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--
 .wrap{max-width:1240px;margin:0 auto;padding:28px 20px 64px}
 h1{font-size:26px;letter-spacing:-.01em}
 .sub{color:var(--mute);margin-top:6px;max-width:70ch}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0 16px}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0 16px}
 .tab{text-align:left;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;font:inherit;color:inherit;transition:border-color .15s,transform .15s}
 .tab:hover{transform:translateY(-1px)}
 .tab[aria-selected=true]{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
@@ -25,18 +25,19 @@ h1{font-size:26px;letter-spacing:-.01em}
 .stage{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;overflow:hidden;display:flex;justify-content:center}
 .frame{position:relative;overflow:hidden;border-radius:8px;border:1px solid var(--line);background:#fff}
 .frame iframe{border:0;position:absolute;left:0;top:0;transform-origin:0 0}
-.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.notes{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
 .note{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:14px}
 .note h2{font-size:15px;margin-bottom:6px}
 .note ul{padding-left:18px;color:var(--mute)}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-@media (max-width:820px){.tabs,.notes{grid-template-columns:1fr}}
+@media (max-width:980px){.tabs,.notes{grid-template-columns:repeat(2,1fr)}}@media (max-width:560px){.tabs,.notes{grid-template-columns:1fr}}
 </style></head><body><div class="wrap">
 <h1>Kitobmarkazi — design demo</h1>
-<p class="sub">These are the real site in three looks: close to today, a clear step further, and a bold new direction. Pick an option, a page and a device, or open the live demo to use everything: search, cart, checkout, wishlist and order tracking. Orders placed in the demo are simulated and never sent.</p>
+<p class="sub">These are the real site in four looks: D is today's site made smoother and more beautiful (same colours), A stays close to today, B is a clear step further, C is bold. Pick an option, a page and a device, or open the live demo to use everything: search, cart, checkout, wishlist and order tracking. Orders placed in the demo are simulated and never sent.</p>
 
 <div class="tabs" role="tablist" aria-label="Options">
-  <button class="tab" role="tab" data-k="a" aria-selected="true"><b>A — Toza</b><span>Close to today: cream, teal, gold. Clearer hierarchy and a stronger buy button.</span></button>
+  <button class="tab" role="tab" data-k="d" aria-selected="true"><b>D — Silliq</b><span>Same cream, navy, teal and gold, made smoother and more beautiful everywhere.</span></button>
+  <button class="tab" role="tab" data-k="a" aria-selected="false"><b>A — Toza</b><span>Close to today: cream, teal, gold. Clearer hierarchy and a stronger buy button.</span></button>
   <button class="tab" role="tab" data-k="b" aria-selected="false"><b>B — Imprint</b><span>A step further: white and ink navy with marigold. Publisher-first, like a publisher’s catalogue.</span></button>
   <button class="tab" role="tab" data-k="c" aria-selected="false"><b>C — Lapis</b><span>Bold: deep blue with coral and turquoise. Big type, colour-led, still clean.</span></button>
 </div>
@@ -49,12 +50,13 @@ h1{font-size:26px;letter-spacing:-.01em}
     <option value="cart.html">Cart</option><option value="order.html">Checkout</option><option value="wishlist.html">Wishlist</option>
     <option value="track.html">Order tracking</option><option value="about.html">About</option><option value="contact.html">Contact</option><option value="faq.html">FAQ</option>
   </select></label>
-  <a class="open" id="open" href="../index.html?theme=a" target="_blank" rel="noopener">Open live demo ↗</a>
+  <a class="open" id="open" href="../index.html?theme=d" target="_blank" rel="noopener">Open live demo ↗</a>
 </div>
 
-<div class="stage" id="stage"><div class="frame" id="frame"><iframe id="ifr" title="Preview" src="../index.html?theme=a&embed=1"></iframe></div></div>
+<div class="stage" id="stage"><div class="frame" id="frame"><iframe id="ifr" title="Preview" src="../index.html?theme=d&embed=1"></iframe></div></div>
 
 <div class="notes">
+  <div class="note"><h2>D — Silliq</h2><ul><li>Same palette and layout logic as today</li><li>Calmer motion, depth, skeleton loading, page crossfade</li><li>Sticky filters and summaries, cart link on every add</li></ul></div>
   <div class="note"><h2>A — Toza</h2><ul><li>Keeps Manrope + Playfair, navy header, teal CTA</li><li>Publisher rows with logo, name, book count</li><li>Fastest to ship; lowest risk with the client</li></ul></div>
   <div class="note"><h2>B — Imprint</h2><ul><li>Source Serif + Golos, flat cards with a top rule</li><li>Publisher strip sits directly under the search</li><li>Marigold buy buttons stand out on white</li></ul></div>
   <div class="note"><h2>C — Lapis</h2><ul><li>Bricolage Grotesque, drenched blue hero and book-page band</li><li>Coral add-to-cart, one turquoise zigzag motif</li><li>Most memorable; biggest change from today</li></ul></div>
@@ -62,7 +64,7 @@ h1{font-size:26px;letter-spacing:-.01em}
 </div>
 <script>
 (function(){
-  var k='a',d='desktop',W={desktop:1280,mobile:390},H={desktop:900,mobile:844};
+  var k='d',d='desktop',W={desktop:1280,mobile:390},H={desktop:900,mobile:844};
   var ifr=document.getElementById('ifr'),frame=document.getElementById('frame'),stage=document.getElementById('stage'),open=document.getElementById('open');
   function fit(){
     var w=W[d],h=H[d],avail=stage.clientWidth-28,s=Math.min(1,avail/w);
