@@ -1,0 +1,36 @@
+/* Theme C — Lapis: deep blue, coral actions, turquoise motif */
+html[data-km-theme="c"]{
+  --navy:#1632A8;--navy2:#0F2380;--navy3:#0C1230;
+  --teal:#1632A8;--teal-d:#0F2380;--teal-l:#8CF3E3;
+  --gold:#FF5A36;--gold-l:#FF8A6E;--gold-d:#C23A1A;
+  --cream:#F2F5FF;--cream2:#E7ECFF;--white:#FFFFFF;--surface:#FFFFFF;--surface-tinted:#EEF2FF;--surface-cool:#E7ECFF;
+  --ink:#0C1230;--mid:#454E73;--light:#5A6385;--border:#D5DBF3;
+  --serif:'Bricolage Grotesque',system-ui,sans-serif;--sans:'Golos Text',system-ui,sans-serif;
+  --grad-navy:#1632A8;--grad-gold:#FF5A36;--grad-teal:#1632A8;
+  --sh-teal:0 10px 20px -8px rgba(22,50,168,.45);--sh-gold:0 10px 20px -8px rgba(255,90,54,.5);
+  --glow-teal:0 0 0 3px rgba(22,50,168,.28);--glow-gold:0 0 0 3px rgba(255,90,54,.3);
+  & body{background:#fff}
+  & .nav{background:#1632A8;box-shadow:none}
+  & .bname span{color:#8CF3E3}
+  & .nav-link::after,& .nav-link.on::after{background:#FF5A36}
+  & .cart-count{background:#FF5A36;color:#0C1230}
+  /* coral actions */
+  & .btn-teal,& .nav-cta,& .sbtn,& .book-cta-btn,& .book-cart-btn,& .bs-cart,& .bk-addcart,& .submit,& .checkout,& .ai-start,& .btn-track,& .ab-cta,& .undo-btn{background:#FF5A36;color:#0C1230;box-shadow:none;font-weight:800}
+  & .btn-teal:hover,& .nav-cta:hover,& .sbtn:hover,& .book-cta-btn:hover,& .book-cart-btn:hover,& .bs-cart:hover,& .bk-addcart:hover,& .submit:hover,& .checkout:hover,& .ai-start:hover,& .btn-track:hover{background:#F04822;color:#0C1230}
+  & .book-cart-btn .cart-ic,& .bs-cart .cart-ic,& .book-cta-btn .cart-ic{stroke:#0C1230}
+  & .btn,& .sbtn,& .nav-cta{border-radius:999px}
+  & .search,& .sbar{border-radius:999px}
+  /* bigger, friendlier cards */
+  & .book,& .bs-card,& .pcard,& .card{border-radius:20px;border:2px solid var(--border)}
+  & .book:hover,& .bs-card:hover,& .pcard:hover,& .card:hover{border-color:#1632A8}
+  & .st{font-size:36px;letter-spacing:-.03em}
+  & .st::before{background:#FF5A36}
+  & .book-price,& .bs-price,& .bk-price{color:#1632A8;font-family:var(--serif)}
+  & .rate,& .bk-stars{color:#B34200}
+  /* the one signature: turquoise zigzag under the hero */
+  & .hero,& .info-hero,& .ab-hero,& .s-hero,& .pub-hero,& .ph-hero{position:relative}
+  & .hero::after,& .info-hero::after,& .ab-hero::after,& .s-hero::after,& .pub-hero::after,& .ph-hero::after{content:'';position:absolute;left:0;right:0;bottom:0;height:12px;background:repeating-linear-gradient(135deg,#14B8A6 0 12px,transparent 12px 24px);pointer-events:none}
+  & .site-foot{background:#0C1230}
+  & .site-foot::before{background:linear-gradient(90deg,#14B8A6,#FF5A36)}
+}
+html[data-km-theme="c"] .km-chat-btn{background:#FF5A36 !important;color:#0C1230 !important;box-shadow:0 6px 18px rgba(255,90,54,.4) !important}

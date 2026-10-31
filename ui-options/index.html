@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex"><title>Kitobmarkazi — choose a visual direction</title>
+<meta name="robots" content="noindex"><title>Kitobmarkazi — design demo</title>
 <style>
 :root{--bg:#F4F4F1;--ink:#17181B;--mute:#555A63;--line:#D9D9D3;--card:#fff;--acc:#17181B;--focus:#2447C9}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -19,7 +19,9 @@ h1{font-size:26px;letter-spacing:-.01em}
 .seg{display:inline-flex;border:2px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card)}
 .seg button{border:0;background:transparent;padding:9px 16px;font:inherit;font-weight:600;cursor:pointer;color:var(--mute)}
 .seg button[aria-pressed=true]{background:var(--acc);color:#fff}
-.open{font-weight:600;color:var(--focus);text-underline-offset:3px}
+.open{font-weight:700;color:#fff;background:var(--acc);padding:10px 16px;border-radius:10px;text-decoration:none;margin-left:auto}
+.pg{font-size:14px;color:var(--mute);display:flex;align-items:center;gap:8px}
+.pg select{font:inherit;padding:9px 10px;border:2px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
 .stage{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;overflow:hidden;display:flex;justify-content:center}
 .frame{position:relative;overflow:hidden;border-radius:8px;border:1px solid var(--line);background:#fff}
 .frame iframe{border:0;position:absolute;left:0;top:0;transform-origin:0 0}
@@ -30,8 +32,8 @@ h1{font-size:26px;letter-spacing:-.01em}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 @media (max-width:820px){.tabs,.notes{grid-template-columns:1fr}}
 </style></head><body><div class="wrap">
-<h1>Kitobmarkazi — choose a visual direction</h1>
-<p class="sub">Same content, same simplicity, three looks: close to today, a clear step further, and a bold new direction. Switch option and device, scroll inside the preview, then tell me which one (or which parts of which).</p>
+<h1>Kitobmarkazi — design demo</h1>
+<p class="sub">These are the real site in three looks: close to today, a clear step further, and a bold new direction. Pick an option, a page and a device, or open the live demo to use everything: search, cart, checkout, wishlist and order tracking. Orders placed in the demo are simulated and never sent.</p>
 
 <div class="tabs" role="tablist" aria-label="Options">
   <button class="tab" role="tab" data-k="a" aria-selected="true"><b>A — Toza</b><span>Close to today: cream, teal, gold. Clearer hierarchy and a stronger buy button.</span></button>
@@ -41,10 +43,16 @@ h1{font-size:26px;letter-spacing:-.01em}
 
 <div class="bar">
   <div class="seg" role="group" aria-label="Device"><button data-d="desktop" aria-pressed="true">Desktop</button><button data-d="mobile" aria-pressed="false">Phone</button></div>
-  <a class="open" id="open" href="option-a.html" target="_blank" rel="noopener">Open full page ↗</a>
+  <label class="pg">Page <select id="pg" aria-label="Page">
+    <option value="index.html">Home</option><option value="search.html">Catalogue / search</option><option value="publishers.html">Publishers</option>
+    <option value="publisher.html?pub=booktopia">One publisher</option><option value="book.html?pub=booktopia&amp;book=otkan">Book page</option>
+    <option value="cart.html">Cart</option><option value="order.html">Checkout</option><option value="wishlist.html">Wishlist</option>
+    <option value="track.html">Order tracking</option><option value="about.html">About</option><option value="contact.html">Contact</option><option value="faq.html">FAQ</option>
+  </select></label>
+  <a class="open" id="open" href="../index.html?theme=a" target="_blank" rel="noopener">Open live demo ↗</a>
 </div>
 
-<div class="stage" id="stage"><div class="frame" id="frame"><iframe id="ifr" title="Preview" src="option-a.html"></iframe></div></div>
+<div class="stage" id="stage"><div class="frame" id="frame"><iframe id="ifr" title="Preview" src="../index.html?theme=a&embed=1"></iframe></div></div>
 
 <div class="notes">
   <div class="note"><h2>A — Toza</h2><ul><li>Keeps Manrope + Playfair, navy header, teal CTA</li><li>Publisher rows with logo, name, book count</li><li>Fastest to ship; lowest risk with the client</li></ul></div>
@@ -61,7 +69,13 @@ h1{font-size:26px;letter-spacing:-.01em}
     frame.style.width=(w*s)+'px';frame.style.height=(h*s)+'px';
     ifr.style.width=w+'px';ifr.style.height=h+'px';ifr.style.transform='scale('+s+')';
   }
-  function show(){ var u='option-'+k+'.html'; if(ifr.getAttribute('src')!==u) ifr.setAttribute('src',u); open.href=u; fit(); }
+  function show(){
+    var pg=document.getElementById('pg').value, sep=pg.indexOf('?')>-1?'&':'?';
+    var live='../'+pg+sep+'theme='+k, emb=live+'&embed=1';
+    if(ifr.getAttribute('src')!==emb) ifr.setAttribute('src',emb);
+    open.href=live; fit();
+  }
+  document.getElementById('pg').addEventListener('change',show);
   document.querySelectorAll('.tab').forEach(function(b){b.addEventListener('click',function(){
     k=b.dataset.k;document.querySelectorAll('.tab').forEach(function(x){x.setAttribute('aria-selected',x===b)});show();});});
   document.querySelectorAll('.seg button').forEach(function(b){b.addEventListener('click',function(){

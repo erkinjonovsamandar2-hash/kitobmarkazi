@@ -1,0 +1,17 @@
+/* Theme A — Toza: today's cream / teal / gold, made clearer and stronger */
+html[data-km-theme="a"]{
+  --teal:#0E674F;--teal-d:#0A5441;--teal-l:#72C8A7;
+  --mid:#3A4742;--light:#566660;
+  --grad-teal:linear-gradient(135deg,#0E674F,#0A5441);
+  --sh-teal:0 10px 20px -8px rgba(14,103,79,.45);
+  & body{background:var(--cream)}
+  /* stronger primary actions, 44px+ targets */
+  & .btn-teal,& .nav-cta,& .sbtn,& .bk-addcart,& .submit,& .checkout,& .btn-track{background:#0E674F;color:#fff}
+  & .btn-teal:hover,& .bk-addcart:hover,& .submit:hover,& .checkout:hover{background:#0A5441}
+  & .qbtn,& .cqbtn{min-width:44px;min-height:44px}
+  & .book-price,& .bs-price,& .bk-price{color:#0A5441}
+  & .st{font-size:34px}
+  & .sec{padding-top:80px}
+  & .book,& .pcard,& .bs-card{border-color:#D9D1C2}
+  & .rate,& .bk-stars{color:#8A6420}
+}

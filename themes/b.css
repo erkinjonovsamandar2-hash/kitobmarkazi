@@ -1,0 +1,38 @@
+/* Theme B — Imprint: white + ink navy, marigold actions, publisher-catalogue feel */
+html[data-km-theme="b"]{
+  --navy:#101B34;--navy2:#1C2A4D;--navy3:#0B1226;
+  --teal:#1C2A4D;--teal-d:#101B34;--teal-l:#F5B301;
+  --gold:#F5B301;--gold-l:#F5C842;--gold-d:#9A6B00;
+  --cream:#F3F5F9;--cream2:#E7EBF3;--white:#FFFFFF;--surface:#FFFFFF;--surface-tinted:#F3F5F9;--surface-cool:#EEF1F7;
+  --ink:#101B34;--mid:#3F4C6B;--light:#566287;--border:#DDE2EC;
+  --serif:'Source Serif 4',Georgia,serif;--sans:'Golos Text',system-ui,sans-serif;
+  --grad-navy:#101B34;--grad-gold:#F5B301;--grad-teal:#1C2A4D;
+  --sh-teal:0 10px 20px -8px rgba(16,27,52,.35);--sh-gold:0 10px 20px -8px rgba(245,179,1,.45);
+  --glow-teal:0 0 0 3px rgba(36,71,201,.28);--glow-gold:0 0 0 3px rgba(245,179,1,.35);
+  & body{background:#fff}
+  /* white header */
+  & .nav{background:#fff;box-shadow:0 1px 0 var(--border)}
+  & .bname{color:var(--ink)}& .bname span{color:var(--navy2)}
+  & .nav-link{color:var(--mid)}& .nav-link:hover,& .nav-link.on{color:var(--ink)}
+  & .nav-link::after,& .nav-link.on::after{background:#F5B301}
+  & .cart-link,& .wish-link,& .nav-burger{background:var(--cream);border-color:var(--border);color:var(--ink)}
+  & .nav-burger span{background:var(--ink)}
+  & .nav-back{color:var(--mid)}& .nav-back:hover{color:var(--ink)}
+  & .cart-count{background:#F5B301;color:#101B34}
+  /* marigold actions */
+  & .btn-teal,& .nav-cta,& .sbtn,& .book-cta-btn,& .book-cart-btn,& .bs-cart,& .bk-addcart,& .submit,& .checkout,& .ai-start,& .btn-track,& .ab-cta,& .undo-btn{background:#F5B301;color:#101B34;box-shadow:none}
+  & .btn-teal:hover,& .nav-cta:hover,& .sbtn:hover,& .book-cta-btn:hover,& .book-cart-btn:hover,& .bs-cart:hover,& .bk-addcart:hover,& .submit:hover,& .checkout:hover,& .ai-start:hover,& .btn-track:hover{background:#E0A200;color:#101B34}
+  & .book-cart-btn .cart-ic,& .bs-cart .cart-ic,& .book-cta-btn .cart-ic{stroke:#101B34}
+  & .btn-ghost{border-color:var(--border)}
+  /* flat, ruled cards */
+  & .book,& .bs-card{border-radius:6px;border-color:var(--border);border-top:3px solid var(--ink)}
+  & .pcard,& .card{border-radius:10px;border-color:var(--border)}
+  & .pcard:hover,& .card:hover{border-color:var(--ink)}
+  & .st::before{background:#F5B301}
+  & .book-price,& .bs-price,& .bk-price{color:var(--ink)}
+  & .rate,& .bk-stars{color:#9A6B00}
+  & .site-foot{background:#101B34}
+  & .site-foot::before{background:#F5B301}
+}
+html[data-km-theme="b"] .km-chat-btn{background:#101B34 !important;box-shadow:0 6px 18px rgba(16,27,52,.35) !important}
+html[data-km-theme="b"] .km-chat-btn .km-badge{background:#F5B301 !important;color:#101B34 !important}
