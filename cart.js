@@ -51,7 +51,7 @@ function toast(msg, type){
     document.body.appendChild(t);
   }
   if (type === 'error') {
-    t.style.background = '#E2556F';
+    t.style.background = '#C73A57';
     t.innerHTML = '⚠️ ' + msg;
   } else {
     t.style.background = '#15202E';

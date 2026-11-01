@@ -3,11 +3,11 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --navy:#0B1D28;--navy2:#12362F;--navy3:#0A2A24;
-  --teal:#178A68;--teal-d:#0E674F;--teal-l:#72C8A7;
+  --teal:#13795C;--teal-d:#0B5A45;--teal-l:#72C8A7;
   --gold:#B88C37;--gold-l:#E8C875;--gold-d:#88651F;
   --cream:#F7F3EC;--cream2:#EEE8DE;--white:#FFFDF9;
   --surface:#FFFDF9;--surface-tinted:#F1ECE3;--surface-cool:#EDF3EE;
-  --ink:#16221F;--mid:#45524D;--light:#6F7A74;--border:#E5DED2;
+  --ink:#16221F;--mid:#45524D;--light:#5C6862;--border:#E5DED2;
   --serif:'Playfair Display',Georgia,serif;
   --sans:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   
@@ -23,7 +23,7 @@
   /* premium gradients */
   --grad-navy:linear-gradient(135deg,#0B1C28 0%,#0A2524 58%,#0D3B31 100%);
   --grad-gold:linear-gradient(135deg,#E8C875,#B88C37);
-  --grad-teal:linear-gradient(135deg,#1A9470,#0E674F);
+  --grad-teal:linear-gradient(135deg,#13795C,#0B5A45);
   /* ── elevation (Tailwind/Shadcn-inspired clean multi-layer shadows) ── */
   --sh-sm:0 1px 2px rgba(11,19,32,0.03);
   --sh-md:0 4px 6px -1px rgba(11,19,32,0.08), 0 2px 4px -2px rgba(11,19,32,0.03);
@@ -81,7 +81,7 @@ button:focus:not(:focus-visible), a:focus:not(:focus-visible), input:focus:not(:
 .btn-navy:hover{background:var(--navy2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(10,22,40,0.3)}
 .btn-ghost{background:var(--white);color:var(--ink);border:1.5px solid var(--border);padding:13px 24px;box-shadow:var(--sh-sm)}
 .btn-ghost:hover{border-color:var(--teal);color:var(--teal-d);transform:translateY(-2px);box-shadow:var(--sh-md),var(--glow-teal)}
-.btn-gold{background:var(--grad-gold);color:#3D2A00;padding:14px 26px;box-shadow:var(--sh-gold);font-weight:700}
+.btn-gold{background:var(--grad-gold);color:#2E1F00;padding:14px 26px;box-shadow:var(--sh-gold);font-weight:700}
 .btn-gold:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(217,169,62,0.42),var(--glow-gold)}
 .btn:active,.nav-cta:active,.cart-link:active,.wish-link:active{transform:scale(.97)}
 
@@ -105,7 +105,7 @@ button:focus:not(:focus-visible), a:focus:not(:focus-visible), input:focus:not(:
 .sb{display:flex;align-items:center;gap:8px;flex:1}
 .sb-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
 .sb-done{background:var(--teal);color:#fff}
-.sb-active{background:var(--gold);color:#3D2A00}
+.sb-active{background:var(--gold);color:#2E1F00}
 .sb-idle{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.35)}
 .sb-txt{font-size:12.5px;color:rgba(255,255,255,0.45)}
 .sb-txt.a{color:#fff;font-weight:600}
@@ -123,7 +123,7 @@ label{display:block;font-size:12px;font-weight:600;color:var(--mid);margin-botto
 input[type=text],input[type=tel],textarea,select{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:11px;font-size:15px;color:var(--ink);background:#FAFAF7;font-family:inherit;transition:all 0.25s var(--ease-premium);outline:none;appearance:none}
 input:focus,textarea:focus,select:focus{border-color:var(--teal);background:#fff;box-shadow:var(--glow-teal)}
 .field:focus-within label{color:var(--teal-d)}
-input::placeholder,textarea::placeholder{color:#B6BCC4}
+input::placeholder,textarea::placeholder{color:#6B7570}
 textarea{height:84px;resize:none}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239AA4B0' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
 
@@ -162,7 +162,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 /* ===== Cart badge in nav ===== */
 .cart-link{position:relative;display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,0.09);color:#fff;font-size:19px;transition:all 0.16s;text-decoration:none;border:1px solid rgba(255,255,255,0.06)}
 .cart-link:hover{background:rgba(255,255,255,0.16)}
-.cart-count{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:var(--gold);color:#3D2A00;font-size:11px;font-weight:800;display:none;align-items:center;justify-content:center}
+.cart-count{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:var(--gold);color:#2E1F00;font-size:11px;font-weight:800;display:none;align-items:center;justify-content:center}
 
 /* ===== Book card cart actions (shared) ===== */
 .book-actions{display:flex;gap:8px;margin-top:auto}
@@ -199,7 +199,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .modal-pub{display:flex;align-items:center;gap:8px;margin-bottom:12px}
 .modal-pub .pl{width:26px;height:26px;border-radius:6px;background:var(--cream2);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:3px}
 .modal-pub .pn{font-size:12.5px;font-weight:600;color:var(--mid)}
-.modal-soon{display:inline-block;background:var(--gold);color:#3D2A00;font-size:10px;font-weight:800;padding:4px 11px;border-radius:7px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px}
+.modal-soon{display:inline-block;background:var(--gold);color:#2E1F00;font-size:11px;font-weight:800;padding:4px 11px;border-radius:7px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px}
 .modal-title{font-family:var(--serif);font-size:30px;font-weight:700;color:var(--ink);line-height:1.15;margin-bottom:6px}
 .modal-author{font-size:14px;color:var(--mid);margin-bottom:14px}
 .modal-desc{font-size:14.5px;color:var(--mid);line-height:1.7;margin-bottom:22px}
@@ -272,8 +272,8 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .sf-pays{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .sf-pay{height:34px;padding:0 12px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.14)}
 .sf-pay img{height:17px;width:auto;max-width:62px;object-fit:contain;display:block}
-.sf-col h4{font-size:12px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.09em;margin-bottom:18px;position:relative;padding-bottom:10px}
-.sf-col h4::after{content:"";position:absolute;left:0;bottom:0;width:24px;height:2px;background:var(--teal);border-radius:2px}
+.sf-col h2{font-size:12px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.09em;margin-bottom:18px;position:relative;padding-bottom:10px}
+.sf-col h2::after{content:"";position:absolute;left:0;bottom:0;width:24px;height:2px;background:var(--teal);border-radius:2px}
 .sf-col a{display:block;font-size:14px;color:rgba(255,255,255,0.62);padding:7px 0;transition:color 0.15s,padding-left 0.15s}
 .sf-col a:hover{color:var(--teal-l);padding-left:4px}
 .sf-contact-item{display:flex;align-items:flex-start;gap:11px;margin-bottom:15px;font-size:14px;color:rgba(255,255,255,0.7);line-height:1.5}
@@ -316,7 +316,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .book-title{font-size:15px;font-weight:700;color:var(--ink);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .book-author{font-size:12.5px;color:var(--light);margin-top:3px}
 .book-price{font-family:var(--serif);font-size:18px;font-weight:800;color:var(--teal-d);letter-spacing:-0.01em}
-.bc-badge{position:absolute;top:12px;right:54px;z-index:4;display:inline-flex;align-items:center;gap:4px;background:var(--grad-gold);color:#3D2A00;font-size:9px;font-weight:800;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em;box-shadow:0 4px 12px rgba(217,169,62,0.4)}
+.bc-badge{position:absolute;top:12px;right:54px;z-index:4;display:inline-flex;align-items:center;gap:4px;background:var(--grad-gold);color:#2E1F00;font-size:9px;font-weight:800;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em;box-shadow:0 4px 12px rgba(217,169,62,0.4)}
 
 /* Book card body layout: meta (title/author) stacked tight, buy row pinned to bottom */
 .book-meta{display:flex;flex-direction:column;gap:var(--sp-xs);margin-bottom:10px}
@@ -625,3 +625,35 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .pcard.is-pressed::after{background:linear-gradient(135deg,rgba(29,158,117,.18),rgba(194,147,46,.18))}
 @media(prefers-reduced-motion:reduce){.pcard.is-pressed,.book.is-pressed,.bs-card.is-pressed,.poster.is-pressed{transform:none!important}}
 
+
+/* Touch targets: 44px minimum on touch devices (keeps desktop proportions unchanged) */
+@media (pointer:coarse){
+  .bs-cart,.book-cta-btn,.book-cart-btn,.wish-btn-inline,.qbtn,.cqbtn,.cremove,.keepshop,.sa,.nav-back,.adb,.nav-mobile-close{min-width:44px;min-height:44px}
+  .sa,.keepshop,.nav-back,.cremove{display:inline-flex;align-items:center}
+  .genre-pill{min-height:44px}
+  .cart-link,.wish-link,.nav-burger{min-width:44px;min-height:44px}
+  .brand{min-height:44px}
+  .sf-col a{padding-block:11px}
+}
+
+/* Decorative glow orbs are off site-wide: the client asked for simple */
+.ph-orb,.s-orb,.c-orb,.o-orb,.ab-orb,.info-orb{display:none}
+
+/* ===== One empty-state pattern (cart, checkout, wishlist) ===== */
+.es{text-align:center;padding:64px 20px;grid-column:1/-1}
+.es-ic{width:72px;height:72px;margin:0 auto 18px;border-radius:50%;background:var(--cream2);color:var(--teal-d);display:grid;place-items:center}
+.es-ic svg{width:32px;height:32px}
+.es h1,.es h2{font-family:var(--serif);font-size:26px;font-weight:800;margin-bottom:8px;color:var(--ink)}
+.es p{font-size:14.5px;color:var(--mid);margin-bottom:24px}
+
+/* ===== Target size: 24px floor everywhere, 44px on touch ===== */
+.sa,.keepshop,.nav-back,.bk-breadcrumb a{display:inline-flex;align-items:center;min-height:24px}
+@media (pointer:coarse){
+  .wish-btn{width:44px;height:44px}
+  .bk-breadcrumb{padding-top:8px}
+  .bk-breadcrumb a,.bk-pubchip{min-height:44px}
+  .brand{min-width:44px}
+  .nav-mobile-close{width:44px;height:44px}
+  .sf-contact-item a{display:inline-flex;align-items:center;min-height:44px}
+  #addCartBtn,.bk-addcart{min-height:48px}
+}

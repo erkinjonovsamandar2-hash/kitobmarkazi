@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Saqlab qo'ygan sevimli kitoblaringiz.">
+<meta name="robots" content="noindex">
 <title>Sevimlilar — Kitobmarkazi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +18,7 @@
   .empty-w{text-align:center;padding:64px 20px}
   .empty-w .ec-ic{font-size:58px;margin-bottom:16px;animation:heartPulse 1.8s infinite alternate}
   @keyframes heartPulse{0%{transform:scale(1)}100%{transform:scale(1.15)}}
-  .empty-w h2{font-family:var(--serif);font-size:24px;font-weight:700;margin-bottom:8px}
+  .empty-w h1{font-family:var(--serif);font-size:24px;font-weight:700;margin-bottom:8px}
   .empty-w p{font-size:14px;color:var(--mid);margin-bottom:22px}
   @media(max-width:900px){.books-grid{grid-template-columns:repeat(3,1fr)}}
   @media(max-width:600px){.w-wrap{padding:24px 16px}.books-grid{grid-template-columns:repeat(2,1fr);gap:12px}}</style>
@@ -50,7 +52,7 @@
       </div>
     </div>
     <div class="sf-col">
-      <h4>Yordam</h4>
+      <h2>Yordam</h2>
       <a href="track.html">Buyurtmani kuzatish</a>
       <a href="faq.html">Savol-javob</a>
       <a href="contact.html">Biz bilan aloqa</a>
@@ -58,7 +60,7 @@
       <a href="offer.html">Ommaviy oferta</a>
     </div>
     <div class="sf-col">
-      <h4>Aloqa</h4>
+      <h2>Aloqa</h2>
       <div class="sf-contact-item"><i data-lucide="phone" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
       <div class="sf-contact-item"><i data-lucide="mail" style="width:16px;height:16px;color:var(--teal-l)"></i><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
       <div class="sf-contact-item"><i data-lucide="map-pin" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
@@ -80,11 +82,11 @@ function render(){
   var items=wishlistDetailed().filter(function(it){ return it.book; });
   var wrap=document.getElementById('wrap');
   if(items.length===0){
-    wrap.innerHTML='<div class="empty-w"><div class="ec-ic">🤍</div><h2>Sevimlilar ro\'yxati bo\'sh</h2><p>Yoqqan kitoblarni yurakcha (♡) tugmasi bilan belgilang</p><a class="btn btn-teal" href="search.html">📚 Kitoblarni ko\'rish</a></div>';
+    wrap.innerHTML='<div class="es"><span class="es-ic"><i data-lucide="heart"></i></span><h1>Sevimlilar ro\'yxati bo\'sh</h1><p>Yoqqan kitoblarni yurakcha (♡) tugmasi bilan belgilang</p><a class="btn btn-teal" href="search.html"><i data-lucide="book-open" style="width:16px;height:16px;display:inline-block;vertical-align:-2px;margin-right:6px"></i> Kitoblarni ko\'rish</a></div>'; if(window.refreshIcons) refreshIcons();
     return;
   }
   wrap.innerHTML='<div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:20px; flex-wrap:wrap; gap:12px;">' +
-    '<div><div class="w-h">Sevimlilar</div><div class="w-sub">'+items.length+' ta belgilangan kitob</div></div>' +
+    '<div><h1 class="w-h">Sevimlilar</h1><div class="w-sub">'+items.length+' ta belgilangan kitob</div></div>' +
     '<button class="btn btn-teal" onclick="addAllToCart()" style="font-size:13.5px; padding:10px 18px; display:inline-flex; align-items:center; gap:8px;"><i data-lucide="shopping-cart" style="width:16px;height:16px"></i> Barchasini savatga qo\'shish</button>' +
     '</div>' +
     '<div class="books-grid">'+items.map(function(it){return bookCardHTML(it.pubKey,it.book);}).join('')+'</div>';

@@ -38,7 +38,7 @@
   .bk-lb-prev{left:24px}.bk-lb-next{right:24px}
   .bk-lb-nav:hover,.bk-lb-close:hover{background:rgba(255,255,255,0.25);transform:scale(1.05)}
 
-  .bk-cov-badge{position:absolute;top:16px;right:16px;z-index:4;background:var(--gold);color:#3D2A00;font-size:10px;font-weight:800;padding:5px 11px;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em;box-shadow:0 4px 12px rgba(217,169,62,0.3)}
+  .bk-cov-badge{position:absolute;top:16px;right:16px;z-index:4;background:var(--gold);color:#2E1F00;font-size:10px;font-weight:800;padding:5px 11px;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em;box-shadow:0 4px 12px rgba(217,169,62,0.3)}
   .bk-pubchip{display:inline-flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--border);border-radius:30px;padding:6px 14px 6px 6px;margin-bottom:16px;transition:all 0.25s var(--ease-premium);box-shadow:var(--sh-sm)}
   .bk-pubchip:hover{transform:translateY(-1px);box-shadow:var(--sh-md),var(--glow-teal);border-color:var(--teal)}
   .bk-pubchip .pl{width:28px;height:28px;border-radius:50%;background:var(--cream2);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:3px}
@@ -61,7 +61,7 @@
   .bk-qty-row{display:flex;align-items:center;justify-content:flex-end;gap:18px;margin:0}
   .bk-qty{display:flex;align-items:center;gap:14px}
   .qbtn{width:38px;height:38px;border-radius:11px;border:1.5px solid var(--border);background:var(--white);cursor:pointer;font-size:20px;color:var(--ink);display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.2s}
-  .qbtn:hover{border-color:var(--teal);color:var(--teal);background:#F0FAF6;transform:scale(1.05)}
+  .qbtn:hover{border-color:var(--teal);color:var(--teal-d);background:#F0FAF6;transform:scale(1.05)}
   .qval{font-family:var(--serif);font-size:20px;font-weight:800;min-width:24px;text-align:center}
   .bk-actions{grid-column:1/-1;display:flex;gap:12px;align-items:stretch;height:50px}
   .bk-wish{flex:none;height:50px;padding:0 20px;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;transition:all 0.25s var(--ease-premium)}
@@ -84,7 +84,12 @@
   .rev-date{font-size:12px;color:var(--light)}
   .rev-body{font-size:14.5px;color:var(--mid);line-height:1.65}
   .rev-form-card{background:var(--white);border-radius:20px;border:1px solid var(--border);padding:24px;position:sticky;top:100px;box-shadow:var(--sh-md)}
-  .rev-form-card h3{font-family:var(--serif);font-size:19px;font-weight:800;margin-bottom:8px;color:var(--ink)}
+  .rev-form-card h2{font-family:var(--serif);font-size:19px;font-weight:800;margin:0;color:var(--ink)}
+  .rev-sum{list-style:none;cursor:pointer;min-height:44px;display:flex;align-items:center;justify-content:space-between}
+  .rev-sum::-webkit-details-marker{display:none}
+  .rev-sum::after{content:"+";font-size:24px;line-height:1;color:var(--teal-d)}
+  .rev-form-card[open]>.rev-sum::after{content:"2"}
+  .rev-form-card[open]>.rev-sum{margin-bottom:10px}
   .rev-stars-pick{display:flex;gap:4px;font-size:26px;color:#ddd;cursor:pointer}
   .rev-stars-pick span.on{color:var(--gold)}
   /* Sticky add-to-cart floating bar */
@@ -116,6 +121,7 @@
   body .km-chat-window { bottom: 162px !important; }
 </style>
 
+<style>/* chat button would cover totals and order buttons on these pages */#kmChatBtn,#kmChatWindow{display:none!important}</style>
 </head>
 <body>
 
@@ -159,9 +165,9 @@
           <button class="btn btn-teal bk-addcart" onclick="addCart()" id="addCartBtn">Savatga qo'shish</button>
         </div>
         <div class="bk-trust">
-          <div class="bk-trust-item"><i data-lucide="truck" style="width:16px;height:16px;color:var(--teal)"></i> Tez yetkazib berish</div>
-          <div class="bk-trust-item"><i data-lucide="shield-check" style="width:16px;height:16px;color:var(--teal)"></i> 100% original asarlar</div>
-          <div class="bk-trust-item"><i data-lucide="rotate-ccw" style="width:16px;height:16px;color:var(--teal)"></i> Qaytarish kafolati</div>
+          <div class="bk-trust-item"><i data-lucide="truck" style="width:16px;height:16px;color:var(--teal)"></i> Kuryer: hududni buyurtmada tanlaysiz</div>
+          <div class="bk-trust-item"><i data-lucide="credit-card" style="width:16px;height:16px;color:var(--teal)"></i> To'lov: Payme, Click, Uzum</div>
+          <div class="bk-trust-item"><i data-lucide="rotate-ccw" style="width:16px;height:16px;color:var(--teal)"></i> Nuqsonli kitob 3 kun ichida qaytariladi</div>
         </div>
       </div>
       <p class="bk-desc" id="bkDesc"></p>
@@ -176,8 +182,8 @@
       <div class="rev-list" id="revList">
         <!-- Reviews will be loaded here -->
       </div>
-      <div class="rev-form-card">
-        <h3>Fikr qoldiring</h3>
+      <details class="rev-form-card" id="revForm">
+        <summary class="rev-sum"><h2>Fikr qoldiring</h2></summary>
         <p style="font-size:13px;color:var(--light);margin-bottom:20px">Sizning fikringiz boshqa o'quvchilarga kitob tanlashda yordam beradi. Fikr qoldirish faqat xaridorlar uchun ochiq.</p>
         <div class="field"><label>Buyurtma raqami *</label><input type="text" id="revOrderNumber" placeholder="KM-XXXXXXXX"></div>
         <div class="field"><label>Ismingiz *</label><input type="text" id="revName" placeholder="Alisher"></div>
@@ -193,7 +199,7 @@
         </div>
         <div class="field"><label>Fikringiz</label><textarea id="revComment" rows="3" placeholder="Kitob haqida taassurotlaringiz..."></textarea></div>
         <button class="btn btn-teal" style="width:100%" onclick="submitReview()">Yuborish</button>
-      </div>
+      </details>
     </div>
   </div>
 
@@ -217,7 +223,7 @@
       </div>
     </div>
     <div class="sf-col">
-      <h4>Yordam</h4>
+      <h2>Yordam</h2>
       <a href="track.html">Buyurtmani kuzatish</a>
       <a href="faq.html">Savol-javob</a>
       <a href="contact.html">Biz bilan aloqa</a>
@@ -225,7 +231,7 @@
       <a href="offer.html">Ommaviy oferta</a>
     </div>
     <div class="sf-col">
-      <h4>Aloqa</h4>
+      <h2>Aloqa</h2>
       <div class="sf-contact-item"><i data-lucide="phone" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
       <div class="sf-contact-item"><i data-lucide="mail" style="width:16px;height:16px;color:var(--teal-l)"></i><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
       <div class="sf-contact-item"><i data-lucide="map-pin" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
@@ -486,9 +492,13 @@ window.loadReviews = function() {
     .then(r => r.json())
     .then(data => {
       var list = document.getElementById('revList');
-      document.getElementById('revCountText').textContent = data.length + " ta fikr qoldirilgan";
+      document.getElementById('revCountText').textContent = data.length ? data.length + " ta fikr qoldirilgan" : "Hozircha fikrlar yo'q. Birinchi bo'lib fikr qoldirishingiz mumkin.";
+      var rg = document.querySelector('.rev-grid'); if (rg) rg.style.gridTemplateColumns = data.length ? '' : 'minmax(0,440px)';
+      list.style.display = data.length ? '' : 'none';
+      var br = document.querySelector('.bk-rate');
+      if (br) br.style.display = data.length ? '' : 'none';   // no rating without reviews: avoids "4.9" next to "0 ta fikr"
+      if (data.length) document.getElementById('bkRnum').textContent = book.rating + ' / 5.0 · ' + data.length + ' ta fikr';
       if (data.length === 0) {
-        list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--light)">Hozircha fikrlar yo\'q. Birinchi bo\'lib fikr qoldiring!</div>';
         return;
       }
       list.innerHTML = data.map(function(r) {
@@ -554,7 +564,7 @@ window.setTimeout(updateStickyCart, 600);
 <div class="bk-lightbox" id="bkLightbox" onclick="if(event.target===this)closeLightbox()">
   <button class="bk-lb-close" onclick="closeLightbox()">&times;</button>
   <button class="bk-lb-nav bk-lb-prev" onclick="lbNav(-1)">‹</button>
-  <img id="bkLbImg" src="" alt="">
+  <img id="bkLbImg" alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
   <button class="bk-lb-nav bk-lb-next" onclick="lbNav(1)">›</button>
 </div>
 
