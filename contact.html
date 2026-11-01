@@ -72,12 +72,12 @@
 <div class="info-card">
   <h2>Xabar yuboring</h2>
   <p style="margin-bottom:20px">Bizga yozing, tez orada siz bilan bog'lanamiz.</p>
-  <div class="field"><label>Ismingiz *</label><input type="text" id="cName" placeholder="Alisher"></div>
+  <div class="field"><label for="cName">Ismingiz *</label><input type="text" id="cName" placeholder="Alisher" autocomplete="name"></div>
   <div class="frow" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
-    <div class="field"><label>Telefon *</label><input type="tel" id="cPhone" placeholder="+998 90 123 45 67"></div>
-    <div class="field"><label>Mavzu</label><select id="cSub"><option>Buyurtma holati</option><option>Hamkorlik</option><option>Taklif/Shikoyat</option><option>Boshqa</option></select></div>
+    <div class="field"><label for="cPhone">Telefon *</label><input type="tel" id="cPhone" placeholder="+998 90 123 45 67" autocomplete="tel" inputmode="tel"></div>
+    <div class="field"><label for="cSub">Mavzu</label><select id="cSub"><option>Buyurtma holati</option><option>Hamkorlik</option><option>Taklif/Shikoyat</option><option>Boshqa</option></select></div>
   </div>
-  <div class="field"><label>Xabaringiz *</label><textarea id="cMsg" rows="4" placeholder="Xabaringiz matnini yozing..."></textarea></div>
+  <div class="field"><label for="cMsg">Xabaringiz *</label><textarea id="cMsg" rows="4" placeholder="Xabaringiz matnini yozing..."></textarea></div>
   <button class="btn btn-teal" style="width:100%;padding:14px" onclick="sendContact()">Yuborish</button>
 </div>
 
