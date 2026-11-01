@@ -82,7 +82,7 @@ function render(){
   var items=wishlistDetailed().filter(function(it){ return it.book; });
   var wrap=document.getElementById('wrap');
   if(items.length===0){
-    wrap.innerHTML='<div class="empty-w"><div class="ec-ic">🤍</div><h1>Sevimlilar ro\'yxati bo\'sh</h1><p>Yoqqan kitoblarni yurakcha (♡) tugmasi bilan belgilang</p><a class="btn btn-teal" href="search.html">📚 Kitoblarni ko\'rish</a></div>';
+    wrap.innerHTML='<div class="es"><span class="es-ic"><i data-lucide="heart"></i></span><h1>Sevimlilar ro\'yxati bo\'sh</h1><p>Yoqqan kitoblarni yurakcha (♡) tugmasi bilan belgilang</p><a class="btn btn-teal" href="search.html"><i data-lucide="book-open" style="width:16px;height:16px;display:inline-block;vertical-align:-2px;margin-right:6px"></i> Kitoblarni ko\'rish</a></div>'; if(window.refreshIcons) refreshIcons();
     return;
   }
   wrap.innerHTML='<div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:20px; flex-wrap:wrap; gap:12px;">' +

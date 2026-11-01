@@ -130,7 +130,7 @@
 </nav>
 
 <div class="o-hero"><div class="o-orb"></div><div class="o-hin">
-  <h1 class="o-htitle">Buyurtmani rasmiylashtirish</h1>
+  <h1 class="o-htitle">Buyurtma berish</h1>
   <div class="o-steps">
     <div class="os done"><div class="os-ic">✓</div><div class="os-t">Savatcha</div></div>
     <div class="os-conn done"></div>
@@ -298,7 +298,7 @@ function initPageData(){
   if (!isKMDataLoaded) return;
   items=cartItemsDetailed();
   if(items.length===0){
-    document.getElementById('formWrap').innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px 20px"><div style="display:flex;justify-content:center;margin-bottom:14px"><i data-lucide="shopping-cart" style="width:56px;height:56px;color:var(--mid)"></i></div><h2 style="font-family:var(--serif);font-size:23px;margin-bottom:10px">Savatcha bo\'sh</h2><p style="color:var(--mid);margin-bottom:22px">Buyurtma berish uchun avval kitob tanlang</p><a class="btn btn-teal" href="publishers.html"><i data-lucide="book-open" style="width:16px;height:16px;margin-right:6px;display:inline-block;vertical-align:middle"></i> Nashriyotlarni ko\'rish</a></div>'; if(window.refreshIcons) window.refreshIcons();
+    document.getElementById('formWrap').innerHTML='<div class="es"><span class="es-ic"><i data-lucide="shopping-cart"></i></span><h2>Savatchangiz bo\'sh</h2><p>Buyurtma berish uchun avval kitob tanlang</p><a class="btn btn-teal" href="publishers.html"><i data-lucide="book-open" style="width:16px;height:16px;display:inline-block;vertical-align:-2px;margin-right:6px"></i> Nashriyotlarni ko\'rish</a></div>'; if(window.refreshIcons) window.refreshIcons();
   } else {
     renderItems();
     onRegionChange();
