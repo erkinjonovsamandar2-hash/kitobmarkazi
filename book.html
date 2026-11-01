@@ -122,6 +122,7 @@
 </style>
 
 <script src="/demo-theme.js"></script>
+<style>/* chat button would cover totals and order buttons on these pages */#kmChatBtn,#kmChatWindow{display:none!important}</style>
 </head>
 <body>
 
@@ -492,12 +493,13 @@ window.loadReviews = function() {
     .then(r => r.json())
     .then(data => {
       var list = document.getElementById('revList');
-      document.getElementById('revCountText').textContent = data.length + " ta fikr qoldirilgan";
+      document.getElementById('revCountText').textContent = data.length ? data.length + " ta fikr qoldirilgan" : "Hozircha fikrlar yo'q. Birinchi bo'lib fikr qoldirishingiz mumkin.";
+      var rg = document.querySelector('.rev-grid'); if (rg) rg.style.gridTemplateColumns = data.length ? '' : 'minmax(0,440px)';
+      list.style.display = data.length ? '' : 'none';
       var br = document.querySelector('.bk-rate');
       if (br) br.style.display = data.length ? '' : 'none';   // no rating without reviews: avoids "4.9" next to "0 ta fikr"
       if (data.length) document.getElementById('bkRnum').textContent = book.rating + ' / 5.0 · ' + data.length + ' ta fikr';
       if (data.length === 0) {
-        list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--light)">Hozircha fikrlar yo\'q.<br><button type="button" class="btn btn-ghost" style="margin-top:14px;min-height:44px" onclick="var f=document.getElementById(\'revForm\');f.open=true;f.scrollIntoView({behavior:\'smooth\',block:\'center\'})">Birinchi bo\'lib fikr qoldiring</button></div>';
         return;
       }
       list.innerHTML = data.map(function(r) {

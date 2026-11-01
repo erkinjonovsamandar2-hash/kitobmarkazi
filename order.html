@@ -37,7 +37,7 @@
   label{display:block;font-size:12px;font-weight:600;color:var(--mid);margin-bottom:6px}
   input[type=text],input[type=tel],textarea,select{width:100%;padding:12px 14px;border:1.5px solid #DDE3E1;border-radius:11px;font-size:15px;color:var(--ink);background:#F7F9F8;font-family:inherit;transition:all 0.15s;outline:none;appearance:none}
   input:focus,textarea:focus,select:focus{border-color:var(--teal);background:#fff;box-shadow:0 0 0 3px rgba(29,158,117,0.14)}
-  input::placeholder,textarea::placeholder{color:#B6BCC4}
+  input::placeholder,textarea::placeholder{color:#6B7570}
   textarea{height:80px;resize:none}
   .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239AA4B0' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
@@ -65,9 +65,12 @@
 
 
   .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:0}
-  .pay{border:1.5px solid #DDE3E1;border-radius:14px;padding:22px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.18s;background:#fff;position:relative;min-height:78px}
+  .pay{border:1.5px solid #C9D2CF;border-radius:14px;padding:14px 12px 14px 40px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.18s;background:#fff;position:relative;min-height:60px}
+  .pay::before{content:"";position:absolute;left:14px;top:50%;width:18px;height:18px;margin-top:-9px;border-radius:50%;border:2px solid #8A9692;background:#fff;box-sizing:border-box}
+  .pay.on::before{border-color:var(--teal);background:radial-gradient(circle,var(--teal) 0 40%,#fff 45%)}
+  .pay-err{color:#B3261E;font-size:13px;font-weight:600;margin-top:8px}
   .pay:hover{border-color:#A9D9C8}.pay.on{border-color:var(--teal);background:#EEFAF5;box-shadow:0 0 0 3px rgba(29,158,117,0.1)}
-  .pchk{position:absolute;top:9px;right:9px;width:20px;height:20px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;opacity:0;transform:scale(0.5);transition:all 0.18s}
+  .pchk{display:none;position:absolute;top:9px;right:9px;width:20px;height:20px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;opacity:0;transform:scale(0.5);transition:all 0.18s}
   .pay.on .pchk{opacity:1;transform:scale(1)}
   .play{width:100%;height:40px;display:flex;align-items:center;justify-content:center;overflow:hidden}
   .play img{max-height:30px;max-width:80%;object-fit:contain;display:block}
@@ -96,8 +99,9 @@
   .submit:hover{background:var(--teal-d);transform:translateY(-1px)}
   .snote{font-size:12px;color:var(--light);text-align:center;margin-top:12px;line-height:1.5}
   .snote-top{font-size:13.5px;color:var(--mid);text-align:left;margin:0 0 12px}
+  .m-sum{display:none}
   #mBar{display:none}
-  @media(max-width:900px){#mBar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:150;align-items:center;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:var(--white);border-top:1px solid var(--border);box-shadow:0 -8px 24px rgba(11,29,40,.1)}#mBar .mb-t{flex:1;min-width:0;line-height:1.2}#mBar .mb-l{font-size:12px;color:var(--mid)}#mBar .mb-v{font-family:var(--serif);font-weight:800;font-size:19px;color:var(--teal-d)}#mBar button{min-height:48px;padding:0 20px;border:none;border-radius:12px;background:var(--teal);color:#fff;font-weight:800;font-size:15px;cursor:pointer;font-family:inherit}.o-wrap{padding-bottom:96px}body #kmChatBtn{bottom:84px!important}}
+  @media(max-width:900px){#mBar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:150;align-items:center;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:var(--white);border-top:1px solid var(--border);box-shadow:0 -8px 24px rgba(11,29,40,.1)}#mBar .mb-t{flex:1;min-width:0;line-height:1.2}#mBar .mb-l{font-size:12px;color:var(--mid)}#mBar .mb-v{font-family:var(--serif);font-weight:800;font-size:19px;color:var(--teal-d)}#mBar button{min-height:48px;padding:0 20px;border:none;border-radius:12px;background:var(--teal);color:#fff;font-weight:800;font-size:15px;cursor:pointer;font-family:inherit}.o-wrap{padding-bottom:96px}.m-sum{display:block;grid-column:1/-1;background:var(--white);border:1px solid var(--border);border-radius:14px;padding:0 16px}.m-sum summary{list-style:none;cursor:pointer;min-height:48px;display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:14px}.m-sum summary::-webkit-details-marker{display:none}.m-sum summary::after{content:"+";font-size:22px;color:var(--teal-d)}.m-sum[open] summary::after{content:"2"}.m-sum #mSumBody{padding-bottom:12px}}
 
   /* Success */
   #success{display:none;max-width:560px;margin:0 auto;padding:46px 24px 60px;text-align:center}
@@ -112,9 +116,10 @@
   .sact{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 
   @media(max-width:900px){.o-wrap{grid-template-columns:1fr}.o-side{position:static}}
-  @media(max-width:600px){.o-hero{padding:20px 16px 0}.o-wrap{padding:20px 16px 40px}.frow{grid-template-columns:1fr}.pgrid{grid-template-columns:1fr}.paytime-grid{grid-template-columns:1fr}.os-t{display:none}.os-conn{margin:0 8px}}
+  @media(max-width:600px){.o-hero{padding:20px 16px 0}.o-wrap{padding:20px 16px 40px}.frow{grid-template-columns:1fr}.pgrid{grid-template-columns:1fr}.paytime-grid{grid-template-columns:1fr}.os-conn{margin:0 8px}.os-t{font-size:12px}}
 </style>
 <script src="/demo-theme.js"></script>
+<style>/* chat button would cover totals and order buttons on these pages */#kmChatBtn,#kmChatWindow{display:none!important}</style>
 </head>
 <body>
 
@@ -130,13 +135,12 @@
   <div class="o-steps">
     <div class="os done"><div class="os-ic">✓</div><div class="os-t">Savatcha</div></div>
     <div class="os-conn done"></div>
-    <div class="os done"><div class="os-ic">✓</div><div class="os-t">Kitoblar</div></div>
-    <div class="os-conn done"></div>
-    <div class="os active"><div class="os-ic">3</div><div class="os-t">Buyurtma</div></div>
+    <div class="os active"><div class="os-ic">2</div><div class="os-t">Buyurtma</div></div>
   </div>
 </div></div>
 
 <div class="o-wrap" id="formWrap">
+  <details class="m-sum" id="mSum"><summary><span id="mSumT">Buyurtmangiz</span></summary><div id="mSumBody"></div></details>
   <div class="o-form">
     <div class="fcard">
       <div class="fcard-head"><div class="fcard-n">1</div><div class="fcard-t">Buyurtmachi ma'lumotlari</div></div>
@@ -205,6 +209,7 @@
             <div class="play"><img src="images/pay/uzum.png" alt="Uzum"></div>
           </div>
         </div>
+        <div class="pay-err" id="payErr" role="alert" hidden>To'lov usulini tanlang</div>
         <div class="secure">🔒 To'lovlar Payme, Click va Uzum orqali amalga oshiriladi</div>
       </div>
     </div>
@@ -231,7 +236,7 @@
 
       <div class="sum-total"><span class="l">Jami</span><span class="v" id="sumTotal"></span></div>
 
-      <p class="snote snote-top" id="feeNote">Yetkazib berish narxi kuryer tanlanganda hisoblanadi. Buyurtma qabul qilingach operator siz bilan bog'lanadi, bekor qilish bepul.</p>
+      <p class="snote snote-top" id="feeNote">Yetkazib berish narxi kuryer tanlanganda hisoblanadi. Buyurtma qabul qilingach operator siz bilan bog'lanadi.</p>
       <button class="submit" onclick="submitOrder()">🔒 <span id="btnTxt">Buyurtma berish</span></button>
     </div>
   </div>
@@ -423,7 +428,7 @@ function updateSummary(){
   }
 }
 
-function selPay(m){payMethod=m;['payme','click','uzum'].forEach(function(id){document.getElementById('p-'+id).classList.toggle('on',id===m)});document.getElementById('btnTxt').textContent='Buyurtma berish — '+payNames[m];}
+function selPay(m){payMethod=m;var pe=document.getElementById('payErr');if(pe)pe.hidden=true;['payme','click','uzum'].forEach(function(id){document.getElementById('p-'+id).classList.toggle('on',id===m)});document.getElementById('btnTxt').textContent='Buyurtma berish — '+payNames[m];}
 
 var activePromo = null;
 function applyPromo() {
@@ -638,6 +643,20 @@ document.addEventListener('kmDataLoaded', initPageData);
 </script>
 <script src="chat-widget.js"></script>
 <div id="mBar" role="region" aria-label="Buyurtma xulosasi"><div class="mb-t"><div class="mb-l">Jami (yetkazib berishsiz)</div><div class="mb-v" id="mbTotal"></div></div><button type="button" onclick="submitOrder()">Buyurtma berish</button></div>
-<script>(function(){var t=document.getElementById('sumTotal'),m=document.getElementById('mbTotal');if(!t||!m)return;function s(){m.textContent=t.textContent}s();new MutationObserver(s).observe(t,{childList:true,characterData:true,subtree:true})})();</script>
+<script>(function(){
+  var t=document.getElementById('sumTotal'),m=document.getElementById('mbTotal'),bar=document.getElementById('mBar');
+  /* empty cart: no order bar (runs first: the empty state has no summary elements) */
+  function empty(){var e=false;try{e=typeof getCart==='function'&&getCart().length===0}catch(x){}if(bar){if(e)bar.style.setProperty('display','none','important');else bar.style.removeProperty('display')}}
+  empty();
+  if(!t||!m)return;
+  function s(){m.textContent=t.textContent}
+  s();new MutationObserver(s).observe(t,{childList:true,characterData:true,subtree:true});
+  /* phone: items + total at the top, before the form */
+  var items=document.getElementById('oItems'),body=document.getElementById('mSumBody'),title=document.getElementById('mSumT');
+  function sync(){if(!items||!body)return;body.innerHTML=items.innerHTML;var n=document.getElementById('sumCount');title.textContent='Buyurtmangiz'+(n&&n.textContent?' ('+n.textContent+')':'')+' · '+t.textContent;empty()}
+  sync();
+  if(items)new MutationObserver(sync).observe(items,{childList:true,subtree:true});
+  new MutationObserver(sync).observe(t,{childList:true,characterData:true,subtree:true});
+})();</script>
 </body>
 </html>
