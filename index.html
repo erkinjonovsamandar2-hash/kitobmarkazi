@@ -28,7 +28,11 @@
   .hgrid{position:relative;z-index:2;display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:center;max-width:1080px;margin:0 auto}
   .tag{display:inline-flex;align-items:center;gap:8px;background:rgba(217,169,62,0.1);color:var(--gold-l);font-size:11.5px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;padding:9px 18px;border-radius:30px;border:1px solid rgba(217,169,62,0.3);margin-bottom:26px}
   .hero h1{font-family:var(--serif);font-size:66px;font-weight:900;color:#fff;line-height:1.05;letter-spacing:-0.035em;margin-bottom:22px}
-  .hero h1 em{font-style:normal;font-weight:900;background:var(--grad-gold);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--gold-l)}
+  .hero h1 em{font-style:normal;font-weight:900;color:var(--gold-l)}
+  .hero h1,.hsub{text-wrap:balance}
+  /* decorative glows and the pulsing dot are off: the client asked for simple */
+  .horb,.how-orb,.ai-orb{display:none}
+  .pulse{animation:none;box-shadow:none}
   .hero h1 span.highlight{color:var(--teal-l)}
   .hsub{font-size:18px;color:rgba(255,255,255,0.68);line-height:1.75;margin-bottom:30px;max-width:440px;letter-spacing:-0.005em}
   .search{display:flex;background:#fff;border-radius:20px;padding:8px;box-shadow:var(--sh-xl);border:1.5px solid transparent;transition:all 0.3s var(--ease-premium)}
@@ -60,7 +64,7 @@
   .pcard-foot{padding:13px 16px 16px;border-top:1px solid var(--cream2);text-align:center}
   .pcard-name{font-size:14px;color:var(--ink);font-weight:600;margin-bottom:2px}
   .pcard-cnt{font-size:12px;color:var(--light)}
-  .first-badge{position:absolute;top:10px;right:10px;background:var(--grad-gold);color:#3D2A00;font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;z-index:2;letter-spacing:0.04em}
+  .first-badge{position:absolute;top:10px;right:10px;background:var(--grad-gold);color:#2E1F00;font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;z-index:2;letter-spacing:0.04em}
 
   /* ── Genre → collection cards: each genre is a fanned stack of its book spines ── */
   .bs-scroll{display:flex;gap:14px;overflow-x:auto;padding:6px 2px 22px;scroll-behavior:smooth;scrollbar-width:none;scroll-snap-type:x mandatory}
@@ -73,7 +77,7 @@
   @media(prefers-reduced-motion:reduce){.bs-card:hover .bs-cover{transform:none}}
   .bs-cover .cv-pub{padding-left:28px}
   .bs-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.45),transparent 55%)}
-  .bs-rank{position:absolute;top:8px;left:8px;z-index:3;width:28px;height:28px;border-radius:50%;background:var(--grad-gold);color:#3D2A00;font-family:var(--serif);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(217,169,62,0.45)}
+  .bs-rank{position:absolute;top:8px;left:8px;z-index:3;width:28px;height:28px;border-radius:50%;background:var(--grad-gold);color:#2E1F00;font-family:var(--serif);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(217,169,62,0.45)}
   .bs-ct{font-family:var(--serif);font-size:14px;font-weight:700;color:#fff;position:relative;z-index:2;line-height:1.2;text-shadow:0 2px 8px rgba(0,0,0,0.5)}
   .bs-body{padding:16px 16px 18px;display:flex;flex-direction:column;flex:1}
   .bs-title{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.3;margin-bottom:2px}
@@ -139,7 +143,7 @@
   .poster-thumb{position:absolute;right:-16px;bottom:-18px;width:150px;height:200px;border-radius:10px;transform:rotate(-8deg);box-shadow:-8px 10px 30px rgba(0,0,0,0.4);z-index:1;overflow:hidden;opacity:0.96}
   .pov{position:absolute;inset:0;background:linear-gradient(115deg,rgba(10,22,40,0.93),rgba(10,22,40,0.7) 45%,rgba(10,22,40,0.2))}
   .pc{position:relative;z-index:3;padding:19px;height:100%;display:flex;flex-direction:column;justify-content:space-between}
-  .soon{align-self:flex-start;background:var(--gold);color:#3D2A00;font-size:11px;font-weight:800;padding:5px 11px;border-radius:7px;letter-spacing:0.05em;text-transform:uppercase}
+  .soon{align-self:flex-start;background:var(--gold);color:#2E1F00;font-size:11px;font-weight:800;padding:5px 11px;border-radius:7px;letter-spacing:0.05em;text-transform:uppercase}
   .ppub{display:flex;align-items:center;gap:8px;margin-bottom:8px}
   .ppl{width:28px;height:28px;border-radius:7px;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
   .ppl img{width:100%;height:100%;object-fit:contain;padding:3px}
@@ -161,7 +165,7 @@
   .how-step{position:relative;z-index:2;text-align:center;padding:0 18px;transition:transform 0.3s var(--ease-premium)}
   .how-circle{width:76px;height:76px;border-radius:22px;background:rgba(29,158,117,0.12);border:1.5px solid rgba(29,158,117,0.35);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;position:relative;transition:all 0.25s var(--ease-premium);color:var(--teal-l)}
   .how-step:hover .how-circle{background:var(--teal);border-color:var(--teal);transform:translateY(-4px);color:#fff}
-  .how-badge{position:absolute;top:-8px;right:-8px;width:26px;height:26px;border-radius:50%;background:var(--gold);color:#3D2A00;font-family:var(--serif);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+  .how-badge{position:absolute;top:-8px;right:-8px;width:26px;height:26px;border-radius:50%;background:var(--gold);color:#2E1F00;font-family:var(--serif);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
   .how-stitle{font-size:16px;font-weight:700;color:#fff;margin-bottom:7px}
   .how-ssub{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6;max-width:240px;margin:0 auto}
 
@@ -174,7 +178,7 @@
     .hero{padding:28px 16px 30px}.hgrid{display:block;position:relative}.hero-copy{position:relative;z-index:2}
     .tag{font-size:11px;padding:7px 11px;margin-bottom:16px;letter-spacing:.12em}.hero h1{font-size:37px;line-height:1.03;letter-spacing:-0.036em;max-width:270px;margin-bottom:16px}
     .hsub{font-size:13.5px;line-height:1.65;max-width:225px;margin-bottom:22px}.stats{display:none}
-    .showcase{display:flex;position:absolute;right:-2px;top:65px;width:126px;height:214px;align-items:flex-start;z-index:1;pointer-events:auto}
+    .showcase{display:none}
     .hero-book-link{width:104px}.hero-book-link .physical-book{width:104px;filter:drop-shadow(0 18px 18px rgba(0,0,0,.32))}
     .ac-wrap{max-width:none!important}.search{border-radius:16px;padding:6px}.sinput{min-width:0;padding:12px 10px;font-size:13px}.sbtn{padding:12px 16px;border-radius:11px;font-size:13px}
     .adhead{padding-left:16px;padding-right:16px}.adscroll{padding-left:16px;padding-right:16px}
@@ -260,12 +264,12 @@
   <div class="hero-bg"><div class="horb ho1"></div><div class="horb ho2"></div></div>
   <div class="hgrid">
     <div class="hero-copy">
-      <div class="tag"><i data-lucide="sparkles" style="width:13px;height:13px;display:inline-block;vertical-align:-1px;margin-right:3px"></i> Uzbek Books. One Platform.</div>
+      <div class="tag"><i data-lucide="sparkles" style="width:13px;height:13px;display:inline-block;vertical-align:-1px;margin-right:3px"></i> Bir savat, ko'p nashriyot</div>
       <h1>O'zbek <em>kitoblari</em> bitta platformada</h1>
       <p class="hsub">Yetakchi nashriyotlar, saralangan kitoblar — qidiring, buyurtma bering, eshigingizgacha yetkazamiz.</p>
       <div class="ac-wrap" style="max-width:480px">
         <div class="search">
-          <input class="sinput" type="text" id="heroSearch" autocomplete="off" placeholder="Kitob, muallif yoki nashriyot qidiring...">
+          <input class="sinput" type="text" id="heroSearch" autocomplete="off" placeholder="Kitob yoki nashriyot qidiring">
           <button class="sbtn" onclick="goFirst()">Qidirish</button>
         </div>
         <div class="ac-list" id="acList"></div>
@@ -288,8 +292,8 @@
 
 <div class="sec reveal" id="publishers">
   <div class="sh">
-    <div><div class="st">Nashriyotlar</div><div class="ss">Ishonchli nashriyotlarning kitoblarini bir joyda ko'ring</div></div>
-    <a href="publishers.html" class="sa">Barchasi →</a>
+    <div><div class="st">Nashriyotlar</div><div class="ss">Turli nashriyotlardan kitoblar — bitta savat, bitta buyurtma</div></div>
+    <a href="publishers.html" class="sa">Barcha nashriyotlar →</a>
   </div>
   <div class="grid" id="pubGrid"></div>
 </div>
@@ -336,6 +340,36 @@
   <div class="adscroll" id="ads"></div>
 </section>
 
+
+
+<div class="sec">
+  <div class="how">
+    <div class="how-orb"></div>
+    <div class="how-head">
+      <div class="how-tag"><i data-lucide="zap" style="width:13px;height:13px"></i> 3 ta oddiy qadam</div>
+      <div class="how-h">Qanday ishlaydi?</div>
+    </div>
+    <div class="how-track">
+      <div class="how-line"></div>
+      <div class="how-step">
+        <div class="how-circle"><i data-lucide="library" style="width:30px;height:30px"></i><span class="how-badge">1</span></div>
+        <div class="how-stitle">Kitob tanlang</div>
+        <div class="how-ssub">Nashriyot yoki qidiruv orqali o'zingizga yoqqan kitobni toping</div>
+      </div>
+      <div class="how-step">
+        <div class="how-circle"><i data-lucide="shopping-cart" style="width:28px;height:28px"></i><span class="how-badge">2</span></div>
+        <div class="how-stitle">Savatga qo'shing</div>
+        <div class="how-ssub">Turli nashriyotlardan bir nechta kitobni bir buyurtmaga jamlang</div>
+      </div>
+      <div class="how-step">
+        <div class="how-circle"><i data-lucide="truck" style="width:28px;height:28px"></i><span class="how-badge">3</span></div>
+        <div class="how-stitle">Yetkazib beramiz</div>
+        <div class="how-ssub">Kuryer va to'lov usulini buyurtma paytida tanlaysiz</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <section class="ai-sec reveal" id="ai">
   <div class="ai-wrap">
     <div class="ai-orb ai-orb1"></div>
@@ -378,34 +412,6 @@
     </div>
   </div>
 </section>
-
-<div class="sec">
-  <div class="how">
-    <div class="how-orb"></div>
-    <div class="how-head">
-      <div class="how-tag"><i data-lucide="zap" style="width:13px;height:13px"></i> 3 ta oddiy qadam</div>
-      <div class="how-h">Qanday ishlaydi?</div>
-    </div>
-    <div class="how-track">
-      <div class="how-line"></div>
-      <div class="how-step">
-        <div class="how-circle"><i data-lucide="library" style="width:30px;height:30px"></i><span class="how-badge">1</span></div>
-        <div class="how-stitle">Kitob tanlang</div>
-        <div class="how-ssub">Nashriyot yoki qidiruv orqali o'zingizga yoqqan kitobni toping</div>
-      </div>
-      <div class="how-step">
-        <div class="how-circle"><i data-lucide="shopping-cart" style="width:28px;height:28px"></i><span class="how-badge">2</span></div>
-        <div class="how-stitle">Savatga qo'shing</div>
-        <div class="how-ssub">Turli nashriyotlardan bir nechta kitobni bir buyurtmaga jamlang</div>
-      </div>
-      <div class="how-step">
-        <div class="how-circle"><i data-lucide="truck" style="width:28px;height:28px"></i><span class="how-badge">3</span></div>
-        <div class="how-stitle">Yetkazib beramiz</div>
-        <div class="how-ssub">To'lov usulini tanlang — kuryer 1–3 kun ichida eshigingizga olib keladi</div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <footer class="site-foot">
   <div class="sf-pat"></div>
@@ -474,7 +480,7 @@ function initPageData(){
   order.forEach(function(k){ counts[k]=getBooks(k).length; });
 
   /* Publishers grid (first 20 on home) */
-  document.getElementById('pubGrid').innerHTML=order.slice(0,20).map(function(k){
+  document.getElementById('pubGrid').innerHTML=order.slice(0,8).map(function(k){
     var p=PUBLISHERS[k];
     var initials = p.text || (p.name ? p.name.trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').substring(0,2).toUpperCase() : '');
     var logoInner = p.logo
@@ -519,8 +525,8 @@ function initPageData(){
   /* Genres section */
   var genreCounts={};
   allBooksFlat().forEach(function(x){genreCounts[x.genre]=(genreCounts[x.genre]||0)+1;});
-  document.getElementById('genreRow').innerHTML = Object.keys(GENRES).map(function(g){
-    if(!genreCounts[g]) return '';
+  document.getElementById('genreRow').innerHTML = Object.keys(GENRES).filter(function(g){return genreCounts[g];}).sort(function(a,b){return genreCounts[b]-genreCounts[a];}).slice(0,6).map(function(g){
+    
     return '<a class="genre-pill" href="/qidirish?genre=' + g + '"><span class="gi">' + GENRES[g].icon + '</span>' + esc(GENRES[g].name) +
       ' <span style="color:var(--light);font-weight:600">(' + genreCounts[g] + ')</span></a>';
   }).join('');
