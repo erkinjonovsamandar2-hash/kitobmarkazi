@@ -23,7 +23,7 @@
   /* premium gradients */
   --grad-navy:linear-gradient(135deg,#0B1C28 0%,#0A2524 58%,#0D3B31 100%);
   --grad-gold:linear-gradient(135deg,#E8C875,#B88C37);
-  --grad-teal:linear-gradient(135deg,#1A9470,#0E674F);
+  --grad-teal:linear-gradient(135deg,#13795C,#0B5A45);
   /* ── elevation (Tailwind/Shadcn-inspired clean multi-layer shadows) ── */
   --sh-sm:0 1px 2px rgba(11,19,32,0.03);
   --sh-md:0 4px 6px -1px rgba(11,19,32,0.08), 0 2px 4px -2px rgba(11,19,32,0.03);
@@ -638,3 +638,22 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 
 /* Decorative glow orbs are off site-wide: the client asked for simple */
 .ph-orb,.s-orb,.c-orb,.o-orb,.ab-orb,.info-orb{display:none}
+
+/* ===== One empty-state pattern (cart, checkout, wishlist) ===== */
+.es{text-align:center;padding:64px 20px;grid-column:1/-1}
+.es-ic{width:72px;height:72px;margin:0 auto 18px;border-radius:50%;background:var(--cream2);color:var(--teal-d);display:grid;place-items:center}
+.es-ic svg{width:32px;height:32px}
+.es h1,.es h2{font-family:var(--serif);font-size:26px;font-weight:800;margin-bottom:8px;color:var(--ink)}
+.es p{font-size:14.5px;color:var(--mid);margin-bottom:24px}
+
+/* ===== Target size: 24px floor everywhere, 44px on touch ===== */
+.sa,.keepshop,.nav-back,.bk-breadcrumb a{display:inline-flex;align-items:center;min-height:24px}
+@media (pointer:coarse){
+  .wish-btn{width:44px;height:44px}
+  .bk-breadcrumb{padding-top:8px}
+  .bk-breadcrumb a,.bk-pubchip{min-height:44px}
+  .brand{min-width:44px}
+  .nav-mobile-close{width:44px;height:44px}
+  .sf-contact-item a{display:inline-flex;align-items:center;min-height:44px}
+  #addCartBtn,.bk-addcart{min-height:48px}
+}

@@ -38,9 +38,9 @@
   .citem-sum{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--teal-d);white-space:nowrap}
   .cqty{display:flex;align-items:center;gap:0;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:var(--sh-sm);background:#fff;transition:border-color 0.25s}
   .cqty:focus-within{border-color:var(--teal)}
-  .cqbtn{width:34px;height:34px;background:none;border:none;cursor:pointer;font-size:18px;color:var(--ink);display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.2s}
+  .cqbtn{width:40px;height:40px;background:none;border:none;cursor:pointer;font-size:18px;color:var(--ink);display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.2s}
   .cqbtn:hover{background:#F0FAF6;color:var(--teal);transform:scale(1.05)}
-  .cqval{min-width:34px;text-align:center;font-weight:700;font-size:14.5px;user-select:none;color:var(--ink)}
+  .cqval{min-width:36px;text-align:center;font-weight:700;font-size:14.5px;user-select:none;color:var(--ink)}
   .cremove{background:none;border:none;cursor:pointer;color:var(--light);font-size:12px;font-weight:600;font-family:inherit;display:flex;align-items:center;gap:5px;padding:4px 2px;transition:all 0.2s}
   .cremove:hover{color:#C0392B;transform:scale(1.05)}
 
@@ -144,7 +144,8 @@ function render(){
   var items=cartItemsDetailed();
   var page=document.getElementById('page');
   if(items.length===0){
-    page.innerHTML='<div class="c-wrap"><div class="empty-cart"><img src="images/empty-cart.png" alt="" style="width:180px;height:auto;margin:0 auto 24px;display:block;opacity:0.9"><h1>Savatchangiz bo\'sh</h1><p>Nashriyotlardan kitob tanlab, savatga qo\'shing</p><a class="btn btn-teal" href="publishers.html"><i data-lucide="book-open" style="width:16px;height:16px;display:inline-block;vertical-align:-2px;margin-right:6px"></i> Nashriyotlarni ko\'rish</a></div></div>';
+    page.innerHTML='<div class="c-wrap"><div class="es"><span class="es-ic"><i data-lucide="shopping-cart"></i></span><h1>Savatchangiz bo\'sh</h1><p>Nashriyotlardan kitob tanlab, savatga qo\'shing</p><a class="btn btn-teal" href="publishers.html"><i data-lucide="book-open" style="width:16px;height:16px;display:inline-block;vertical-align:-2px;margin-right:6px"></i> Nashriyotlarni ko\'rish</a></div></div>';
+    if(window.refreshIcons) refreshIcons();
     return;
   }
   var groups={};
@@ -181,7 +182,7 @@ function render(){
     '<div class="sum-row"><span>Yetkazib berish</span><span class="v" style="color:var(--teal-d)">keyingi qadamda</span></div>'+
     '<div class="sum-divider"></div>'+
     '<div class="sum-total"><span class="l">Jami</span><span class="v">'+money(total)+'</span></div>'+
-    '<a class="btn btn-teal checkout" href="order.html">Buyurtmani rasmiylashtirish →</a>'+
+    '<a class="btn btn-teal checkout" href="order.html">Buyurtmaga o\'tish →</a>'+
     '<div class="sum-note"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> To\'lov Payme, Click yoki Uzum orqali</div>'+
     '<div class="sum-trust"><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg> Kuryer: buyurtmada tanlanadi</span><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg> 3 kunda qaytarish</span><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Payme · Click · Uzum</span></div>'+
     '</div><a class="keepshop" href="publishers.html">← Xaridni davom ettirish</a></div>';
