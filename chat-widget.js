@@ -520,7 +520,7 @@
           <div class="km-chat-status-dot"></div>
         </div>
         <div>
-          <h4 class="km-chat-title">Kitob Maslahatchisi</h4>
+          <h2 class="km-chat-title">Kitob Maslahatchisi</h2>
           <p class="km-chat-subtitle">Sun'iy intellekt yordamchisi</p>
         </div>
       </div>

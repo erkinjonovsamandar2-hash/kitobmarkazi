@@ -1,6 +1,7 @@
 {
   "version": 2,
   "rewrites": [
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
     { "source": "/api/:match*", "destination": "/api" },
     { "source": "/admin", "destination": "/admin/index.html" },
     { "source": "/qidirish", "destination": "/search.html" },

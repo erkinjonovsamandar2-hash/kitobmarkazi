@@ -56,6 +56,9 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
+/* ── SEO ── */
+app.get(['/sitemap.xml', '/api/sitemap'], require('./routes/seo'));
+
 /* ── API Routes ── */
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/publishers', require('./routes/publishers'));

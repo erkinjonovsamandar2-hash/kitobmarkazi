@@ -61,7 +61,7 @@
   .bk-qty-row{display:flex;align-items:center;justify-content:flex-end;gap:18px;margin:0}
   .bk-qty{display:flex;align-items:center;gap:14px}
   .qbtn{width:38px;height:38px;border-radius:11px;border:1.5px solid var(--border);background:var(--white);cursor:pointer;font-size:20px;color:var(--ink);display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.2s}
-  .qbtn:hover{border-color:var(--teal);color:var(--teal);background:#F0FAF6;transform:scale(1.05)}
+  .qbtn:hover{border-color:var(--teal);color:var(--teal-d);background:#F0FAF6;transform:scale(1.05)}
   .qval{font-family:var(--serif);font-size:20px;font-weight:800;min-width:24px;text-align:center}
   .bk-actions{grid-column:1/-1;display:flex;gap:12px;align-items:stretch;height:50px}
   .bk-wish{flex:none;height:50px;padding:0 20px;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;transition:all 0.25s var(--ease-premium)}
@@ -84,7 +84,7 @@
   .rev-date{font-size:12px;color:var(--light)}
   .rev-body{font-size:14.5px;color:var(--mid);line-height:1.65}
   .rev-form-card{background:var(--white);border-radius:20px;border:1px solid var(--border);padding:24px;position:sticky;top:100px;box-shadow:var(--sh-md)}
-  .rev-form-card h3{font-family:var(--serif);font-size:19px;font-weight:800;margin-bottom:8px;color:var(--ink)}
+  .rev-form-card h2{font-family:var(--serif);font-size:19px;font-weight:800;margin-bottom:8px;color:var(--ink)}
   .rev-stars-pick{display:flex;gap:4px;font-size:26px;color:#ddd;cursor:pointer}
   .rev-stars-pick span.on{color:var(--gold)}
   /* Sticky add-to-cart floating bar */
@@ -177,7 +177,7 @@
         <!-- Reviews will be loaded here -->
       </div>
       <div class="rev-form-card">
-        <h3>Fikr qoldiring</h3>
+        <h2>Fikr qoldiring</h2>
         <p style="font-size:13px;color:var(--light);margin-bottom:20px">Sizning fikringiz boshqa o'quvchilarga kitob tanlashda yordam beradi. Fikr qoldirish faqat xaridorlar uchun ochiq.</p>
         <div class="field"><label>Buyurtma raqami *</label><input type="text" id="revOrderNumber" placeholder="KM-XXXXXXXX"></div>
         <div class="field"><label>Ismingiz *</label><input type="text" id="revName" placeholder="Alisher"></div>
@@ -217,7 +217,7 @@
       </div>
     </div>
     <div class="sf-col">
-      <h4>Yordam</h4>
+      <h2>Yordam</h2>
       <a href="track.html">Buyurtmani kuzatish</a>
       <a href="faq.html">Savol-javob</a>
       <a href="contact.html">Biz bilan aloqa</a>
@@ -225,7 +225,7 @@
       <a href="offer.html">Ommaviy oferta</a>
     </div>
     <div class="sf-col">
-      <h4>Aloqa</h4>
+      <h2>Aloqa</h2>
       <div class="sf-contact-item"><i data-lucide="phone" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
       <div class="sf-contact-item"><i data-lucide="mail" style="width:16px;height:16px;color:var(--teal-l)"></i><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
       <div class="sf-contact-item"><i data-lucide="map-pin" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
@@ -554,7 +554,7 @@ window.setTimeout(updateStickyCart, 600);
 <div class="bk-lightbox" id="bkLightbox" onclick="if(event.target===this)closeLightbox()">
   <button class="bk-lb-close" onclick="closeLightbox()">&times;</button>
   <button class="bk-lb-nav bk-lb-prev" onclick="lbNav(-1)">‹</button>
-  <img id="bkLbImg" src="" alt="">
+  <img id="bkLbImg" alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
   <button class="bk-lb-nav bk-lb-next" onclick="lbNav(1)">›</button>
 </div>
 

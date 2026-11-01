@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Tanlangan kitoblaringiz va buyurtma xulosasi.">
+<meta name="robots" content="noindex">
 <title>Savatcha — Kitobmarkazi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,7 +66,7 @@
   .empty-cart{text-align:center;padding:64px 20px;grid-column:1/-1}
   .empty-cart .ec-ic{font-size:60px;margin-bottom:16px;animation:cartBounce 2s infinite alternate}
   @keyframes cartBounce{0%{transform:translateY(0)}100%{transform:translateY(-8px)}}
-  .empty-cart h2{font-family:var(--serif);font-size:26px;font-weight:800;margin-bottom:8px;color:var(--ink)}
+  .empty-cart h1{font-family:var(--serif);font-size:26px;font-weight:800;margin-bottom:8px;color:var(--ink)}
   .empty-cart p{font-size:14.5px;color:var(--mid);margin-bottom:24px}
 
   @media(max-width:900px){.c-wrap{grid-template-columns:1fr}.c-side{position:static}}
@@ -110,7 +112,7 @@
       </div>
     </div>
     <div class="sf-col">
-      <h4>Yordam</h4>
+      <h2>Yordam</h2>
       <a href="track.html">Buyurtmani kuzatish</a>
       <a href="faq.html">Savol-javob</a>
       <a href="contact.html">Biz bilan aloqa</a>
@@ -118,7 +120,7 @@
       <a href="offer.html">Ommaviy oferta</a>
     </div>
     <div class="sf-col">
-      <h4>Aloqa</h4>
+      <h2>Aloqa</h2>
       <div class="sf-contact-item"><i data-lucide="phone" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
       <div class="sf-contact-item"><i data-lucide="mail" style="width:16px;height:16px;color:var(--teal-l)"></i><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
       <div class="sf-contact-item"><i data-lucide="map-pin" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
@@ -140,7 +142,7 @@ function render(){
   var items=cartItemsDetailed();
   var page=document.getElementById('page');
   if(items.length===0){
-    page.innerHTML='<div class="c-wrap"><div class="empty-cart"><img src="images/empty-cart.png" alt="" style="width:180px;height:auto;margin:0 auto 24px;display:block;opacity:0.9"><h2>Savatchangiz bo\'sh</h2><p>Nashriyotlardan kitob tanlab, savatga qo\'shing</p><a class="btn btn-teal" href="publishers.html"><i data-lucide="book-open" style="width:16px;height:16px;display:inline-block;vertical-align:-2px;margin-right:6px"></i> Nashriyotlarni ko\'rish</a></div></div>';
+    page.innerHTML='<div class="c-wrap"><div class="empty-cart"><img src="images/empty-cart.png" alt="" style="width:180px;height:auto;margin:0 auto 24px;display:block;opacity:0.9"><h1>Savatchangiz bo\'sh</h1><p>Nashriyotlardan kitob tanlab, savatga qo\'shing</p><a class="btn btn-teal" href="publishers.html"><i data-lucide="book-open" style="width:16px;height:16px;display:inline-block;vertical-align:-2px;margin-right:6px"></i> Nashriyotlarni ko\'rish</a></div></div>';
     return;
   }
   var groups={};
@@ -182,7 +184,7 @@ function render(){
     '<div class="sum-trust"><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg> Tez yetkazish</span><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg> Qaytarish</span><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Original</span></div>'+
     '</div><a class="keepshop" href="publishers.html">← Xaridni davom ettirish</a></div>';
 
-  page.innerHTML='<div class="c-hero"><div class="c-orb"></div><div class="c-hin"><div class="c-htitle">Savatcha</div><div class="c-hsub">'+cartCount()+' ta kitob · '+Object.keys(groups).length+' ta nashriyotdan</div></div></div>'+
+  page.innerHTML='<div class="c-hero"><div class="c-orb"></div><div class="c-hin"><h1 class="c-htitle">Savatcha</h1><div class="c-hsub">'+cartCount()+' ta kitob · '+Object.keys(groups).length+' ta nashriyotdan</div></div></div>'+
     '<div class="c-wrap"><div class="c-main">'+left+'</div>'+side+'</div>';
   if(window.refreshIcons) window.refreshIcons();
 }
