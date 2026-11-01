@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /savat
+Disallow: /buyurtma
+Disallow: /sevimlilar
+Disallow: /kuzatish
+
+Sitemap: https://kitobmarkazi.vercel.app/sitemap.xml

@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Buyurtma raqami bo'yicha holatni kuzating.">
+<meta name="robots" content="noindex">
     <title>Buyurtmani kuzatish – Kitobmarkazi</title>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -24,7 +26,7 @@
         .timeline-item:last-child::before { display: none; }
         .dot { width: 30px; height: 30px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 14px; z-index: 1; flex-shrink: 0; transition: all 0.25s; }
         .dot.on { background: var(--teal); color: #fff; box-shadow: var(--glow-teal); }
-        .status-info h4 { margin: 0; font-size: 16.5px; color: var(--ink); font-weight: 700; }
+        .status-info h2 { margin: 0; font-size: 16.5px; color: var(--ink); font-weight: 700; }
         .status-info p { margin: 4px 0 0; font-size: 13px; color: var(--mid); }</style>
 <script src="/demo-theme.js"></script>
 </head>
@@ -51,33 +53,33 @@
             <input type="text" id="orderNum" placeholder="Masalan: KM-123456" onkeydown="if(event.key==='Enter')trackOrder()">
             <button class="btn-track" onclick="trackOrder()">Tekshirish</button>
         </div>
-        <div id="trackErr" style="color: #E2556F; font-size: 14px; display: none; margin-bottom: 20px;">Buyurtma topilmadi.</div>
+        <div id="trackErr" style="color: #C73A57; font-size: 14px; display: none; margin-bottom: 20px;">Buyurtma topilmadi.</div>
 
         <div id="statusTimeline" class="status-timeline">
             <div class="timeline-item" id="step_new">
                 <div class="dot">1</div>
-                <div class="status-info"><h4>Qabul qilindi</h4><p>Buyurtmangiz tizimga kelib tushdi.</p></div>
+                <div class="status-info"><h2>Qabul qilindi</h2><p>Buyurtmangiz tizimga kelib tushdi.</p></div>
             </div>
             <div class="timeline-item" id="step_confirmed">
                 <div class="dot">2</div>
-                <div class="status-info"><h4>Tasdiqlandi</h4><p>Operator tomonidan tasdiqlandi.</p></div>
+                <div class="status-info"><h2>Tasdiqlandi</h2><p>Operator tomonidan tasdiqlandi.</p></div>
             </div>
             <div class="timeline-item" id="step_processing">
                 <div class="dot">3</div>
-                <div class="status-info"><h4>Tayyorlanmoqda</h4><p>Kitoblar qadoqlanmoqda.</p></div>
+                <div class="status-info"><h2>Tayyorlanmoqda</h2><p>Kitoblar qadoqlanmoqda.</p></div>
             </div>
             <div class="timeline-item" id="step_shipped">
                 <div class="dot">4</div>
-                <div class="status-info"><h4>Yo'lda</h4><p>Kuryerga topshirildi.</p></div>
+                <div class="status-info"><h2>Yo'lda</h2><p>Kuryerga topshirildi.</p></div>
             </div>
             <div class="timeline-item" id="step_delivered">
                 <div class="dot">5</div>
-                <div class="status-info"><h4>Yetkazildi</h4><p>Buyurtma muvaffaqiyatli topshirildi.</p></div>
+                <div class="status-info"><h2>Yetkazildi</h2><p>Buyurtma muvaffaqiyatli topshirildi.</p></div>
             </div>
         </div>
 
         <div id="trackDetails" style="display:none; text-align:left; margin-top:30px; padding:22px; border:1px solid var(--border); border-radius:20px; background:var(--white);">
-          <h4 style="margin:0 0 12px; font-size:16px; color:var(--ink);">Buyurtma tafsilotlari</h4>
+          <h2 style="margin:0 0 12px; font-size:16px; color:var(--ink);">Buyurtma tafsilotlari</h2>
           <div style="font-size:13.5px; line-height:1.6; color:var(--mid);">
             <div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid var(--cream2); padding-bottom:6px;"><span>Xaridor:</span><span id="detName" style="font-weight:600; color:var(--ink);"></span></div>
             <div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid var(--cream2); padding-bottom:6px;"><span>Telefon:</span><span id="detPhone" style="font-weight:600; color:var(--ink);"></span></div>
@@ -101,7 +103,7 @@
       </div>
     </div>
     <div class="sf-col">
-      <h4>Yordam</h4>
+      <h2>Yordam</h2>
       <a href="track.html">Buyurtmani kuzatish</a>
       <a href="faq.html">Savol-javob</a>
       <a href="contact.html">Biz bilan aloqa</a>
@@ -109,7 +111,7 @@
       <a href="offer.html">Ommaviy oferta</a>
     </div>
     <div class="sf-col">
-      <h4>Aloqa</h4>
+      <h2>Aloqa</h2>
       <div class="sf-contact-item"><i data-lucide="phone" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Ishonch telefoni<br><a href="tel:+998712000000">+998 71 200 00 00</a></div></div>
       <div class="sf-contact-item"><i data-lucide="mail" style="width:16px;height:16px;color:var(--teal-l)"></i><div><a href="mailto:info@kitobmarkazi.uz">info@kitobmarkazi.uz</a></div></div>
       <div class="sf-contact-item"><i data-lucide="map-pin" style="width:16px;height:16px;color:var(--teal-l)"></i><div>Toshkent sh., Amir Temur ko'chasi, 1-uy</div></div>
@@ -186,7 +188,7 @@
         });
 
         if (status === 'cancelled') {
-            document.getElementById('statusTimeline').innerHTML = '<div style="color:#E2556F;text-align:center;padding:20px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px"><i data-lucide="x-circle" style="width:20px;height:20px"></i> Buyurtma bekor qilingan.</div>'; if(window.refreshIcons) window.refreshIcons();
+            document.getElementById('statusTimeline').innerHTML = '<div style="color:#C73A57;text-align:center;padding:20px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px"><i data-lucide="x-circle" style="width:20px;height:20px"></i> Buyurtma bekor qilingan.</div>'; if(window.refreshIcons) window.refreshIcons();
         }
     }
 
