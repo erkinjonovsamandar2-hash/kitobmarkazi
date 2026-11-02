@@ -50,6 +50,9 @@
   .hero-book-link:hover,.hero-book-link:focus-visible{transform:translateY(-5px) scale(1.01)}
   .hero-book-link:active{transform:translateY(-1px) scale(.98)}
   .hero-book-link .physical-book{width:220px;filter:drop-shadow(0 34px 34px rgba(0,0,0,.34))}
+  /* a pale plate behind the cover: dark covers no longer vanish into the dark hero */
+  .hero-book-link::before{content:'';position:absolute;inset:-28px -34px -34px;border-radius:22px;background:linear-gradient(160deg,#F7F3EC,#E6DECF);box-shadow:0 30px 50px -26px rgba(0,0,0,.55);z-index:-1}
+  @media(max-width:900px){.hero-book-link::before{display:none}}
   .hero-book-link:hover .physical-book-inner,.hero-book-link:focus-visible .physical-book-inner,.hero-book-link:active .physical-book-inner{transform:none}
   @media(prefers-reduced-motion:reduce){.hero-book-link{transition:none}.hero-book-link:hover,.hero-book-link:focus-visible,.hero-book-link:active{transform:none}.hero-book-link:hover .physical-book-inner,.hero-book-link:focus-visible .physical-book-inner,.hero-book-link:active .physical-book-inner{transform:none}}
   /* Publisher card — original vertical card: centered logo, divider, centered name+count */

@@ -356,7 +356,8 @@ function renderBookPage() {
   document.getElementById('bkMeta').innerHTML = meta.map(function(item) {
     return '<div class="bk-mchip"><div class="bk-mval">' + item[0] + '</div><div class="bk-mlbl">' + item[1] + '</div></div>';
   }).join('');
-  document.getElementById('bkDesc').textContent = book.description || (book.title + ' — ' + book.author + ' asari, ' + pub.name + ' nashri.');
+  var specParts = [book.pages ? book.pages + ' bet' : '', book.year ? book.year + '-yil nashri' : '', (book.genre && typeof GENRES !== 'undefined' && GENRES[book.genre]) ? 'Janr: ' + GENRES[book.genre].name : ''].filter(Boolean);
+  document.getElementById('bkDesc').textContent = book.description || (book.title + ' — ' + book.author + ' asari. Nashriyot: ' + pub.name + (specParts.length ? '. ' + specParts.join(' · ') + '.' : '.'));
   document.getElementById('bkPrice').textContent = money(book.price);
   document.getElementById('addCartBtn').innerHTML = cartIcon(18) + ' Savatga qo\'shish';
   refreshWish();
