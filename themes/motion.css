@@ -1,0 +1,35 @@
+/* Quiet motion kit (idea 5): shared cover, bottom sheet, shimmer */
+@view-transition{navigation:auto}
+::view-transition-group(bkcover){animation-duration:.42s;animation-timing-function:cubic-bezier(.16,1,.3,1)}
+::view-transition-old(bkcover),::view-transition-new(bkcover){height:100%;object-fit:cover}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.22s}
+
+/* bottom sheet: slides up from the bottom on phones */
+.kmm-backdrop{position:fixed;inset:0;background:rgba(11,29,40,.38);opacity:0;pointer-events:none;transition:opacity .25s;z-index:9998}
+.kmm-backdrop.open{opacity:1;pointer-events:auto}
+.kmm-sheet{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#fff;color:#16221F;border-radius:20px 20px 0 0;padding:10px 18px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -14px 34px rgba(11,29,40,.22);transform:translateY(105%);transition:transform .42s cubic-bezier(.16,1,.3,1);max-height:78vh;overflow:auto;font-family:inherit}
+.kmm-sheet.open{transform:none}
+.kmm-grip{display:block;width:38px;height:4px;border-radius:4px;background:#C9D0CC;margin:2px auto 12px}
+.kmm-h{display:flex;align-items:baseline;justify-content:space-between;font-weight:800;font-size:16px;margin-bottom:10px}
+.kmm-h span{font-weight:600;font-size:13px;color:#586761}
+.kmm-sheet ul{list-style:none;margin:0;padding:0;border-top:1px solid #E5DED2}
+.kmm-sheet li{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:11px 0;border-bottom:1px solid #E5DED2;font-size:14px}
+.kmm-sheet li b{font-weight:700}.kmm-sheet li span{grid-column:1;font-size:12.5px;color:#586761}.kmm-sheet li em{grid-row:1/3;grid-column:2;align-self:center;font-style:normal;font-weight:800;font-variant-numeric:tabular-nums}
+.kmm-t{display:flex;justify-content:space-between;align-items:baseline;padding:12px 0;font-size:13px;color:#586761}.kmm-t b{font-size:18px;color:#16221F;font-variant-numeric:tabular-nums}
+.kmm-b{display:grid;grid-template-columns:1fr 1.4fr;gap:10px}
+.kmm-b button,.kmm-b a{min-height:48px;border-radius:12px;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;font-family:inherit;text-decoration:none;cursor:pointer}
+.kmm-ghost{background:#fff;border:1.5px solid #D5DBD8;color:#16221F}
+.kmm-go{background:var(--teal,#13795C);color:#fff;border:0}
+@media (min-width:701px){.kmm-sheet,.kmm-backdrop{display:none}}
+
+/* shimmer while grids load */
+.books-grid:empty::before,.publishers-grid:empty::before{content:'';grid-column:1/-1;height:320px;border-radius:18px;background:linear-gradient(100deg,#EFE9DE 30%,#F8F4EC 50%,#EFE9DE 70%);background-size:220% 100%;animation:kmmShimmer 1.3s linear infinite}
+@keyframes kmmShimmer{from{background-position:120% 0}to{background-position:-120% 0}}
+@media (prefers-reduced-motion:reduce){
+  @view-transition{navigation:none}
+  .kmm-sheet,.kmm-backdrop{transition-duration:.001ms}
+  .books-grid:empty::before,.publishers-grid:empty::before{animation:none}
+}
+
+/* the floating chat button must not cover the open sheet */
+body:has(.kmm-sheet.open) #kmChatBtn{display:none!important}

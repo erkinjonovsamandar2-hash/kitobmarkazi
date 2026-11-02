@@ -8,10 +8,10 @@
   'use strict';
   var KEY = 'kmd_theme', EMB = 'kmd_embed', ORD = 'kmd_orders';
   var THEMES = {
-    a: { name: 'A · Toza', fonts: 'family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900' },
+    a: { name: 'A · Toza', fonts: 'family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900', css: ['motion'], scripts: ['motion'] },
     b: { name: 'B · Imprint', fonts: 'family=Source+Serif+4:opsz,wght@8..60,600;8..60,700;8..60,800&family=Golos+Text:wght@400;500;600;700;800' },
-    c: { name: 'C · Lapis', fonts: 'family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Golos+Text:wght@400;500;600;700;800' },
-    d: { name: 'D · Silliq', fonts: '', script: true }
+    c: { name: 'C · Lapis', fonts: 'family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Golos+Text:wght@400;500;600;700;800', scripts: ['c'] },
+    d: { name: 'D · Silliq', fonts: '', css: ['motion'], scripts: ['d', 'motion'] }
   };
 
   function store(get, k, v) {
@@ -36,7 +36,8 @@
     if (THEMES[theme].fonts) addLink('https://fonts.googleapis.com/css2?' + THEMES[theme].fonts + '&display=swap');
     addLink('/themes/pages.css');
     addLink('/themes/' + theme + '.css');
-    if (THEMES[theme].script) { var sc = document.createElement('script'); sc.src = '/themes/' + theme + '.js'; sc.defer = true; document.head.appendChild(sc); }
+    (THEMES[theme].css || []).forEach(function (n) { addLink('/themes/' + n + '.css'); });
+    (THEMES[theme].scripts || []).forEach(function (n) { var sc = document.createElement('script'); sc.src = '/themes/' + n + '.js'; sc.defer = true; document.head.appendChild(sc); });
   }
 
   /* ---------- safe demo: answer writes locally ---------- */

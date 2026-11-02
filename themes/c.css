@@ -40,3 +40,17 @@ html[data-km-theme="c"]{
   --t-shadow:none;--t-shadow-hover:0 16px 28px -16px rgba(22,50,168,.45);
   --t-head-w:800;--t-head-ls:-.03em;--t-step:#1632A8;--t-step-ink:#fff;--t-sel:#FF5A36;--t-sel-ink:#0C1230;--t-focus:#FF5A36;
 }
+
+/* Idea 1: cover wall in the home hero (built by themes/c.js from real cover files) */
+html[data-km-theme="c"] .showcase.has-wall{display:block;height:480px;perspective:none;overflow:hidden;mask-image:linear-gradient(#0000,#000 14%,#000 86%,#0000)}
+html[data-km-theme="c"] .cwall{position:relative;height:100%}
+html[data-km-theme="c"] .cw-cols{position:absolute;left:-6%;right:-6%;top:-30px;display:flex;gap:16px;justify-content:center;transform:rotate(6deg) scale(1.08)}
+html[data-km-theme="c"] .cw-col{display:flex;flex-direction:column;gap:16px;width:150px;animation:cwUp 46s linear infinite}
+html[data-km-theme="c"] .cw-1{animation-direction:reverse;margin-top:-70px}
+html[data-km-theme="c"] .cw-2{margin-top:-24px;animation-duration:54s}
+html[data-km-theme="c"] .cw-col a{display:block;border-radius:10px;overflow:hidden;box-shadow:0 16px 26px -14px rgba(0,0,0,.6);transition:transform .35s cubic-bezier(.16,1,.3,1)}
+html[data-km-theme="c"] .cw-col a:hover{transform:translateY(-4px) scale(1.03)}
+html[data-km-theme="c"] .cw-col img{width:150px;aspect-ratio:2/3;object-fit:cover;display:block}
+@keyframes cwUp{to{transform:translateY(-50%)}}
+@media (prefers-reduced-motion:reduce){html[data-km-theme="c"] .cw-col{animation:none}}
+@media (max-width:900px){html[data-km-theme="c"] .showcase.has-wall{display:none}}

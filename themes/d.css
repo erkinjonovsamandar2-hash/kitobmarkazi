@@ -85,6 +85,9 @@ html[data-km-theme="d"]{
 }
 @keyframes kmShimmer{from{background-position:120% 0}to{background-position:-120% 0}}
 @media (max-width:600px){
+  html[data-km-theme="d"] .books-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  html[data-km-theme="d"] .book{min-width:0}
+  html[data-km-theme="d"] :is(.book-price,.bs-price){font-size:15px}
   html[data-km-theme="d"] .km-chat-btn.has-label{width:54px !important;padding:0 !important;border-radius:50% !important}
   html[data-km-theme="d"] .km-chat-lbl{display:none}
   html[data-km-theme="d"] .sec{padding-top:56px}
