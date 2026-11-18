@@ -29,14 +29,14 @@ html[data-km-theme="f"]{
   & :is(.btn,.search,.sinput,.sbar,.pay,.cour,.paytime,.card,.summary,.fcard,.cgroup,.track-card,.faq-item,.info-card,.contact-box,.rev-item,.rev-form-card,.pm-card,.bk-buy,.bk-mchip,.m-sum,.kmm-sheet,.modal){border-radius:2px}
   /* flat catalogue: cards become ruled entries */
   & :is(.book,.bs-card){background:transparent;border:0;border-top:2px solid #0E0E10;border-radius:0;box-shadow:none;padding-top:14px}
-  & :is(.book,.bs-card):hover{border-top-color:#D9361F;box-shadow:none;transform:none}
+  & :is(.book,.bs-card):hover{border-top-color:#D9361F;box-shadow:none;transform:translateY(-2px)}
   & .physical-book-front{box-shadow:0 14px 22px -14px rgba(14,14,16,.55)}
   & .book-body{text-align:left}
   & .book-title{font-family:var(--serif);font-size:17px;font-weight:700}
   & .book-buy{border:0;border-top:1px solid #E3E1DC;border-radius:0;padding:10px 0 0;min-height:0}
   & :is(.book-cta-btn){border-radius:2px;width:38px;height:38px}
   & :is(.pcard){background:#fff;border:0;border-top:1px solid #0E0E10;border-bottom:1px solid #E3E1DC;border-radius:0;box-shadow:none}
-  & :is(.pcard):hover{border-top-color:#D9361F;transform:none;box-shadow:none}
+  & :is(.pcard):hover{border-top-color:#D9361F;transform:translateY(-2px);box-shadow:none}
   & .pcard-logo{background:#F7F6F3;border-radius:0}
   & :is(.book-price,.bs-price,.bk-price){color:#0E0E10;font-family:var(--serif)}
   & .rate,& .bk-stars{color:#A8260F}
