@@ -5,7 +5,7 @@ html[data-km-theme="c"]{
   --gold:#FF5A36;--gold-l:#FF8A6E;--gold-d:#C23A1A;
   --cream:#F2F5FF;--cream2:#E7ECFF;--white:#FFFFFF;--surface:#FFFFFF;--surface-tinted:#EEF2FF;--surface-cool:#E7ECFF;
   --ink:#0C1230;--mid:#454E73;--light:#5A6385;--border:#D5DBF3;
-  --serif:'Bricolage Grotesque',system-ui,sans-serif;--sans:'Golos Text',system-ui,sans-serif;
+  --serif:'Clash Display','Bricolage Grotesque',system-ui,sans-serif;--sans:'Satoshi','Golos Text',system-ui,sans-serif;
   --grad-navy:#1632A8;--grad-gold:#FF5A36;--grad-teal:#1632A8;
   --sh-teal:0 10px 20px -8px rgba(22,50,168,.45);--sh-gold:0 10px 20px -8px rgba(255,90,54,.5);
   --glow-teal:0 0 0 3px rgba(22,50,168,.28);--glow-gold:0 0 0 3px rgba(255,90,54,.3);
@@ -55,3 +55,5 @@ html[data-km-theme="c"] .cw-col img{width:150px;aspect-ratio:2/3;object-fit:cove
 @media (prefers-reduced-motion:reduce){html[data-km-theme="c"] .cw-col{animation:none}}
 @media (max-width:900px){html[data-km-theme="c"] .showcase.has-wall{display:none}}
 html[data-km-theme="c"] #km-back-to-top{background:#FF5A36!important;color:#0C1230!important}
+html[data-km-theme="c"] .hero .tag{color:#FFC4B3}
+html[data-km-theme="c"] .pbadge{color:#FFD2C5}

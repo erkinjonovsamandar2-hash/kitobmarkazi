@@ -10,10 +10,10 @@
   var THEMES = {
     a: { name: 'A · Toza', fonts: 'family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900', css: ['motion'], scripts: ['motion'], hide: true },
     b: { name: 'B · Imprint', fonts: 'family=Source+Serif+4:opsz,wght@8..60,600;8..60,700;8..60,800&family=Golos+Text:wght@400;500;600;700;800', hide: true },
-    c: { name: 'C · Lapis', fonts: 'family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Golos+Text:wght@400;500;600;700;800', css: ['motion'], scripts: ['c', 'motion'] },
+    c: { name: 'C · Lapis', fonts: '', fontUrl: ['https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&display=swap', 'https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap'], css: ['motion'], scripts: ['c', 'motion'] },
     d: { name: 'D · Silliq', fonts: '', css: ['motion'], scripts: ['d', 'motion'], hide: true },
-    e: { name: 'E · Kechki xona', fonts: 'family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Golos+Text:wght@400;500;600;700;800', css: ['motion'], scripts: ['motion'] },
-    f: { name: 'F · Maqola', fonts: 'family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,800;1,6..96,500&family=Golos+Text:wght@400;500;600;700;800', css: ['motion'], scripts: ['motion'] }
+    e: { name: 'E · Toza oq', fonts: '', fontUrl: ['https://api.fontshare.com/v2/css?f[]=general-sans@500,600,700&display=swap', 'https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap'], css: ['motion'], scripts: ['motion'] },
+    f: { name: 'F · Maqola', fonts: '', fontUrl: ['https://api.fontshare.com/v2/css?f[]=zodiak@700,800,900&display=swap', 'https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap'], css: ['motion'], scripts: ['motion'] }
   };
 
   function store(get, k, v) {
@@ -35,6 +35,7 @@
   /* ---------- theme stylesheet + fonts ---------- */
   function addLink(href, rel) { var l = document.createElement('link'); l.rel = rel || 'stylesheet'; l.href = href; document.head.appendChild(l); return l; }
   if (THEMES[theme]) {
+    [].concat(THEMES[theme].fontUrl || []).forEach(function (u) { addLink(u); });
     if (THEMES[theme].fonts) addLink('https://fonts.googleapis.com/css2?' + THEMES[theme].fonts + '&display=swap');
     addLink('/themes/pages.css');
     addLink('/themes/' + theme + '.css');

@@ -5,7 +5,7 @@ html[data-km-theme="f"]{
   --gold:#D9361F;--gold-l:#FF7B63;--gold-d:#A8260F;
   --cream:#FFFFFF;--cream2:#F2F1EE;--white:#FFFFFF;--surface:#FFFFFF;--surface-tinted:#F7F6F3;--surface-cool:#F2F1EE;
   --ink:#0E0E10;--mid:#43434A;--light:#62626A;--border:#E3E1DC;
-  --serif:'Bodoni Moda',Georgia,serif;--sans:'Golos Text',system-ui,sans-serif;
+  --serif:'Zodiak','Bodoni Moda',Georgia,serif;--sans:'Satoshi','Golos Text',system-ui,sans-serif;
   --grad-navy:#0E0E10;--grad-gold:#D9361F;--grad-teal:#0E0E10;
   --sh-sm:none;--sh-md:none;--sh-lg:none;--sh-xl:none;--sh-teal:none;--sh-gold:none;
   --glow-teal:0 0 0 3px rgba(14,14,16,.22);--glow-gold:0 0 0 3px rgba(217,54,31,.3);
@@ -53,7 +53,7 @@ html[data-km-theme="f"]{
   & .hero{background:#0E0E10;padding-top:72px;padding-bottom:72px}
   & .hero .hgrid{grid-template-columns:1fr}
   & .hero h1{font-family:var(--serif);font-weight:800;font-size:clamp(44px,8.4vw,116px);line-height:.96;letter-spacing:-.045em;max-width:12ch}
-  & .hero h1 em{font-style:italic;font-weight:500;color:#FF7B63}
+  & .hero h1 em{font-style:normal;font-weight:800;color:#FF7B63}
   & .hero .showcase,& .hero .stats{display:none}
   & .hero .tag{border-radius:2px;background:transparent;border:1px solid #FF7B63;color:#FF7B63}
   & .hero .search{border-radius:2px;max-width:560px}
