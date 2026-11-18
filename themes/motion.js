@@ -35,7 +35,7 @@
     if (!items.length) return false;
     if (!sheet) {
       backdrop = document.createElement('div'); backdrop.className = 'kmm-backdrop'; backdrop.addEventListener('click', closeSheet);
-      sheet = document.createElement('div'); sheet.className = 'kmm-sheet'; sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-label', 'Savat');
+      sheet = document.createElement('div'); sheet.className = 'kmm-sheet'; sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-label', 'Savat'); sheet.setAttribute('aria-modal', 'true');
       document.body.appendChild(backdrop); document.body.appendChild(sheet);
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheet(); });
     }

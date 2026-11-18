@@ -28,3 +28,10 @@ html[data-km-theme]{
   & ::selection{background:var(--t-sel,var(--teal-l));color:var(--t-sel-ink,#0B1D28)}
   & :focus-visible{outline:3px solid var(--t-focus,var(--teal));outline-offset:2px}
 }
+
+/* touch targets: 44px minimum on phones (web-design-guidelines / WCAG 2.2) */
+@media (max-width:700px){
+  html[data-km-theme] :is(.bs-cart,.book-cta-btn){min-width:44px;min-height:44px}
+  html[data-km-theme] .genre-pill{min-height:44px}
+  html[data-km-theme] :is(button,a,input,select,textarea){touch-action:manipulation}
+}
