@@ -33,13 +33,13 @@ h1{font-size:26px;letter-spacing:-.01em}
 @media (max-width:980px){.tabs,.notes{grid-template-columns:repeat(2,1fr)}}@media (max-width:560px){.tabs,.notes{grid-template-columns:1fr}}
 </style></head><body><div class="wrap">
 <h1>Kitobmarkazi — design demo</h1>
-<p class="sub">These are the real site in four looks: D is today's site made smoother and more beautiful (same colours), A stays close to today, B is a clear step further, C is bold. Pick an option, a page and a device, or open the live demo to use everything: search, cart, checkout, wishlist and order tracking. Orders placed in the demo are simulated and never sent.</p>
+<p class="sub">This is the real site in four looks: the original, and three clearly different directions (C bold blue, E dark reading room, F black-white-red editorial). Pick an option, a page and a device, or open the live demo to use everything: search, cart, checkout, wishlist and order tracking. Orders placed in the demo are simulated and never sent.</p>
 
 <div class="tabs" role="tablist" aria-label="Options">
-  <button class="tab" role="tab" data-k="d" aria-selected="true"><b>D — Silliq</b><span>Same cream, navy, teal and gold, made smoother and more beautiful everywhere.</span></button>
-  <button class="tab" role="tab" data-k="a" aria-selected="false"><b>A — Toza</b><span>Close to today: cream, teal, gold. Clearer hierarchy and a stronger buy button.</span></button>
-  <button class="tab" role="tab" data-k="b" aria-selected="false"><b>B — Imprint</b><span>A step further: white and ink navy with marigold. Publisher-first, like a publisher’s catalogue.</span></button>
-  <button class="tab" role="tab" data-k="c" aria-selected="false"><b>C — Lapis</b><span>Bold: deep blue with coral and turquoise. Big type, colour-led, still clean.</span></button>
+  <button class="tab" role="tab" data-k="current" aria-selected="true"><b>Original</b><span>Today's site, unchanged. The reference to compare against.</span></button>
+  <button class="tab" role="tab" data-k="c" aria-selected="false"><b>C — Lapis</b><span>Bold: deep blue, coral, a wall of real covers in the hero, turquoise zigzag.</span></button>
+  <button class="tab" role="tab" data-k="e" aria-selected="false"><b>E — Kechki xona</b><span>Dark reading room: ink-black, warm amber, classic serif. Calm, evening feel.</span></button>
+  <button class="tab" role="tab" data-k="f" aria-selected="false"><b>F — Maqola</b><span>Editorial: black, white and one red; huge serif headline, flat ruled catalogue.</span></button>
 </div>
 
 <div class="bar">
@@ -50,21 +50,21 @@ h1{font-size:26px;letter-spacing:-.01em}
     <option value="cart.html">Cart</option><option value="order.html">Checkout</option><option value="wishlist.html">Wishlist</option>
     <option value="track.html">Order tracking</option><option value="about.html">About</option><option value="contact.html">Contact</option><option value="faq.html">FAQ</option>
   </select></label>
-  <a class="open" id="open" href="../index.html?theme=d" target="_blank" rel="noopener">Open live demo ↗</a>
+  <a class="open" id="open" href="../index.html?theme=current" target="_blank" rel="noopener">Open live demo ↗</a>
 </div>
 
-<div class="stage" id="stage"><div class="frame" id="frame"><iframe id="ifr" title="Preview" src="../index.html?theme=d&embed=1"></iframe></div></div>
+<div class="stage" id="stage"><div class="frame" id="frame"><iframe id="ifr" title="Preview" src="../index.html?theme=current&embed=1"></iframe></div></div>
 
 <div class="notes">
-  <div class="note"><h2>D — Silliq</h2><ul><li>Same palette and layout logic as today</li><li>Calmer motion, depth, skeleton loading, page crossfade</li><li>Sticky filters and summaries; cover glides to the book page; phone cart opens as a bottom sheet</li></ul></div>
-  <div class="note"><h2>A — Toza</h2><ul><li>Keeps Manrope + Playfair, navy header, teal CTA</li><li>Publisher rows with logo, name, book count</li><li>Also gets the phone bottom-sheet cart and cover glide; lowest risk with the client</li></ul></div>
-  <div class="note"><h2>B — Imprint</h2><ul><li>Source Serif + Golos, flat cards with a top rule</li><li>Publisher strip sits directly under the search</li><li>Marigold buy buttons stand out on white</li></ul></div>
-  <div class="note"><h2>C — Lapis</h2><ul><li>Bricolage Grotesque, drenched blue hero; the home hero is a wall of real covers</li><li>Coral add-to-cart, one turquoise zigzag motif</li><li>Most memorable; biggest change from today</li></ul></div>
+  <div class="note"><h2>Original</h2><ul><li>Cream, navy, teal and gold as today</li><li>Keeps everything your client already knows</li></ul></div>
+  <div class="note"><h2>C — Lapis</h2><ul><li>Bricolage Grotesque, drenched blue, coral buttons</li><li>Hero shows real covers drifting</li><li>Phone cart opens as a bottom sheet</li></ul></div>
+  <div class="note"><h2>E — Kechki xona</h2><ul><li>Source Serif on ink-black, amber actions</li><li>Easy on the eyes at night</li><li>Same bottom-sheet cart and cover glide</li></ul></div>
+  <div class="note"><h2>F — Maqola</h2><ul><li>Bodoni headline, black/white/red only</li><li>Square buttons, ruled catalogue, no decoration</li><li>Most minimal of the four</li></ul></div>
 </div>
 </div>
 <script>
 (function(){
-  var k='d',d='desktop',W={desktop:1280,mobile:390},H={desktop:900,mobile:844};
+  var k='current',d='desktop',W={desktop:1280,mobile:390},H={desktop:900,mobile:844};
   var ifr=document.getElementById('ifr'),frame=document.getElementById('frame'),stage=document.getElementById('stage'),open=document.getElementById('open');
   function fit(){
     var w=W[d],h=H[d],avail=stage.clientWidth-28,s=Math.min(1,avail/w);

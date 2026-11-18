@@ -54,3 +54,4 @@ html[data-km-theme="c"] .cw-col img{width:150px;aspect-ratio:2/3;object-fit:cove
 @keyframes cwUp{to{transform:translateY(-50%)}}
 @media (prefers-reduced-motion:reduce){html[data-km-theme="c"] .cw-col{animation:none}}
 @media (max-width:900px){html[data-km-theme="c"] .showcase.has-wall{display:none}}
+html[data-km-theme="c"] #km-back-to-top{background:#FF5A36!important;color:#0C1230!important}

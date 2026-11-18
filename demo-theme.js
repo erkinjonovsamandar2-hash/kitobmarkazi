@@ -8,10 +8,12 @@
   'use strict';
   var KEY = 'kmd_theme', EMB = 'kmd_embed', ORD = 'kmd_orders';
   var THEMES = {
-    a: { name: 'A · Toza', fonts: 'family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900', css: ['motion'], scripts: ['motion'] },
-    b: { name: 'B · Imprint', fonts: 'family=Source+Serif+4:opsz,wght@8..60,600;8..60,700;8..60,800&family=Golos+Text:wght@400;500;600;700;800' },
-    c: { name: 'C · Lapis', fonts: 'family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Golos+Text:wght@400;500;600;700;800', scripts: ['c'] },
-    d: { name: 'D · Silliq', fonts: '', css: ['motion'], scripts: ['d', 'motion'] }
+    a: { name: 'A · Toza', fonts: 'family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900', css: ['motion'], scripts: ['motion'], hide: true },
+    b: { name: 'B · Imprint', fonts: 'family=Source+Serif+4:opsz,wght@8..60,600;8..60,700;8..60,800&family=Golos+Text:wght@400;500;600;700;800', hide: true },
+    c: { name: 'C · Lapis', fonts: 'family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Golos+Text:wght@400;500;600;700;800', css: ['motion'], scripts: ['c', 'motion'] },
+    d: { name: 'D · Silliq', fonts: '', css: ['motion'], scripts: ['d', 'motion'], hide: true },
+    e: { name: 'E · Kechki xona', fonts: 'family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Golos+Text:wght@400;500;600;700;800', css: ['motion'], scripts: ['motion'] },
+    f: { name: 'F · Maqola', fonts: 'family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,800;1,6..96,500&family=Golos+Text:wght@400;500;600;700;800', css: ['motion'], scripts: ['motion'] }
   };
 
   function store(get, k, v) {
@@ -103,7 +105,7 @@
     var d = document.createElement('div');
     d.id = 'kmd-bar'; d.setAttribute('role', 'region'); d.setAttribute('aria-label', 'Dizayn demosi');
     var html = '<b>DEMO</b>';
-    [['current', 'Hozirgi sayt']].concat(Object.keys(THEMES).map(function (k) { return [k, THEMES[k].name]; })).forEach(function (t) {
+    [['current', 'Hozirgi sayt']].concat(Object.keys(THEMES).filter(function (k) { return !THEMES[k].hide; }).map(function (k) { return [k, THEMES[k].name]; })).forEach(function (t) {
       html += '<button type="button" data-t="' + t[0] + '" aria-pressed="' + (t[0] === theme) + '">' + t[1] + '</button>';
     });
     html += '<a href="/ui-options/index.html">Taqqoslash</a><span class="kmd-note">Sinov rejimi: buyurtma va fikrlar yuborilmaydi</span>';

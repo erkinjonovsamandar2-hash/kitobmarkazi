@@ -1,0 +1,67 @@
+/* Theme E — Kechki xona: ink-dark reading room, warm amber, classic serif */
+html[data-km-theme="e"]{
+  color-scheme:dark;
+  --navy:#0F0C0A;--navy2:#1B1612;--navy3:#0B0907;
+  --teal:#F2B552;--teal-d:#F2B552;--teal-l:#FFD58A;
+  --gold:#F2B552;--gold-l:#FFD58A;--gold-d:#C98A1B;
+  --cream:#14110F;--cream2:#241E1A;--white:#1D1814;--surface:#1D1814;--surface-tinted:#241E1A;--surface-cool:#241E1A;
+  --ink:#EDE6DA;--mid:#C2B8A9;--light:#9E9384;--border:#322A24;
+  --serif:'Source Serif 4',Georgia,serif;--sans:'Golos Text',system-ui,sans-serif;
+  --grad-navy:linear-gradient(180deg,#1B1612,#14110F);--grad-gold:#F2B552;--grad-teal:#F2B552;
+  --sh-sm:none;--sh-md:0 6px 16px -8px rgba(0,0,0,.6);--sh-lg:0 14px 26px -14px rgba(0,0,0,.7);--sh-xl:0 20px 34px -16px rgba(0,0,0,.75);
+  --sh-teal:none;--sh-gold:none;--glow-teal:0 0 0 3px rgba(242,181,82,.35);--glow-gold:0 0 0 3px rgba(242,181,82,.35);
+  --t-radius:14px;--t-radius-sm:10px;--t-pill:999px;--t-border:#322A24;--t-hover-border:#F2B552;--t-orb:none;
+  --t-shadow:none;--t-shadow-hover:0 16px 28px -16px rgba(0,0,0,.8);
+  --t-head-w:700;--t-head-ls:-.02em;--t-step:#F2B552;--t-step-ink:#14110F;--t-sel:#F2B552;--t-sel-ink:#14110F;--t-focus:#F2B552;
+
+  & body{background:#14110F;color:var(--ink)}
+  & :is(h1,h2,h3){font-family:var(--serif)}
+  /* header */
+  & .nav{background:#0F0C0A;border-bottom:1px solid var(--border);box-shadow:none}
+  & .bname span{color:#F2B552}
+  & .nav-link::after,& .nav-link.on::after{background:#F2B552}
+  & .cart-count{background:#F2B552;color:#14110F}
+  & .cart-link,& .wish-link,& .nav-burger{background:#1D1814;border-color:var(--border)}
+  /* amber actions with dark text */
+  & :is(.btn-teal,.nav-cta,.sbtn,.book-cta-btn,.book-cart-btn,.bs-cart,.bk-addcart,.submit,.checkout,.ai-start,.btn-track,.ab-cta,.undo-btn,.kmm-go,#mBar button){background:#F2B552;color:#14110F;box-shadow:none;background-image:none}
+  & :is(.btn-teal,.nav-cta,.sbtn,.book-cta-btn,.book-cart-btn,.bs-cart,.bk-addcart,.submit,.checkout,.ai-start,.btn-track,.ab-cta):hover{background:#FFC96B;color:#14110F}
+  & :is(.book-cart-btn,.bs-cart,.book-cta-btn) .cart-ic{stroke:#14110F}
+  & .btn-ghost{background:transparent;color:var(--ink);border-color:#4A3F37}
+  & .btn-ghost:hover{border-color:#F2B552;color:#F2B552}
+  /* surfaces that hardcode white */
+  & :is(.search,.sinput,.ac-list,.modal,.pay,.cour,.paytime,.qty,.cqty,.qbtn,.cqbtn,.nav-mobile,#mBar,.m-sum,.kmm-sheet,.live-activity,.book-detail-btn,.wish-btn-inline,.wish-btn){background:#1D1814;color:var(--ink);border-color:var(--border)}
+  & :is(input,textarea,select){background:#1D1814 !important;color:var(--ink) !important;border-color:#3A322C}
+  & input::placeholder,& textarea::placeholder{color:#9E9384}
+  & .search .s-ic,& .s-ic{color:#9E9384}
+  & :is(.ac-item:hover,.qbtn:hover,.cqbtn:hover){background:#2A231E}
+  & .ac-item{border-bottom-color:var(--border)}
+  & .pay.on,& .paytime.on,& .cour.on{background:#2A231E;border-color:#F2B552}
+  & .pay img{background:#fff;border-radius:6px;padding:4px 8px}
+  /* selected pills / steps */
+  & :is(.genre-pill.on,.sortpill.on,.gfilter.on,.alpha-btn.on,.page-btn.on,.pg-btn.on,.pb-filter.on,.fpill.on){background:#F2B552;color:#14110F;border-color:#F2B552}
+  & :is(.genre-pill,.sortpill,.gfilter,.alpha-btn,.page-btn,.pg-btn,.pb-filter,.fpill){background:#1D1814;color:var(--ink);border-color:var(--border)}
+  & :is(.fcard-n,.os-ic,.sb-done){background:#F2B552;color:#14110F}
+  & .os.active .os-ic{background:#F2B552;color:#14110F}
+  /* badges */
+  & :is(.first-badge,.bc-badge,.soon,.how-badge){background:#F2B552;color:#14110F}
+  /* sections that used light tints */
+  & :is(.sec-alt,.interest-strip){background:transparent}
+  & .site-foot{background:#0F0C0A}
+  & .site-foot::before,& .sf-pat{opacity:.5}
+  & .site-foot::before{background:linear-gradient(90deg,#F2B552,#C98A1B)}
+  & .reveal{color:inherit}
+  /* covers: keep real artwork bright */
+  & .cov img,& .physical-book-front{filter:none}
+  & .st::before{background:#F2B552}
+  & .rate,& .bk-stars{color:#F2B552}
+  & :is(.book-price,.bs-price,.bk-price){color:#F2B552}
+  & .kmm-sheet li,& .kmm-sheet ul,& .kmm-t{border-color:var(--border)}
+  & .kmm-t b{color:var(--ink)}
+  & .kmm-ghost{background:transparent;color:var(--ink);border-color:#4A3F37}
+  & .km-chat-btn{background:#F2B552 !important;color:#14110F !important}
+  & .sticky-addcart{background:rgba(29,24,20,.97);border-top-color:var(--border)}
+  & .cour-hint{background:#1D1814;color:var(--mid)}
+  & .summary button[onclick*="applyPromo"]{background:#2A231E !important;color:#EDE6DA !important}
+  & :is(.search,.s-search,.sbar) button{background:#F2B552;color:#14110F}
+}
+html[data-km-theme="e"] #km-back-to-top{background:#F2B552!important;color:#14110F!important}

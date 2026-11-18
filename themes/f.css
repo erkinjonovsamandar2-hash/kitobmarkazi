@@ -1,0 +1,67 @@
+/* Theme F — Maqola: editorial black, white and one red. Flat catalogue, hairline rules, huge serif */
+html[data-km-theme="f"]{
+  --navy:#0E0E10;--navy2:#1A1A1D;--navy3:#0E0E10;
+  --teal:#0E0E10;--teal-d:#0E0E10;--teal-l:#FF7B63;
+  --gold:#D9361F;--gold-l:#FF7B63;--gold-d:#A8260F;
+  --cream:#FFFFFF;--cream2:#F2F1EE;--white:#FFFFFF;--surface:#FFFFFF;--surface-tinted:#F7F6F3;--surface-cool:#F2F1EE;
+  --ink:#0E0E10;--mid:#43434A;--light:#62626A;--border:#E3E1DC;
+  --serif:'Bodoni Moda',Georgia,serif;--sans:'Golos Text',system-ui,sans-serif;
+  --grad-navy:#0E0E10;--grad-gold:#D9361F;--grad-teal:#0E0E10;
+  --sh-sm:none;--sh-md:none;--sh-lg:none;--sh-xl:none;--sh-teal:none;--sh-gold:none;
+  --glow-teal:0 0 0 3px rgba(14,14,16,.22);--glow-gold:0 0 0 3px rgba(217,54,31,.3);
+  --t-radius:2px;--t-radius-sm:2px;--t-pill:2px;--t-border:#E3E1DC;--t-hover-border:#0E0E10;--t-orb:none;
+  --t-shadow:none;--t-shadow-hover:none;--t-head-w:800;--t-head-ls:-.03em;--t-step:#0E0E10;--t-step-ink:#fff;--t-sel:#D9361F;--t-sel-ink:#fff;--t-focus:#D9361F;
+
+  & body{background:#fff;color:var(--ink)}
+  & :is(h1,h2,h3,.st,.bname){font-family:var(--serif);letter-spacing:-.03em}
+  /* header: ink bar, red accent */
+  & .nav{background:#0E0E10;box-shadow:none}
+  & .bname span{color:#FF7B63}
+  & .nav-link::after,& .nav-link.on::after{background:#D9361F}
+  & .cart-count{background:#D9361F;color:#fff}
+  & :is(.cart-link,.wish-link,.nav-burger){border-radius:2px}
+  /* red actions, square */
+  & :is(.btn-teal,.nav-cta,.sbtn,.book-cta-btn,.book-cart-btn,.bs-cart,.bk-addcart,.submit,.checkout,.ai-start,.btn-track,.ab-cta,.undo-btn,.kmm-go,#mBar button){background:#D9361F;color:#fff;border-radius:2px;box-shadow:none;background-image:none;letter-spacing:.01em}
+  & :is(.btn-teal,.nav-cta,.sbtn,.book-cta-btn,.book-cart-btn,.bs-cart,.bk-addcart,.submit,.checkout,.ai-start,.btn-track,.ab-cta):hover{background:#0E0E10;color:#fff}
+  & :is(.book-cart-btn,.bs-cart,.book-cta-btn) .cart-ic{stroke:#fff}
+  & .btn-ghost{background:#fff;color:#0E0E10;border:1.5px solid #0E0E10;border-radius:2px}
+  & .btn-ghost:hover{background:#0E0E10;color:#fff}
+  & :is(.btn,.search,.sinput,.sbar,.pay,.cour,.paytime,.card,.summary,.fcard,.cgroup,.track-card,.faq-item,.info-card,.contact-box,.rev-item,.rev-form-card,.pm-card,.bk-buy,.bk-mchip,.m-sum,.kmm-sheet,.modal){border-radius:2px}
+  /* flat catalogue: cards become ruled entries */
+  & :is(.book,.bs-card){background:transparent;border:0;border-top:2px solid #0E0E10;border-radius:0;box-shadow:none;padding-top:14px}
+  & :is(.book,.bs-card):hover{border-top-color:#D9361F;box-shadow:none;transform:none}
+  & .physical-book-front{box-shadow:0 14px 22px -14px rgba(14,14,16,.55)}
+  & .book-body{text-align:left}
+  & .book-title{font-family:var(--serif);font-size:17px;font-weight:700}
+  & .book-buy{border:0;border-top:1px solid #E3E1DC;border-radius:0;padding:10px 0 0;min-height:0}
+  & :is(.book-cta-btn){border-radius:2px;width:38px;height:38px}
+  & :is(.pcard){background:#fff;border:0;border-top:1px solid #0E0E10;border-bottom:1px solid #E3E1DC;border-radius:0;box-shadow:none}
+  & :is(.pcard):hover{border-top-color:#D9361F;transform:none;box-shadow:none}
+  & .pcard-logo{background:#F7F6F3;border-radius:0}
+  & :is(.book-price,.bs-price,.bk-price){color:#0E0E10;font-family:var(--serif)}
+  & .rate,& .bk-stars{color:#A8260F}
+  /* chips become square labels */
+  & :is(.genre-pill,.sortpill,.gfilter,.alpha-btn,.page-btn,.pg-btn,.pb-filter,.fpill){border-radius:2px;border:1px solid #0E0E10;background:#fff;color:#0E0E10}
+  & :is(.genre-pill.on,.sortpill.on,.gfilter.on,.alpha-btn.on,.page-btn.on,.pg-btn.on,.pb-filter.on,.fpill.on){background:#0E0E10;color:#fff;border-color:#0E0E10}
+  & .genre-pill:hover{border-color:#D9361F;color:#D9361F;transform:none;box-shadow:none}
+  & :is(.fcard-n,.os-ic,.sb-done){background:#0E0E10;color:#fff;border-radius:2px}
+  & .os.active .os-ic{background:#D9361F;color:#fff;box-shadow:none}
+  & :is(.first-badge,.bc-badge,.soon,.how-badge){background:#D9361F;color:#fff;border-radius:2px}
+  & .st{font-weight:800}
+  & .st::before{background:#D9361F;height:4px;width:44px;border-radius:0}
+  /* typographic hero: left-aligned, huge, no mock-up book, no stats */
+  & .hero{background:#0E0E10;padding-top:72px;padding-bottom:72px}
+  & .hero .hgrid{grid-template-columns:1fr}
+  & .hero h1{font-family:var(--serif);font-weight:800;font-size:clamp(44px,8.4vw,116px);line-height:.96;letter-spacing:-.045em;max-width:12ch}
+  & .hero h1 em{font-style:italic;font-weight:500;color:#FF7B63}
+  & .hero .showcase,& .hero .stats{display:none}
+  & .hero .tag{border-radius:2px;background:transparent;border:1px solid #FF7B63;color:#FF7B63}
+  & .hero .search{border-radius:2px;max-width:560px}
+  & .hero-book-link::before{display:none}
+  & .site-foot{background:#0E0E10}
+  & .site-foot::before{background:#D9361F}
+  & .km-chat-btn{background:#D9361F !important;color:#fff !important;border-radius:2px !important}
+  & :is(.bs-rank,.bk-cov-badge,.pcard .first-badge,.low-stock){background:#D9361F;color:#fff}
+}
+@media (max-width:900px){html[data-km-theme="f"] .hero{padding-top:44px;padding-bottom:44px}}
+html[data-km-theme="f"] #km-back-to-top{background:#D9361F!important;color:#fff!important}
