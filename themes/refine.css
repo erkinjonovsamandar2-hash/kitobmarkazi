@@ -47,6 +47,9 @@ html.pc-on .pcard{flex-wrap:wrap;align-content:flex-start;padding:16px;gap:14px}
 html.pc-on .pcard .pcard-foot{flex:1 1 0}
 .pc-covers{flex:1 1 100%;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding-top:2px}
 .pc-covers img{width:100%;height:auto;aspect-ratio:2/3;object-fit:cover;border-radius:6px;background:var(--cream2,#eee);box-shadow:0 8px 14px -10px rgba(0,0,0,.45);transition:transform .35s var(--rf-ease,ease)}
+.pc-drawn{display:flex;flex-direction:column;justify-content:flex-end;gap:4px;aspect-ratio:2/3;padding:10px 8px;border-radius:6px;color:#fff;overflow:hidden;box-shadow:0 8px 14px -10px rgba(0,0,0,.45)}
+.pc-drawn b{font-size:12px;line-height:1.2;font-weight:700;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.pc-drawn i{font-style:normal;font-size:10px;opacity:.85}
 .pc-go{flex:1 1 100%;font-size:13.5px;font-weight:700;color:var(--t-focus,var(--teal));opacity:.0;transform:translateY(2px);transition:opacity .25s,transform .25s var(--rf-ease,ease)}
 html.pc-on .pcard:hover .pc-go,html.pc-on .pcard:focus-visible .pc-go{opacity:1;transform:none}
 @media (hover:hover){html.pc-on .pcard:hover .pc-covers img{transform:scale(1.02)}}

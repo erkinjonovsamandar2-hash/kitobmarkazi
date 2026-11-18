@@ -58,6 +58,7 @@
         return byPub;
       }).catch(function () { byPub = {}; return byPub; });
     }
+    function esc(v) { return String(v == null ? '' : v).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
     function enhance(card) {
       if (card.getAttribute('data-pc')) return;
       card.setAttribute('data-pc', '1');
@@ -65,18 +66,28 @@
       if (!slug) return;
       slug = decodeURIComponent(slug);
       load().then(function (m) {
-        var list = (m[slug] || []).slice(0, 9), found = [];
+        var all = m[slug] || [], list = all.slice(0, 9), found = [];
         return list.reduce(function (p, b) {
           return p.then(function () {
             if (found.length >= 3) return;
             return cover(b).then(function (u) { if (u) found.push({ u: u, b: b }); });
           });
-        }, Promise.resolve()).then(function () { return found; });
+        }, Promise.resolve()).then(function () {
+          /* books with no cover file: draw the same gradient cover the book page shows (title + author) */
+          all.forEach(function (b) {
+            if (found.length >= 3) return;
+            if (!found.some(function (x) { return x.b === b; })) found.push({ b: b, drawn: true });
+          });
+          return found;
+        });
       }).then(function (found) {
         if (found.length < 2 || !card.isConnected) return;
         var strip = document.createElement('div');
         strip.className = 'pc-covers'; strip.setAttribute('aria-hidden', 'true');
-        strip.innerHTML = found.map(function (x) { return '<img src="' + x.u + '" alt="" width="120" height="180" loading="lazy">'; }).join('');
+        strip.innerHTML = found.map(function (x) {
+          if (x.drawn) return '<span class="pc-drawn" style="background:' + esc(x.b.color || '#1A3A5C') + '"><b>' + esc(x.b.title) + '</b><i>' + esc(x.b.author || '') + '</i></span>';
+          return '<img src="' + x.u + '" alt="" width="120" height="180" loading="lazy">';
+        }).join('');
         var go = document.createElement('span');
         go.className = 'pc-go'; go.textContent = 'Kitoblarini ko‘rish →';
         card.appendChild(strip); card.appendChild(go);
