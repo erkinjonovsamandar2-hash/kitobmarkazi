@@ -1,0 +1,59 @@
+/* Refinement layer for demo options C/E/F: one calm motion language.
+   Only transform/opacity/colour change; ease-out-expo; everything rests under reduced motion. */
+html[data-km-theme]{--rf-ease:cubic-bezier(.16,1,.3,1);--rf-ok:#1F6B52}
+
+/* buttons: step on hover, press on click, one focus ring */
+html[data-km-theme] :is(.btn-teal,.btn-ghost,.nav-cta,.sbtn,.book-cta-btn,.book-cart-btn,.bs-cart,.bk-addcart,.submit,.checkout,.ai-start,.btn-track,.ab-cta,.kmm-go,.kmm-ghost,.pc-chip){
+  transition:background-color .18s,border-color .18s,color .18s,opacity .18s,transform .18s var(--rf-ease);position:relative}
+html[data-km-theme] :is(.btn-teal,.btn-ghost,.nav-cta,.sbtn,.book-cta-btn,.book-cart-btn,.bs-cart,.bk-addcart,.submit,.checkout,.ai-start,.btn-track,.ab-cta,.kmm-go,.kmm-ghost,.pc-chip):active{transform:scale(.97);transition-duration:.08s}
+html[data-km-theme] :focus-visible{outline:2px solid var(--t-focus,#1F6B52);outline-offset:2px}
+
+/* chips and tabs: fade the selected state, no jumping */
+html[data-km-theme] :is(.genre-pill,.sortpill,.gfilter,.alpha-btn,.page-btn,.pg-btn,.pb-filter,.fpill){
+  transition:background-color .18s,border-color .18s,color .18s,transform .18s var(--rf-ease)}
+html[data-km-theme] :is(.genre-pill,.sortpill,.gfilter,.alpha-btn,.page-btn,.pg-btn,.pb-filter,.fpill):active{transform:scale(.97)}
+
+/* add to cart: shows a check for a moment */
+html[data-km-theme] :is(.bs-cart,.book-cta-btn,.book-cart-btn,.bk-addcart).is-added{background:var(--rf-ok)!important;color:transparent!important}
+html[data-km-theme] :is(.bs-cart,.book-cta-btn,.book-cart-btn,.bk-addcart).is-added>*{opacity:0}
+html[data-km-theme] :is(.bs-cart,.book-cta-btn,.book-cart-btn,.bk-addcart).is-added::after{content:'\2713';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:800;animation:rfPop .28s var(--rf-ease)}
+@keyframes rfPop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+
+/* hover lift only where a pointer really hovers */
+@media (hover:hover){
+  html[data-km-theme] :is(.book,.bs-card,.pcard){transition:transform .3s var(--rf-ease),box-shadow .3s var(--rf-ease),border-color .2s}
+  html[data-km-theme] :is(.book,.bs-card,.pcard):hover{transform:translateY(-2px)}
+  html[data-km-theme] .book .physical-book{transition:transform .35s var(--rf-ease)}
+  html[data-km-theme] .book:hover .physical-book{transform:scale(1.02)}
+}
+
+/* ---------- Nashriyotlar ---------- */
+html.pc-on .alpha-bar{display:none}
+html.pc-on .ph-orb{display:none}
+html.pc-on .ph{padding-top:36px;padding-bottom:28px}
+.pc-tools{display:flex;gap:12px 16px;align-items:center;flex-wrap:wrap;margin:0 0 22px}
+.pc-search{flex:1 1 260px;max-width:420px;position:relative;display:block}
+.pc-search input{width:100%;min-height:44px;padding:0 16px;font:inherit;font-size:15px;color:var(--ink);background:var(--white,#fff);border:1.5px solid var(--t-border,var(--border));border-radius:var(--t-radius-sm,12px);transition:border-color .18s,box-shadow .18s}
+.pc-search input:hover{border-color:var(--t-hover-border,var(--ink))}
+.pc-search input:focus{outline:none;border-color:var(--t-focus,var(--teal));box-shadow:0 0 0 3px color-mix(in srgb,var(--t-focus,#1F6B52) 22%,transparent)}
+.pc-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.pc-chips{display:flex;gap:8px;flex-wrap:wrap}
+.pc-chip{min-height:44px;padding:0 16px;font:inherit;font-size:14px;font-weight:600;color:var(--mid);background:var(--white,#fff);border:1.5px solid var(--t-border,var(--border));border-radius:var(--t-pill,999px);cursor:pointer}
+.pc-chip:hover{border-color:var(--t-hover-border,var(--ink));color:var(--ink)}
+.pc-chip.on{background:var(--t-sel,var(--ink));color:var(--t-sel-ink,#fff);border-color:var(--t-sel,var(--ink))}
+
+html.pc-on .publishers-grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;align-items:start}
+html.pc-on .pcard{flex-wrap:wrap;align-content:flex-start;padding:16px;gap:14px}
+html.pc-on .pcard .pcard-foot{flex:1 1 0}
+.pc-covers{flex:1 1 100%;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding-top:2px}
+.pc-covers img{width:100%;height:auto;aspect-ratio:2/3;object-fit:cover;border-radius:6px;background:var(--cream2,#eee);box-shadow:0 8px 14px -10px rgba(0,0,0,.45);transition:transform .35s var(--rf-ease,ease)}
+.pc-go{flex:1 1 100%;font-size:13.5px;font-weight:700;color:var(--t-focus,var(--teal));opacity:.0;transform:translateY(2px);transition:opacity .25s,transform .25s var(--rf-ease,ease)}
+html.pc-on .pcard:hover .pc-go,html.pc-on .pcard:focus-visible .pc-go{opacity:1;transform:none}
+@media (hover:hover){html.pc-on .pcard:hover .pc-covers img{transform:scale(1.02)}}
+@media (hover:none){.pc-go{opacity:1;transform:none}}
+@media (max-width:600px){html.pc-on .publishers-grid{grid-template-columns:1fr}.pc-search{max-width:none;flex-basis:100%}}
+
+@media (prefers-reduced-motion:reduce){
+  html[data-km-theme] *{transition-duration:.001ms!important;animation-duration:.001ms!important}
+  html[data-km-theme] :is(.book,.bs-card,.pcard):hover,.pcard:hover .pc-covers img{transform:none!important}
+}
